@@ -1,9 +1,11 @@
 package civilizationclone.Unit;
 
+import civilizationclone.Map;
 import java.awt.Point;
 
 public abstract class Unit {
 
+    private static Map mapRef;
     private final int MAX_MOVEMENT;
     private int movement;
     private Point position;
@@ -15,6 +17,8 @@ public abstract class Unit {
         position = new Point(p.x, p.y);
     }
 
+    
+    
     public int getMovement() {
         return movement;
     }
