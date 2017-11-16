@@ -11,6 +11,6 @@ public abstract class RangeUnit extends MilitaryUnit{
         this.closeCombat = closeCombat;
     }
     
-    
+  
     
 }
