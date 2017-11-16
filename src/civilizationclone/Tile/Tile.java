@@ -3,17 +3,24 @@ package civilizationclone.Tile;
 import civilizationclone.Unit.Unit;
 
 
-public class Tile {
+public abstract class Tile {
     
-    private boolean isWater = false;
+    private boolean isWater;
     private Unit unit;
-
+    private Improvement improvement;
+    private Resource resource;
+    private int movementCost;
+    private int productionOutput;
+    private int scienceOutput;
+    private int goldOutput;
+           
+   
     public boolean isIsWater() {
         return isWater;
     }
     
     public boolean hasUnit(){
-        return unit == null;
+        return !(unit == null);
     }
     
     public void removeUnit(){
