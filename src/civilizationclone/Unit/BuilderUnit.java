@@ -1,13 +1,21 @@
 package civilizationclone.Unit;
 
-import java.awt.Point;
+import civilizationclone.City;
 
+public class BuilderUnit extends Unit {
 
-public class BuilderUnit extends Unit{
+    private int actions;
 
-    public BuilderUnit(int movement, Point p, int player) {
-        super(movement, p, player);
+    public BuilderUnit(City c) {
+        super(3, c);
+        actions = 3;
     }
 
-    
+    public void improveTile() {
+        if (actions > 0) {
+            Unit.getMapRef().map[getX()][getY()].improve();
+            actions--;
+        }
+    }
+
 }

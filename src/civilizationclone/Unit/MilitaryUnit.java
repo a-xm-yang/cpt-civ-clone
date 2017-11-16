@@ -1,18 +1,15 @@
 package civilizationclone.Unit;
 
 import civilizationclone.City;
-import java.awt.Point;
-
 
 public abstract class MilitaryUnit extends Unit {
     
     private int combat;
-    
     private final int MAX_HEALTH;
     private int health;
     
-    public MilitaryUnit(int MAX_MOVEMENT, Point p, int player, int MAX_HEALTH, int combat) {
-        super(MAX_MOVEMENT, p, player);
+    public MilitaryUnit(int MAX_MOVEMENT, City c, int MAX_HEALTH, int combat) {
+        super(MAX_MOVEMENT, c);
         this.MAX_HEALTH = MAX_HEALTH;
         health = MAX_HEALTH;
         this.combat = combat;

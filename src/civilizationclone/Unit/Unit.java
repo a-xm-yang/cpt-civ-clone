@@ -1,5 +1,6 @@
 package civilizationclone.Unit;
 
+import civilizationclone.City;
 import civilizationclone.Map;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -12,11 +13,11 @@ public abstract class Unit {
     private int movement;
     private Point position;
 
-    public Unit(int movement, Point p, int player) {
+    public Unit(int movement, City c) {
         MAX_MOVEMENT = movement;
         movement = MAX_MOVEMENT;
-        position = new Point(p.x, p.y);
-        this.PLAYER = player;
+        position = new Point(c.getPosition().x, c.getPosition().y);
+        this.PLAYER = c.getPlayer();
     }
 
     public int getMovement() {
@@ -29,6 +30,10 @@ public abstract class Unit {
 
     public int getY() {
         return position.y;
+    }
+
+    public static Map getMapRef() {
+        return mapRef;
     }
 
     public int getPLAYER() {

@@ -24,6 +24,8 @@ public class Tile {
         this.unit = unit;
     }
     
-    
+    public void improve(){
+        System.out.println("improved");
+    }
     
 }
