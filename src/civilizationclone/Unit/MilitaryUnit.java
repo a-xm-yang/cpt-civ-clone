@@ -11,8 +11,8 @@ public abstract class MilitaryUnit extends Unit {
     private final int MAX_HEALTH;
     private int health;
     
-    public MilitaryUnit(int MAX_MOVEMENT, Point p, int MAX_HEALTH, int combat) {
-        super(MAX_MOVEMENT, p);
+    public MilitaryUnit(int MAX_MOVEMENT, Point p, int player, int MAX_HEALTH, int combat) {
+        super(MAX_MOVEMENT, p, player);
         this.MAX_HEALTH = MAX_HEALTH;
         health = MAX_HEALTH;
         this.combat = combat;
