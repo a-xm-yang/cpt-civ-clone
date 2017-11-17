@@ -2,6 +2,7 @@ package civilizationclone.Unit;
 
 import civilizationclone.City;
 import civilizationclone.Map;
+import civilizationclone.Player;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -9,7 +10,7 @@ public abstract class Unit {
 
     private static Map mapRef;
     private final int MAX_MOVEMENT;
-    private final int PLAYER;
+    private Player player;
     private int movement;
     private Point position;
 
@@ -17,7 +18,7 @@ public abstract class Unit {
         MAX_MOVEMENT = movement;
         movement = MAX_MOVEMENT;
         position = new Point(c.getPosition().x, c.getPosition().y);
-        this.PLAYER = c.getPlayer();
+        this.player = c.getPlayer();
     }
 
     public int getMovement() {
@@ -36,13 +37,8 @@ public abstract class Unit {
         return mapRef;
     }
 
-    public int getPLAYER() {
-        return PLAYER;
-    }
-
-    public void setPosition(Point p) {
-        position.x = p.x;
-        position.y = p.y;
+    public Player getPlayer() {
+        return player;
     }
 
     public Point[] getAdjacent() {
@@ -59,13 +55,13 @@ public abstract class Unit {
                 list.add(new Point(position.x - 1, position.y - dif + i));
             }
         }
-        
-        for (int i = -1; i < 2; i += 2){
-           if (!mapRef.map[position.x][position.y + i].isIsWater()) {
+
+        for (int i = -1; i < 2; i += 2) {
+            if (!mapRef.map[position.x][position.y + i].isIsWater()) {
                 list.add(new Point(position.x, position.y + i));
             }
         }
-        
+
         for (int i = 0; i < 2; i++) {
             if (!mapRef.map[position.x + 1][position.y - dif + i].isIsWater()) {
                 list.add(new Point(position.x + 1, position.y - dif + i));
@@ -76,11 +72,17 @@ public abstract class Unit {
 
     }
 
-    public void move(Point p){
+    public void move(Point p) {
         mapRef.map[position.x][position.y].removeUnit();
         position = p;
         mapRef.map[position.x][position.y].setUnit(this);
-    };
+    }
+
+    public void delete() {
+        getPlayer().getUnitList().remove(this);
+        getMapRef().map[getX()][getY()].removeUnit();
+        System.out.println("This unit is dead");
+    }
 
     public boolean canMove() {
         if (movement == 0) {

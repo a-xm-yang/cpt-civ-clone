@@ -6,9 +6,9 @@ import java.awt.Point;
 public class City {
     
     private Point position;
-    private int player;
+    private Player player;
 
-    public int getPlayer() {
+    public Player getPlayer() {
         return player;
     }
 
