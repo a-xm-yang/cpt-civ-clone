@@ -32,6 +32,8 @@ public abstract class MilitaryUnit extends Unit {
 
     public void attack(Unit x) {
 
+        setMovement(0);
+
         if (!(x instanceof MilitaryUnit)) {
             x.delete();
         }
@@ -45,8 +47,8 @@ public abstract class MilitaryUnit extends Unit {
                 enemyCombat = ((RangeUnit) enemy).closeCombat;
             }
 
-            int thisDmg = (int) (combat * 0.6 * (health / MAX_HEALTH + (1 - (health / MAX_HEALTH) / 2)));
-            int enemyDmg = (int) (enemyCombat * 0.6 * (enemy.health / enemy.MAX_HEALTH + (1 - (enemy.health / enemy.MAX_HEALTH) / 2)));
+            int thisDmg = (int) (combat * 0.6 * (health / MAX_HEALTH + (1 - (health / MAX_HEALTH) / 2)) * (combat / enemyCombat));
+            int enemyDmg = (int) (enemyCombat * 0.6 * (enemy.health / enemy.MAX_HEALTH + (1 - (enemy.health / enemy.MAX_HEALTH) / 2)) * (enemyCombat / combat));
 
             if (this instanceof MeleeUnit && enemy instanceof CalvaryUnit) {
                 thisDmg = (int) (thisDmg * 1.2);
@@ -72,8 +74,29 @@ public abstract class MilitaryUnit extends Unit {
 
     }
 
-    public void siegeAttack(City c){
+    public void siegeAttack(City c) {
+
+        int siegeDmg = (int) (combat * 0.4);
+        int cityDmg = (int) (c.getCombat() * 0.6);
         
-    };
+        if (this instanceof CalvaryUnit){
+            siegeDmg = (int) (siegeDmg * 0.6);
+        }
+
+        health -= cityDmg;
+        System.out.println("Enemy dealt " + cityDmg);
+        c.setHealth(c.getHealth() - siegeDmg); 
+        System.out.println("Unit dealt " + siegeDmg);
+        
+        if (c.getHealth() <= 0){
+            c.delete();
+        }
+        
+        if (health <= 0){
+            this.delete();
+        }
+        
+    }
+;
 
 }
