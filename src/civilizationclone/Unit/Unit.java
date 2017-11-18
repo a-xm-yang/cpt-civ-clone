@@ -72,10 +72,17 @@ public abstract class Unit {
 
     }
 
+    public void setMovement(int movement) {
+        this.movement = movement;
+    }
+    
+    
+
     public void move(Point p) {
         mapRef.map[position.x][position.y].removeUnit();
         position = p;
         mapRef.map[position.x][position.y].setUnit(this);
+        movement --;
     }
 
     public void delete() {
