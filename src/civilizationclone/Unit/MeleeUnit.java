@@ -9,5 +9,4 @@ public abstract class MeleeUnit extends MilitaryUnit{
         super(MAX_MOVEMENT, c ,MAX_HEALTH, combat);
     }
    
-    
 }
