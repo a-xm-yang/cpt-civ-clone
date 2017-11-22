@@ -1,5 +1,5 @@
 package civilizationclone;
 
-public class CityProject {
-    
+public enum CityProject {
+    GRANARY,LIBRARY;
 }
