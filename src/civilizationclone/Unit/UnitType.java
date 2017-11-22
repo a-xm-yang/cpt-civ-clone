@@ -2,7 +2,11 @@ package civilizationclone.Unit;
 
 public enum UnitType {
 
-    BUILDER(60, 120), SCOUT(40, 80), WARRIOR(50, 110), SLINGER(50, 110);
+    BUILDER(60, 120),
+    SCOUT(40, 80), 
+    WARRIOR(50, 110), 
+    SLINGER(50, 110), 
+    HORSEMAN(60,130);
 
     private int productionCost;
     private int purchaseCost;

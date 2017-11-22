@@ -1,7 +1,6 @@
 package civilizationclone;
 
-import civilizationclone.Tech.Tech;
-import civilizationclone.Tech.TechType;
+import civilizationclone.Tile.Improvement;
 import civilizationclone.Unit.Unit;
 import civilizationclone.Unit.UnitType;
 import java.util.ArrayList;
@@ -23,6 +22,8 @@ public class Player {
     
     private Set<TechType> ownedTech;
     private Set<UnitType> buildableUnit;
+    private Set<Improvement> ownedImprovement;
+    private Set<CityProject> ownedCityProject;
     
     //lists of things owned
     private ArrayList<Unit> unitList;
@@ -43,8 +44,15 @@ public class Player {
         return unitList;
     }
     
-    public void addTech(Tech t){
-        ownedTech.add(t.getType());
+    public void addTech(TechType t){
+        ownedTech.add(t);
+        buildableUnit.addAll(t.getUnlockUnit());
+        ownedImprovement.addAll(t.getUnlockImprovement());
+        ownedCityProject.addAll(t.getUnlockProject());
+    }
+    
+    public void addBuildableUnit(UnitType u){
+        buildableUnit.add(u);
     }
     
     public void addUnit(Unit u){
@@ -54,5 +62,49 @@ public class Player {
     public void addCity(City c){
         cityList.add(c);
     }
+
+    public String getName() {
+        return name;
+    }
+
+    //Getter
+    //<editor-fold>
+    public int getTechProgress() {
+        return techProgress;
+    }
+
+    public int getTechCost() {
+        return techCost;
+    }
+
+    public int getTechIncome() {
+        return techIncome;
+    }
+
+    public int getGoldIncome() {
+        return goldIncome;
+    }
+
+    public int getCurrentGold() {
+        return currentGold;
+    }
+
+    public Set<TechType> getOwnedTech() {
+        return ownedTech;
+    }
+
+    public Set<UnitType> getBuildableUnit() {
+        return buildableUnit;
+    }
+
+    public Set<Improvement> getOwnedImprovement() {
+        return ownedImprovement;
+    }
+
+    public Set<CityProject> getOwnedCityProject() {
+        return ownedCityProject;
+    }
+     //</editor-fold>
+    
     
 }
