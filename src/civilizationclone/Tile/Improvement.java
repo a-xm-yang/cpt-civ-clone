@@ -1,6 +1,6 @@
 
 package civilizationclone.Tile;
 
-public class Improvement extends Tile{
+public class Improvement{
     
 }

@@ -14,7 +14,14 @@ public abstract class Tile {
     private int scienceOutput;
     private int goldOutput;
     
-    //TEST           
+    //TEST
+
+    public Tile(boolean isWater, int movementCost) {
+        this.isWater = isWater;
+        this.movementCost = movementCost;
+    }
+    
+    
    
     public boolean isIsWater() {
         return isWater;
