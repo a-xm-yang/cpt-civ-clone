@@ -6,8 +6,8 @@ public abstract class SiegeUnit extends MilitaryUnit {
 
     private int siegeCombat;
 
-    public SiegeUnit(int MAX_MOVEMENT, City c, int MAX_HEALTH, int combat, int siegeCombat) {
-        super(MAX_MOVEMENT, c, MAX_HEALTH, combat);
+    public SiegeUnit(int MAX_MOVEMENT, City c, int MAX_HEALTH, int combat, int siegeCombat, int maintainence) {
+        super(MAX_MOVEMENT, c, MAX_HEALTH, combat, maintainence);
         this.siegeCombat = siegeCombat;
     }
 

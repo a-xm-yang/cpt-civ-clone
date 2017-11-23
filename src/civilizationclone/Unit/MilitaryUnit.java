@@ -7,12 +7,14 @@ public abstract class MilitaryUnit extends Unit {
     private int combat;
     private final int MAX_HEALTH;
     private int health;
+    private int maintainence;
 
-    public MilitaryUnit(int MAX_MOVEMENT, City c, int MAX_HEALTH, int combat) {
+    public MilitaryUnit(int MAX_MOVEMENT, City c, int MAX_HEALTH, int combat, int maintainence) {
         super(MAX_MOVEMENT, c);
         this.MAX_HEALTH = MAX_HEALTH;
         health = MAX_HEALTH;
         this.combat = combat;
+        this.maintainence = maintainence;
     }
 
     public int getHealth() {
@@ -25,6 +27,10 @@ public abstract class MilitaryUnit extends Unit {
 
     public int getCombat() {
         return combat;
+    }
+
+    public int getMaintainence() {
+        return maintainence;
     }
 
     public void setHealth(int health) {

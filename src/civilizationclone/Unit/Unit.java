@@ -89,6 +89,8 @@ public abstract class Unit {
         getPlayer().getUnitList().remove(this);
         getMapRef().map[getX()][getY()].removeUnit();
         System.out.println("This unit is dead");
+        
+        player.calcGoldIncome();
     }
 
     public boolean canMove() {
