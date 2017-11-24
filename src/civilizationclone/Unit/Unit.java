@@ -76,7 +76,9 @@ public abstract class Unit {
         this.movement = movement;
     }
     
-    
+    public void resetMovement(){
+        this.movement = MAX_MOVEMENT;
+    }
 
     public void move(Point p) {
         mapRef.map[position.x][position.y].removeUnit();

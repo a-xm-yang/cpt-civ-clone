@@ -2,7 +2,9 @@
 package civilizationclone.Tile;
 
 public enum Improvement{
-    FARM(0,-1,3), MINE(1,2,-1), FISHING(1,0,2), RANCH(-1,2,1), PLANTATION(3,0,-1);
+    
+    //GOLD, PRODUCTION, FOOD
+    FARM(0,0,3), MINE(0,3,0), FISHING(1,0,2), RANCH(0,2,1), PLANTATION(3,0,0), ROAD(0,0,0);
     
     private int goldBonus;
     private int productionBonus;

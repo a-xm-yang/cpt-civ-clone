@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class Player {
 
-    //Variables that a student have
+    //Variables that a player has
     //<editor-fold>
     private String name;
 
@@ -52,6 +52,10 @@ public class Player {
         }
         
         currentGold += goldIncome;
+        
+        for (Unit unit: unitList){
+            unit.resetMovement();
+        }
     }
 
     public void calcResearchableTech() {
