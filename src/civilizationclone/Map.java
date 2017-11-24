@@ -9,7 +9,7 @@ public class Map {
     public float[][] simplexNoise;
  
     public Map() {
-        this.map = new Tile[80][40];
+        this.map = new Tile[80][60];
     }
    
     public void generateMap(){
@@ -26,7 +26,7 @@ public class Map {
     public float[][] generateSimplexNoise(int width, int height){
         
         //ramdom seed
-        SimplexNoise sn = new SimplexNoise(1333);
+        SimplexNoise sn = new SimplexNoise(5000);
         
         float[][] simplexnoise = new float[width][height];
         float frequency = 0.04f;
