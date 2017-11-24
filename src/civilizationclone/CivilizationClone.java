@@ -32,7 +32,7 @@ public class CivilizationClone extends JPanel {
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.setSize(800, 630);
+        frame.setSize(800, 800);
         Graphics g;
         g = getGraphics();
         paintComponent(g);
@@ -46,14 +46,14 @@ public class CivilizationClone extends JPanel {
         setBackground(Color.BLACK);
         for (int i = 0; i < map.simplexNoise.length; i++) {
             for (int k = 0; k < map.simplexNoise[i].length; k++) {
-                if (map.simplexNoise[i][k] < 0.333) {
+                if (map.simplexNoise[i][k] < 0) {
                     g.setColor(Color.BLUE);
-                } else if (map.simplexNoise[i][k] < 0.666) {
+                } else if (map.simplexNoise[i][k] < 0.5) {
                     g.setColor(Color.GREEN);
                 } else {
                     g.setColor(Color.YELLOW);
                 }
-                g.fillRect(i * 10, k * 10, 10, 10);
+                g.fillRect(i * 5, k * 5, 5, 5);
             }
         }
     }
