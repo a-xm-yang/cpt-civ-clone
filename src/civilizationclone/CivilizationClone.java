@@ -53,7 +53,12 @@ public class CivilizationClone extends JPanel {
                 } else {
                     g.setColor(Color.YELLOW);
                 }
-                g.fillRect(i * 5, k * 5, 5, 5);
+                //g.fillRect(i * 5, k * 5, 5, 5);
+                if(k%2 == 0){
+                    g.fillPolygon(new int[]{i*12+5+i,i*12+12+i,i*12+12+i,i*12+5+i,i*12+i,i*12+i},new int[]{k*12-k,k*12+3-k,k*12+9-k,k*12+12-k,k*12+9-k,k*12+3-k},6);
+                }else{
+                    g.fillPolygon(new int[]{i*12+5+5+i+2,i*12+12+5+i+2,i*12+12+5+i+2,i*12+5+5+i+2,i*12+5+i+2,i*12+5+i+2},new int[]{k*12-k,k*12+3-k,k*12+9-k,k*12+12-k,k*12+9-k,k*12+3-k},6);
+                }
             }
         }
     }
