@@ -17,9 +17,7 @@ public class CivilizationClone extends JPanel {
     static Map map = new Map();
 
     public static void main(String[] args) {
-
-        //System.out.println("Hello world");
-        map.generateMap();
+        
         CivilizationClone test = new CivilizationClone();
         System.out.println("Hello world");
 
@@ -46,9 +44,9 @@ public class CivilizationClone extends JPanel {
         setBackground(Color.BLACK);
         for (int i = 0; i < map.simplexNoise.length; i++) {
             for (int k = 0; k < map.simplexNoise[i].length; k++) {
-                if (map.simplexNoise[i][k] < 0) {
+                if (map.simplexNoise[i][k] < 0.3) {
                     g.setColor(Color.BLUE);
-                } else if (map.simplexNoise[i][k] < 0.5) {
+                } else if (map.simplexNoise[i][k] < 0.8) {
                     g.setColor(Color.GREEN);
                 } else {
                     g.setColor(Color.YELLOW);
