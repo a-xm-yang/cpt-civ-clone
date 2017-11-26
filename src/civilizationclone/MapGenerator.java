@@ -1,9 +1,74 @@
 package civilizationclone;
 
+import static java.lang.Math.sqrt;
 import java.util.Random;
 
-public class SimplexNoise {  // Simplex noise in 2D, 3D and 4D
+public class MapGenerator {
 
+    public static float[][] generateMap(int width, int height, int seed) {
+        
+        randomize(seed);
+        
+        float[][] simplexNoise = generateSimplexNoise(width, height);
+        float[][] radialGradient = generateRadialGradient(width, height);
+
+        for (int i = 0; i < radialGradient.length; i++) {
+            for (int k = 0; k < radialGradient[i].length; k++) {
+                simplexNoise[i][k] = simplexNoise[i][k] - radialGradient[i][k] + 0.3f;
+            }
+        }
+
+        for (int i = 0; i < simplexNoise.length; i++) {
+            for (int k = 0; k < simplexNoise[i].length; k++) {
+                System.out.print(simplexNoise[i][k] + " ");
+            }
+            System.out.println("");
+        }
+
+        return simplexNoise;
+    }
+
+    public static float[][] generateSimplexNoise(int width, int height) {
+
+        float[][] simplexnoise = new float[width][height];
+        float frequency = 0.05f;
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                simplexnoise[x][y] = (float) noise(x * frequency, y * frequency);
+                simplexnoise[x][y] = (simplexnoise[x][y] + 1) / 2f;   //generate values between 0 and 1
+            }
+        }
+
+        return simplexnoise;
+    }
+
+    public static float[][] generateRadialGradient(int width, int height) {
+
+        float[][] radialGradient = new float[width][height];
+
+        int centerX = width / 2;
+        int centerY = height / 2;
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                float distanceX = (centerX - x) * (centerX - x);
+                float distanceY = (centerY - y) * (centerY - y);
+
+                float distanceToCenter = (float) sqrt(distanceX + distanceY);
+
+                distanceToCenter = distanceToCenter / (width * 0.75f);
+
+                radialGradient[x][y] = distanceToCenter;
+            }
+        }
+
+        return radialGradient;
+    }
+
+    
+    //BLACK BOX FOR SIMPLEX NOISE GENERATOR
+    //<editor-fold>
     public static int RANDOMSEED = 0;
     private static int NUMBEROFSWAPS = 400;
 
@@ -25,13 +90,13 @@ public class SimplexNoise {  // Simplex noise in 2D, 3D and 4D
         49, 192, 214, 31, 181, 199, 106, 157, 184, 84, 204, 176, 115, 121, 50, 45, 127, 4, 150, 254,
         138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215, 61, 156, 180};
 
-    private short p[] = new short[p_supply.length];
+    private static short p[] = new short[p_supply.length];
 
     // To remove the need for index wrapping, double the permutation table length
-    private short perm[] = new short[512];
-    private short permMod12[] = new short[512];
+    private static short perm[] = new short[512];
+    private static short permMod12[] = new short[512];
 
-    public SimplexNoise(int seed) {
+    private static void randomize(int seed) {
         p = p_supply.clone();
 
         if (seed == RANDOMSEED) {
@@ -71,8 +136,9 @@ public class SimplexNoise {  // Simplex noise in 2D, 3D and 4D
     private static double dot(Grad g, double x, double y) {
         return g.x * x + g.y * y;
     }
+
     // 2D simplex noise
-    public double noise(double xin, double yin) {
+    private static double noise(double xin, double yin) {
         double n0, n1, n2; // Noise contributions from the three corners
         // Skew the input space to determine which simplex cell we're in
         double s = (xin + yin) * F2; // Hairy factor for 2D
@@ -153,5 +219,5 @@ public class SimplexNoise {  // Simplex noise in 2D, 3D and 4D
             this.w = w;
         }
     }
-
+    //</editor-fold>
 }

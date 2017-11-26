@@ -32,33 +32,69 @@ public class Player {
     private ArrayList<City> cityList;
     //</editor-fold>
 
+    //constructor
     public Player(String name) {
         this.name = name;
+
+        //initializing enumsets
         ownedTech = EnumSet.of(TechType.NONE);
         buildableUnit = EnumSet.of(UnitType.BUILDER, UnitType.SCOUT, UnitType.SLINGER, UnitType.WARRIOR);
+        researchableTech = EnumSet.noneOf(TechType.class);
+        ownedImprovement = EnumSet.noneOf(Improvement.class);
+        ownedCityProject = EnumSet.noneOf(CityProject.class);
     }
 
     public void startTurn() {
-        
+
         calcGoldIncome();
         calcGoldIncome();
-        
+
         techProgress += techIncome;
-        
-        if (techProgress >= research.getTechCost()){
+
+        if (techProgress >= research.getTechCost()) {
             addTech(research);
+            calcResearchableTech();
             research = null;
             techProgress = 0;
         }
-        
+
         currentGold += goldIncome;
-        
-        for (Unit unit: unitList){
+
+        //reset movements for all units
+        for (Unit unit : unitList) {
             unit.resetMovement();
+        }
+
+        //start turn action for all cities
+        for (City city : cityList) {
+            city.startTurn();
         }
     }
 
+    public boolean endTurn() {
+        for (Unit u : unitList) {
+            if (u.canMove()) {
+                System.out.println("Unit needs to move");
+                return false;
+            }
+        }
+
+        for (City c : cityList) {
+            if (c.getCurrentProject() == null) {
+                System.out.println("Needs to select city project for " + c.getName());
+            }
+        }
+
+        if (research == null) {
+            System.out.println("Need to select project");
+            return false;
+        }
+
+        return true;
+    }
+
     public void calcResearchableTech() {
+        researchableTech = EnumSet.noneOf(TechType.class);
         for (TechType t : TechType.values()) {
             if (ownedTech.containsAll(t.getPrerequisites()) && !ownedTech.contains(t)) {
                 researchableTech.add(t);
@@ -92,9 +128,15 @@ public class Player {
 
     public void addTech(TechType t) {
         ownedTech.add(t);
-        buildableUnit.addAll(t.getUnlockUnit());
-        ownedImprovement.addAll(t.getUnlockImprovement());
-        ownedCityProject.addAll(t.getUnlockProject());
+        if (t.getUnlockUnit() != null) {
+            buildableUnit.addAll(t.getUnlockUnit());
+        }
+        if (t.getUnlockImprovement() != null) {
+            ownedImprovement.addAll(t.getUnlockImprovement());
+        }
+        if (t.getUnlockProject() != null) {
+            ownedCityProject.addAll(t.getUnlockProject());
+        }
     }
 
     public void addBuildableUnit(UnitType u) {
@@ -110,7 +152,7 @@ public class Player {
     }
 
     //Getter && Setter
-    //<editor-fold>
+    //<editor-fold> 
     public TechType getResearch() {
         return research;
     }
