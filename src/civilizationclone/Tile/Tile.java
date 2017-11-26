@@ -20,8 +20,6 @@ public abstract class Tile {
         this.isWater = isWater;
         this.movementCost = movementCost;
     }
-    
-    
    
     public boolean isIsWater() {
         return isWater;
@@ -39,8 +37,27 @@ public abstract class Tile {
         this.unit = unit;
     }
     
-    public void improve(){
-        System.out.println("improved");
+    public abstract void improve();
+    
+    public void setResourse(Resource resource){
+        this.resource = resource;
     }
+
+    public Improvement getImprovement() {
+        return improvement;
+    }
+
+    public void setImprovement(Improvement improvement) {
+        this.improvement = improvement;
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+    
     
 }

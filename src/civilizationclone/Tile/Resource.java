@@ -1,12 +1,15 @@
 
 package civilizationclone.Tile;
 
+import civilizationclone.TechType;
+
 public class Resource {
     
     private double rarity;
     private int goldBonus;
     private int scienceBonus;
     private int productionBonus;
+    private TechType tech;
 
     public Resource(double rarity, int goldBonus, int scienceBonus, int productionBonus) {
         this.rarity = rarity;
@@ -45,6 +48,14 @@ public class Resource {
 
     public void setProductionBonus(int productionBonus) {
         this.productionBonus = productionBonus;
+    }
+
+    public TechType getTech() {
+        return tech;
+    }
+
+    public void setTech(TechType tech) {
+        this.tech = tech;
     }
     
     
