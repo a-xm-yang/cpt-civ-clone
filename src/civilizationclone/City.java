@@ -49,6 +49,8 @@ public class City {
         builtProjects = EnumSet.noneOf(CityProject.class);
     }
 
+    //TODO add a list of owned tiles for a city, and calculate how to add onto that list, and to get income from that
+    
     public void startTurn() {
 
         heal();
@@ -85,8 +87,7 @@ public class City {
     private void calcTechIncome() {
         //calculate tech income
         int tech = 0;
-
-        //add from tiles
+        
         //add from buildings
         for (CityProject c : builtProjects) {
             tech += c.getTechBonus();

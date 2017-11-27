@@ -7,4 +7,12 @@ public class Ocean extends Tile{
         
         super(true, 1);
     }
+
+    @Override
+    public void improve() {
+        this.setImprovement(Improvement.FISHING);
+        super.improve();
+    }
+    
+    
 }

@@ -22,8 +22,6 @@ public abstract class Tile {
         this.isWater = isWater;
         this.movementCost = movementCost;
     }
-    
-    
    
     public boolean isIsWater() {
         return isWater;
@@ -42,11 +40,53 @@ public abstract class Tile {
     }
     
     public void improve(){
-        
-        System.out.println("improved");
-        
-        //recalibrate income stats for the city
         c.calcIncome();
     }
+    
+    public void setResourse(Resource resource){
+        this.resource = resource;
+    }   
+
+    public Improvement getImprovement() {
+        return improvement;
+    }
+
+    public void setImprovement(Improvement improvement) {
+        this.improvement = improvement;
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
+    public int getMovementCost() {
+        return movementCost;
+    }
+
+    public int getProductionOutput() {
+        return productionOutput;
+    }
+
+    public int getScienceOutput() {
+        return scienceOutput;
+    }
+
+    public int getGoldOutput() {
+        return goldOutput;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public City getC() {
+        return c;
+    }
+    
+    
     
 }
