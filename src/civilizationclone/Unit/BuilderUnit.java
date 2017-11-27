@@ -13,7 +13,7 @@ public class BuilderUnit extends Unit {
 
     public void improveTile() {
         if (actions > 0) {
-            Unit.getMapRef().map[getX()][getY()].improve();
+            Unit.getMapRef().getTile(getX(),getY()).improve();
             actions--;
         }
     }

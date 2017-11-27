@@ -3,9 +3,8 @@ package civilizationclone.Tile;
 import civilizationclone.City;
 import civilizationclone.Unit.Unit;
 
-
 public abstract class Tile {
-    
+
     private boolean isWater;
     private Improvement improvement;
     private Resource resource;
@@ -13,7 +12,7 @@ public abstract class Tile {
     private int productionOutput;
     private int scienceOutput;
     private int goldOutput;
-    
+
     private Unit unit;
     private City c;
     //TEST
@@ -22,41 +21,47 @@ public abstract class Tile {
         this.isWater = isWater;
         this.movementCost = movementCost;
     }
-   
-    public boolean isIsWater() {
+
+    public boolean isWater() {
         return isWater;
     }
-    
-    public boolean hasUnit(){
+
+    public boolean hasUnit() {
         return !(unit == null);
     }
-    
-    public void removeUnit(){
+
+    public void removeUnit() {
         unit = null;
     }
 
-    public void setUnit(Unit unit) {
-        this.unit = unit;
-    }
-    
-    public void improve(){
+    public void improve() {
         c.calcIncome();
     }
-    
-    public void setResourse(Resource resource){
-        this.resource = resource;
-    }   
 
-    public Improvement getImprovement() {
-        return improvement;
+    //GETTER & SETTER
+    //<editor-fold>
+    public void setResourse(Resource resource) {
+        this.resource = resource;
     }
 
     public void setImprovement(Improvement improvement) {
         this.improvement = improvement;
     }
 
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public void setCity(City c) {
+        this.c = c;
+    }
+
     public Resource getResource() {
         return resource;
+    }
+
+    public Improvement getImprovement() {
+        return improvement;
     }
 
     public void setResource(Resource resource) {
@@ -83,10 +88,9 @@ public abstract class Tile {
         return unit;
     }
 
-    public City getC() {
+    public City getCity() {
         return c;
     }
-    
-    
-    
+    //</editor-fold>
+
 }

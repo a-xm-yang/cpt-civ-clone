@@ -45,7 +45,7 @@ public abstract class RangeUnit extends MilitaryUnit{
         System.out.println("Unit dealt " + siegeDmg);
         
         if (c.getHealth() <= 0){
-            c.delete();
+            c.conquer(this.getPlayer());
         }
     }
     

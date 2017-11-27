@@ -1,5 +1,7 @@
 package civilizationclone;
 
+import civilizationclone.GameMap.MapSize;
+import civilizationclone.Tile.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JFrame;
@@ -11,13 +13,12 @@ Alexander Yang
 Nick Seniow
 Justin Tang
  */
-
 public class CivilizationClone extends JPanel {
 
-    static Map map = new Map();
+    static GameMap map = new GameMap(MapSize.MEDIUM, 500);
 
     public static void main(String[] args) {
-        
+
         CivilizationClone test = new CivilizationClone();
         System.out.println("Hello world");
 
@@ -42,20 +43,28 @@ public class CivilizationClone extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         setBackground(Color.BLACK);
-        for (int i = 0; i < map.simplexNoise.length; i++) {
-            for (int k = 0; k < map.simplexNoise[i].length; k++) {
-                if (map.simplexNoise[i][k] < 0.3) {
+        for (int i = 0; i < map.getMap().length; i++) {
+            for (int k = 0; k < map.getMap()[0].length; k++) {
+               
+                Tile t = map.getTile(i, k);
+                
+                if (t instanceof Ocean) {
                     g.setColor(Color.BLUE);
-                } else if (map.simplexNoise[i][k] < 0.8) {
+                } else if (t instanceof Plains) {
                     g.setColor(Color.GREEN);
-                } else {
+                } else if (t instanceof Hills) {
+                    g.setColor(Color.GRAY);
+                } else if (t instanceof Desert) {
                     g.setColor(Color.YELLOW);
+                } else{
+                    g.setColor(Color.BLACK);
                 }
+                 
                 //g.fillRect(i * 5, k * 5, 5, 5);
-                if(k%2 == 0){
-                    g.fillPolygon(new int[]{i*12+5+i,i*12+12+i,i*12+12+i,i*12+5+i,i*12+i,i*12+i},new int[]{k*12-k,k*12+3-k,k*12+9-k,k*12+12-k,k*12+9-k,k*12+3-k},6);
-                }else{
-                    g.fillPolygon(new int[]{i*12+5+5+i+2,i*12+12+5+i+2,i*12+12+5+i+2,i*12+5+5+i+2,i*12+5+i+2,i*12+5+i+2},new int[]{k*12-k,k*12+3-k,k*12+9-k,k*12+12-k,k*12+9-k,k*12+3-k},6);
+                if (k % 2 == 0) {
+                    g.fillPolygon(new int[]{i * 12 + 5 + i, i * 12 + 12 + i, i * 12 + 12 + i, i * 12 + 5 + i, i * 12 + i, i * 12 + i}, new int[]{k * 12 - k, k * 12 + 3 - k, k * 12 + 9 - k, k * 12 + 12 - k, k * 12 + 9 - k, k * 12 + 3 - k}, 6);
+                } else {
+                    g.fillPolygon(new int[]{i * 12 + 5 + 5 + i + 2, i * 12 + 12 + 5 + i + 2, i * 12 + 12 + 5 + i + 2, i * 12 + 5 + 5 + i + 2, i * 12 + 5 + i + 2, i * 12 + 5 + i + 2}, new int[]{k * 12 - k, k * 12 + 3 - k, k * 12 + 9 - k, k * 12 + 12 - k, k * 12 + 9 - k, k * 12 + 3 - k}, 6);
                 }
             }
         }

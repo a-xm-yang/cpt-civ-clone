@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class GameLoop {
     
-    Map map;
+    GameMap map;
     ArrayList<Player> playerList;
 
     public GameLoop() {

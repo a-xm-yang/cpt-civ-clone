@@ -25,6 +25,8 @@ public class City {
     private int goldIncome;
     private int techIncome;
     private int productionIncome;
+
+    private static GameMap mapRef;
     //</editor-fold>
 
     //constructors from default
@@ -34,7 +36,8 @@ public class City {
         this.player = player;
         maxHealth = 300;
         currentProduction = 0;
-
+     
+        mapRef.getTile(position.x,position.y).setCity(this);
         builtProjects = EnumSet.noneOf(CityProject.class);
     }
 
@@ -45,12 +48,11 @@ public class City {
         this.player = u.getPlayer();
         maxHealth = 300;
         currentProduction = 0;
-
+        mapRef.getTile(POSITION.x,POSITION.y).setCity(this);
         builtProjects = EnumSet.noneOf(CityProject.class);
     }
 
     //TODO add a list of owned tiles for a city, and calculate how to add onto that list, and to get income from that
-    
     public void startTurn() {
 
         heal();
@@ -87,7 +89,7 @@ public class City {
     private void calcTechIncome() {
         //calculate tech income
         int tech = 0;
-        
+
         //add from buildings
         for (CityProject c : builtProjects) {
             tech += c.getTechBonus();
@@ -130,12 +132,11 @@ public class City {
     }
 
     public void buildUnit() {
-        
+
         //adds the unit object onto the list then clean production queue
-        
         currentProduction = 0;
-        
-        switch (currentUnit){
+
+        switch (currentUnit) {
             case BUILDER:
                 player.addUnit(new BuilderUnit(this));
                 break;
@@ -147,7 +148,7 @@ public class City {
             case SLINGER:
                 player.addUnit(new SlingerUnit(this));
         }
-        
+
         currentUnit = null;
     }
 
@@ -234,8 +235,13 @@ public class City {
     }
     //</editor-fold>
 
-    public void delete() {
-        System.out.println("City deleted");
+    public void conquer(Player p) {
+        System.out.println("City conquered by " + p.getName());
+        this.player = p;
+    }
+
+    public void referenceMap(GameMap m) {
+        City.mapRef = m;
     }
 
 }

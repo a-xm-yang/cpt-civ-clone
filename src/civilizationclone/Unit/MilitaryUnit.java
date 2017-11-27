@@ -107,7 +107,7 @@ public abstract class MilitaryUnit extends Unit {
         System.out.println("Unit dealt " + siegeDmg);
         
         if (c.getHealth() <= 0){
-            c.delete();
+            c.conquer(this.getPlayer());
         }
         
         if (health <= 0){

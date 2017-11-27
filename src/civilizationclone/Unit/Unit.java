@@ -1,14 +1,14 @@
 package civilizationclone.Unit;
 
 import civilizationclone.City;
-import civilizationclone.Map;
+import civilizationclone.GameMap;
 import civilizationclone.Player;
 import java.awt.Point;
 import java.util.ArrayList;
 
 public abstract class Unit {
 
-    private static Map mapRef;
+    private static GameMap mapRef;
     private final int MAX_MOVEMENT;
     private Player player;
     private int movement;
@@ -19,6 +19,7 @@ public abstract class Unit {
         movement = MAX_MOVEMENT;
         position = new Point(c.getPosition().x, c.getPosition().y);
         this.player = c.getPlayer();
+        mapRef.getTile(position.x,position.y).setUnit(this);
     }
 
     public int getMovement() {
@@ -33,7 +34,7 @@ public abstract class Unit {
         return position.y;
     }
 
-    public static Map getMapRef() {
+    public static GameMap getMapRef() {
         return mapRef;
     }
  
@@ -51,19 +52,19 @@ public abstract class Unit {
         }
 
         for (int i = 0; i < 2; i++) {
-            if (!mapRef.map[position.x - 1][position.y - dif + i].isIsWater()) {
+            if (!mapRef.getTile(position.x - 1,position.y - dif + i).isWater()) {
                 list.add(new Point(position.x - 1, position.y - dif + i));
             }
         }
 
         for (int i = -1; i < 2; i += 2) {
-            if (!mapRef.map[position.x][position.y + i].isIsWater()) {
+            if (!mapRef.getTile(position.x,position.y + i).isWater()) {
                 list.add(new Point(position.x, position.y + i));
             }
         }
 
         for (int i = 0; i < 2; i++) {
-            if (!mapRef.map[position.x + 1][position.y - dif + i].isIsWater()) {
+            if (!mapRef.getTile(position.x + 1,position.y - dif + i).isWater()) {
                 list.add(new Point(position.x + 1, position.y - dif + i));
             }
         }
@@ -81,15 +82,15 @@ public abstract class Unit {
     }
 
     public void move(Point p) {
-        mapRef.map[position.x][position.y].removeUnit();
+        mapRef.getTile(position.x,position.y).removeUnit();
         position = p;
-        mapRef.map[position.x][position.y].setUnit(this);
+        mapRef.getTile(position.x,position.y).setUnit(this);
         movement --;
     }
 
     public void delete() {
         getPlayer().getUnitList().remove(this);
-        getMapRef().map[getX()][getY()].removeUnit();
+        mapRef.getTile(getX(),getY()).removeUnit();
         System.out.println("This unit is dead");
         
         player.calcGoldIncome();
@@ -102,7 +103,7 @@ public abstract class Unit {
         return true;
     }
 
-    public static void referenceMap(Map m) {
+    public static void referenceMap(GameMap m) {
         mapRef = m;
     }
 
