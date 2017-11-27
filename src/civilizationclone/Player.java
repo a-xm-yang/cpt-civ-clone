@@ -46,6 +46,11 @@ public class Player {
 
     public void startTurn() {
 
+        //start turn action for all cities
+        for (City city : cityList) {
+            city.startTurn();
+        }
+
         calcGoldIncome();
         calcGoldIncome();
 
@@ -65,10 +70,6 @@ public class Player {
             unit.resetMovement();
         }
 
-        //start turn action for all cities
-        for (City city : cityList) {
-            city.startTurn();
-        }
     }
 
     public boolean endTurn() {
@@ -80,8 +81,9 @@ public class Player {
         }
 
         for (City c : cityList) {
-            if (c.getCurrentProject() == null) {
+            if (!c.canEnd()) {
                 System.out.println("Needs to select city project for " + c.getName());
+                return false;
             }
         }
 
@@ -93,7 +95,7 @@ public class Player {
         return true;
     }
 
-    public void calcResearchableTech() {
+    private void calcResearchableTech() {
         researchableTech = EnumSet.noneOf(TechType.class);
         for (TechType t : TechType.values()) {
             if (ownedTech.containsAll(t.getPrerequisites()) && !ownedTech.contains(t)) {
@@ -110,7 +112,7 @@ public class Player {
         }
 
         for (City c : cityList) {
-            // add gold from city
+            x += c.getGoldIncome();
         }
 
         goldIncome = x;
@@ -120,7 +122,7 @@ public class Player {
         int x = 0;
 
         for (City c : cityList) {
-            //add tech from each city
+            x += c.getTechIncome();
         }
 
         techIncome = x;

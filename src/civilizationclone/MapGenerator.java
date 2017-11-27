@@ -12,12 +12,14 @@ public class MapGenerator {
         float[][] simplexNoise = generateSimplexNoise(width, height);
         float[][] radialGradient = generateRadialGradient(width, height);
 
+        //combine the radial gradient and the simplex noise map to create island shape
         for (int i = 0; i < radialGradient.length; i++) {
             for (int k = 0; k < radialGradient[i].length; k++) {
                 simplexNoise[i][k] = simplexNoise[i][k] - radialGradient[i][k] + 0.3f;
             }
         }
 
+        //print map
         for (int i = 0; i < simplexNoise.length; i++) {
             for (int k = 0; k < simplexNoise[i].length; k++) {
                 System.out.print(simplexNoise[i][k] + " ");

@@ -36,7 +36,7 @@ public abstract class Unit {
     public static Map getMapRef() {
         return mapRef;
     }
-
+ 
     public Player getPlayer() {
         return player;
     }

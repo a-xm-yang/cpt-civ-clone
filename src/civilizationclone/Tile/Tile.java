@@ -1,12 +1,12 @@
 package civilizationclone.Tile;
 
+import civilizationclone.City;
 import civilizationclone.Unit.Unit;
 
 
 public abstract class Tile {
     
     private boolean isWater;
-    private Unit unit;
     private Improvement improvement;
     private Resource resource;
     private int movementCost;
@@ -14,6 +14,8 @@ public abstract class Tile {
     private int scienceOutput;
     private int goldOutput;
     
+    private Unit unit;
+    private City c;
     //TEST
 
     public Tile(boolean isWater, int movementCost) {
@@ -40,7 +42,11 @@ public abstract class Tile {
     }
     
     public void improve(){
+        
         System.out.println("improved");
+        
+        //recalibrate income stats for the city
+        c.calcIncome();
     }
     
 }
