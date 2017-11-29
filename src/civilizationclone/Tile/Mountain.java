@@ -8,4 +8,9 @@ public class Mountain extends Tile{
         super(false, 999);
     }
 
+    @Override
+    public void calcOutput() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

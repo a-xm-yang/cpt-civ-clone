@@ -13,9 +13,10 @@ Alexander Yang
 Nick Seniow
 Justin Tang
  */
+
 public class CivilizationClone extends JPanel {
 
-    static GameMap map = new GameMap(MapSize.MEDIUM, 500);
+    static GameMap map = new GameMap(MapSize.MEDIUM, 5515);
 
     public static void main(String[] args) {
 
@@ -31,7 +32,7 @@ public class CivilizationClone extends JPanel {
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.setSize(800, 800);
+        frame.setSize(1060,960);
         Graphics g;
         g = getGraphics();
         paintComponent(g);

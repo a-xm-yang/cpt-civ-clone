@@ -42,12 +42,12 @@ public class GameMap {
                 if (value < 0.3) {
                     map[i][k] = new Ocean();
                 } else if (value < 0.8) {
-                    if (Math.random() < 0.3) {
+                    if (Math.random() < 0.20) {
                         map[i][k] = new Hills();
                     } else {
                         map[i][k] = new Plains();
                     }
-                } else if (value < 0.95) {
+                } else if (value < 0.90) {
                     map[i][k] = new Desert();
                 } else {
                     map[i][k] = new Mountain();

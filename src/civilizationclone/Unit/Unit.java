@@ -6,7 +6,7 @@ import civilizationclone.Player;
 import java.awt.Point;
 import java.util.ArrayList;
 
-public abstract class Unit {
+public abstract class Unit implements IMovement {
 
     private static GameMap mapRef;
     private final int MAX_MOVEMENT;
@@ -22,6 +22,7 @@ public abstract class Unit {
         mapRef.getTile(position.x,position.y).setUnit(this);
     }
 
+    @Override
     public int getMovement() {
         return movement;
     }
@@ -73,6 +74,7 @@ public abstract class Unit {
 
     }
 
+    @Override
     public void setMovement(int movement) {
         this.movement = movement;
     }
@@ -81,6 +83,7 @@ public abstract class Unit {
         this.movement = MAX_MOVEMENT;
     }
 
+    @Override
     public void move(Point p) {
         mapRef.getTile(position.x,position.y).removeUnit();
         position = p;
@@ -96,6 +99,7 @@ public abstract class Unit {
         player.calcGoldIncome();
     }
 
+    @Override
     public boolean canMove() {
         if (movement == 0) {
             return false;

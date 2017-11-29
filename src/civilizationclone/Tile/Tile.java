@@ -21,6 +21,8 @@ public abstract class Tile {
         this.isWater = isWater;
         this.movementCost = movementCost;
     }
+    
+    public abstract void calcOutput();
 
     public boolean isWater() {
         return isWater;
@@ -34,18 +36,20 @@ public abstract class Tile {
         unit = null;
     }
 
-    public void improve() {
+    public void improve(){
         c.calcIncome();
-    }
+    };
 
     //GETTER & SETTER
     //<editor-fold>
     public void setResourse(Resource resource) {
         this.resource = resource;
+        calcOutput();
     }
 
     public void setImprovement(Improvement improvement) {
         this.improvement = improvement;
+        calcOutput();
     }
 
     public void setUnit(Unit unit) {

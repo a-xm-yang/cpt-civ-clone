@@ -18,4 +18,9 @@ public class Plains extends Tile {
         super.improve();
         
     }
+
+    @Override
+    public void calcOutput() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
