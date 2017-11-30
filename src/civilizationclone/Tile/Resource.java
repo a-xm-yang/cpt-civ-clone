@@ -9,12 +9,12 @@ public enum Resource {
     COTTON(2, 1, 0, 0, false, Improvement.PLANTATION), // PLANTATION RELATED
     BANANA(2, 0, 1, 0, false, Improvement.PLANTATION),
     DYE(3, 0, 0, 1, true, Improvement.PLANTATION),
-    GOLD(3, 1, 0, 0, true, Improvement.MINE), // MINE RELATED
-    IRON(0, 3, 0, 0, false, Improvement.MINE),
+    IRON(0, 3, 0, 0, false, Improvement.MINE), //MINE RELATED
     MERCURY(0, 1, 0, 2, false, Improvement.MINE),
+    GOLD(3, 1, 0, 0, true, Improvement.MINE),
     MILK(0, 1, 2, 0, false, Improvement.RANCH), //RANCH RELATED
     EGG(1, 0, 2, 0, false, Improvement.RANCH),
-    TRUFFLE(3, 0, 1, 0, false, Improvement.RANCH),
+    TRUFFLE(3, 0, 1, 0, true, Improvement.RANCH),
     FISH(1, 0, 2, 0, false, Improvement.FISHING), // FISHING RELATED
     CRAB(2, 0, 1, 0, false, Improvement.FISHING),
     WHALE(3, 0, 1, 0, true, Improvement.FISHING);

@@ -33,7 +33,7 @@ public class MapGenerator {
     public static float[][] generateSimplexNoise(int width, int height) {
 
         float[][] simplexnoise = new float[width][height];
-        float frequency = 0.05f;
+        float frequency = 0.055f;
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {

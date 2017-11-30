@@ -1,11 +1,13 @@
 package civilizationclone;
 
 import civilizationclone.Tile.*;
+import java.util.Random;
 
 public class GameMap {
 
     private Tile[][] map;
     private float[][] simplexNoise;
+    private int seed;
 
     public enum MapSize {
         BIG, MEDIUM, SMALL;
@@ -28,6 +30,8 @@ public class GameMap {
                 break;
         }
 
+        this.seed = seed;
+
         initializeMap();
     }
 
@@ -37,21 +41,26 @@ public class GameMap {
 
         for (int i = 0; i < simplexNoise.length; i++) {
             for (int k = 0; k < simplexNoise[i].length; k++) {
-
+                
                 value = simplexNoise[i][k];
                 if (value < 0.3) {
                     map[i][k] = new Ocean();
                 } else if (value < 0.8) {
-                    if (Math.random() < 0.20) {
+                   
+                    int pseudoRandom = (((int)(value * 10000)) % 10);
+                    
+                    if (pseudoRandom < 2) {
                         map[i][k] = new Hills();
                     } else {
                         map[i][k] = new Plains();
                     }
+                    
                 } else if (value < 0.90) {
                     map[i][k] = new Desert();
                 } else {
                     map[i][k] = new Mountain();
                 }
+                
             }
         }
 
