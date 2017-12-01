@@ -1,10 +1,17 @@
 
 package civilizationclone.Tile;
 
+import static civilizationclone.Tile.Desert.possibleImprovement;
+import java.util.EnumSet;
+import java.util.Set;
+
 public class Hills extends Tile{
+    
+    static Set<Improvement> possibleImprovement = EnumSet.of(Improvement.MINE, Improvement.ROAD);;
     
     public Hills(){
         super(false, 2);
+
     }
 
     @Override
