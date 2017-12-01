@@ -6,10 +6,10 @@ import java.util.Random;
 public class MapGenerator {
 
     public static float[][] generateMap(int width, int height, int seed) {
-        
+
         randomize(seed);
-        
-        float[][] simplexNoise = generateSimplexNoise(width, height);
+
+        float[][] simplexNoise = generateSimplexNoise(width, height, 0.055f);
         float[][] radialGradient = generateRadialGradient(width, height);
 
         //combine the radial gradient and the simplex noise map to create island shape
@@ -30,10 +30,14 @@ public class MapGenerator {
         return simplexNoise;
     }
 
-    public static float[][] generateSimplexNoise(int width, int height) {
+    public static float[][] generateResourceMap(int width, int height, int seed) {
+        randomize(seed);
+        return generateSimplexNoise(width, height, 0.15f);
+    }
+
+    private static float[][] generateSimplexNoise(int width, int height, float frequency) {
 
         float[][] simplexnoise = new float[width][height];
-        float frequency = 0.055f;
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -45,7 +49,7 @@ public class MapGenerator {
         return simplexnoise;
     }
 
-    public static float[][] generateRadialGradient(int width, int height) {
+    private static float[][] generateRadialGradient(int width, int height) {
 
         float[][] radialGradient = new float[width][height];
 
@@ -68,7 +72,6 @@ public class MapGenerator {
         return radialGradient;
     }
 
-    
     //BLACK BOX FOR SIMPLEX NOISE GENERATOR
     //<editor-fold>
     public static int RANDOMSEED = 0;
