@@ -4,7 +4,6 @@ import civilizationclone.GameMap.MapSize;
 import civilizationclone.Tile.*;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.Random;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JPanel;
@@ -14,12 +13,12 @@ Alexander Yang
 Nick Seniow
 Justin Tang
  */
+
 public class CivilizationClone extends JPanel {
 
-    static GameMap map = new GameMap(MapSize.MEDIUM, 5515);
+    static GameMap map = new GameMap(MapSize.MEDIUM, 550);
 
     public static void main(String[] args) {
-
        CivilizationClone test = new CivilizationClone();
     }
 
@@ -40,6 +39,9 @@ public class CivilizationClone extends JPanel {
     }
 
     public void paintComponent(Graphics g) {
+        
+        //Testing map printing
+        
         super.paintComponent(g);
         setBackground(Color.BLACK);
         for (int i = 0; i < map.getMap().length; i++) {
@@ -57,6 +59,10 @@ public class CivilizationClone extends JPanel {
                     g.setColor(Color.YELLOW);
                 } else {
                     g.setColor(Color.BLACK);
+                }
+                
+                if (t.getResource() != null){
+                    g.setColor(Color.RED);
                 }
 
                 //g.fillRect(i * 5, k * 5, 5, 5);

@@ -20,19 +20,29 @@ public class MapGenerator {
         }
 
         //print map
+        /*
         for (int i = 0; i < simplexNoise.length; i++) {
             for (int k = 0; k < simplexNoise[i].length; k++) {
                 System.out.print(simplexNoise[i][k] + " ");
             }
             System.out.println("");
         }
-
+         */
         return simplexNoise;
     }
 
     public static float[][] generateResourceMap(int width, int height, int seed) {
         randomize(seed);
-        return generateSimplexNoise(width, height, 0.15f);
+        float[][] simplexNoise = generateSimplexNoise(width, height, 0.5f);
+
+        for (int i = 0; i < simplexNoise.length; i++) {
+            for (int k = 0; k < simplexNoise[i].length; k++) {
+                System.out.print(simplexNoise[i][k] + " ");
+            }
+            System.out.println("");
+        }
+        
+        return simplexNoise;
     }
 
     private static float[][] generateSimplexNoise(int width, int height, float frequency) {

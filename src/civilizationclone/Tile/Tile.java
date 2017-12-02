@@ -15,7 +15,8 @@ public abstract class Tile {
 
     private Unit unit;
     private City c;
-    //TEST
+    
+    //TODO --- Finish coding the native output of all the different types of tiles. Override abstract method calcOutput() to add unique native outputs
 
     public Tile(boolean isWater, int movementCost) {
         this.isWater = isWater;
@@ -36,17 +37,9 @@ public abstract class Tile {
         unit = null;
     }
 
-    public void improve(){
-        c.calcIncome();
-    };
 
     //GETTER & SETTER
     //<editor-fold>
-    public void setResourse(Resource resource) {
-        this.resource = resource;
-        calcOutput();
-    }
-
     public void setImprovement(Improvement improvement) {
         this.improvement = improvement;
         calcOutput();
@@ -70,6 +63,7 @@ public abstract class Tile {
 
     public void setResource(Resource resource) {
         this.resource = resource;
+       // calcOutput();
     }
 
     public int getMovementCost() {
