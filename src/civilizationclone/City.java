@@ -161,6 +161,10 @@ public class City {
 
     //GETTER
     //<editor-fold>
+    public Point[] getControlledTiles(){
+         return null;
+    }
+    
     public Set<CityProject> getBuiltProject() {
         return builtProjects;
     }

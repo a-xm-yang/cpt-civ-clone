@@ -1,11 +1,14 @@
 package civilizationclone;
 
 import civilizationclone.Tile.Improvement;
+import civilizationclone.Tile.Tile;
 import civilizationclone.Unit.MilitaryUnit;
 import civilizationclone.Unit.Unit;
 import civilizationclone.Unit.UnitType;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Player {
@@ -27,6 +30,8 @@ public class Player {
     private Set<Improvement> ownedImprovement;
     private Set<CityProject> ownedCityProject;
 
+    private Set<Tile> exploredTiles;
+
     //lists of things owned
     private ArrayList<Unit> unitList;
     private ArrayList<City> cityList;
@@ -42,6 +47,7 @@ public class Player {
         researchableTech = EnumSet.noneOf(TechType.class);
         ownedImprovement = EnumSet.noneOf(Improvement.class);
         ownedCityProject = EnumSet.noneOf(CityProject.class);
+        exploredTiles = new HashSet<Tile>();
     }
 
     public void startTurn() {
@@ -128,6 +134,8 @@ public class Player {
         techIncome = x;
     }
 
+    //ADDING FUNCTIONS FOR PLAYER
+    //<editor-fold>
     public void addTech(TechType t) {
         ownedTech.add(t);
         if (t.getUnlockUnit() != null) {
@@ -153,8 +161,41 @@ public class Player {
         cityList.add(c);
     }
 
+    public void addExploredTiles(Set<Tile> visibleTiles) {
+
+        //add what people see right now to the explored tiles
+        for (Tile t : visibleTiles) {
+            if (!exploredTiles.contains(t)) {
+                exploredTiles.add(t);
+            }
+        }
+    }
+    //</editor-fold>
+
     //Getter && Setter
     //<editor-fold> 
+    public Point[] getAllPositions() {
+
+        //return a collection of ALL the positions (such as units and cities) that the player has
+        ArrayList<Point> list = new ArrayList<>();
+
+        for (City c : cityList) {
+            for (Point p : c.getControlledTiles()) {
+                list.add(new Point((int) p.getX(), (int) p.getY()));
+            }
+        }
+
+        for (Unit u : unitList) {
+            list.add(new Point(u.getX(), u.getY()));
+        }
+
+        return list.toArray(new Point[list.size()]);
+    }
+
+    public Set<Tile> getExploredTiles() {
+        return exploredTiles;
+    }
+
     public TechType getResearch() {
         return research;
     }

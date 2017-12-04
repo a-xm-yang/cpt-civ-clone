@@ -16,10 +16,10 @@ Justin Tang
 
 public class CivilizationClone extends JPanel {
 
-    static GameMap map = new GameMap(MapSize.MEDIUM, 550);
+    static GameMap map = new GameMap(MapSize.MEDIUM, 995);
 
     public static void main(String[] args) {
-       CivilizationClone test = new CivilizationClone();
+       CivilizationClone test = new CivilizationClone();    
     }
 
     public CivilizationClone() {
@@ -61,11 +61,11 @@ public class CivilizationClone extends JPanel {
                     g.setColor(Color.BLACK);
                 }
                 
-                if (t.getResource() != null){
-                    g.setColor(Color.RED);
-                }
+            //   if (t.getResource() != null){
+            //        g.setColor(Color.RED);
+             //   }
 
-                //g.fillRect(i * 5, k * 5, 5, 5);
+             //  g.fillRect(i * 3, k * 3, 3, 3);
                 if (k % 2 == 0) {
                     g.fillPolygon(new int[]{i * 12 + 5 + i, i * 12 + 12 + i, i * 12 + 12 + i, i * 12 + 5 + i, i * 12 + i, i * 12 + i}, new int[]{k * 12 - k, k * 12 + 3 - k, k * 12 + 9 - k, k * 12 + 12 - k, k * 12 + 9 - k, k * 12 + 3 - k}, 6);
                 } else {

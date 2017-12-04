@@ -1,6 +1,8 @@
 package civilizationclone;
 
 import civilizationclone.Tile.*;
+import java.awt.Point;
+import java.util.Set;
 
 public class GameMap {
 
@@ -28,11 +30,13 @@ public class GameMap {
 
         //Random map generation
         map = new Tile[size][size];
-        initializeMap(MapGenerator.generateMap(size, size, seed - 10));
+        initializeMap(MapGenerator.generateMap(size, size, seed));
         initializeResource(MapGenerator.generateResourceMap(size, size, seed + 500));
 
     }
 
+    //MAP INITIALIZAGION
+    //<editor-fold>
     private void initializeMap(float[][] simplexNoise) {
 
         float value = 0f;
@@ -151,9 +155,14 @@ public class GameMap {
             }
         }
     }
-
+    //</editor-fold>
+    
     //GETTER & SETTER
     //<editor-fold>
+    public Set<Tile> getVisibleTiles(Point[] allPositions){
+        return null;
+    }
+    
     public Tile[][] getMap() {
         return map;
     }
