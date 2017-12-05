@@ -29,20 +29,8 @@ public class City {
     private static GameMap mapRef;
     //</editor-fold>
 
-    //constructors from default
-    public City(String name, Point position, Player player) {
-        this.name = name;
-        this.POSITION = position;
-        this.player = player;
-        maxHealth = 300;
-        currentProduction = 0;
-     
-        mapRef.getTile(position.x,position.y).setCity(this);
-        builtProjects = EnumSet.noneOf(CityProject.class);
-    }
-
     //constructors from a builder unit
-    public City(String name, BuilderUnit u) {
+    public City(String name, SettlerUnit u) {
         this.name = name;
         this.POSITION = new Point(u.getX(), u.getY());
         this.player = u.getPlayer();
@@ -244,7 +232,7 @@ public class City {
         this.player = p;
     }
 
-    public void referenceMap(GameMap m) {
+    public static void referenceMap(GameMap m) {
         City.mapRef = m;
     }
 

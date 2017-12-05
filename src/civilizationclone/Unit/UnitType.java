@@ -2,6 +2,7 @@ package civilizationclone.Unit;
 
 public enum UnitType {
 
+    SETTLER(90,150),
     BUILDER(60, 120),
     SCOUT(40, 80), 
     WARRIOR(50, 110), 

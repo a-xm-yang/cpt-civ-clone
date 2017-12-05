@@ -13,7 +13,6 @@ public class Hills extends Tile{
 
     }
 
-
     @Override
     public void calcOutput() {
     

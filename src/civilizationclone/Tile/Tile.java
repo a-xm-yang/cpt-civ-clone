@@ -32,6 +32,10 @@ public abstract class Tile {
     public boolean hasUnit() {
         return !(unit == null);
     }
+    
+    public boolean hasCity(){
+        return !(c == null);
+    }
 
     public void removeUnit() {
         unit = null;

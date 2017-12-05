@@ -16,10 +16,16 @@ public abstract class Unit implements IMovement {
 
     public Unit(int movement, City c) {
         MAX_MOVEMENT = movement;
-        movement = MAX_MOVEMENT;
         position = new Point(c.getPosition().x, c.getPosition().y);
         this.player = c.getPlayer();
-        mapRef.getTile(position.x,position.y).setUnit(this);
+        mapRef.getTile(position.x, position.y).setUnit(this);
+    }
+
+    public Unit(int movement, Player player, Point p) {
+        MAX_MOVEMENT = movement;
+        this.player = player;
+        position = new Point(p.x, p.y);
+        mapRef.getTile(position.x, position.y).setUnit(this);
     }
 
     @Override
@@ -38,7 +44,7 @@ public abstract class Unit implements IMovement {
     public static GameMap getMapRef() {
         return mapRef;
     }
- 
+
     public Player getPlayer() {
         return player;
     }
@@ -53,19 +59,19 @@ public abstract class Unit implements IMovement {
         }
 
         for (int i = 0; i < 2; i++) {
-            if (!mapRef.getTile(position.x - 1,position.y - dif + i).isWater()) {
+            if (!mapRef.getTile(position.x - 1, position.y - dif + i).isWater()) {
                 list.add(new Point(position.x - 1, position.y - dif + i));
             }
         }
 
         for (int i = -1; i < 2; i += 2) {
-            if (!mapRef.getTile(position.x,position.y + i).isWater()) {
+            if (!mapRef.getTile(position.x, position.y + i).isWater()) {
                 list.add(new Point(position.x, position.y + i));
             }
         }
 
         for (int i = 0; i < 2; i++) {
-            if (!mapRef.getTile(position.x + 1,position.y - dif + i).isWater()) {
+            if (!mapRef.getTile(position.x + 1, position.y - dif + i).isWater()) {
                 list.add(new Point(position.x + 1, position.y - dif + i));
             }
         }
@@ -78,24 +84,24 @@ public abstract class Unit implements IMovement {
     public void setMovement(int movement) {
         this.movement = movement;
     }
-    
-    public void resetMovement(){
+
+    public void resetMovement() {
         this.movement = MAX_MOVEMENT;
     }
 
     @Override
     public void move(Point p) {
-        mapRef.getTile(position.x,position.y).removeUnit();
+        mapRef.getTile(position.x, position.y).removeUnit();
         position = p;
-        mapRef.getTile(position.x,position.y).setUnit(this);
-        movement --;
+        mapRef.getTile(position.x, position.y).setUnit(this);
+        movement--;
     }
 
     public void delete() {
         getPlayer().getUnitList().remove(this);
-        mapRef.getTile(getX(),getY()).removeUnit();
+        mapRef.getTile(getX(), getY()).removeUnit();
         System.out.println("This unit is dead");
-        
+
         player.calcGoldIncome();
     }
 

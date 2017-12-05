@@ -19,15 +19,6 @@ public class MapGenerator {
             }
         }
 
-        //print map
-        /*
-        for (int i = 0; i < simplexNoise.length; i++) {
-            for (int k = 0; k < simplexNoise[i].length; k++) {
-                System.out.print(simplexNoise[i][k] + " ");
-            }
-            System.out.println("");
-        }
-         */
         return simplexNoise;
     }
 
@@ -35,16 +26,11 @@ public class MapGenerator {
         randomize(seed);
         float[][] simplexNoise = generateSimplexNoise(width, height, 0.5f);
 
-        for (int i = 0; i < simplexNoise.length; i++) {
-            for (int k = 0; k < simplexNoise[i].length; k++) {
-                System.out.print(simplexNoise[i][k] + " ");
-            }
-            System.out.println("");
-        }
-        
         return simplexNoise;
     }
 
+    //BLACK BOX FOR SIMPLEX NOISE GENERATOR
+    //<editor-fold>
     private static float[][] generateSimplexNoise(int width, int height, float frequency) {
 
         float[][] simplexnoise = new float[width][height];
@@ -81,9 +67,6 @@ public class MapGenerator {
 
         return radialGradient;
     }
-
-    //BLACK BOX FOR SIMPLEX NOISE GENERATOR
-    //<editor-fold>
     public static int RANDOMSEED = 0;
     private static int NUMBEROFSWAPS = 400;
 

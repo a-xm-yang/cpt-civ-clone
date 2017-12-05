@@ -48,6 +48,9 @@ public class Player {
         ownedImprovement = EnumSet.noneOf(Improvement.class);
         ownedCityProject = EnumSet.noneOf(CityProject.class);
         exploredTiles = new HashSet<Tile>();
+        
+        unitList = new ArrayList<Unit>();
+        cityList = new ArrayList<City>();
     }
 
     public void startTurn() {
