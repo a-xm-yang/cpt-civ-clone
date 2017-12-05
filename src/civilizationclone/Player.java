@@ -49,6 +49,8 @@ public class Player {
         ownedCityProject = EnumSet.noneOf(CityProject.class);
         exploredTiles = new HashSet<Tile>();
         
+        research = TechType.AGRICULTURE;
+
         unitList = new ArrayList<Unit>();
         cityList = new ArrayList<City>();
     }
@@ -81,7 +83,7 @@ public class Player {
 
     }
 
-    public boolean endTurn() {
+    public boolean canEndTurn() {
         for (Unit u : unitList) {
             if (u.canMove()) {
                 System.out.println("Unit needs to move");
@@ -117,7 +119,9 @@ public class Player {
         int x = 0;
 
         for (Unit unit : unitList) {
-            x -= ((MilitaryUnit) unit).getMaintainence();
+            if (unit instanceof MilitaryUnit) {
+                x -= ((MilitaryUnit) unit).getMaintainence();
+            }
         }
 
         for (City c : cityList) {

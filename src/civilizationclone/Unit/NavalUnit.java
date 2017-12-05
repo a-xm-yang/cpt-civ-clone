@@ -10,4 +10,8 @@ public abstract class NavalUnit extends MilitaryUnit{
         super(MAX_MOVEMENT, c, MAX_HEALTH, combat, maintainence);
     }
     
+    public NavalUnit(int MAX_MOVEMENT, MilitaryUnit u, int MAX_HEALTH, int combat, int maintainence) {
+       super(u, MAX_MOVEMENT, MAX_HEALTH, combat, maintainence);
+    }
+    
 }

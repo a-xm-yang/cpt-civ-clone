@@ -40,7 +40,10 @@ public class City {
         builtProjects = EnumSet.noneOf(CityProject.class);
     }
 
-    //TODO add a list of owned tiles for a city, and calculate how to add onto that list, and to get income from that
+    //TODO add a list of owned tiles for a city, and calculate how to add onto that list automatically
+    //TODO add population growth function inside startTurn()
+    //TODO finish the tile output after the tile design
+    
     public void startTurn() {
 
         heal();
@@ -83,6 +86,9 @@ public class City {
             tech += c.getTechBonus();
         }
 
+        //add from tiles
+        
+        
         techIncome = tech;
     }
 
@@ -91,6 +97,7 @@ public class City {
         int gold = 0;
 
         //add from tiles
+        
         //add from buildings
         for (CityProject c : builtProjects) {
             gold += c.getGoldBonus();

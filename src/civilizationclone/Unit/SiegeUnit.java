@@ -11,15 +11,20 @@ public abstract class SiegeUnit extends MilitaryUnit {
         this.siegeCombat = siegeCombat;
     }
 
+    public SiegeUnit(int MAX_MOVEMENT, MilitaryUnit u, int MAX_HEALTH, int combat, int siegeCombat, int maintainence) {
+       super(u, MAX_MOVEMENT, MAX_HEALTH, combat, maintainence);
+        this.siegeCombat = siegeCombat;
+    }
+
     @Override
     public void siegeAttack(City c) {
-        
+
         int siegeDmg = (int) (siegeCombat * 0.75);
 
         c.setHealth(c.getHealth() - siegeDmg);
         System.out.println("Unit dealt " + siegeDmg);
-        
-        if (c.getHealth() <= 0){
+
+        if (c.getHealth() <= 0) {
             c.conquer(this.getPlayer());
         }
     }

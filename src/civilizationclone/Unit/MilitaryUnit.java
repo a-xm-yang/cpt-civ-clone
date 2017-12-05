@@ -1,6 +1,8 @@
 package civilizationclone.Unit;
 
 import civilizationclone.City;
+import civilizationclone.Player;
+import java.awt.Point;
 
 public abstract class MilitaryUnit extends Unit {
 
@@ -9,6 +11,7 @@ public abstract class MilitaryUnit extends Unit {
     private int health;
     private int maintainence;
 
+    //constructor from city
     public MilitaryUnit(int MAX_MOVEMENT, City c, int MAX_HEALTH, int combat, int maintainence) {
         super(MAX_MOVEMENT, c);
         this.MAX_HEALTH = MAX_HEALTH;
@@ -17,11 +20,31 @@ public abstract class MilitaryUnit extends Unit {
         this.maintainence = maintainence;
     }
 
+    //overloaded constructor from OG spawn
+    public MilitaryUnit(Player player, Point p, int MAX_MOVEMENT, int MAX_HEALTH, int combat, int maintainence) {
+        super(MAX_MOVEMENT, player, p);
+        this.MAX_HEALTH = MAX_HEALTH;
+        health = MAX_HEALTH;
+        this.combat = combat;
+        this.maintainence = maintainence;
+    }
+
+    //overloaded constructor from another unit upgrading
+    public MilitaryUnit(MilitaryUnit u, int MAX_MOVEMENT, int MAX_HEALTH, int combat, int maintainence) {
+        super(MAX_MOVEMENT, u.getPlayer(), new Point(u.getX(), u.getY()));
+        this.MAX_HEALTH = MAX_HEALTH;
+        health = MAX_HEALTH;
+        this.combat = combat;
+        this.maintainence = maintainence;
+    }
+
+    public abstract UnitType getUpgrade();
+
     public int getHealth() {
         return health;
     }
-    
-    public double getHealthPercentage(){
+
+    public double getHealthPercentage() {
         return health / MAX_HEALTH;
     }
 
@@ -96,25 +119,24 @@ public abstract class MilitaryUnit extends Unit {
 
         int siegeDmg = (int) (combat * 0.4);
         int cityDmg = (int) (c.getCombat() * 0.6);
-        
-        if (this instanceof CalvaryUnit){
+
+        if (this instanceof CalvaryUnit) {
             siegeDmg = (int) (siegeDmg * 0.6);
         }
 
         health -= cityDmg;
         System.out.println("Enemy dealt " + cityDmg);
-        c.setHealth(c.getHealth() - siegeDmg); 
+        c.setHealth(c.getHealth() - siegeDmg);
         System.out.println("Unit dealt " + siegeDmg);
-        
-        if (c.getHealth() <= 0){
+
+        if (c.getHealth() <= 0) {
             c.conquer(this.getPlayer());
         }
-        
-        if (health <= 0){
+
+        if (health <= 0) {
             this.delete();
         }
-        
+
     }
-;
 
 }

@@ -7,7 +7,8 @@ public enum UnitType {
     SCOUT(40, 80), 
     WARRIOR(50, 110), 
     SLINGER(50, 110), 
-    HORSEMAN(60,130);
+    HORSEMAN(60,130),
+    ARCHER(80,145);
 
     private int productionCost;
     private int purchaseCost;
