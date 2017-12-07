@@ -171,6 +171,8 @@ public class GameMap {
     public Tile getTile(int x, int y) {
         return map[x][y];
     }
+    
+    
 
     //</editor-fold>
 }

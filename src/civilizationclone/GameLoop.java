@@ -29,12 +29,12 @@ public class GameLoop extends JPanel {
     public GameLoop() {
 
         scan = new Scanner(System.in);
-        map = new GameMap(MapSize.MEDIUM, 98);
+        map = new GameMap(MapSize.MEDIUM, 268);
         Unit.referenceMap(map);
         City.referenceMap(map);
 
         playerList = new ArrayList<Player>();
-        playerList.add(new Player("Stalin"));
+        playerList.add(new Player("Joseph Stalin"));
         playerList.get(0).addUnit(new SettlerUnit(playerList.get(0), new Point(30, 65)));
         playerList.get(0).addUnit(new WarriorUnit(playerList.get(0), new Point(30, 64)));
 
@@ -76,7 +76,7 @@ public class GameLoop extends JPanel {
                 } else {
                     System.out.println("Invalid input!");
                 }
-                
+
                 repaint();
             }
         }
@@ -147,30 +147,59 @@ public class GameLoop extends JPanel {
 
     public void moveUnit(Unit unit) {
 
-        Point[] movable = unit.getAdjacent();
+        Point[] movable = unit.getMoves();
+
+        if (movable.length == 0) {
+            System.out.println("This unit cannot move anywhere!");
+            return;
+        }
 
         System.out.println("Where do you want this unit to move to?");
 
         for (int i = 0; i < movable.length; i++) {
-             System.out.println(i+") x: " + movable[i].x + "  y: "+movable[i].y);
+            System.out.println(i + ") x: " + movable[i].x + "  y: " + movable[i].y);
         }
-        
+
         System.out.print("Input here: ");
         choice = scan.nextInt();
         scan.nextLine();
-        
-        if (choice >= 0 && choice < movable.length){
+
+        if (choice >= 0 && choice < movable.length) {
             unit.move(movable[choice]);
             System.out.println("Unit moved!");
             return;
-        } 
-        
+        }
+
         System.out.println("Invalid input!");
 
     }
 
     public void attackUnit(MilitaryUnit unit) {
 
+        Point[] attackable = unit.getAttackable();
+
+        if (attackable.length == 0) {
+            System.out.println("There is nothing for this unit to attack!");
+            return;
+        }
+
+        System.out.println("Which unit would you like to attack? ");
+
+        for (int i = 0; i < attackable.length; i++) {
+            Unit victim = map.getTile(attackable[i].x, attackable[i].y).getUnit();
+            System.out.println(i+") "+ victim.getClass().getSimpleName() + " x: " + victim.getX() + " y: " + victim.getY());
+        }
+        
+        System.out.print("Enter here: ");
+        choice = scan.nextInt();
+        scan.nextLine();
+        
+        if (choice < 0 || choice > attackable.length - 1){
+            System.out.println("Invalid selection!");
+            return;
+        }
+        
+        unit.attack(map.getTile(attackable[choice].x, attackable[choice].y).getUnit());
     }
 
     public void actUnit(Unit u) {

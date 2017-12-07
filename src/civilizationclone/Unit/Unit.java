@@ -3,6 +3,7 @@ package civilizationclone.Unit;
 import civilizationclone.City;
 import civilizationclone.GameMap;
 import civilizationclone.Player;
+import civilizationclone.Tile.Tile;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -49,36 +50,45 @@ public abstract class Unit implements IMovement {
         return player;
     }
 
-    public Point[] getAdjacent() {
+    public ArrayList<Point> getAdjacent() {
 
         ArrayList<Point> list = new ArrayList<Point>();
 
-        int dif = 0;
+        int dif = 1;
         if (position.x % 2 == 0) {
-            dif = 1;
+            dif = 0;
         }
 
         for (int i = 0; i < 2; i++) {
-            if (!mapRef.getTile(position.x - 1, position.y - dif + i).isWater() && !mapRef.getTile(position.x - 1, position.y - dif + i).hasUnit()) {
                 list.add(new Point(position.x - 1, position.y - dif + i));
-            }
         }
 
         for (int i = -1; i < 2; i += 2) {
-            if (!mapRef.getTile(position.x, position.y + i).isWater() && !mapRef.getTile(position.x, position.y + i).hasUnit()) {
                 list.add(new Point(position.x, position.y + i));
-            }
         }
 
         for (int i = 0; i < 2; i++) {
-            if (!mapRef.getTile(position.x + 1, position.y - dif + i).isWater() && !!mapRef.getTile(position.x + 1, position.y - dif + i).hasUnit()) {
                 list.add(new Point(position.x + 1, position.y - dif + i));
-            }
         }
-
-        return list.toArray(new Point[list.size()]);
+        return list;
 
     }
+    
+    public Point[] getMoves(){
+        
+        ArrayList<Point> list = getAdjacent();
+        ArrayList<Point> moves = new ArrayList<>();
+        
+        for (Point p: list){
+            Tile t = mapRef.getTile(p.x, p.y);
+            if (!t.hasUnit() && !t.isWater()){
+                moves.add(p);
+            }
+        }
+        
+        return moves.toArray(new Point[moves.size()]);
+    }
+    
 
     @Override
     public void setMovement(int movement) {

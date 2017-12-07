@@ -3,6 +3,7 @@ package civilizationclone.Unit;
 import civilizationclone.City;
 import civilizationclone.Player;
 import java.awt.Point;
+import java.util.ArrayList;
 
 public abstract class MilitaryUnit extends Unit {
 
@@ -70,7 +71,27 @@ public abstract class MilitaryUnit extends Unit {
             health = MAX_HEALTH;
         }
     }
+    
+    public Point[] getAttackable(){
+        
+        ArrayList<Point> list = this.getAdjacent();
+        ArrayList<Point> attackable = new ArrayList<Point>();
+        
+        //get a list of all the adjacent tiles, check to see ones that has a unit, is not water, and belongs to opposing players, removing everything else that's not
+        for (Point p: list){
+            if (getMapRef().getTile(p.x, p.y).hasUnit()){
+                if (getMapRef().getTile(p.x, p.y).getUnit().getPlayer() != this.getPlayer()){
+                    if(!getMapRef().getTile(p.x, p.y).isWater()){
+                        attackable.add(p);
+                    }
+                }
+            } 
+        }
+        
+        return attackable.toArray(new Point[attackable.size()]);
+    }
 
+    // attacks things 
     public void attack(Unit x) {
 
         setMovement(0);
@@ -115,6 +136,7 @@ public abstract class MilitaryUnit extends Unit {
 
     }
 
+    // seiges atack 
     public void siegeAttack(City c) {
 
         int siegeDmg = (int) (combat * 0.4);
