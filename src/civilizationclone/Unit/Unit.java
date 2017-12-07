@@ -59,19 +59,19 @@ public abstract class Unit implements IMovement {
         }
 
         for (int i = 0; i < 2; i++) {
-            if (!mapRef.getTile(position.x - 1, position.y - dif + i).isWater()) {
+            if (!mapRef.getTile(position.x - 1, position.y - dif + i).isWater() && !mapRef.getTile(position.x - 1, position.y - dif + i).hasUnit()) {
                 list.add(new Point(position.x - 1, position.y - dif + i));
             }
         }
 
         for (int i = -1; i < 2; i += 2) {
-            if (!mapRef.getTile(position.x, position.y + i).isWater()) {
+            if (!mapRef.getTile(position.x, position.y + i).isWater() && !mapRef.getTile(position.x, position.y + i).hasUnit()) {
                 list.add(new Point(position.x, position.y + i));
             }
         }
 
         for (int i = 0; i < 2; i++) {
-            if (!mapRef.getTile(position.x + 1, position.y - dif + i).isWater()) {
+            if (!mapRef.getTile(position.x + 1, position.y - dif + i).isWater() && !!mapRef.getTile(position.x + 1, position.y - dif + i).hasUnit()) {
                 list.add(new Point(position.x + 1, position.y - dif + i));
             }
         }

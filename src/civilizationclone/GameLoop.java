@@ -29,7 +29,7 @@ public class GameLoop extends JPanel {
     public GameLoop() {
 
         scan = new Scanner(System.in);
-        map = new GameMap(MapSize.MEDIUM, 1);
+        map = new GameMap(MapSize.MEDIUM, 98);
         Unit.referenceMap(map);
         City.referenceMap(map);
 
@@ -40,7 +40,7 @@ public class GameLoop extends JPanel {
 
         initializeGraphics();
         repaint();
-        
+
         choice = 0;
         loop();
 
@@ -53,59 +53,131 @@ public class GameLoop extends JPanel {
             System.out.println("Player " + player.getName() + " starting turn!");
             player.startTurn();
 
-            //choosing actions
-            System.out.println("What do you want to do");
-            
-            System.out.print("\n1: Move Units\n2: b\n3: d\n4: t\n---");
-            
-            choice = scan.nextInt();
-            scan.nextLine();
-            
-            if (choice == 1) {
-                moveUnit(player);
-            } else if (choice == 2) {
-              
-            } else if (choice == 3) {
-            
-            } else if (choice == 4) {
-                
-            } else {
-                System.out.println("Invalid Choice!");
-            }
+            while (true) {
+                System.out.println("What do you want to do?");
+                System.out.print("\n1: Manage Units\n2: Manage Cities\n3: Select Research\n4: Next Turn\n---");
 
+                choice = scan.nextInt();
+                scan.nextLine();
+
+                if (choice == 1) {
+                    manageUnit(player);
+                } else if (choice == 2) {
+
+                } else if (choice == 3) {
+
+                } else if (choice == 4) {
+                    if (player.canEndTurn()) {
+                        System.out.println("End turn!");
+                        break;
+                    } else {
+                        System.out.println("Cannot end turn! You still need to select things");
+                    }
+                } else {
+                    System.out.println("Invalid input!");
+                }
+                
+                repaint();
+            }
         }
 
         loop();
+
     }
-    
-    public void moveUnit (Player p){
-        
-        //create a temporary list of all the units that can move still
+
+    //UNIT MANAGEMENT
+    //<editor-fold>
+    public void manageUnit(Player p) {
+
         ArrayList<Unit> list = new ArrayList<Unit>();
-        for (Unit u: p.getUnitList()){
-            if (u.canMove()){
+        for (Unit u : p.getUnitList()) {
+            if (u.canMove()) {
                 list.add(u);
             }
         }
-        
-        if (list.isEmpty()){
+
+        if (list.isEmpty()) {
             System.out.println("You have no movable unit at this time!");
-            System.out.println("Ending turn");
             return;
         }
-        
+
         System.out.println("Please select a unit from the following list: ");
-        
-        for (int i = 0; i < list.size(); i++){
-            System.out.println(i+") "+ list.get(i).getClass().getSimpleName());
+
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(i + ") " + list.get(i).getClass().getSimpleName());
         }
-        
-        
-        
-        
-        
+
+        choice = scan.nextInt();
+        scan.nextLine();
+
+        Unit unit = list.get(choice);
+
+        System.out.println("What do you want to do with " + unit.getClass().getSimpleName());
+        System.out.print("\n1: Move Units\n2: Attack\n3: Special Actions\n4: Rest\n---");
+
+        choice = scan.nextInt();
+        scan.nextLine();
+
+        switch (choice) {
+            case 1:
+                moveUnit(unit);
+                break;
+            case 2:
+                if (unit instanceof MilitaryUnit) {
+                    attackUnit((MilitaryUnit) unit);
+                } else {
+                    System.out.println("This unit cannot attack!");
+                    return;
+                }
+                break;
+            case 3:
+                actUnit(unit);
+                break;
+            case 4:
+                System.out.println(unit.getClass().getSimpleName() + " is resting!");
+                unit.setMovement(0);
+                break;
+            default:
+                System.out.println("Invalid input number");
+                return;
+
+        }
+
     }
 
+    public void moveUnit(Unit unit) {
+
+        Point[] movable = unit.getAdjacent();
+
+        System.out.println("Where do you want this unit to move to?");
+
+        for (int i = 0; i < movable.length; i++) {
+             System.out.println(i+") x: " + movable[i].x + "  y: "+movable[i].y);
+        }
+        
+        System.out.print("Input here: ");
+        choice = scan.nextInt();
+        scan.nextLine();
+        
+        if (choice >= 0 && choice < movable.length){
+            unit.move(movable[choice]);
+            System.out.println("Unit moved!");
+            return;
+        } 
+        
+        System.out.println("Invalid input!");
+
+    }
+
+    public void attackUnit(MilitaryUnit unit) {
+
+    }
+
+    public void actUnit(Unit u) {
+
+    }
+
+    //</editor-fold>
     //TESTING GRAPHICS
     //<editor-fold>
     @Override

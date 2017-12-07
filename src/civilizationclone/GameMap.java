@@ -152,6 +152,7 @@ public class GameMap {
                 }
                 //</editor-fold>
                 
+                tile.calcOutput();
             }
         }
     }

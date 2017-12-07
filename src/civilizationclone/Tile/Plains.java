@@ -9,17 +9,15 @@ public class Plains extends Tile {
     static Set<Improvement> possibleImprovement = EnumSet.of(Improvement.FARM, Improvement.ROAD, Improvement.ACADEMY);
 
     public Plains(){
-        
         super(false, 1);
     }
     
-    //TODO decide if resources will be determined when tile is created, or when map is created
-
-
-
     @Override
     public void calcOutput() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        setFoodOutput(2 + getImprovement().getFoodBonus() + getResource().getFoodBonus());
+        setGoldOutput(getImprovement().getGoldBonus() + getResource().getGoldBonus());
+        setProductionOutput(getImprovement().getProductionBonus() + getResource().getProductionBonus());
+        setScienceOutput(getImprovement().getScienceBonus() + getResource().getTechBonus());
     }
     
     public Set<Improvement> getImprovements(){
@@ -27,6 +25,4 @@ public class Plains extends Tile {
         improve.add(this.getResource().getImprovementType());
         return improve;
     }
-        
-
 }

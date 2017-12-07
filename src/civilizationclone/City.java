@@ -1,8 +1,10 @@
 package civilizationclone;
 
+import civilizationclone.Tile.Tile;
 import civilizationclone.Unit.*;
 import java.awt.Point;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Set;
 
 public class City {
@@ -25,6 +27,8 @@ public class City {
     private int goldIncome;
     private int techIncome;
     private int productionIncome;
+    
+    private Set<Tile> ownedTiles;
 
     private static GameMap mapRef;
     //</editor-fold>
@@ -36,6 +40,7 @@ public class City {
         this.player = u.getPlayer();
         maxHealth = 300;
         currentProduction = 0;
+        ownedTiles = new HashSet<>();
         mapRef.getTile(POSITION.x,POSITION.y).setCity(this);
         builtProjects = EnumSet.noneOf(CityProject.class);
     }
@@ -57,7 +62,7 @@ public class City {
             }
         } else {
             if (currentProduction >= currentProject.getProductionCost()) {
-                buildUnit();
+                buildProject();
             }
         }
 
@@ -72,6 +77,7 @@ public class City {
     }
 
     public void calcIncome() {
+        
         calcTechIncome();
         calcGoldIncome();
         calcProductionIncome();
@@ -140,8 +146,10 @@ public class City {
                 break;
             case SCOUT:
                 player.addUnit(new ScoutUnit(this));
+                break;
             case SLINGER:
                 player.addUnit(new SlingerUnit(this));
+                break;
         }
 
         currentUnit = null;

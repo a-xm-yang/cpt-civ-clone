@@ -3,6 +3,7 @@ package civilizationclone.Tile;
 public enum Resource {
 
     //GOLD, PRODUCTION, FOOD, TECH, LUXURY, IMPROVEMENT
+    NONE(0, 0, 0, 0, false, null),
     WHEAT(0, 0, 3, 0, false, Improvement.FARM), // FARM RELATED
     RICE(0, 1, 2, 0, false, Improvement.FARM),
     CORN(0, 1, 2, 0, false, Improvement.FARM),

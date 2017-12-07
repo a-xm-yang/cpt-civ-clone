@@ -15,7 +15,10 @@ public class Hills extends Tile{
 
     @Override
     public void calcOutput() {
-    
+        setFoodOutput(1 + getImprovement().getFoodBonus() + getResource().getFoodBonus());
+        setGoldOutput(getImprovement().getGoldBonus() + getResource().getGoldBonus());
+        setProductionOutput(1+ getImprovement().getProductionBonus() + getResource().getProductionBonus());
+        setScienceOutput(getImprovement().getScienceBonus() + getResource().getTechBonus());
     }
     
     public Set<Improvement> getImprovements(){
