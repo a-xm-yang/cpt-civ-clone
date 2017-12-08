@@ -8,7 +8,7 @@ Justin Tang
 EARLY DEVELOPMENT
  */
 
-//Dec 7 2017
+//Dec 8 2017
 
 //TODO --- 1) Fix unit moving options
 //TODO --- 2) Finish up city design and city output
