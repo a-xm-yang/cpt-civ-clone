@@ -2,6 +2,7 @@ package civilizationclone;
 
 import civilizationclone.Tile.*;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Set;
 
 public class GameMap {
@@ -172,7 +173,40 @@ public class GameMap {
         return map[x][y];
     }
     
-    
+    public ArrayList<Point> getRange(Point p, int range){
+  
+        int offset = 0, start = 0;
+        
+        ArrayList<Point> boundaries = new ArrayList<>();
+
+        if (p.x % 2 == 0) {
+            offset = 1;
+        }
+
+        start = ((range+offset) / 2) + (p.y - range); //Get the top start value
+
+        //Top Half and Middle
+        for (int i = p.x - range; i <= p.x; i++) { //Make two loops: one for top half, other for bottom half
+            if (i % 2 == 0) { //Start only changes when reach an offset line
+                start -= 1; //Going top to bottom thus start decrease until reach middle line
+            } 
+            for (int n = start; n < start + range * 2 + 1 - (p.x - i); n++) {
+                boundaries.add(new Point(i, n)); //Add the new point to an array list of boundaries
+            }
+        }
+
+        //Bottom Half
+        start = p.y - range; //Set bottom half's first start as the middle line's start
+        for (int i = p.x + 1; i < p.x + range; i++) {
+            if (i % 2 != 0) { //STart only changes when reach a non offset line
+                start += 1; //Inverse of top one, it is increasing
+            } 
+            for (int n = start; n < start + range * 2 + 1 - (i - p.x); n++) {
+                boundaries.add(new Point(i, n)); //Add the new point to an array list of boundaries
+            }
+        }
+        return boundaries;
+    }
 
     //</editor-fold>
 }

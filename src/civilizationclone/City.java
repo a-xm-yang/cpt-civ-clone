@@ -29,6 +29,7 @@ public class City {
     private int productionIncome;
     
     private Set<Tile> ownedTiles;
+    private Set<Tile> workedTiles;
 
     private static GameMap mapRef;
     //</editor-fold>
@@ -41,6 +42,7 @@ public class City {
         maxHealth = 300;
         currentProduction = 0;
         ownedTiles = new HashSet<>();
+        workedTiles = new HashSet<>();
         mapRef.getTile(POSITION.x,POSITION.y).setCity(this);
         builtProjects = EnumSet.noneOf(CityProject.class);
     }
@@ -77,7 +79,6 @@ public class City {
     }
 
     public void calcIncome() {
-        
         calcTechIncome();
         calcGoldIncome();
         calcProductionIncome();
