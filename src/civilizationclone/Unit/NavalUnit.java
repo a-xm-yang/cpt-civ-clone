@@ -31,4 +31,41 @@ public abstract class NavalUnit extends MilitaryUnit {
         return list.toArray(new Point[list.size()]);
     }
 
+    @Override
+    public Point[] getAttackable() {
+        ArrayList<Point> list = this.getAdjacent();
+        ArrayList<Point> attackable = new ArrayList<Point>();
+
+        //get a list of all the adjacent tiles, check to see ones that has a unit, is not water, and belongs to opposing players, removing everything else that's not
+        for (Point p : list) {
+            if (getMapRef().getTile(p.x, p.y).hasUnit()) {
+                if (getMapRef().getTile(p.x, p.y).getUnit().getPlayer() != this.getPlayer()) {
+                    if (getMapRef().getTile(p.x, p.y).isWater()) {
+                        attackable.add(p);
+                    }
+                }
+            }
+        }
+
+        return attackable.toArray(new Point[attackable.size()]);
+    }
+
+    @Override
+    public Point[] getSiegable() {
+        ArrayList<Point> list = this.getAdjacent();
+        ArrayList<Point> attackable = new ArrayList<Point>();
+
+        //get a list of all the adjacent tiles, check to see ones that has a city, and belongs to opposing players, removing everything else that's not
+        for (Point p : list) {
+            if (getMapRef().getTile(p.x, p.y).hasCity()) {
+                if (getMapRef().getTile(p.x, p.y).getCity().getPlayer() != this.getPlayer()) {
+                    attackable.add(p);
+                }
+            }
+        }
+
+        return attackable.toArray(new Point[attackable.size()]);
+    }
 }
+
+

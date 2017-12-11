@@ -8,6 +8,7 @@ import java.util.Set;
 public class GameMap {
 
     private Tile[][] map;
+    private int size;
 
     public enum MapSize {
         BIG, MEDIUM, SMALL;
@@ -15,7 +16,7 @@ public class GameMap {
 
     public GameMap(MapSize m, int seed) {
 
-        int size = 0;
+        size = 0;
 
         switch (m) {
             case SMALL:
@@ -80,7 +81,6 @@ public class GameMap {
 
     private void grantResource(float value, Tile tile) {
 
-
         //if value is greater than 0.7 and is not a mountain, grant a random resource according to pseudorandom calculation
         if (value > 0.72) {
             if (!(tile instanceof Mountain)) {
@@ -125,73 +125,86 @@ public class GameMap {
                 //possibility for Ocean
                 //<editor-fold>
                 else if (tile instanceof Ocean) {
-                  if (pseudoRandom < 8){
-                      tile.setResource(Resource.WHALE);
-                  } else if (pseudoRandom < 5){
-                      tile.setResource(Resource.CRAB);
-                  } else if (pseudoRandom < 1){
-                      tile.setResource(Resource.FISH);
-                  }
-                }
-                //</editor-fold>
+                    if (pseudoRandom < 8) {
+                        tile.setResource(Resource.WHALE);
+                    } else if (pseudoRandom < 5) {
+                        tile.setResource(Resource.CRAB);
+                    } else if (pseudoRandom < 1) {
+                        tile.setResource(Resource.FISH);
+                    }
+                } //</editor-fold>
                 //possibility for Hills
                 //<editor-fold>
-                else if (tile instanceof Hills){
-                    if (pseudoRandom < 1){
+                else if (tile instanceof Hills) {
+                    if (pseudoRandom < 1) {
                         tile.setResource(Resource.MILK);
-                    } else if (pseudoRandom < 2){
+                    } else if (pseudoRandom < 2) {
                         tile.setResource(Resource.EGG);
-                    } else if (pseudoRandom < 3){
+                    } else if (pseudoRandom < 3) {
                         tile.setResource(Resource.TRUFFLE);
-                    } else if (pseudoRandom < 5){
+                    } else if (pseudoRandom < 5) {
                         tile.setResource(Resource.MERCURY);
-                    } else if (pseudoRandom < 9){
+                    } else if (pseudoRandom < 9) {
                         tile.setResource(Resource.IRON);
                     } else {
                         tile.setResource(Resource.GOLD);
                     }
                 }
                 //</editor-fold>
-                
+
                 tile.calcOutput();
             }
         }
     }
     //</editor-fold>
-    
+
     //GETTER & SETTER
     //<editor-fold>
-    public Set<Tile> getVisibleTiles(Point[] allPositions){
+    public Set<Tile> getVisibleTiles(Point[] allPositions) {
         return null;
     }
-    
+
     public Tile[][] getMap() {
         return map;
+    }
+
+    public int getSize() {
+        return size;
     }
 
     public Tile getTile(int x, int y) {
         return map[x][y];
     }
-    
-    public ArrayList<Point> getRange(Point p, int range){
-  
-        int offset = 0, start = 0;
+
+    public ArrayList<Point> getRange(Point p, int range) {
+
+        //this methods goes around in a cylinder fashion
         
+        int offset = 0, start = 0;
+
         ArrayList<Point> boundaries = new ArrayList<>();
 
         if (p.x % 2 == 0) {
             offset = 1;
         }
 
-        start = ((range+offset) / 2) + (p.y - range); //Get the top start value
+        start = ((range + offset) / 2) + (p.y - range); //Get the top start value
 
         //Top Half and Middle
         for (int i = p.x - range; i <= p.x; i++) { //Make two loops: one for top half, other for bottom half
             if (i % 2 == 0) { //Start only changes when reach an offset line
                 start -= 1; //Going top to bottom thus start decrease until reach middle line
-            } 
+            }
             for (int n = start; n < start + range * 2 + 1 - (p.x - i); n++) {
-                boundaries.add(new Point(i, n)); //Add the new point to an array list of boundaries
+                if (i >= 0 && i < size) {
+                    if (n < 0) {
+                        boundaries.add(new Point(i, size - n)); //Add the new point to an array list of boundaries
+                    } else if (n >= size) {
+                        boundaries.add(new Point(i, n - size));
+                    } else {
+                        boundaries.add(new Point(i, n));
+                    }
+                }
             }
         }
 
@@ -200,11 +213,18 @@ public class GameMap {
         for (int i = p.x + 1; i < p.x + range; i++) {
             if (i % 2 != 0) { //STart only changes when reach a non offset line
                 start += 1; //Inverse of top one, it is increasing
-            } 
+            }
             for (int n = start; n < start + range * 2 + 1 - (i - p.x); n++) {
-                boundaries.add(new Point(i, n)); //Add the new point to an array list of boundaries
+                if (n < 0) {
+                    boundaries.add(new Point(i, size + n)); //Add the new point to an array list of boundaries
+                } else if (n >= size) {
+                    boundaries.add(new Point(i, n - size));
+                } else {
+                    boundaries.add(new Point(i, n));
+                }
             }
         }
+
         return boundaries;
     }
 

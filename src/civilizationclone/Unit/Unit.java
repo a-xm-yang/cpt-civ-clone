@@ -51,27 +51,11 @@ public abstract class Unit implements IMovement {
     }
 
     public ArrayList<Point> getAdjacent() {
-
-        ArrayList<Point> list = new ArrayList<Point>();
-
-        int dif = 1;
-        if (position.x % 2 == 0) {
-            dif = 0;
-        }
-
-        for (int i = 0; i < 2; i++) {
-                list.add(new Point(position.x - 1, position.y - dif + i));
-        }
-
-        for (int i = -1; i < 2; i += 2) {
-                list.add(new Point(position.x, position.y + i));
-        }
-
-        for (int i = 0; i < 2; i++) {
-                list.add(new Point(position.x + 1, position.y - dif + i));
-        }
-        return list;
-
+        return mapRef.getRange(position, 1);
+    }
+    
+    public ArrayList<Point> getAdjacent(int range){
+        return mapRef.getRange(position, range);
     }
     
     public Point[] getMoves(){
@@ -89,7 +73,6 @@ public abstract class Unit implements IMovement {
         return moves.toArray(new Point[moves.size()]);
     }
     
-
     @Override
     public void setMovement(int movement) {
         this.movement = movement;
