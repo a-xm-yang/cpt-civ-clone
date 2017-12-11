@@ -18,6 +18,8 @@ public class City {
     private int health;
     private int maxHealth;
     private int combat;
+    private int population;
+    private int realPopulation;
 
     private Set<CityProject> builtProjects;
     private CityProject currentProject;
@@ -27,6 +29,7 @@ public class City {
     private int goldIncome;
     private int techIncome;
     private int productionIncome;
+    private int foodIncome;
     
     private Set<Tile> ownedTiles;
     private Set<Tile> workedTiles;
@@ -39,6 +42,7 @@ public class City {
         this.name = name;
         this.POSITION = new Point(u.getX(), u.getY());
         this.player = u.getPlayer();
+        population = 1000;
         maxHealth = 300;
         currentProduction = 0;
         ownedTiles = new HashSet<>();
@@ -55,7 +59,8 @@ public class City {
 
         heal();
         calcIncome();
-
+        
+        inceasePopulation();
         currentProduction += productionIncome;
 
         if (currentUnit != null) {
@@ -70,6 +75,11 @@ public class City {
 
     }
 
+    public int calcFakePopulation() {
+        this.population = (int) Math.pow(realPopulation, 2.8 * 1000);
+        return this.population;
+    }
+
     public boolean canEnd() {
         if (currentUnit != null || currentProject != null) {
             return true;
@@ -82,6 +92,7 @@ public class City {
         calcTechIncome();
         calcGoldIncome();
         calcProductionIncome();
+        calcFoodIncome();
     }
 
     private void calcTechIncome() {
@@ -94,7 +105,9 @@ public class City {
         }
 
         //add from tiles
-        
+        for(Tile t: workedTiles){
+            tech += t.getScienceOutput();
+        }
         
         techIncome = tech;
     }
@@ -104,6 +117,9 @@ public class City {
         int gold = 0;
 
         //add from tiles
+        for(Tile t: workedTiles){
+            gold += t.getGoldOutput();
+        }
         
         //add from buildings
         for (CityProject c : builtProjects) {
@@ -112,12 +128,31 @@ public class City {
 
         goldIncome = gold;
     }
+    private void calcFoodIncome() {
+        //calc food income
+        int food = 0;
+
+        //add from tiles
+        for(Tile t: workedTiles){
+            food += t.getFoodOutput();
+        }
+        
+        //add from buildings
+        for (CityProject c : builtProjects) {
+            food += c.getFoodBonus();
+        }
+
+        foodIncome = food;
+    }
 
     private void calcProductionIncome() {
         //calc production income
         int production = 0;
 
         //add from tiles
+        for(Tile t: workedTiles){
+            production += t.getProductionOutput();
+        }
         //add from buildings
         for (CityProject c : builtProjects) {
             production += c.getProductionBonus();
@@ -250,6 +285,10 @@ public class City {
 
     public static void referenceMap(GameMap m) {
         City.mapRef = m;
+    }
+
+    private void inceasePopulation() {
+        this.realPopulation += (this.foodIncome - this.population) * 400; //Fiddle around with this number to make it good
     }
 
 }
