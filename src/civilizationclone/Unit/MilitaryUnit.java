@@ -41,53 +41,30 @@ public abstract class MilitaryUnit extends Unit {
 
     public abstract UnitType getUpgrade();
 
-    public int getHealth() {
-        return health;
-    }
-
-    public double getHealthPercentage() {
-        return health / MAX_HEALTH;
-    }
-
-    public int getCombat() {
-        return combat;
-    }
-
-    public int getMaintainence() {
-        return maintainence;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public void setCombat(int combat) {
-        this.combat = combat;
-    }
-
     public void heal() {
         health += 15;
         if (health > MAX_HEALTH) {
             health = MAX_HEALTH;
         }
     }
-    
-    public Point[] getAttackable(){
-        
+
+    //filters out a list of attackables
+    public Point[] getAttackable() {
+
         ArrayList<Point> list = this.getAdjacent();
         ArrayList<Point> attackable = new ArrayList<Point>();
-        
+
         //get a list of all the adjacent tiles, check to see ones that has a unit, is not water, and belongs to opposing players, removing everything else that's not
-        for (Point p: list){
-            if (getMapRef().getTile(p.x, p.y).hasUnit()){
-                if (getMapRef().getTile(p.x, p.y).getUnit().getPlayer() != this.getPlayer()){
-                    if(!getMapRef().getTile(p.x, p.y).isWater()){
+        for (Point p : list) {
+            if (getMapRef().getTile(p.x, p.y).hasUnit()) {
+                if (getMapRef().getTile(p.x, p.y).getUnit().getPlayer() != this.getPlayer()) {
+                    if (!getMapRef().getTile(p.x, p.y).isWater()) {
                         attackable.add(p);
                     }
                 }
-            } 
+            }
         }
-        
+
         return attackable.toArray(new Point[attackable.size()]);
     }
 
@@ -136,6 +113,23 @@ public abstract class MilitaryUnit extends Unit {
 
     }
 
+    //filters out a list of siegables
+    public Point[] getSiegable() {
+        ArrayList<Point> list = this.getAdjacent();
+        ArrayList<Point> attackable = new ArrayList<Point>();
+
+        //get a list of all the adjacent tiles, check to see ones that has a city, is not water, and belongs to opposing players, removing everything else that's not
+        for (Point p : list) {
+            if (getMapRef().getTile(p.x, p.y).hasCity()) {
+                if (getMapRef().getTile(p.x, p.y).getCity().getPlayer() != this.getPlayer()) {
+                    attackable.add(p);
+                }
+            }
+        }
+
+        return attackable.toArray(new Point[attackable.size()]);
+    }
+
     // seiges atack 
     public void siegeAttack(City c) {
 
@@ -144,6 +138,10 @@ public abstract class MilitaryUnit extends Unit {
 
         if (this instanceof CalvaryUnit) {
             siegeDmg = (int) (siegeDmg * 0.6);
+        }
+
+        if (this instanceof NavalUnit) {
+            siegeDmg = (int) (siegeDmg * 1.3);
         }
 
         health -= cityDmg;
@@ -161,4 +159,31 @@ public abstract class MilitaryUnit extends Unit {
 
     }
 
+    // SIMPLE SETTER AND GETTERS
+    //<editor-fold>
+    public int getHealth() {
+        return health;
+    }
+
+    public double getHealthPercentage() {
+        return health / MAX_HEALTH;
+    }
+
+    public int getCombat() {
+        return combat;
+    }
+
+    public int getMaintainence() {
+        return maintainence;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setCombat(int combat) {
+        this.combat = combat;
+    }
+
+    //</editor-fold>
 }

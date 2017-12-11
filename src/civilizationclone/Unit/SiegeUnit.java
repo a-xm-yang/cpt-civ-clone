@@ -28,4 +28,6 @@ public abstract class SiegeUnit extends MilitaryUnit {
             c.conquer(this.getPlayer());
         }
     }
+    
+    
 }

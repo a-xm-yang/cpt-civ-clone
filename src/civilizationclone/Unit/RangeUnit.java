@@ -1,6 +1,8 @@
 package civilizationclone.Unit;
 
 import civilizationclone.City;
+import java.awt.Point;
+import java.util.ArrayList;
 
 public abstract class RangeUnit extends MilitaryUnit {
 
@@ -14,6 +16,24 @@ public abstract class RangeUnit extends MilitaryUnit {
     public RangeUnit(int MAX_MOVEMENT, MilitaryUnit u, int MAX_HEALTH, int combat, int closeCombat, int maintainence) {
         super(u, MAX_MOVEMENT, MAX_HEALTH, combat, maintainence);
         this.closeCombat = closeCombat;
+    }
+
+    @Override
+    public Point[] getAttackable() {
+
+        ArrayList<Point> list = getAdjacent(3);
+        ArrayList<Point> attackable = new ArrayList<Point>();
+
+        //get a list of all the adjacent tiles, check to see ones that has a unit, is not water, and belongs to opposing players, removing everything else that's not
+        for (Point p : list) {
+            if (getMapRef().getTile(p.x, p.y).hasUnit()) {
+                if (getMapRef().getTile(p.x, p.y).getUnit().getPlayer() != this.getPlayer()) {
+                    attackable.add(p);
+                }
+            }
+        }
+
+        return attackable.toArray(new Point[attackable.size()]);
     }
 
     @Override
@@ -39,6 +59,23 @@ public abstract class RangeUnit extends MilitaryUnit {
             }
 
         }
+    }
+
+    @Override
+    public Point[] getSiegable() {
+        ArrayList<Point> list = this.getAdjacent(3);
+        ArrayList<Point> attackable = new ArrayList<Point>();
+
+        //get a list of all the adjacent tiles, check to see ones that has a city, is not water, and belongs to opposing players, removing everything else that's not
+        for (Point p : list) {
+            if (getMapRef().getTile(p.x, p.y).hasCity()) {
+                if (getMapRef().getTile(p.x, p.y).getCity().getPlayer() != this.getPlayer()) {
+                    attackable.add(p);
+                }
+            }
+        }
+
+        return attackable.toArray(new Point[attackable.size()]);
     }
 
     @Override
