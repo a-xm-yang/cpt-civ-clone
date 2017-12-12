@@ -3,6 +3,7 @@ package civilizationclone;
 import civilizationclone.Tile.*;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 public class GameMap {
@@ -161,7 +162,20 @@ public class GameMap {
     //GETTER & SETTER
     //<editor-fold>
     public Set<Tile> getVisibleTiles(Point[] allPositions) {
-        return null;
+        Set<Point> allVisibleRange = new HashSet<>();
+        
+        for (Point p: allPositions){
+            allVisibleRange.addAll(getRange(p,2));
+        }
+        
+        Set<Tile> allVisibleTiles = new HashSet<>();
+        
+        for (Point p: allVisibleRange){
+            allVisibleTiles.add(getTile(p.x,p.y));
+        }
+        
+        return allVisibleTiles;
+        
     }
 
     public Tile[][] getMap() {
@@ -176,10 +190,21 @@ public class GameMap {
         return map[x][y];
     }
 
+    public Point getPoint(Tile t) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (this.getTile(i, j) == t) {
+                    return new Point(i, j);
+                }
+            }
+        }
+        
+        return null;
+    }
+
     public ArrayList<Point> getRange(Point p, int range) {
 
         //this methods goes around in a cylinder fashion
-        
         int offset = 0, start = 0;
 
         ArrayList<Point> boundaries = new ArrayList<>();

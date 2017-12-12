@@ -3,6 +3,7 @@ package civilizationclone;
 import civilizationclone.Tile.Tile;
 import civilizationclone.Unit.*;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +14,7 @@ public class City {
     //<editor-fold>
     private String name;
     private final Point POSITION;
-    private Player originalOwner;
+    private final Player originalOwner;
     private Player player;
 
     private int health;
@@ -31,7 +32,7 @@ public class City {
     private int techIncome;
     private int productionIncome;
     private int foodIncome;
-    
+
     private Set<Tile> ownedTiles;
     private Set<Tile> workedTiles;
 
@@ -44,25 +45,37 @@ public class City {
         this.POSITION = new Point(u.getX(), u.getY());
         this.player = u.getPlayer();
         this.originalOwner = u.getPlayer();
+        
         population = 1000;
         maxHealth = 300;
         currentProduction = 0;
+        
         ownedTiles = new HashSet<>();
         workedTiles = new HashSet<>();
-        mapRef.getTile(POSITION.x,POSITION.y).setCity(this);
+        
+        ArrayList<Point> temp = mapRef.getRange(POSITION, 1);
+        for (Point p: temp){
+            ownedTiles.add(mapRef.getTile(p.x, p.y));
+        }
+        ownedTiles.remove(mapRef.getTile(POSITION.x, POSITION.y));
+        
+        mapRef.getTile(POSITION.x, POSITION.y).setCity(this);
+        
+        currentProject = null;
+        currentUnit = null;
         builtProjects = EnumSet.noneOf(CityProject.class);
     }
 
     //TODO add a list of owned tiles for a city, and calculate how to add onto that list automatically
-    //TODO add population growth function inside startTurn()
-    //TODO finish the tile output after the tile design
+    //Self Defence System
     
     public void startTurn() {
 
         heal();
         calcIncome();
-        
         inceasePopulation();
+        calcFakePopulation();
+        
         currentProduction += productionIncome;
 
         if (currentUnit != null) {
@@ -80,6 +93,16 @@ public class City {
     public int calcFakePopulation() {
         this.population = (int) Math.pow(realPopulation, 2.8 * 1000);
         return this.population;
+    }
+
+    private void inceasePopulation() {
+        if (player.getHappiness() > 2) {
+            this.realPopulation += (this.foodIncome - this.population) * 500; //Fiddle around with this number to make it good
+        } else if (player.getHappiness() > 0) {
+            this.realPopulation += (this.foodIncome - this.population) * 400; //Fiddle around with this number to make it good
+        } else {
+            this.realPopulation += (this.foodIncome - this.population) * 300;
+        }
     }
 
     public boolean canEnd() {
@@ -107,10 +130,10 @@ public class City {
         }
 
         //add from tiles
-        for(Tile t: workedTiles){
+        for (Tile t : workedTiles) {
             tech += t.getScienceOutput();
         }
-        
+
         techIncome = tech;
     }
 
@@ -119,10 +142,10 @@ public class City {
         int gold = 0;
 
         //add from tiles
-        for(Tile t: workedTiles){
+        for (Tile t : workedTiles) {
             gold += t.getGoldOutput();
         }
-        
+
         //add from buildings
         for (CityProject c : builtProjects) {
             gold += c.getGoldBonus();
@@ -130,15 +153,16 @@ public class City {
 
         goldIncome = gold;
     }
+
     private void calcFoodIncome() {
         //calc food income
         int food = 0;
 
         //add from tiles
-        for(Tile t: workedTiles){
+        for (Tile t : workedTiles) {
             food += t.getFoodOutput();
         }
-        
+
         //add from buildings
         for (CityProject c : builtProjects) {
             food += c.getFoodBonus();
@@ -152,7 +176,7 @@ public class City {
         int production = 0;
 
         //add from tiles
-        for(Tile t: workedTiles){
+        for (Tile t : workedTiles) {
             production += t.getProductionOutput();
         }
         //add from buildings
@@ -200,12 +224,52 @@ public class City {
         }
     }
 
+    public void conquer(Player p) {
+        System.out.println("City conquered by " + p.getName());
+        this.player = p;
+    }
+
+    public static void referenceMap(GameMap m) {
+        City.mapRef = m;
+    }
+
     //GETTER
     //<editor-fold>
-    public Point[] getControlledTiles(){
-         return null;
+    public ArrayList<Point> getAllPoints(){
+        
+        ArrayList<Point> list = new ArrayList<>();
+        
+        for (Tile t: getOwnedTiles()){
+            list.add(mapRef.getPoint(t));
+        }
+        
+        return list;
     }
     
+    public Player getOriginalOwner() {
+        return originalOwner;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    public int getRealPopulation() {
+        return realPopulation;
+    }
+
+    public Set<CityProject> getBuiltProjects() {
+        return builtProjects;
+    }
+
+    public int getFoodIncome() {
+        return foodIncome;
+    }
+
+    public Set<Tile> getWorkedTiles() {
+        return workedTiles;
+    }
+
     public Set<CityProject> getBuiltProject() {
         return builtProjects;
     }
@@ -265,6 +329,10 @@ public class City {
 
     //SETTER
     //<editor-fold>
+    public void setWorkedTiles(Set<Tile> workedTiles) {
+        this.workedTiles = workedTiles;
+    }
+
     public void setCurrentProject(CityProject currentProject) {
         this.currentProject = currentProject;
         currentUnit = null;
@@ -283,20 +351,4 @@ public class City {
         this.maxHealth = maxHealth;
     }
     //</editor-fold>
-
-    public void conquer(Player p) {
-        System.out.println("City conquered by " + p.getName());
-        this.player = p;
-    }
-
-    public static void referenceMap(GameMap m) {
-        City.mapRef = m;
-    }
-
-    private void inceasePopulation() {
-        if(player.getHappiness() > 0){
-            this.realPopulation += (this.foodIncome - this.population) * 400; //Fiddle around with this number to make it good
-        }
-    }
-
 }
