@@ -13,6 +13,7 @@ public class City {
     //<editor-fold>
     private String name;
     private final Point POSITION;
+    private Player originalOwner;
     private Player player;
 
     private int health;
@@ -42,6 +43,7 @@ public class City {
         this.name = name;
         this.POSITION = new Point(u.getX(), u.getY());
         this.player = u.getPlayer();
+        this.originalOwner = u.getPlayer();
         population = 1000;
         maxHealth = 300;
         currentProduction = 0;
@@ -255,6 +257,10 @@ public class City {
     public int getCombat() {
         return combat;
     }
+
+    public Set<Tile> getOwnedTiles() {
+        return ownedTiles;
+    }
     //</editor-fold>
 
     //SETTER
@@ -288,7 +294,9 @@ public class City {
     }
 
     private void inceasePopulation() {
-        this.realPopulation += (this.foodIncome - this.population) * 400; //Fiddle around with this number to make it good
+        if(player.getHappiness() > 0){
+            this.realPopulation += (this.foodIncome - this.population) * 400; //Fiddle around with this number to make it good
+        }
     }
 
 }

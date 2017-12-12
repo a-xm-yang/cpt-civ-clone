@@ -23,6 +23,7 @@ public class Player {
 
     private int goldIncome;
     private int currentGold;
+    private int happiness;
 
     private Set<TechType> ownedTech;
     private Set<TechType> researchableTech;
@@ -259,5 +260,39 @@ public class Player {
         this.research = research;
     }
     //</editor-fold>
+    
+    public void calculateHappiness(){
+        // To be changed in future
+        int total = 0;
+        
+        //Calculate happiness
+        for(City c:cityList){
+            for(Tile t:c.getOwnedTiles()){
+                if(t.getResource().isLuxury()){
+                    total +=4;
+                }
+            }
+            for(CityProject p:c.getBuiltProject()){
+                total+=1;
+                //TODO Make so only certain building increase happiness and some increase more than others
+            }
+        }
+        //Calculate unhappiness
+        for(City c:cityList){
+            total -=3;
+            total -= c.calcFakePopulation();
+            if(!c.getPlayer().equals(this)){ //This might not work, can't remember how comparing objects works rn
+                total -=2;
+            }
+        }
+        happiness = total;
+    }
+
+    public int getHappiness() {
+        return happiness;
+    }
+    
+    
+    
 
 }
