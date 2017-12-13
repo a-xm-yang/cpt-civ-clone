@@ -189,6 +189,21 @@ public class GameMap {
     public Tile getTile(int x, int y) {
         return map[x][y];
     }
+    
+    public Tile getTile(Point p){
+        return map[p.x][p.y];
+    }
+    
+    public Tile[] getTiles(ArrayList<Point> list){
+        
+        ArrayList<Tile> tileList = new ArrayList<>();
+        
+        for (Point p: list){
+            tileList.add(getTile(p));
+        }
+        
+        return tileList.toArray(new Tile[tileList.size()]);
+    }
 
     public Point getPoint(Tile t) {
         for (int i = 0; i < size; i++) {
@@ -201,7 +216,7 @@ public class GameMap {
         
         return null;
     }
-
+    
     public ArrayList<Point> getRange(Point p, int range) {
 
         //this methods goes around in a cylinder fashion

@@ -27,6 +27,8 @@ public class City {
     private CityProject currentProject;
     private UnitType currentUnit;
     private int currentProduction;
+    private boolean canExpand;
+    private boolean canAttack;
 
     private int goldIncome;
     private int techIncome;
@@ -45,37 +47,37 @@ public class City {
         this.POSITION = new Point(u.getX(), u.getY());
         this.player = u.getPlayer();
         this.originalOwner = u.getPlayer();
-        
+
         population = 1000;
         maxHealth = 300;
         currentProduction = 0;
-        
+
         ownedTiles = new HashSet<>();
         workedTiles = new HashSet<>();
-        
+
         ArrayList<Point> temp = mapRef.getRange(POSITION, 1);
-        for (Point p: temp){
+        for (Point p : temp) {
             ownedTiles.add(mapRef.getTile(p.x, p.y));
         }
         ownedTiles.remove(mapRef.getTile(POSITION.x, POSITION.y));
-        
+
         mapRef.getTile(POSITION.x, POSITION.y).setCity(this);
-        
-        currentProject = null;
-        currentUnit = null;
+
         builtProjects = EnumSet.noneOf(CityProject.class);
     }
 
-    //TODO add a list of owned tiles for a city, and calculate how to add onto that list automatically
-    //Self Defence System
-    
     public void startTurn() {
 
         heal();
         calcIncome();
-        inceasePopulation();
+        inceaseRealPopulation();
         calcFakePopulation();
-        
+
+        //if population reaches a certain threshold, you can expand a new tile
+        if (population > (ownedTiles.size() + 5)) {
+            canExpand = true;
+        }
+
         currentProduction += productionIncome;
 
         if (currentUnit != null) {
@@ -88,14 +90,22 @@ public class City {
             }
         }
 
+        canAttack = false;
+        for (Tile t : mapRef.getTiles(mapRef.getRange(POSITION, 3))) {
+            if (t.hasUnit()) {
+                if (t.getUnit().getPlayer() != this.getPlayer()) {
+                    this.canAttack = true;
+                }
+            }
+        }
+
     }
 
-    public int calcFakePopulation() {
+    private void calcFakePopulation() {
         this.population = (int) Math.pow(realPopulation, 2.8 * 1000);
-        return this.population;
     }
 
-    private void inceasePopulation() {
+    private void inceaseRealPopulation() {
         if (player.getHappiness() > 2) {
             this.realPopulation += (this.foodIncome - this.population) * 500; //Fiddle around with this number to make it good
         } else if (player.getHappiness() > 0) {
@@ -106,6 +116,7 @@ public class City {
     }
 
     public boolean canEnd() {
+
         if (currentUnit != null || currentProject != null) {
             return true;
         }
@@ -187,14 +198,14 @@ public class City {
         productionIncome = production;
     }
 
-    public void buildProject() {
+    private void buildProject() {
         System.out.println(currentProject + " built!");
         builtProjects.add(currentProject);
         currentProduction = 0;
         currentProject = null;
     }
 
-    public void buildUnit() {
+    private void buildUnit() {
 
         //adds the unit object onto the list then clean production queue
         currentProduction = 0;
@@ -217,7 +228,7 @@ public class City {
         currentUnit = null;
     }
 
-    public void heal() {
+    private void heal() {
         health = health + 15;
         if (health > maxHealth) {
             health = maxHealth;
@@ -229,23 +240,94 @@ public class City {
         this.player = p;
     }
 
-    public static void referenceMap(GameMap m) {
-        City.mapRef = m;
+    public void addTile(Tile t) {
+        this.ownedTiles.add(t);
+    }
+
+    public void attack(Unit x) {
+
+        if (!(x instanceof MilitaryUnit)) {
+            x.delete();
+        }
+
+        if (x instanceof MilitaryUnit) {
+
+            MilitaryUnit enemy = (MilitaryUnit) x;
+
+            int thisDmg = 30;
+
+            enemy.setHealth(enemy.getHealth() - thisDmg);
+            System.out.println("Unit dealt " + thisDmg);
+
+            if (enemy.getHealth() <= 0) {
+                enemy.delete();
+            }
+
+        }
     }
 
     //GETTER
     //<editor-fold>
-    public ArrayList<Point> getAllPoints(){
-        
+    public Point[] getAttackable() {
+
+        ArrayList<Point> list = mapRef.getRange(POSITION, 3);
+        ArrayList<Point> attackable = new ArrayList<Point>();
+        //get a list of all the adjacent tiles, check to see ones that has a unit, is not water, and belongs to opposing players, removing everything else that's not
+        for (Point p : list) {
+            if (mapRef.getTile(p.x, p.y).hasUnit()) {
+                if (mapRef.getTile(p.x, p.y).getUnit().getPlayer() != this.getPlayer()) {
+                    attackable.add(p);
+                }
+            }
+        }
+        return attackable.toArray(new Point[attackable.size()]);
+    }
+
+    public boolean canAttack() {
+        return canAttack;
+    }
+
+    public boolean canExpand() {
+        return canExpand;
+    }
+
+    public Point[] getPossibleExpansion() {
+        ArrayList<Point> threeRangeList = mapRef.getRange(POSITION, 3);
         ArrayList<Point> list = new ArrayList<>();
-        
-        for (Tile t: getOwnedTiles()){
+
+        for (Point p : threeRangeList) {
+
+            ArrayList<Point> adjacency = mapRef.getRange(p, 1);
+
+            int count = 0;
+
+            for (Point x : adjacency) {
+                if (count == 2) {
+                    break;
+                }
+                if (ownedTiles.contains(mapRef.getTile(x.x, x.y))) {
+                    count++;
+                }
+            }
+            if (count >= 2) {
+                list.add(p);
+            }
+        }
+
+        return list.toArray(new Point[list.size()]);
+    }
+
+    public ArrayList<Point> getAllPoints() {
+
+        ArrayList<Point> list = new ArrayList<>();
+
+        for (Tile t : getOwnedTiles()) {
             list.add(mapRef.getPoint(t));
         }
-        
+
         return list;
     }
-    
+
     public Player getOriginalOwner() {
         return originalOwner;
     }
@@ -351,4 +433,8 @@ public class City {
         this.maxHealth = maxHealth;
     }
     //</editor-fold>
+
+    public static void referenceMap(GameMap m) {
+        City.mapRef = m;
+    }
 }

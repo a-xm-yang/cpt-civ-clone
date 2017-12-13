@@ -283,7 +283,7 @@ public class Player {
         //Calculate unhappiness
         for (City c : cityList) {
             total -= 2;
-            total -= c.calcFakePopulation();
+            total -= c.getPopulation();
             if (!c.getOriginalOwner().equals(this)) {
                 total -= 2;
             }
