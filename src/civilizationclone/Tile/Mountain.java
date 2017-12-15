@@ -3,13 +3,12 @@ package civilizationclone.Tile;
 import java.util.EnumSet;
 import java.util.Set;
 
+public class Mountain extends Tile {
 
-public class Mountain extends Tile{
-    
-    static Set<Improvement> possibleImprovement = EnumSet.noneOf(Improvement.class);;
+    static Set<Improvement> possibleImprovement = EnumSet.noneOf(Improvement.class);
 
     
-    public Mountain(){
+    public Mountain() {
         super(false, 999);
     }
 
@@ -20,8 +19,9 @@ public class Mountain extends Tile{
         setProductionOutput(0);
         setScienceOutput(0);
     }
-    
-    public Set<Improvement> getImprovements(){
+
+    @Override
+    public Set<Improvement> getPossibleImprovements() {
         Set<Improvement> improve = possibleImprovement;
         improve.add(this.getResource().getImprovementType());
         return improve;

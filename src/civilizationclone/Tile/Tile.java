@@ -2,6 +2,7 @@ package civilizationclone.Tile;
 
 import civilizationclone.City;
 import civilizationclone.Unit.Unit;
+import java.util.Set;
 
 public abstract class Tile {
 
@@ -27,6 +28,8 @@ public abstract class Tile {
     }
 
     public abstract void calcOutput();
+    
+    public abstract Set<Improvement> getPossibleImprovements();
 
     public boolean isWater() {
         return isWater;

@@ -19,7 +19,8 @@ public class Ocean extends Tile {
         setScienceOutput(getImprovement().getScienceBonus() + getResource().getTechBonus());
     }
 
-    public Set<Improvement> getImprovements() {
+       @Override
+    public Set<Improvement> getPossibleImprovements() {
         Set<Improvement> improve = possibleImprovement;
         improve.add(this.getResource().getImprovementType());
         return improve;

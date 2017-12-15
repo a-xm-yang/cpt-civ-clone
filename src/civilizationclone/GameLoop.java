@@ -11,7 +11,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Set;
 import javax.swing.JFrame;
@@ -277,8 +276,8 @@ public class GameLoop extends JPanel {
         }
  
         if (u instanceof BuilderUnit) {
-            System.out.println("How would you like to improve the city?");
-            ((BuilderUnit) u).improveTile();
+            System.out.println("How would you like to improve the tile?");
+            
         }
  
     }
@@ -309,6 +308,12 @@ public class GameLoop extends JPanel {
                     g.setColor(Color.YELLOW);
                 } else {
                     g.setColor(Color.BLACK);
+                }
+                
+                if (playerList.get(0).getCityList().size() != 0){
+                    if (playerList.get(0).getCityList().get(0).getOwnedTiles().contains(t)){
+                        g.setColor(Color.PINK);
+                    }
                 }
  
                 if (t.hasUnit()) {

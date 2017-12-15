@@ -217,28 +217,24 @@ public class GameMap {
         return null;
     }
     
-    public ArrayList<Point> getRange(Point p, int range) {
+     public ArrayList<Point> getRange(Point p, int range) {
 
         //this methods goes around in a cylinder fashion
-        int offset = 0, start = 0;
+        int offset = 1, start = 0;
 
         ArrayList<Point> boundaries = new ArrayList<>();
 
         if (p.x % 2 == 0) {
-            offset = 1;
+            offset = 0;
         }
-
-        start = ((range + offset) / 2) + (p.y - range); //Get the top start value
 
         //Top Half and Middle
         for (int i = p.x - range; i <= p.x; i++) { //Make two loops: one for top half, other for bottom half
-            if (i % 2 == 0) { //Start only changes when reach an offset line
-                start -= 1; //Going top to bottom thus start decrease until reach middle line
-            }
+            start = ((Math.abs(i - p.x) + offset) / 2) + (p.y - range);
             for (int n = start; n < start + range * 2 + 1 - (p.x - i); n++) {
                 if (i >= 0 && i < size) {
                     if (n < 0) {
-                        boundaries.add(new Point(i, size - n)); //Add the new point to an array list of boundaries
+                        boundaries.add(new Point(i, size + n)); //Add the new point to an array list of boundaries
                     } else if (n >= size) {
                         boundaries.add(new Point(i, n - size));
                     } else {
@@ -249,11 +245,9 @@ public class GameMap {
         }
 
         //Bottom Half
-        start = p.y - range; //Set bottom half's first start as the middle line's start
-        for (int i = p.x + 1; i < p.x + range; i++) {
-            if (i % 2 != 0) { //STart only changes when reach a non offset line
-                start += 1; //Inverse of top one, it is increasing
-            }
+  
+        for (int i = p.x + 1; i <= p.x + range; i++) {
+            start = ((Math.abs(i - p.x) + offset) / 2) + (p.y - range);
             for (int n = start; n < start + range * 2 + 1 - (i - p.x); n++) {
                 if (n < 0) {
                     boundaries.add(new Point(i, size + n)); //Add the new point to an array list of boundaries
@@ -264,6 +258,7 @@ public class GameMap {
                 }
             }
         }
+
 
         return boundaries;
     }
