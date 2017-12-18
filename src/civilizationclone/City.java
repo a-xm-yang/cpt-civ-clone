@@ -48,7 +48,7 @@ public class City {
         this.player = u.getPlayer();
         this.originalOwner = u.getPlayer();
 
-        population = 1000;
+        realPopulation = 1000;
         maxHealth = 300;
         currentProduction = 0;
 
@@ -64,6 +64,9 @@ public class City {
         mapRef.getTile(POSITION.x, POSITION.y).setCity(this);
 
         builtProjects = EnumSet.noneOf(CityProject.class);
+
+        calcIncome();
+        calcFakePopulation();
     }
 
     public void startTurn() {
@@ -102,7 +105,7 @@ public class City {
     }
 
     private void calcFakePopulation() {
-        this.population = (int) Math.pow(realPopulation, 2.8 * 1000);
+        this.population = (int) Math.pow((realPopulation / 1000), -2.8);
     }
 
     private void inceaseRealPopulation() {
@@ -133,7 +136,7 @@ public class City {
 
     private void calcTechIncome() {
         //calculate tech income
-        int tech = 0;
+        int tech = 2;
 
         //add from buildings
         for (CityProject c : builtProjects) {
@@ -150,7 +153,7 @@ public class City {
 
     private void calcGoldIncome() {
         //calc gold income
-        int gold = 0;
+        int gold = 2;
 
         //add from tiles
         for (Tile t : workedTiles) {
@@ -167,7 +170,7 @@ public class City {
 
     private void calcFoodIncome() {
         //calc food income
-        int food = 0;
+        int food = 2;
 
         //add from tiles
         for (Tile t : workedTiles) {
@@ -184,7 +187,7 @@ public class City {
 
     private void calcProductionIncome() {
         //calc production income
-        int production = 0;
+        int production = 10;
 
         //add from tiles
         for (Tile t : workedTiles) {
