@@ -94,7 +94,7 @@ public class Player {
         }
 
         for (City c : cityList) {
-            if (!c.canEnd()) {
+            if (!c.canEndTurn()) {
                 System.out.println("Needs to select city project for " + c.getName());
                 return false;
             }

@@ -118,7 +118,7 @@ public class City {
         }
     }
 
-    public boolean canEnd() {
+    public boolean canEndTurn() {
 
         if (currentUnit != null || currentProject != null) {
             return true;
@@ -418,12 +418,12 @@ public class City {
         this.workedTiles = workedTiles;
     }
 
-    public void setCurrentProject(CityProject currentProject) {
+    public void setProduction(CityProject currentProject) {
         this.currentProject = currentProject;
         currentUnit = null;
     }
 
-    public void setCurrentUnit(UnitType currentUnit) {
+    public void setProduction(UnitType currentUnit) {
         this.currentUnit = currentUnit;
         currentProject = null;
     }

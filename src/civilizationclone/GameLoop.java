@@ -156,7 +156,7 @@ public class GameLoop extends JPanel {
         choice = scan.nextInt();
         scan.nextLine();
         
-        c.setCurrentUnit(buildable[choice]);
+        c.setProduction(buildable[choice]);
         
     }
     
@@ -177,8 +177,8 @@ public class GameLoop extends JPanel {
         choice = scan.nextInt();
         scan.nextLine();
         
-        c.setCurrentProject(buildable[choice]);
-        
+        c.setProduction(buildable[choice]);
+      
     }
 
     public String showCityInfo(City c) {
@@ -388,6 +388,7 @@ public class GameLoop extends JPanel {
     }
 
     //</editor-fold>
+    
     //TESTING GRAPHICS
     //<editor-fold>
     @Override
