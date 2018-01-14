@@ -29,7 +29,7 @@ public class GameLoop extends JPanel {
     public GameLoop() {
 
         scan = new Scanner(System.in);
-        map = new GameMap(MapSize.MEDIUM, 50);
+        map = new GameMap(MapSize.MEDIUM, 90);
         Unit.referenceMap(map);
         City.referenceMap(map);
 
