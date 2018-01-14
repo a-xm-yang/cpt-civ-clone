@@ -1,11 +1,7 @@
 package civilizationclone.GUI;
 
-import civilizationclone.Tile.Desert;
-import civilizationclone.Tile.Hills;
-import civilizationclone.Tile.Mountain;
-import civilizationclone.Tile.Ocean;
-import civilizationclone.Tile.Plains;
-import civilizationclone.Tile.Tile;
+import civilizationclone.Tile.*;
+import civilizationclone.Unit.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import javafx.scene.canvas.Canvas;
@@ -29,12 +25,25 @@ public class DisplayTile extends Pane {
     static final double WIDTH = 100;
     static final double HEIGHT = 80;
     
+    //Horribly inefficient, find a better way to do this before final version
+    
     Image desert;
     Image hills;
     Image mountain;
     Image ocean;
     Image plains ;
     Image image;
+    
+    Image archer;
+    Image builder;
+    Image catapult;
+    Image destroyer;
+    Image galley;
+    Image scout;
+    Image settler;
+    Image swordsman;
+    Image slinger;
+    Image warrior;
 
     public DisplayTile(Tile tile, int x, int y) throws FileNotFoundException {
         
@@ -43,6 +52,17 @@ public class DisplayTile extends Pane {
         mountain = new Image(new FileInputStream("src/Assets/Tiles/Mountain.png"), 100, 110, false, false);
         ocean = new Image(new FileInputStream("src/Assets/Tiles/Ocean.png"), 100, 110, false, false);
         plains = new Image(new FileInputStream("src/Assets/Tiles/Plains.png"), 100, 110, false, false);
+        
+        archer = new Image(new FileInputStream("src/Assets/Units/Archer.png"), 70, 70, false, false);
+        builder = new Image(new FileInputStream("src/Assets/Units/Builder.png"), 70, 70, false, false);
+        //catapult = new Image(new FileInputStream("src/Assets/Units/Catapult.png"), 70, 70, false, false);
+        //destroyer = new Image(new FileInputStream("src/Assets/Units/Destroyer.png"), 70, 70, false, false);
+        //galley = new Image(new FileInputStream("src/Assets/Units/Galley.png"), 70, 70, false, false);
+        scout = new Image(new FileInputStream("src/Assets/Units/Scout.png"), 70, 70, false, false);
+        //settler = new Image(new FileInputStream("src/Assets/Units/Settler.png"), 70, 70, false, false);
+        swordsman = new Image(new FileInputStream("src/Assets/Units/Swordsman.png"), 70, 70, false, false);
+        slinger = new Image(new FileInputStream("src/Assets/Units/Slinger.png"), 70, 70, false, false);
+        warrior = new Image(new FileInputStream("src/Assets/Units/Warrior.png"), 70, 70, false, false);
 
         //tile reference
         this.tile = tile;
@@ -76,11 +96,7 @@ public class DisplayTile extends Pane {
             //c = Color.BLACK;
         }
         
-        if (tile.hasUnit()){
-            c = Color.RED;
-        }
-
-        Canvas canvas = new Canvas(100, 100);
+        Canvas canvas = new Canvas(100, 110);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
         polygon.setFill(c);
@@ -91,6 +107,23 @@ public class DisplayTile extends Pane {
         this.getChildren().add(t);
         this.getChildren().add(canvas);
         gc.drawImage(image, 0, 0);
+        
+        if (tile.hasUnit()){
+            if(tile.getUnit() instanceof ArcherUnit){
+                gc.drawImage(archer, 15, 20);
+            }else if(tile.getUnit() instanceof BuilderUnit){
+                gc.drawImage(builder, 15, 20);
+            }else if(tile.getUnit() instanceof ScoutUnit){
+                gc.drawImage(scout, 15, 20);
+            }else if(tile.getUnit() instanceof SettlerUnit){
+                gc.drawImage(settler, 15, 20);
+            }else if(tile.getUnit() instanceof SlingerUnit){
+                gc.drawImage(slinger, 15, 20);
+            }else if(tile.getUnit() instanceof WarriorUnit){
+                gc.drawImage(warrior, 15, 20);
+            }
+        }
+        
         
         
 
