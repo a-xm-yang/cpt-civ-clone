@@ -7,6 +7,7 @@ package civilizationclone.GUI;
 
 import civilizationclone.GameMap;
 import civilizationclone.Tile.*;
+import java.io.FileNotFoundException;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -18,7 +19,7 @@ public class MapGraphics extends Application {
     ZoomMap root;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws FileNotFoundException {
 
         int sceneSize = 1000;
 
@@ -28,11 +29,11 @@ public class MapGraphics extends Application {
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, sceneSize, sceneSize));
 
-        primaryStage.setTitle("java-buddy");
+        primaryStage.setTitle("Alex Yang's Colonization II");
         primaryStage.show();
     }
 
-    private ZoomMap createFalseMap(int sceneSize) {
+    private ZoomMap createFalseMap(int sceneSize) throws FileNotFoundException {
 
         //creates a copy of the actual tile map, with the sides adjusted to a copied version for scrolling effect
         //first calculate how much spare is needed on both sides, should be according to scene size

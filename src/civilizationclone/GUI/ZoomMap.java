@@ -6,6 +6,7 @@
 package civilizationclone.GUI;
 
 import civilizationclone.Tile.Tile;
+import java.io.FileNotFoundException;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
@@ -25,7 +26,7 @@ public class ZoomMap extends Group {
     private int spareSize;
 
     //size refers to the number of tiles
-    public ZoomMap(int mapSize, int sceneSize, int spareSize, Tile[][] tileMap) {
+    public ZoomMap(int mapSize, int sceneSize, int spareSize, Tile[][] tileMap) throws FileNotFoundException {
 
         super();
         this.mapSize = mapSize;
