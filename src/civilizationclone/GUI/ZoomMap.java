@@ -6,7 +6,6 @@
 package civilizationclone.GUI;
 
 import civilizationclone.Tile.Tile;
-import java.io.FileNotFoundException;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
@@ -15,8 +14,6 @@ import javafx.scene.input.ScrollEvent;
 public class ZoomMap extends Group {
 
     //used for dragging
-    private double orgSceneX, orgSceneY;
-    private double orgTranslateX, orgTranslateY;
     private double topCap, bottomCap;
     private double leftCap, rightCap;
 
@@ -27,7 +24,7 @@ public class ZoomMap extends Group {
     private int spareSize;
 
     //size refers to the number of tiles
-    public ZoomMap(int mapSize, int resX, int resY, int spareSize, Tile[][] tileMap){
+    public ZoomMap(int mapSize, int resX, int resY, int spareSize, Tile[][] tileMap) {
 
         super();
         this.mapSize = mapSize;
@@ -75,13 +72,10 @@ public class ZoomMap extends Group {
             resize(event);
         });
 
-        setOnMousePressed(onMousePressedEventHandler);
-        setOnMouseDragged(onMouseDraggedEventHandler);
-
         calculateBounds();
     }
 
-    //handlers for scrolling, clicking, and dragging    
+    //handlers for scrolling
     private void resize(ScrollEvent event) {
         if (event.getDeltaY() == 0) {
             return;
@@ -103,7 +97,7 @@ public class ZoomMap extends Group {
 
         calculateBounds();
         adjustPosition();
-        
+
     }
 
     private void calculateBounds() {
@@ -120,7 +114,6 @@ public class ZoomMap extends Group {
     private void adjustPosition() {
 
         //make sure the screen is in bounds after what happened
-        
         if (getTranslateY() > topCap) {
             setTranslateY(topCap);
         } else if (getTranslateY() < bottomCap) {
@@ -134,32 +127,8 @@ public class ZoomMap extends Group {
         }
     }
 
-    EventHandler<MouseEvent> onMousePressedEventHandler
-            = new EventHandler<MouseEvent>() {
-
-        @Override
-        public void handle(MouseEvent t) {
-            orgSceneX = t.getSceneX();
-            orgSceneY = t.getSceneY();
-
-            orgTranslateX = getTranslateX();
-            orgTranslateY = getTranslateY();
-        }
-    };
-
-    EventHandler<MouseEvent> onMouseDraggedEventHandler
-            = new EventHandler<MouseEvent>() {
-
-        @Override
-        public void handle(MouseEvent t) {
-
-            double offsetX = t.getSceneX() - orgSceneX;
-            double offsetY = t.getSceneY() - orgSceneY;
-            double newTranslateX = orgTranslateX + offsetX;
-            double newTranslateY = orgTranslateY + offsetY;
-
-            //translation shifts by half the screen size
-            if (newTranslateY < topCap && newTranslateY > bottomCap) {
+    /*
+                if (newTranslateY < topCap && newTranslateY > bottomCap) {
                 setTranslateY(newTranslateY);
             }
 
@@ -171,13 +140,9 @@ public class ZoomMap extends Group {
                 setTranslateX(newTranslateX);
             }
 
-            System.out.println("X: " + getTranslateX());
-            System.out.println("Y: " + getTranslateY());
-            System.out.println("LeftCap: " + leftCap);
-            System.out.println("RightCap: " + rightCap);
-        }
-    };
-
+    
+     */
+    
     //GETTERS AND SETTERS
     //<editor-fold>
     public double getSizeX() {

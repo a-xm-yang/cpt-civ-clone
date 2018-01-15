@@ -1,6 +1,7 @@
 package civilizationclone;
 
 import civilizationclone.Tile.*;
+import civilizationclone.Unit.Unit;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,6 +37,8 @@ public class GameMap {
         initializeMap(MapGenerator.generateMap(size, size, seed));
         initializeResource(MapGenerator.generateResourceMap(size, size, seed + 500));
 
+        Unit.referenceMap(this);
+        City.referenceMap(this);
     }
 
     //MAP INITIALIZAGION
@@ -163,19 +166,19 @@ public class GameMap {
     //<editor-fold>
     public Set<Tile> getVisibleTiles(Point[] allPositions) {
         Set<Point> allVisibleRange = new HashSet<>();
-        
-        for (Point p: allPositions){
-            allVisibleRange.addAll(getRange(p,2));
+
+        for (Point p : allPositions) {
+            allVisibleRange.addAll(getRange(p, 2));
         }
-        
+
         Set<Tile> allVisibleTiles = new HashSet<>();
-        
-        for (Point p: allVisibleRange){
-            allVisibleTiles.add(getTile(p.x,p.y));
+
+        for (Point p : allVisibleRange) {
+            allVisibleTiles.add(getTile(p.x, p.y));
         }
-        
+
         return allVisibleTiles;
-        
+
     }
 
     public Tile[][] getMap() {
@@ -189,19 +192,19 @@ public class GameMap {
     public Tile getTile(int x, int y) {
         return map[x][y];
     }
-    
-    public Tile getTile(Point p){
+
+    public Tile getTile(Point p) {
         return map[p.x][p.y];
     }
-    
-    public Tile[] getTiles(ArrayList<Point> list){
-        
+
+    public Tile[] getTiles(ArrayList<Point> list) {
+
         ArrayList<Tile> tileList = new ArrayList<>();
-        
-        for (Point p: list){
+
+        for (Point p : list) {
             tileList.add(getTile(p));
         }
-        
+
         return tileList.toArray(new Tile[tileList.size()]);
     }
 
@@ -213,11 +216,11 @@ public class GameMap {
                 }
             }
         }
-        
+
         return null;
     }
-    
-     public ArrayList<Point> getRange(Point p, int range) {
+
+    public ArrayList<Point> getRange(Point p, int range) {
 
         //this methods goes around in a cylinder fashion
         int offset = 1, start = 0;
@@ -245,7 +248,6 @@ public class GameMap {
         }
 
         //Bottom Half
-  
         for (int i = p.x + 1; i <= p.x + range; i++) {
             start = ((Math.abs(i - p.x) + offset) / 2) + (p.y - range);
             for (int n = start; n < start + range * 2 + 1 - (i - p.x); n++) {
@@ -258,7 +260,6 @@ public class GameMap {
                 }
             }
         }
-
 
         return boundaries;
     }

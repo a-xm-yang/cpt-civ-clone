@@ -11,18 +11,16 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
-import javafx.scene.text.Text;
+import javafx.scene.shape.Rectangle;
 
-/**
- *
- * @author SGPSGPSGP
- */
 public class DisplayTile extends Pane {
 
+    //member variables
+    //<editor-fold>
     private Polygon polygon;
-    private Circle clickCircle;
     private Tile tile;
     private Canvas canvas;
     private int x;
@@ -51,6 +49,7 @@ public class DisplayTile extends Pane {
     private static Image slinger;
     private static Image warrior;
     private static Image highlight;
+    //</editor-fold>
 
     static {
         try {
@@ -88,29 +87,7 @@ public class DisplayTile extends Pane {
         polygon.setFill(null);
         polygon.setStroke(Color.BLACK);
         polygon.getPoints().addAll(new Double[]{50.0, 0.0, 100.0, 30.0, 100.0, 80.0, 50.0, 110.0, 0.0, 80.0, 0.0, 30.0});
-
-        canvas = new Canvas(100, 110);
-
-        clickCircle = new Circle(50, 55, 47);
-        clickCircle.setFill(Color.TRANSPARENT);
-        clickCircle.setStroke(Color.TRANSPARENT);
-
-        this.getChildren().add(polygon);
-        this.getChildren().add(canvas);
-        this.getChildren().add(clickCircle);
-
-        update();
-
-        clickCircle.setOnMouseClicked(e -> {
-            highlighted = !highlighted;
-            update();
-        });
-    }
-
-    public void update() {
-
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, 100, 110);
+        polygon.setMouseTransparent(true);
 
         if (tile instanceof Ocean) {
             image = ocean;
@@ -123,8 +100,35 @@ public class DisplayTile extends Pane {
         } else if (tile instanceof Mountain) {
             image = mountain;
         }
+        polygon.setFill(new ImagePattern(image));
+        polygon.setStrokeWidth(3);
 
-        gc.drawImage(image, 0, 0);
+        canvas = new Canvas(100, 110);
+        canvas.setMouseTransparent(true);
+
+        Rectangle rec = new Rectangle(50,80);
+        rec.setFill(Color.BLACK);
+        rec.setTranslateX(25);
+        rec.setTranslateY(15);
+        
+        this.getChildren().add(polygon);
+        this.getChildren().add(canvas);
+        this.getChildren().add(rec);
+        
+        update();
+
+        setOnMouseClicked(e -> {
+            highlighted = !highlighted;
+            update();
+        });
+    }
+
+    public void update() {
+
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, 100, 110);
+
+     //   gc.drawImage(image, 0, 0);
 
         if (tile.hasUnit()) {
             if (tile.getUnit() instanceof ArcherUnit) {
@@ -141,9 +145,11 @@ public class DisplayTile extends Pane {
                 gc.drawImage(warrior, 15, 20);
             }
         }
-        
-        if (highlighted){
-            gc.drawImage(highlight, 0, 0);
+
+        if (highlighted) {
+            polygon.setStroke(Color.RED);
+        } else{
+            polygon.setStroke(Color.TRANSPARENT);
         }
     }
 
