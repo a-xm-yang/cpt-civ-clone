@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 
@@ -21,13 +22,17 @@ import javafx.scene.text.Text;
 public class DisplayTile extends Pane {
 
     private Polygon polygon;
+    private Circle clickCircle;
     private Tile tile;
+    private Canvas canvas;
     private int x;
     private int y;
+    private boolean highlighted = false;
+
     static final double WIDTH = 100;
     static final double HEIGHT = 80;
 
-    //Horribly inefficient, find a better way to do this before final version
+    //resources for image
     private static Image desert;
     private static Image hills;
     private static Image mountain;
@@ -45,6 +50,7 @@ public class DisplayTile extends Pane {
     private static Image swordsman;
     private static Image slinger;
     private static Image warrior;
+    private static Image highlight;
 
     static {
         try {
@@ -64,6 +70,7 @@ public class DisplayTile extends Pane {
             swordsman = new Image(new FileInputStream("src/Assets/Units/Swordsman.png"), 70, 70, false, false);
             slinger = new Image(new FileInputStream("src/Assets/Units/Slinger.png"), 70, 70, false, false);
             warrior = new Image(new FileInputStream("src/Assets/Units/Warrior.png"), 70, 70, false, false);
+            highlight = new Image(new FileInputStream("src/Assets/Tiles/Highlight.png"), 100, 110, false, false);
         } catch (IOException e) {
             System.out.println("Image loading failed");
             System.out.println(e.getStackTrace());
@@ -78,35 +85,45 @@ public class DisplayTile extends Pane {
         this.y = y;
 
         polygon = new Polygon();
-        Color c = Color.BLACK;
-        if (tile instanceof Ocean) {
-            //c = Color.NAVY;
-            image = ocean;
-        } else if (tile instanceof Plains) {
-            //c = Color.GREEN;
-            image = plains;
-        } else if (tile instanceof Hills) {
-            //c = Color.LIGHTGRAY;
-            image = hills;
-        } else if (tile instanceof Desert) {
-            //c = Color.ORANGE;
-            image = desert;
-        } else if (tile instanceof Mountain) {
-            //c = Color.GREY;
-            image = mountain;
-        } else {
-            //c = Color.BLACK;
-        }
-
-        Canvas canvas = new Canvas(100, 110);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
-        polygon.setFill(c);
-        polygon.setStroke(Color.GREEN);
+        polygon.setFill(null);
+        polygon.setStroke(Color.BLACK);
         polygon.getPoints().addAll(new Double[]{50.0, 0.0, 100.0, 30.0, 100.0, 80.0, 50.0, 110.0, 0.0, 80.0, 0.0, 30.0});
+
+        canvas = new Canvas(100, 110);
+
+        clickCircle = new Circle(50, 55, 47);
+        clickCircle.setFill(Color.TRANSPARENT);
+        clickCircle.setStroke(Color.TRANSPARENT);
 
         this.getChildren().add(polygon);
         this.getChildren().add(canvas);
+        this.getChildren().add(clickCircle);
+
+        update();
+
+        clickCircle.setOnMouseClicked(e -> {
+            highlighted = !highlighted;
+            update();
+        });
+    }
+
+    public void update() {
+
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, 100, 110);
+
+        if (tile instanceof Ocean) {
+            image = ocean;
+        } else if (tile instanceof Plains) {
+            image = plains;
+        } else if (tile instanceof Hills) {
+            image = hills;
+        } else if (tile instanceof Desert) {
+            image = desert;
+        } else if (tile instanceof Mountain) {
+            image = mountain;
+        }
+
         gc.drawImage(image, 0, 0);
 
         if (tile.hasUnit()) {
@@ -124,13 +141,14 @@ public class DisplayTile extends Pane {
                 gc.drawImage(warrior, 15, 20);
             }
         }
-
-        setOnMouseClicked(e -> {
-            System.out.println("Dewit");
-            polygon.setStroke(Color.RED);
-        });
+        
+        if (highlighted){
+            gc.drawImage(highlight, 0, 0);
+        }
     }
 
+    //GETTERS & EQUAL METHODS
+    //<editor-fold>
     public static double getWIDTH() {
         return WIDTH;
     }
@@ -141,10 +159,10 @@ public class DisplayTile extends Pane {
 
     @Override
     public boolean equals(Object o) {
-        if (x == ((DisplayTile)o).x && y == ((DisplayTile)o).y && this.tile == ((DisplayTile)o).tile){
+        if (x == ((DisplayTile) o).x && y == ((DisplayTile) o).y && this.tile == ((DisplayTile) o).tile) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -159,7 +177,5 @@ public class DisplayTile extends Pane {
     public Tile getTile() {
         return tile;
     }
-     
-    
-
+    //</editor-fold>
 }
