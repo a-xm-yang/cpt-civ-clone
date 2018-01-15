@@ -226,6 +226,8 @@ public class City {
             case SLINGER:
                 player.addUnit(new SlingerUnit(this));
                 break;
+            case SETTLER:
+                player.addUnit(new SettlerUnit(this));
         }
 
         currentUnit = null;

@@ -2,7 +2,7 @@ package civilizationclone.Unit;
 
 import civilizationclone.City;
 import civilizationclone.Tile.Improvement;
-import java.util.Set;
+import java.util.ArrayList;
 
 public class BuilderUnit extends Unit {
 
@@ -13,8 +13,17 @@ public class BuilderUnit extends Unit {
         actions = 3;
     }
 
-    public Set<Improvement> getPossibleImprovement(){
-        return getMapRef().getTile(getX(),getY()).getPossibleImprovements();
+    public Improvement[] getPossibleImprovements(){
+        
+        ArrayList<Improvement> list = new ArrayList<>();
+        
+        for (Improvement p: getMapRef().getTile(getX(),getY()).getPossibleImprovements()){
+            if (getPlayer().getOwnedImprovement().contains(p)){
+                list.add(p);
+            }
+        }
+        
+        return list.toArray(new Improvement[list.size()]);
     }
     
     public void improve(Improvement m){

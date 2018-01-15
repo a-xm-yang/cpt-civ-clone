@@ -17,8 +17,7 @@ public class SettlerUnit extends Unit{
     
     public void settle(String name){
         
-        //add a new city to player and to map, then delete the unit itself
-        
+        //add a new city to player and to map, then delete the unit itself        
         City c = new City(name,this);
         
         getMapRef().getTile(getX(), getY()).setCity(c);

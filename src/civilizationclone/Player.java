@@ -134,6 +134,7 @@ public class Player {
     }
 
     public void calcTechIncome() {
+        
         int x = 0;
 
         for (City c : cityList) {

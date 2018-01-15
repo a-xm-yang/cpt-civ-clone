@@ -22,15 +22,17 @@ public class ZoomMap extends Group {
 
     private double scale;
     private int mapSize;
-    private int sceneSize;
+    private int resX;
+    private int resY;
     private int spareSize;
 
     //size refers to the number of tiles
-    public ZoomMap(int mapSize, int sceneSize, int spareSize, Tile[][] tileMap) throws FileNotFoundException {
+    public ZoomMap(int mapSize, int resX, int resY, int spareSize, Tile[][] tileMap){
 
         super();
         this.mapSize = mapSize;
-        this.sceneSize = sceneSize;
+        this.resX = resX;
+        this.resY = resY;
         this.spareSize = spareSize;
         scale = 1;
 
@@ -101,13 +103,14 @@ public class ZoomMap extends Group {
 
         calculateBounds();
         adjustPosition();
+        
     }
 
     private void calculateBounds() {
 
         //the Y-traslation that would hit the top bottom border of the map
         topCap = (getScale() - 1) * getSizeY() * 0.5;
-        bottomCap = getSizeY() * (-0.5 * getScale() - 0.5) + getScreenSize();
+        bottomCap = getSizeY() * (-0.5 * getScale() - 0.5) + getResY();
 
         //the X-translation that would hit the boundary between the real map and the fake extension map
         leftCap = (getSizeX() / 2 + getSpareWidth()) * (getScale() - 1) - getSpareWidth() * getScale();
@@ -116,14 +119,16 @@ public class ZoomMap extends Group {
 
     private void adjustPosition() {
 
+        //make sure the screen is in bounds after what happened
+        
         if (getTranslateY() > topCap) {
             setTranslateY(topCap);
         } else if (getTranslateY() < bottomCap) {
             setTranslateY(bottomCap);
         }
 
-        if (getTranslateX() >= leftCap + getScreenSize()) {
-            setTranslateX(rightCap + getScreenSize());
+        if (getTranslateX() >= leftCap + getResX()) {
+            setTranslateX(rightCap + getResX());
         } else if (getTranslateX() <= rightCap) {
             setTranslateX(leftCap);
         }
@@ -158,8 +163,8 @@ public class ZoomMap extends Group {
                 setTranslateY(newTranslateY);
             }
 
-            if (newTranslateX >= leftCap + getScreenSize()) {
-                setTranslateX(rightCap + getScreenSize());
+            if (newTranslateX >= leftCap + getResX()) {
+                setTranslateX(rightCap + getResX());
             } else if (newTranslateX <= rightCap) {
                 setTranslateX(leftCap);
             } else {
@@ -183,8 +188,12 @@ public class ZoomMap extends Group {
         return mapSize / 2 * 160 + ((mapSize % 2 == 1) ? 80 : 0);
     }
 
-    public int getScreenSize() {
-        return sceneSize;
+    public int getResX() {
+        return resX;
+    }
+
+    public int getResY() {
+        return resY;
     }
 
     public double getTileWidth() {
