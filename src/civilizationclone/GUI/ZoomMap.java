@@ -6,9 +6,9 @@
 package civilizationclone.GUI;
 
 import civilizationclone.Tile.Tile;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.input.ScrollEvent;
 
 public class ZoomMap extends Group {
@@ -60,8 +60,15 @@ public class ZoomMap extends Group {
                 DisplayTile t = new DisplayTile(tileMap[i][k], i, k - fixedY);
                 t.setTranslateY(DisplayTile.getHEIGHT() * i);
                 t.setTranslateX(DisplayTile.getWIDTH() * k + offset);
-
                 getChildren().add(t);
+            }
+        }
+        
+        //initialize the canvas drawing for each object
+        for (int i = 0; i < getChildren().size(); i++){
+            Node n = this.getChildren().get(i);
+            if (n instanceof DisplayTile){
+                ((DisplayTile) n).initCanvas();
             }
         }
 
@@ -175,6 +182,10 @@ public class ZoomMap extends Group {
 
     public double getSpareWidth() {
         return spareSize * DisplayTile.getWIDTH() + DisplayTile.getWIDTH() / 2;
+    }
+    
+    public void addCanvas(Canvas n){
+        this.getChildren().add(n);
     }
     //</editor-fold>
 }

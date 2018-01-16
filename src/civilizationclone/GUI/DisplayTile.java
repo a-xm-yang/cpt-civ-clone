@@ -3,27 +3,22 @@ package civilizationclone.GUI;
 import civilizationclone.Tile.*;
 import civilizationclone.Unit.*;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
 
-public class DisplayTile extends Pane {
+public class DisplayTile extends Polygon {
 
     //member variables
     //<editor-fold>
-    private Polygon polygon;
+//    private Polygon polygon;
     private Tile tile;
     private Canvas canvas;
-    private Circle clickCircle;
     private int x;
     private int y;
     private boolean highlighted = false;
@@ -49,9 +44,9 @@ public class DisplayTile extends Pane {
     private static Image swordsman;
     private static Image slinger;
     private static Image warrior;
-    private static Image highlight;
     //</editor-fold>
 
+    //staticly loading images
     static {
         try {
             desert = new Image(new FileInputStream("src/Assets/Tiles/Desert.png"), 100, 110, false, false);
@@ -70,7 +65,6 @@ public class DisplayTile extends Pane {
             swordsman = new Image(new FileInputStream("src/Assets/Units/Swordsman.png"), 70, 70, false, false);
             slinger = new Image(new FileInputStream("src/Assets/Units/Slinger.png"), 70, 70, false, false);
             warrior = new Image(new FileInputStream("src/Assets/Units/Warrior.png"), 70, 70, false, false);
-            highlight = new Image(new FileInputStream("src/Assets/Tiles/Highlight.png"), 100, 110, false, false);
         } catch (IOException e) {
             System.out.println("Image loading failed");
             System.out.println(e.getStackTrace());
@@ -84,11 +78,11 @@ public class DisplayTile extends Pane {
         this.x = x;
         this.y = y;
 
-        polygon = new Polygon();
-        polygon.setFill(null);
-        polygon.setStroke(Color.BLACK);
-        polygon.getPoints().addAll(new Double[]{50.0, 0.0, 100.0, 30.0, 100.0, 80.0, 50.0, 110.0, 0.0, 80.0, 0.0, 30.0});
-        polygon.setMouseTransparent(true);
+        canvas = new Canvas(100, 110);
+        canvas.setMouseTransparent(true);
+
+        setStroke(Color.BLACK);
+        getPoints().addAll(new Double[]{50.0, 0.0, 100.0, 30.0, 100.0, 80.0, 50.0, 110.0, 0.0, 80.0, 0.0, 30.0});
         if (tile instanceof Ocean) {
             image = ocean;
         } else if (tile instanceof Plains) {
@@ -100,22 +94,12 @@ public class DisplayTile extends Pane {
         } else if (tile instanceof Mountain) {
             image = mountain;
         }
-        polygon.setFill(new ImagePattern(image));
-        polygon.setStrokeWidth(3);
-        
-        clickCircle = new Circle(50, 55, 47);
-        clickCircle.setFill(Color.BLACK);
+        setFill(new ImagePattern(image));
+        setStrokeWidth(3);
 
-        canvas = new Canvas(100, 110);
-        canvas.setMouseTransparent(true);
-        
-        this.getChildren().add(polygon);
-        this.getChildren().add(canvas);
-        this.getChildren().add(clickCircle);
-        
         update();
 
-        clickCircle.setOnMouseClicked(e -> {
+        setOnMouseClicked(e -> {
             highlighted = !highlighted;
             update();
         });
@@ -124,9 +108,6 @@ public class DisplayTile extends Pane {
     public void update() {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, 100, 110);
-
-    //    gc.drawImage(image, 0, 0);
 
         if (tile.hasUnit()) {
             if (tile.getUnit() instanceof ArcherUnit) {
@@ -145,9 +126,19 @@ public class DisplayTile extends Pane {
         }
 
         if (highlighted) {
-            polygon.setStroke(Color.RED);
-        } else{
-            polygon.setStroke(Color.TRANSPARENT);
+            setStroke(Color.RED);
+        } else {
+            setStroke(Color.TRANSPARENT);
+        }
+    }
+
+    public void initCanvas() {
+        canvas.setTranslateX(getTranslateX());
+        canvas.setTranslateY(getTranslateY());
+
+        Parent p = this.getParent();
+        if (p instanceof ZoomMap) {
+            ((ZoomMap) p).addCanvas(canvas);
         }
     }
 

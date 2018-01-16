@@ -30,8 +30,6 @@ public class GameLoop extends JPanel {
 
         scan = new Scanner(System.in);
         map = new GameMap(MapSize.MEDIUM, 90);
-        Unit.referenceMap(map);
-        City.referenceMap(map);
 
         playerList = new ArrayList<Player>();
         playerList.add(new Player("Joseph Stalin"));
