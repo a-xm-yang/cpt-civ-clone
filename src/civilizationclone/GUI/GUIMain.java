@@ -5,9 +5,7 @@
  */
 package civilizationclone.GUI;
 
-import civilizationclone.GameMap;
 import civilizationclone.Player;
-import civilizationclone.Tile.*;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.scene.Scene;
