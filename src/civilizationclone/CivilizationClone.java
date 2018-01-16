@@ -1,6 +1,6 @@
 package civilizationclone;
 
-import civilizationclone.GUI.MapGraphics;
+import civilizationclone.GUI.GUIMain;
 import javafx.application.Application;
 
 /*
@@ -17,7 +17,7 @@ public class CivilizationClone{
 
     public static void main(String[] args) {
       //  new GameLoop();
-       Application.launch(MapGraphics.class,args);
+       Application.launch(GUIMain.class,args);
     }
 
 }

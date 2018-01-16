@@ -14,7 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class MapGraphics extends Application {
+public class GUIMain extends Application {
 
     GamePane root;
 
