@@ -18,6 +18,7 @@ public abstract class Tile {
 
     private Unit unit;
     private City c;
+    private City controllingCity;
 
     public Tile(boolean isWater, int movementCost) {
         this.isWater = isWater;
@@ -122,6 +123,21 @@ public abstract class Tile {
     public void setFoodOutput(int foodOutput) {
         this.foodOutput = foodOutput;
     }
+    
+    public City getControllingCity() {
+        return controllingCity;
+    }
+
+    public void setControllingCity(City controllingCity) {
+        this.controllingCity = controllingCity;
+    }
+    
+    public boolean isControlled(){
+        return !(this.controllingCity == null);
+    }
+    
     //</editor-fold>
+
+    
 
 }

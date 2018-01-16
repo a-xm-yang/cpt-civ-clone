@@ -1,5 +1,6 @@
 package civilizationclone.GUI;
 
+import civilizationclone.City;
 import civilizationclone.Tile.*;
 import civilizationclone.Unit.*;
 import java.io.FileInputStream;
@@ -22,6 +23,8 @@ public class DisplayTile extends Polygon {
     private int x;
     private int y;
     private boolean highlighted = false;
+    private boolean greenHighlighted = false;
+    private boolean blueHighlighted = false;
 
     static final double WIDTH = 100;
     static final double HEIGHT = 80;
@@ -102,18 +105,31 @@ public class DisplayTile extends Polygon {
         update();
 
         setOnMouseClicked(e -> {
+            System.out.println("Jewit");
             if(this.tile.hasCity()){
                 CityMenu citymenu = new CityMenu(this.tile.getCity(), x, y);
                 
             }
+            if(this.tile.hasUnit()){
+                if(this.tile.getUnit() instanceof SettlerUnit){
+                    this.tile.getUnit().getPlayer().addCity(new City("Memphis", (SettlerUnit) this.tile.getUnit()));
+                    this.tile.getUnit().delete();
+                }
+            }
+                    
             
             highlighted = !highlighted;
             update();
+            
+            
+            
         });
+        
+        
     }
 
     public void update() {
-
+        System.out.println("NEgros");
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         if (tile.hasUnit()) {
@@ -134,11 +150,18 @@ public class DisplayTile extends Polygon {
         
         if(tile.hasCity()){
             gc.drawImage(city, 5, 10);
+        }
         
+        if(tile.isControlled()){
+            blueHighlighted = true;
         }
 
         if (highlighted) {
             setStroke(Color.RED);
+        } else if(blueHighlighted){
+            setStroke(Color.BLUE);
+        } else if(greenHighlighted){
+            setStroke(Color.GREEN);
         } else {
             setStroke(Color.TRANSPARENT);
         }

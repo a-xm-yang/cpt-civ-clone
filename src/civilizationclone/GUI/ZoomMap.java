@@ -9,6 +9,7 @@ import civilizationclone.Tile.Tile;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
 public class ZoomMap extends Group {
@@ -63,11 +64,11 @@ public class ZoomMap extends Group {
                 getChildren().add(t);
             }
         }
-        
+
         //initialize the canvas drawing for each object
-        for (int i = 0; i < getChildren().size(); i++){
+        for (int i = 0; i < getChildren().size(); i++) {
             Node n = this.getChildren().get(i);
-            if (n instanceof DisplayTile){
+            if (n instanceof DisplayTile) {
                 ((DisplayTile) n).initCanvas();
             }
         }
@@ -78,6 +79,16 @@ public class ZoomMap extends Group {
         setOnScroll((ScrollEvent event) -> {
             resize(event);
         });
+
+        setOnMouseClicked((MouseEvent e) -> {
+            System.out.println("Dewit");
+            for (Node disptile : this.getChildren()) {
+                if (disptile instanceof DisplayTile) {
+                    ((DisplayTile) disptile).update();
+                }
+            }
+
+        }); 
 
         calculateBounds();
     }
@@ -149,7 +160,6 @@ public class ZoomMap extends Group {
 
     
      */
-    
     //GETTERS AND SETTERS
     //<editor-fold>
     public double getSizeX() {
@@ -183,8 +193,8 @@ public class ZoomMap extends Group {
     public double getSpareWidth() {
         return spareSize * DisplayTile.getWIDTH() + DisplayTile.getWIDTH() / 2;
     }
-    
-    public void addCanvas(Canvas n){
+
+    public void addCanvas(Canvas n) {
         this.getChildren().add(n);
     }
     //</editor-fold>

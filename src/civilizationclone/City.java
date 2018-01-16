@@ -58,6 +58,7 @@ public class City {
         ArrayList<Point> temp = mapRef.getRange(POSITION, 1);
         for (Point p : temp) {
             ownedTiles.add(mapRef.getTile(p.x, p.y));
+            mapRef.getTile(p.x, p.y).setControllingCity(this);
         }
         ownedTiles.remove(mapRef.getTile(POSITION.x, POSITION.y));
 

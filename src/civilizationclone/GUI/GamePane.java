@@ -7,6 +7,8 @@ import civilizationclone.Unit.Unit;
 import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
 import java.util.ArrayList;
+import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
  
 public class GamePane extends Pane {
@@ -33,13 +35,15 @@ public class GamePane extends Pane {
         System.out.println(playerList.get(0).getName());
         playerList.get(0).addUnit(new SettlerUnit(playerList.get(0), new Point(5,5)));
         System.out.println(playerList.get(0).getUnitList().get(0));
-        City Isreal = new City("Isreal", (SettlerUnit) playerList.get(0).getUnitList().get(0));
-        playerList.get(0).getUnitList().get(0).delete();
+        //playerList.get(0).getUnitList().get(0).delete();
         
        
        
         zoomMap = createFalseMap(gameMap.getMap());
         getChildren().add(zoomMap);
+        
+        
+
     }
  
     private ZoomMap createFalseMap(Tile[][] original) {
