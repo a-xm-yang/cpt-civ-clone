@@ -23,6 +23,7 @@ public class DisplayTile extends Pane {
     private Polygon polygon;
     private Tile tile;
     private Canvas canvas;
+    private Circle clickCircle;
     private int x;
     private int y;
     private boolean highlighted = false;
@@ -88,7 +89,6 @@ public class DisplayTile extends Pane {
         polygon.setStroke(Color.BLACK);
         polygon.getPoints().addAll(new Double[]{50.0, 0.0, 100.0, 30.0, 100.0, 80.0, 50.0, 110.0, 0.0, 80.0, 0.0, 30.0});
         polygon.setMouseTransparent(true);
-
         if (tile instanceof Ocean) {
             image = ocean;
         } else if (tile instanceof Plains) {
@@ -102,22 +102,20 @@ public class DisplayTile extends Pane {
         }
         polygon.setFill(new ImagePattern(image));
         polygon.setStrokeWidth(3);
+        
+        clickCircle = new Circle(50, 55, 47);
+        clickCircle.setFill(Color.BLACK);
 
         canvas = new Canvas(100, 110);
         canvas.setMouseTransparent(true);
-
-        Rectangle rec = new Rectangle(50,80);
-        rec.setFill(Color.BLACK);
-        rec.setTranslateX(25);
-        rec.setTranslateY(15);
         
         this.getChildren().add(polygon);
         this.getChildren().add(canvas);
-        this.getChildren().add(rec);
+        this.getChildren().add(clickCircle);
         
         update();
 
-        setOnMouseClicked(e -> {
+        clickCircle.setOnMouseClicked(e -> {
             highlighted = !highlighted;
             update();
         });
@@ -128,7 +126,7 @@ public class DisplayTile extends Pane {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, 100, 110);
 
-     //   gc.drawImage(image, 0, 0);
+    //    gc.drawImage(image, 0, 0);
 
         if (tile.hasUnit()) {
             if (tile.getUnit() instanceof ArcherUnit) {
