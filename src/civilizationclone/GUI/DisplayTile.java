@@ -33,6 +33,7 @@ public class DisplayTile extends Polygon {
     private static Image ocean;
     private static Image plains;
     private static Image image;
+    private static Image city;
 
     private static Image archer;
     private static Image builder;
@@ -54,6 +55,7 @@ public class DisplayTile extends Polygon {
             mountain = new Image(new FileInputStream("src/Assets/Tiles/Mountain.png"), 100, 110, false, false);
             ocean = new Image(new FileInputStream("src/Assets/Tiles/Ocean.png"), 100, 110, false, false);
             plains = new Image(new FileInputStream("src/Assets/Tiles/Plains.png"), 100, 110, false, false);
+            city = new Image(new FileInputStream("src/Assets/Tiles/City.png"), 90, 90, false, false);
 
             archer = new Image(new FileInputStream("src/Assets/Units/Archer.png"), 70, 70, false, false);
             builder = new Image(new FileInputStream("src/Assets/Units/Builder.png"), 70, 70, false, false);
@@ -61,7 +63,7 @@ public class DisplayTile extends Polygon {
             //destroyer = new Image(new FileInputStream("src/Assets/Units/Destroyer.png"), 70, 70, false, false);
             //galley = new Image(new FileInputStream("src/Assets/Units/Galley.png"), 70, 70, false, false);
             scout = new Image(new FileInputStream("src/Assets/Units/Scout.png"), 70, 70, false, false);
-            //settler = new Image(new FileInputStream("src/Assets/Units/Settler.png"), 70, 70, false, false);
+            settler = new Image(new FileInputStream("src/Assets/Units/Settler.png"), 70, 70, false, false);
             swordsman = new Image(new FileInputStream("src/Assets/Units/Swordsman.png"), 70, 70, false, false);
             slinger = new Image(new FileInputStream("src/Assets/Units/Slinger.png"), 70, 70, false, false);
             warrior = new Image(new FileInputStream("src/Assets/Units/Warrior.png"), 70, 70, false, false);
@@ -100,6 +102,11 @@ public class DisplayTile extends Polygon {
         update();
 
         setOnMouseClicked(e -> {
+            if(this.tile.hasCity()){
+                CityMenu citymenu = new CityMenu(this.tile.getCity(), x, y);
+                
+            }
+            
             highlighted = !highlighted;
             update();
         });
@@ -123,6 +130,11 @@ public class DisplayTile extends Polygon {
             } else if (tile.getUnit() instanceof WarriorUnit) {
                 gc.drawImage(warrior, 15, 20);
             }
+        }
+        
+        if(tile.hasCity()){
+            gc.drawImage(city, 5, 10);
+        
         }
 
         if (highlighted) {

@@ -31,8 +31,12 @@ public class GamePane extends Pane {
  
        
         System.out.println(playerList.get(0).getName());
-        playerList.get(0).addUnit(new WarriorUnit(playerList.get(0), new Point(5,5)));
-        System.out.println(gameMap.getTile(new Point(5,5)).getUnit());
+        playerList.get(0).addUnit(new SettlerUnit(playerList.get(0), new Point(5,5)));
+        System.out.println(playerList.get(0).getUnitList().get(0));
+        City Isreal = new City("Isreal", (SettlerUnit) playerList.get(0).getUnitList().get(0));
+        playerList.get(0).getUnitList().get(0).delete();
+        
+       
        
         zoomMap = createFalseMap(gameMap.getMap());
         getChildren().add(zoomMap);
