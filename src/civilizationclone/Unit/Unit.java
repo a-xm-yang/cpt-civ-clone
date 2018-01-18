@@ -3,6 +3,7 @@ package civilizationclone.Unit;
 import civilizationclone.City;
 import civilizationclone.GameMap;
 import civilizationclone.Player;
+import civilizationclone.Tile.Mountain;
 import civilizationclone.Tile.Tile;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public abstract class Unit implements IMovement {
         
         for (Point p: list){
             Tile t = mapRef.getTile(p.x, p.y);
-            if (!t.hasUnit() && !t.isWater()){
+            if (!t.hasUnit() && !t.isWater() && !(t instanceof Mountain)){
                 moves.add(p);
             }
         }
