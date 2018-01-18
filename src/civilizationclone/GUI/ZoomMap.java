@@ -5,8 +5,10 @@
  */
 package civilizationclone.GUI;
 
+import civilizationclone.City;
 import civilizationclone.Player;
 import civilizationclone.Tile.Tile;
+import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.Unit;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
@@ -118,6 +121,7 @@ public class ZoomMap extends Group {
 
     private void clickEventHandling(MouseEvent e) {
         
+              
         Tile clickedTile;
         
         //in case it doesn't exactly hit on a tile (which indeed happens)
@@ -128,17 +132,21 @@ public class ZoomMap extends Group {
         }
 
         if (clickedTile.hasCity()) {
-            //TODO add city handling
+            this.getChildren().add(new CityMenu(clickedTile.getCity(), resX / 3, resY));
         }
 
         //testing for only movement highlight
         if (highlightType == HighlightType.NONE) {
             if (clickedTile.hasUnit() && clickedTile.getUnit().getPlayer().equals(currentPlayer)) {
+                if(clickedTile.getUnit() instanceof SettlerUnit && e.getButton()==MouseButton.SECONDARY){
+                    ((SettlerUnit)clickedTile.getUnit()).settle("Memphis");
+                }else{
                 //TODO Invoke a UnitOptionPane
                 //Right now it's just for movement
                 highlightType = HighlightType.MOVEMENT;
                 addHighlightedTiles(clickedTile.getUnit().getMoves());
                 selectedUnit = clickedTile.getUnit();
+                }
             }
         } else {
 

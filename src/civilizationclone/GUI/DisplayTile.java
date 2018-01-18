@@ -139,6 +139,7 @@ public class DisplayTile extends Polygon {
         //will be changed later
         if (highlighted) {
             setStroke(Color.RED);
+            
         } else {
             setStroke(Color.BLACK);
         }
