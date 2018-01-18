@@ -3,12 +3,14 @@ package civilizationclone.GUI;
 import civilizationclone.City;
 import civilizationclone.Tile.*;
 import civilizationclone.Unit.*;
+import java.awt.Point;
 import java.io.FileInputStream;
 import java.io.IOException;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
@@ -19,17 +21,20 @@ public class DisplayTile extends Polygon {
     //<editor-fold>
 //    private Polygon polygon;
     private Tile tile;
-    private Canvas canvas;
+    private static Canvas canvas;
+    //x y position of the tile
     private int x;
     private int y;
     private boolean highlighted = false;
     private boolean greenHighlighted = false;
     private boolean blueHighlighted = false;
 
-    static final double WIDTH = 100;
-    static final double HEIGHT = 80;
+    static final double WIDTH = 102;
+    static final double HEIGHT = 82;
+    //</editor-fold>
 
-    //resources for image
+    //resources and variables for image loading
+    //<editor-fold>
     private static Image desert;
     private static Image hills;
     private static Image mountain;
@@ -83,9 +88,6 @@ public class DisplayTile extends Polygon {
         this.x = x;
         this.y = y;
 
-        canvas = new Canvas(100, 110);
-        canvas.setMouseTransparent(true);
-
         setStroke(Color.BLACK);
         getPoints().addAll(new Double[]{50.0, 0.0, 100.0, 30.0, 100.0, 80.0, 50.0, 110.0, 0.0, 80.0, 0.0, 30.0});
         if (tile instanceof Ocean) {
@@ -104,96 +106,56 @@ public class DisplayTile extends Polygon {
 
         update();
 
-        setOnMouseClicked(e -> {
-            System.out.println("Jewit");
-            if(this.tile.hasCity()){
-                CityMenu citymenu = new CityMenu(this.tile.getCity(), x, y);
-                
-            }
-            if(this.tile.hasUnit()){
-                if(this.tile.getUnit() instanceof SettlerUnit){
-                    this.tile.getUnit().getPlayer().addCity(new City("Memphis", (SettlerUnit) this.tile.getUnit()));
-                    this.tile.getUnit().delete();
-                }
-            }
-                    
-            
-            highlighted = !highlighted;
-            update();
-            
-            
-            
-        });
-        
-        
     }
 
     public void update() {
-        System.out.println("NEgros");
+
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         if (tile.hasUnit()) {
             if (tile.getUnit() instanceof ArcherUnit) {
-                gc.drawImage(archer, 15, 20);
+                gc.drawImage(archer, 15 + getTranslateX(), 20 + getTranslateY());
             } else if (tile.getUnit() instanceof BuilderUnit) {
-                gc.drawImage(builder, 15, 20);
+                gc.drawImage(builder, 15 + getTranslateX(), 20 + getTranslateY());
             } else if (tile.getUnit() instanceof ScoutUnit) {
-                gc.drawImage(scout, 15, 20);
+                gc.drawImage(scout, 15 + getTranslateX(), 20 + getTranslateY());
             } else if (tile.getUnit() instanceof SettlerUnit) {
-                gc.drawImage(settler, 15, 20);
+                gc.drawImage(settler, 15 + getTranslateX(), 20 + getTranslateY());
             } else if (tile.getUnit() instanceof SlingerUnit) {
-                gc.drawImage(slinger, 15, 20);
+                gc.drawImage(slinger, 15 + getTranslateX(), 20 + getTranslateY());
             } else if (tile.getUnit() instanceof WarriorUnit) {
-                gc.drawImage(warrior, 15, 20);
+                gc.drawImage(warrior, 15 + getTranslateX(), 20 + getTranslateY());
             }
         }
-        
-        if(tile.hasCity()){
-            gc.drawImage(city, 5, 10);
+
+        if (tile.hasCity()) {
+            gc.drawImage(city, 5 + getTranslateX(), 10 + getTranslateY());
         }
-        
-        if(tile.isControlled()){
+
+        if (tile.isControlled()) {
             blueHighlighted = true;
         }
 
+        //will be changed later
         if (highlighted) {
             setStroke(Color.RED);
-        } else if(blueHighlighted){
-            setStroke(Color.BLUE);
-        } else if(greenHighlighted){
-            setStroke(Color.GREEN);
         } else {
-            setStroke(Color.TRANSPARENT);
-        }
-    }
-
-    public void initCanvas() {
-        canvas.setTranslateX(getTranslateX());
-        canvas.setTranslateY(getTranslateY());
-
-        Parent p = this.getParent();
-        if (p instanceof ZoomMap) {
-            ((ZoomMap) p).addCanvas(canvas);
+            setStroke(Color.BLACK);
         }
     }
 
     //GETTERS & EQUAL METHODS
     //<editor-fold>
+    public Point getPoint() {
+        return new Point(x, y);
+    }
+
     public static double getWIDTH() {
         return WIDTH;
     }
 
     public static double getHEIGHT() {
         return HEIGHT;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (x == ((DisplayTile) o).x && y == ((DisplayTile) o).y && this.tile == ((DisplayTile) o).tile) {
-            return true;
-        }
-
-        return false;
     }
 
     public int getX() {
@@ -208,4 +170,13 @@ public class DisplayTile extends Polygon {
         return tile;
     }
     //</editor-fold>
+
+    public static void referenceCanvas(Canvas ref) {
+        canvas = ref;
+    }
+
+    public void setHighlighted(boolean highlighted) {
+        this.highlighted = highlighted;
+    }
+
 }

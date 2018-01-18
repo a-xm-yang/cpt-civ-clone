@@ -20,6 +20,7 @@ public class GamePane extends Pane {
     //game data
     private GameMap gameMap;
     private ArrayList<Player> playerList;
+    private Player currentPlayer;
  
     public GamePane(ArrayList<Player> playerList, int resX, int resY) {
  
@@ -28,23 +29,16 @@ public class GamePane extends Pane {
         this.resY = resY;
  
         gameMap = new GameMap(GameMap.MapSize.SMALL, 400);
-        City.referenceMap(gameMap);
-        Unit.referenceMap(gameMap);
- 
-       
-        System.out.println(playerList.get(0).getName());
-        playerList.get(0).addUnit(new SettlerUnit(playerList.get(0), new Point(5,5)));
-        System.out.println(playerList.get(0).getUnitList().get(0));
-        //playerList.get(0).getUnitList().get(0).delete();
-        
-       
+        currentPlayer = playerList.get(0);
+        playerList.get(0).addUnit(new SettlerUnit(playerList.get(0), new Point(12,12)));
+    
        
         zoomMap = createFalseMap(gameMap.getMap());
+        zoomMap.setCurrentPlayer(currentPlayer);
         getChildren().add(zoomMap);
-        
-        
-
     }
+    
+  
  
     private ZoomMap createFalseMap(Tile[][] original) {
  

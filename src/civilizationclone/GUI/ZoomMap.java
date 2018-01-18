@@ -5,34 +5,65 @@
  */
 package civilizationclone.GUI;
 
+import civilizationclone.Player;
 import civilizationclone.Tile.Tile;
+import civilizationclone.Unit.Unit;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Iterator;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
 public class ZoomMap extends Group {
 
-    //used for dragging
+    //Graphics Related Vars ----
+    //<editor-fold>
     private double topCap, bottomCap;
     private double leftCap, rightCap;
+    private double orgSceneX, orgSceneY;
+    private double orgTranslateX, orgTranslateY;
 
     private double scale;
     private int mapSize;
-    private int resX;
-    private int resY;
+    private int resX, resY;
     private int spareSize;
+    private double sizeX, sizeY, totalSizeX;
+    //</editor-fold>
+
+    private Canvas canvas;
+    private ArrayList<DisplayTile> tileList;
+    private Point[] highlightedTiles;
+    private HighlightType highlightType;
+
+    private Player currentPlayer;
+    private Unit selectedUnit;
 
     //size refers to the number of tiles
     public ZoomMap(int mapSize, int resX, int resY, int spareSize, Tile[][] tileMap) {
 
         super();
+
+        highlightType = HighlightType.NONE;
         this.mapSize = mapSize;
         this.resX = resX;
         this.resY = resY;
         this.spareSize = spareSize;
+
+        this.sizeX = mapSize * DisplayTile.getWIDTH();
+        this.sizeY = mapSize / 2 * 164 + ((mapSize % 2 == 1) ? 82 : 0);
+        this.totalSizeX = sizeX + 2 * getSpareWidth();
+
         scale = 1;
+        tileList = new ArrayList<>();
+
+        canvas = new Canvas(getSizeX() + 2 * (getSpareWidth()), getSizeY());
+        DisplayTile.referenceCanvas(canvas);
+        canvas.setMouseTransparent(true);
 
         //set actual objects according to the given falsified tileMap
         //since each display tile has a x-y-coordinate, and the map is a false map to scroll around, we need to adjust the coordinates accoridngly
@@ -44,9 +75,7 @@ public class ZoomMap extends Group {
                 offset = 0;
             }
             for (int k = 0; k < tileMap[0].length; k++) {
-
                 int fixedY;
-
                 if (k >= spareSize + mapSize) {
                     //if it's the right buffer
                     fixedY = spareSize + mapSize;
@@ -57,43 +86,110 @@ public class ZoomMap extends Group {
                     //if it's left buffer
                     fixedY = (mapSize - spareSize) * -1;
                 }
-
                 DisplayTile t = new DisplayTile(tileMap[i][k], i, k - fixedY);
                 t.setTranslateY(DisplayTile.getHEIGHT() * i);
                 t.setTranslateX(DisplayTile.getWIDTH() * k + offset);
                 getChildren().add(t);
+                tileList.add(t);
             }
         }
 
-        //initialize the canvas drawing for each object
-        for (int i = 0; i < getChildren().size(); i++) {
-            Node n = this.getChildren().get(i);
-            if (n instanceof DisplayTile) {
-                ((DisplayTile) n).initCanvas();
-            }
-        }
+        getChildren().add(canvas);
 
         //shifts to original position
         setTranslateX(-1 * getSpareWidth());
 
+        //handler for resizing the map
         setOnScroll((ScrollEvent event) -> {
             resize(event);
         });
 
-        setOnMouseClicked((MouseEvent e) -> {
-            System.out.println("Dewit");
-            for (Node disptile : this.getChildren()) {
-                if (disptile instanceof DisplayTile) {
-                    ((DisplayTile) disptile).update();
+        //handler for actions (incomplete)
+        setOnMouseClicked((MouseEvent event) -> {
+            clickEventHandling(event);
+        });
+
+        setOnMousePressed(onMousePressedEventHandler);
+        setOnMouseDragged(onMouseDraggedEventHandler);
+
+        calculateBounds();
+        repaint();
+    }
+
+    private void clickEventHandling(MouseEvent e) {
+        
+        Tile clickedTile;
+        
+        //in case it doesn't exactly hit on a tile (which indeed happens)
+        try {
+            clickedTile = ((DisplayTile) e.getTarget()).getTile();
+        } catch (Exception exception) {
+            return;
+        }
+
+        if (clickedTile.hasCity()) {
+            //TODO add city handling
+        }
+
+        //testing for only movement highlight
+        if (highlightType == HighlightType.NONE) {
+            if (clickedTile.hasUnit() && clickedTile.getUnit().getPlayer().equals(currentPlayer)) {
+                //TODO Invoke a UnitOptionPane
+                //Right now it's just for movement
+                highlightType = HighlightType.MOVEMENT;
+                addHighlightedTiles(clickedTile.getUnit().getMoves());
+                selectedUnit = clickedTile.getUnit();
+            }
+        } else {
+
+            //if movement is desired
+            if (highlightType == highlightType.MOVEMENT) {
+                Point clickPoint = ((DisplayTile) e.getTarget()).getPoint();
+                for (Point p : highlightedTiles) {
+                    if (clickPoint.x == p.x && clickPoint.y == p.y) {
+                        selectedUnit.move(p);
+                    }
                 }
             }
 
-        }); 
+            //reset the highlight status
+            selectedUnit = null;
+            highlightType = HighlightType.NONE;
+            cleanHighlight();
 
-        calculateBounds();
+        }
+
+        repaint();
     }
 
-    //handlers for scrolling
+    public void repaint() {
+        canvas.getGraphicsContext2D().clearRect(0, 0, totalSizeX, sizeY);
+        for (DisplayTile t : tileList) {
+            t.update();
+        }
+    }
+
+    public void addHighlightedTiles(Point[] possibleMoves) {
+        highlightedTiles = possibleMoves;
+
+        for (Point p : possibleMoves) {
+            for (DisplayTile t : tileList) {
+                if (t.getX() == p.x && t.getY() == p.y) {
+                    t.setHighlighted(true);
+                }
+            }
+        }
+    }
+
+    public void cleanHighlight() {
+        highlightType = HighlightType.NONE;
+        for (DisplayTile t : tileList) {
+            t.setHighlighted(false);
+        }
+    }
+
+    //handlers for scrolling ---------------
+    //<editor-fold>
     private void resize(ScrollEvent event) {
         if (event.getDeltaY() == 0) {
             return;
@@ -144,30 +240,28 @@ public class ZoomMap extends Group {
             setTranslateX(leftCap);
         }
     }
+    //</editor-fold>
 
-    /*
-                if (newTranslateY < topCap && newTranslateY > bottomCap) {
-                setTranslateY(newTranslateY);
-            }
-
-            if (newTranslateX >= leftCap + getResX()) {
-                setTranslateX(rightCap + getResX());
-            } else if (newTranslateX <= rightCap) {
-                setTranslateX(leftCap);
-            } else {
-                setTranslateX(newTranslateX);
-            }
-
-    
-     */
     //GETTERS AND SETTERS
     //<editor-fold>
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public HighlightType getHighlightType() {
+        return highlightType;
+    }
+
+    public void setHighlightType(HighlightType highlightType) {
+        this.highlightType = highlightType;
+    }
+
     public double getSizeX() {
-        return mapSize * DisplayTile.getWIDTH();
+        return sizeX;
     }
 
     public double getSizeY() {
-        return mapSize / 2 * 160 + ((mapSize % 2 == 1) ? 80 : 0);
+        return sizeY;
     }
 
     public int getResX() {
@@ -194,8 +288,51 @@ public class ZoomMap extends Group {
         return spareSize * DisplayTile.getWIDTH() + DisplayTile.getWIDTH() / 2;
     }
 
-    public void addCanvas(Canvas n) {
-        this.getChildren().add(n);
+    public Canvas getCanvas() {
+        return canvas;
     }
     //</editor-fold>
+
+    EventHandler<MouseEvent> onMousePressedEventHandler
+            = new EventHandler<MouseEvent>() {
+
+        @Override
+        public void handle(MouseEvent t) {
+            orgSceneX = t.getSceneX();
+            orgSceneY = t.getSceneY();
+
+            orgTranslateX = getTranslateX();
+            orgTranslateY = getTranslateY();
+
+        }
+    };
+
+    EventHandler<MouseEvent> onMouseDraggedEventHandler
+            = new EventHandler<MouseEvent>() {
+
+        @Override
+        public void handle(MouseEvent t) {
+
+            double offsetX = t.getSceneX() - orgSceneX;
+            double offsetY = t.getSceneY() - orgSceneY;
+            double newTranslateX = orgTranslateX + offsetX;
+            double newTranslateY = orgTranslateY + offsetY;
+
+            if (newTranslateY < topCap && newTranslateY > bottomCap) {
+                setTranslateY(newTranslateY);
+            }
+
+            if (newTranslateX >= leftCap + getResX()) {
+                setTranslateX(rightCap + getResX());
+            } else if (newTranslateX <= rightCap) {
+                setTranslateX(leftCap);
+            } else {
+                setTranslateX(newTranslateX);
+            }
+        }
+    };
+}
+
+enum HighlightType {
+    MOVEMENT, ATTACK, EXPANSION, NONE;
 }
