@@ -62,7 +62,7 @@ public class ImageBuffer{
             cityBackground = new Image(new FileInputStream("src/Assets/Misc/city_background.jpg"), 1080, 1920, false, false);
             warning = new Image(new FileInputStream("src/Assets/Misc/warning.png"), 70, 70, false, false);
             citizenIcon = new Image(new FileInputStream("src/Assets/Misc/citizen_icon.png"), 70, 70, false, false);
-            productionIcon = new Image(new FileInputStream("src/Assets/Misc/production_icon.jpg"), 70, 70, false, false);
+            productionIcon = new Image(new FileInputStream("src/Assets/Misc/production_icon.png"), 70, 70, false, false);
             moneyIcon = new Image(new FileInputStream("src/Assets/Misc/money_icon.png"), 70, 70, false, false);
 
         } catch (IOException e) {
