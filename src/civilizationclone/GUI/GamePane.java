@@ -34,6 +34,7 @@ public class GamePane extends Pane {
         gameMap = new GameMap(GameMap.MapSize.SMALL, 400);
         currentPlayer = playerList.get(0);
         playerList.get(0).addUnit(new SettlerUnit(playerList.get(0), new Point(12,12)));
+        playerList.get(0).addUnit(new WarriorUnit(playerList.get(0), new Point(12,13)));
         playerList.get(0).startTurn();
     
        

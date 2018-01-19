@@ -184,6 +184,12 @@ public abstract class MilitaryUnit extends Unit {
     public void setCombat(int combat) {
         this.combat = combat;
     }
+    
+    
 
     //</editor-fold>
+
+    public int getMAX_HEALTH() {
+        return MAX_HEALTH;
+    }
 }

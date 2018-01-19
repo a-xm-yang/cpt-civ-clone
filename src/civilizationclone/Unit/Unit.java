@@ -112,4 +112,10 @@ public abstract class Unit implements IMovement {
         mapRef = m;
     }
 
+    public int getMAX_MOVEMENT() {
+        return MAX_MOVEMENT;
+    }
+    
+    
+
 }

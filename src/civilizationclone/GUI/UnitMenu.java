@@ -12,6 +12,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class UnitMenu extends Pane{
     
@@ -21,6 +23,7 @@ public class UnitMenu extends Pane{
     ZoomMap zmapRef;
     Canvas infoDisplay;
     GraphicsContext gc;
+    Text statusText;
     
     //Make menu option a private class
     public UnitMenu(Unit unit, ZoomMap zmapRef) {
@@ -47,12 +50,20 @@ public class UnitMenu extends Pane{
         infoDisplay.setTranslateX(-195);
         infoDisplay.setTranslateY(-60);
         infoDisplay.setVisible(true);
+        
+        statusText = new Text(displayUnitInfo());
+        statusText.setFont(Font.font("Times New Roman", 25));
+        statusText.setFill(Color.WHITE);
+        statusText.setTranslateY(-15);
+        statusText.setTranslateX(-180); 
+        
         gc = infoDisplay.getGraphicsContext2D();
         gc.setFill(Color.GREEN);
         gc.fillPolygon(new double[]{0, 230, 230, 175, 175, 230, 230, 0}, new double[]{0, 0, 40, 75, 155, 180, 220, 220}, 8);
         gc.setFill(Color.BLACK);
         gc.fillPolygon(new double[]{5, 225, 225, 170, 170, 225, 225, 5}, new double[]{5, 5, 35, 70, 160, 185, 215, 215}, 8);
         
+        System.out.println(unit.getClass().getSimpleName());
         
         opt1.setFill(Color.DARKSLATEGREY);
         opt2.setFill(Color.PALEGREEN);
@@ -61,11 +72,12 @@ public class UnitMenu extends Pane{
         
         this.zmapRef = zmapRef;
         
-        this.getChildren().add(opt1.getRect());
-        this.getChildren().add(opt2.getRect());
-        this.getChildren().add(opt3.getRect());
-        this.getChildren().add(opt4.getRect());
+        this.getChildren().add(opt1);
+        this.getChildren().add(opt2);
+        this.getChildren().add(opt3);
+        this.getChildren().add(opt4);
         this.getChildren().add(infoDisplay);
+        this.getChildren().add(statusText);
         this.setVisible(true);
         
         setOnMouseClicked((MouseEvent event) -> {
@@ -98,6 +110,25 @@ public class UnitMenu extends Pane{
     delete();
 
     }
+    
+    private String displayUnitInfo() {
+        String msg = "";
+
+        msg = msg + "Movement: " + unit.getMovement() + "/" + unit.getMAX_MOVEMENT() + "\n";
+        if(unit instanceof MilitaryUnit){
+            msg = msg + "Health: " + ((MilitaryUnit) unit).getHealth() + " / " +((MilitaryUnit) unit).getMAX_HEALTH() + "\n";
+        }else{
+            msg = msg + "Health: 1/1 \n";
+        }
+        
+        //msg = msg + "\nTech income: " + city.getTechIncome();
+        //msg = msg + "\nGold income: " + city.getGoldIncome();
+
+        
+
+        return msg;
+    }
+    
     void delete(){
         zmapRef.getChildren().remove(zmapRef.getChildren().indexOf(this));
     }
