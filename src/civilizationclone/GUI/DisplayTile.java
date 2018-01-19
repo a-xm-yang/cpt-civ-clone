@@ -90,18 +90,7 @@ public class DisplayTile extends Polygon {
 
         setStroke(Color.BLACK);
         getPoints().addAll(new Double[]{50.0, 0.0, 100.0, 30.0, 100.0, 80.0, 50.0, 110.0, 0.0, 80.0, 0.0, 30.0});
-        if (tile instanceof Ocean) {
-            image = ocean;
-        } else if (tile instanceof Plains) {
-            image = plains;
-        } else if (tile instanceof Hills) {
-            image = hills;
-        } else if (tile instanceof Desert) {
-            image = desert;
-        } else if (tile instanceof Mountain) {
-            image = mountain;
-        }
-        setFill(new ImagePattern(image));
+        setFill(new ImagePattern(ImageBuffer.getImage(tile)));
         setStrokeWidth(3);
 
         update();
@@ -113,23 +102,12 @@ public class DisplayTile extends Polygon {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         if (tile.hasUnit()) {
-            if (tile.getUnit() instanceof ArcherUnit) {
-                gc.drawImage(archer, 15 + getTranslateX(), 20 + getTranslateY());
-            } else if (tile.getUnit() instanceof BuilderUnit) {
-                gc.drawImage(builder, 15 + getTranslateX(), 20 + getTranslateY());
-            } else if (tile.getUnit() instanceof ScoutUnit) {
-                gc.drawImage(scout, 15 + getTranslateX(), 20 + getTranslateY());
-            } else if (tile.getUnit() instanceof SettlerUnit) {
-                gc.drawImage(settler, 15 + getTranslateX(), 20 + getTranslateY());
-            } else if (tile.getUnit() instanceof SlingerUnit) {
-                gc.drawImage(slinger, 15 + getTranslateX(), 20 + getTranslateY());
-            } else if (tile.getUnit() instanceof WarriorUnit) {
-                gc.drawImage(warrior, 15 + getTranslateX(), 20 + getTranslateY());
-            }
+            gc.drawImage(ImageBuffer.getImage(tile.getUnit()), 15 + getTranslateX(), 20 + getTranslateY());
+
         }
 
         if (tile.hasCity()) {
-            gc.drawImage(city, 5 + getTranslateX(), 10 + getTranslateY());
+            gc.drawImage(ImageBuffer.getCityImage(), 5 + getTranslateX(), 10 + getTranslateY());
         }
 
         if (tile.isControlled()) {
@@ -139,7 +117,7 @@ public class DisplayTile extends Polygon {
         //will be changed later
         if (highlighted) {
             setStroke(Color.RED);
-            
+
         } else {
             setStroke(Color.BLACK);
         }
