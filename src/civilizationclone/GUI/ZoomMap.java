@@ -67,7 +67,7 @@ public class ZoomMap extends Group {
         canvas = new Canvas(getSizeX() + 2 * (getSpareWidth()), getSizeY());
         DisplayTile.referenceCanvas(canvas);
         canvas.setMouseTransparent(true);
-
+        
         //set actual objects according to the given falsified tileMap
         //since each display tile has a x-y-coordinate, and the map is a false map to scroll around, we need to adjust the coordinates accoridngly
         double offset = 0;
@@ -132,13 +132,21 @@ public class ZoomMap extends Group {
         }
 
         if (clickedTile.hasCity()) {
-            this.getChildren().add(new CityMenu(clickedTile.getCity(), resX / 3, resY));
+            CityMenu c = new CityMenu(clickedTile.getCity(), resX,resY);
+            System.out.println("x: " + ((DisplayTile) e.getTarget()).getTranslateX() + "y: " + ((DisplayTile) e.getTarget()).getTranslateY());
+            c.setTranslateX(((DisplayTile) e.getTarget()).getTranslateX());
+            c.setTranslateY(((DisplayTile) e.getTarget()).getTranslateY());
+            this.getChildren().add(c);
+            
+            
         }
 
         //testing for only movement highlight
         if (highlightType == HighlightType.NONE) {
             if (clickedTile.hasUnit() && clickedTile.getUnit().getPlayer().equals(currentPlayer)) {
-                if(clickedTile.getUnit() instanceof SettlerUnit && e.getButton()==MouseButton.SECONDARY){
+                
+                //Remove the if statement and make the "else" the default after
+                if(clickedTile.getUnit() instanceof SettlerUnit && e.getButton()== MouseButton.SECONDARY){
                     ((SettlerUnit)clickedTile.getUnit()).settle("Memphis");
                 }else{
                 //TODO Invoke a UnitOptionPane

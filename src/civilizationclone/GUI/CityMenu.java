@@ -10,17 +10,27 @@ public class CityMenu extends Pane{
     
     int resX, resY;
     City city;
+    Rectangle rect;
 
     public CityMenu(City city, int resX, int resY) {
         this.resX = resX;
         this.resY = resY;
         this.city = city;
         
-        Rectangle rect = new Rectangle(resX - 200, 0, 200, resY);
+        rect = new Rectangle(0, 0, 100, 100);
+        
+
         rect.setFill(Color.BLACK);
         
         this.getChildren().add(rect);
+        this.setVisible(true);
     }
+
+    public Rectangle getRect() {
+        return rect;
+    }
+    
+    
     
     
     
