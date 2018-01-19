@@ -1,10 +1,15 @@
 package civilizationclone.GUI;
 
+import civilizationclone.CityProject;
 import civilizationclone.Tile.*;
 import civilizationclone.Unit.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import javafx.scene.image.Image;
+
+enum MiscAsset {
+    CLOSE_BUTTON, CITY_BACKGROUND, WARNING;
+}
 
 public class ImageBuffer {
 
@@ -26,6 +31,10 @@ public class ImageBuffer {
     private static Image slinger;
     private static Image warrior;
 
+    private static Image closeButton;
+    private static Image cityBackground;
+    private static Image warning;
+    
     static {
         try {
             desert = new Image(new FileInputStream("src/Assets/Tiles/Desert.png"), 100, 110, false, false);
@@ -45,6 +54,11 @@ public class ImageBuffer {
             swordsman = new Image(new FileInputStream("src/Assets/Units/Swordsman.png"), 70, 70, false, false);
             slinger = new Image(new FileInputStream("src/Assets/Units/Slinger.png"), 70, 70, false, false);
             warrior = new Image(new FileInputStream("src/Assets/Units/Warrior.png"), 70, 70, false, false);
+
+            closeButton = new Image(new FileInputStream("src/Assets/Misc/close_button.png"), 60, 60, false, false);
+            cityBackground = new Image(new FileInputStream("src/Assets/Misc/city_background.jpg"), 1080, 1920, false, false);
+            warning = new Image(new FileInputStream("src/Assets/Misc/warning.png"), 70, 70, false, false);
+
         } catch (IOException e) {
             System.out.println("Image loading failed");
             System.out.println(e.getStackTrace());
@@ -113,7 +127,26 @@ public class ImageBuffer {
         return destroyer;
     }
     
-    public static Image getCityImage(){
+    public static Image getImage(CityProject c){
+        //need to add more
+        return destroyer;
+        
+    }
+
+    public static Image getImage(MiscAsset m) {
+        switch (m) {
+            case CLOSE_BUTTON:
+                return closeButton;
+            case CITY_BACKGROUND:
+                return cityBackground;
+            case WARNING:
+                return warning;
+        }
+
+        return destroyer;
+    }
+
+    public static Image getCityImage() {
         return city;
     }
 

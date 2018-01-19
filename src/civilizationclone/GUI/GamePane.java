@@ -16,6 +16,7 @@ public class GamePane extends Pane {
     //A pane class that handles everything that is game-related
     private int resX, resY;
     private ZoomMap zoomMap;
+    private CityMenu cityMenu;
  
     //game data
     private GameMap gameMap;
@@ -27,6 +28,8 @@ public class GamePane extends Pane {
         this.playerList = playerList;
         this.resX = resX;
         this.resY = resY;
+        this.setPrefHeight(resY);
+        this.setPrefWidth(resX);
  
         gameMap = new GameMap(GameMap.MapSize.SMALL, 400);
         currentPlayer = playerList.get(0);
@@ -39,8 +42,18 @@ public class GamePane extends Pane {
         getChildren().add(zoomMap);
     }
     
-  
- 
+    public void addCityMenu(City c){
+        cityMenu = new CityMenu(c, resX, resY, zoomMap);
+        getChildren().add(cityMenu);
+    }
+    
+    public void removeCityMenu(){
+        if (getChildren().contains(cityMenu)){
+            getChildren().remove(cityMenu);
+        }
+        cityMenu = null;
+    }
+    
     private ZoomMap createFalseMap(Tile[][] original) {
  
         //creates a copy of the actual tile map, with the sides adjusted according to X-resolution to a copied version for scrolling effect

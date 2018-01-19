@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package civilizationclone.GUI;
-
+ 
 import civilizationclone.City;
 import civilizationclone.Player;
 import civilizationclone.Tile.Tile;
+import civilizationclone.Unit.BuilderUnit;
+import civilizationclone.Unit.MilitaryUnit;
 import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.Unit;
 import java.awt.Point;
@@ -21,53 +18,54 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-
+ 
 public class ZoomMap extends Group {
-
+ 
     //Graphics Related Vars ----
     //<editor-fold>
     private double topCap, bottomCap;
     private double leftCap, rightCap;
     private double orgSceneX, orgSceneY;
     private double orgTranslateX, orgTranslateY;
-
+ 
     private double scale;
     private int mapSize;
     private int resX, resY;
     private int spareSize;
     private double sizeX, sizeY, totalSizeX;
     //</editor-fold>
-
+ 
     private Canvas canvas;
     private ArrayList<DisplayTile> tileList;
     private Point[] highlightedTiles;
     private HighlightType highlightType;
-
+ 
     private Player currentPlayer;
     private Unit selectedUnit;
-
+    private boolean openMenu = false;
+ 
     //size refers to the number of tiles
     public ZoomMap(int mapSize, int resX, int resY, int spareSize, Tile[][] tileMap) {
-
+ 
         super();
-
+ 
         highlightType = HighlightType.NONE;
         this.mapSize = mapSize;
         this.resX = resX;
         this.resY = resY;
         this.spareSize = spareSize;
-
+ 
         this.sizeX = mapSize * DisplayTile.getWIDTH();
         this.sizeY = mapSize / 2 * 164 + ((mapSize % 2 == 1) ? 82 : 0);
         this.totalSizeX = sizeX + 2 * getSpareWidth();
-
+ 
         scale = 1;
         tileList = new ArrayList<>();
-
+ 
         canvas = new Canvas(getSizeX() + 2 * (getSpareWidth()), getSizeY());
         DisplayTile.referenceCanvas(canvas);
         canvas.setMouseTransparent(true);
-        
+       
         //set actual objects according to the given falsified tileMap
         //since each display tile has a x-y-coordinate, and the map is a false map to scroll around, we need to adjust the coordinates accoridngly
         double offset = 0;
@@ -96,55 +94,60 @@ public class ZoomMap extends Group {
                 tileList.add(t);
             }
         }
-
+ 
         getChildren().add(canvas);
-
+ 
         //shifts to original position
         setTranslateX(-1 * getSpareWidth());
-
+ 
         //handler for resizing the map
         setOnScroll((ScrollEvent event) -> {
             resize(event);
         });
-
+ 
         //handler for actions (incomplete)
         setOnMouseClicked((MouseEvent event) -> {
             clickEventHandling(event);
         });
-
+ 
         setOnMousePressed(onMousePressedEventHandler);
         setOnMouseDragged(onMouseDraggedEventHandler);
-
+ 
         calculateBounds();
         repaint();
     }
-
+ 
     private void clickEventHandling(MouseEvent e) {
-        
-              
+       
+             
         Tile clickedTile;
-        
+       
         //in case it doesn't exactly hit on a tile (which indeed happens)
         try {
             clickedTile = ((DisplayTile) e.getTarget()).getTile();
         } catch (Exception exception) {
             return;
         }
-
+ 
         if (clickedTile.hasCity()) {
-            CityMenu c = new CityMenu(clickedTile.getCity(), resX,resY);
+            CityMenu c = new CityMenu(clickedTile.getCity(), resX,resY, this);
             System.out.println("x: " + ((DisplayTile) e.getTarget()).getTranslateX() + "y: " + ((DisplayTile) e.getTarget()).getTranslateY());
             c.setTranslateX(((DisplayTile) e.getTarget()).getTranslateX());
             c.setTranslateY(((DisplayTile) e.getTarget()).getTranslateY());
             this.getChildren().add(c);
-            
-            
         }
-
+ 
         //testing for only movement highlight
         if (highlightType == HighlightType.NONE) {
             if (clickedTile.hasUnit() && clickedTile.getUnit().getPlayer().equals(currentPlayer)) {
-                
+               
+               // UnitMenu u = new UnitMenu(clickedTile.getUnit(), this);
+              //  u.setTranslateX(((DisplayTile) e.getTarget()).getTranslateX());
+               // u.setTranslateY(((DisplayTile) e.getTarget()).getTranslateY());
+                //this.getChildren().add(u);
+                selectedUnit = clickedTile.getUnit();
+               
+                /*
                 //Remove the if statement and make the "else" the default after
                 if(clickedTile.getUnit() instanceof SettlerUnit && e.getButton()== MouseButton.SECONDARY){
                     ((SettlerUnit)clickedTile.getUnit()).settle("Memphis");
@@ -155,9 +158,10 @@ public class ZoomMap extends Group {
                 addHighlightedTiles(clickedTile.getUnit().getMoves());
                 selectedUnit = clickedTile.getUnit();
                 }
+                */
             }
         } else {
-
+ 
             //if movement is desired
             if (highlightType == highlightType.MOVEMENT) {
                 Point clickPoint = ((DisplayTile) e.getTarget()).getPoint();
@@ -167,27 +171,65 @@ public class ZoomMap extends Group {
                     }
                 }
             }
-
+ 
             //reset the highlight status
             selectedUnit = null;
             highlightType = HighlightType.NONE;
             cleanHighlight();
-
+ 
         }
-
+       
+        //if(e.getTarget() instanceof UnitMenu){
+            System.out.println(e);
+       
+ 
         repaint();
     }
-
+   
+    public void activateAttack(){
+       
+       
+    }
+    public void activateMove(){
+        highlightType = HighlightType.MOVEMENT;
+        addHighlightedTiles(selectedUnit.getMoves());
+        repaint();  
+    }
+    public void activateSettle(){
+        ((SettlerUnit)selectedUnit).settle("Memphis");
+        repaint();
+    }
+   
+    public void activateHeal(){
+        ((MilitaryUnit)selectedUnit).heal();
+        repaint();
+    }
+   
+    public void activateKill(){
+        selectedUnit.delete();
+        repaint();
+    }
+   
+    public void activateImprove(){
+        //This line is fucked, fix later
+        //((BuilderUnit)selectedUnit).improve(((BuilderUnit)selectedUnit).getPossibleImprovements().get(0)));
+        repaint();
+    }
+    public void activateDestroy(){
+        //Also fucked, fix later
+        repaint();
+    }
+ 
     public void repaint() {
         canvas.getGraphicsContext2D().clearRect(0, 0, totalSizeX, sizeY);
         for (DisplayTile t : tileList) {
             t.update();
         }
     }
-
+ 
     public void addHighlightedTiles(Point[] possibleMoves) {
         highlightedTiles = possibleMoves;
-
+ 
         for (Point p : possibleMoves) {
             for (DisplayTile t : tileList) {
                 if (t.getX() == p.x && t.getY() == p.y) {
@@ -196,21 +238,21 @@ public class ZoomMap extends Group {
             }
         }
     }
-
+ 
     public void cleanHighlight() {
         highlightType = HighlightType.NONE;
         for (DisplayTile t : tileList) {
             t.setHighlighted(false);
         }
     }
-
+ 
     //handlers for scrolling ---------------
     //<editor-fold>
     private void resize(ScrollEvent event) {
         if (event.getDeltaY() == 0) {
             return;
         }
-
+ 
         if (event.getDeltaY() > 0) {
             if (scale < 5) {
                 scale++;
@@ -221,35 +263,45 @@ public class ZoomMap extends Group {
                 setTranslateY(getTranslateY() + getSizeY() / 2);
             }
         }
-
+ 
         this.setScaleX(scale);
         this.setScaleY(scale);
-
+ 
         calculateBounds();
         adjustPosition();
-
+ 
     }
-
+   
+    public void enableDragging(boolean enable) {
+        if (!enable) {
+            setOnMousePressed(null);
+            setOnMouseDragged(null);
+        } else {
+            setOnMousePressed(onMousePressedEventHandler);
+            setOnMouseDragged(onMouseDraggedEventHandler);
+        }
+    }
+ 
     private void calculateBounds() {
-
+ 
         //the Y-traslation that would hit the top bottom border of the map
         topCap = (getScale() - 1) * getSizeY() * 0.5;
         bottomCap = getSizeY() * (-0.5 * getScale() - 0.5) + getResY();
-
+ 
         //the X-translation that would hit the boundary between the real map and the fake extension map
         leftCap = (getSizeX() / 2 + getSpareWidth()) * (getScale() - 1) - getSpareWidth() * getScale();
         rightCap = (getSizeX() / 2 + getSpareWidth()) * (getScale() - 1) - (getSpareWidth() + getSizeX()) * getScale();
     }
-
+ 
     private void adjustPosition() {
-
+ 
         //make sure the screen is in bounds after what happened
         if (getTranslateY() > topCap) {
             setTranslateY(topCap);
         } else if (getTranslateY() < bottomCap) {
             setTranslateY(bottomCap);
         }
-
+ 
         if (getTranslateX() >= leftCap + getResX()) {
             setTranslateX(rightCap + getResX());
         } else if (getTranslateX() <= rightCap) {
@@ -257,87 +309,87 @@ public class ZoomMap extends Group {
         }
     }
     //</editor-fold>
-
+ 
     //GETTERS AND SETTERS
     //<editor-fold>
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
-
+ 
     public HighlightType getHighlightType() {
         return highlightType;
     }
-
+ 
     public void setHighlightType(HighlightType highlightType) {
         this.highlightType = highlightType;
     }
-
+ 
     public double getSizeX() {
         return sizeX;
     }
-
+ 
     public double getSizeY() {
         return sizeY;
     }
-
+ 
     public int getResX() {
         return resX;
     }
-
+ 
     public int getResY() {
         return resY;
     }
-
+ 
     public double getTileWidth() {
         return DisplayTile.WIDTH;
     }
-
+ 
     public double getScale() {
         return scale;
     }
-
+ 
     public double getSpareSize() {
         return spareSize;
     }
-
+ 
     public double getSpareWidth() {
         return spareSize * DisplayTile.getWIDTH() + DisplayTile.getWIDTH() / 2;
     }
-
+ 
     public Canvas getCanvas() {
         return canvas;
     }
     //</editor-fold>
-
+ 
     EventHandler<MouseEvent> onMousePressedEventHandler
             = new EventHandler<MouseEvent>() {
-
+ 
         @Override
         public void handle(MouseEvent t) {
             orgSceneX = t.getSceneX();
             orgSceneY = t.getSceneY();
-
+ 
             orgTranslateX = getTranslateX();
             orgTranslateY = getTranslateY();
-
+ 
         }
     };
-
+ 
     EventHandler<MouseEvent> onMouseDraggedEventHandler
             = new EventHandler<MouseEvent>() {
-
+ 
         @Override
         public void handle(MouseEvent t) {
-
+ 
             double offsetX = t.getSceneX() - orgSceneX;
             double offsetY = t.getSceneY() - orgSceneY;
             double newTranslateX = orgTranslateX + offsetX;
             double newTranslateY = orgTranslateY + offsetY;
-
+ 
             if (newTranslateY < topCap && newTranslateY > bottomCap) {
                 setTranslateY(newTranslateY);
             }
-
+ 
             if (newTranslateX >= leftCap + getResX()) {
                 setTranslateX(rightCap + getResX());
             } else if (newTranslateX <= rightCap) {
@@ -348,7 +400,7 @@ public class ZoomMap extends Group {
         }
     };
 }
-
+ 
 enum HighlightType {
     MOVEMENT, ATTACK, EXPANSION, NONE;
 }
