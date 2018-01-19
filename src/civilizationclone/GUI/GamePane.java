@@ -2,8 +2,10 @@ package civilizationclone.GUI;
  
 import civilizationclone.*;
 import civilizationclone.Tile.*;
+import civilizationclone.Unit.BuilderUnit;
 import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.Unit;
+import civilizationclone.Unit.UnitType;
 import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -33,8 +35,12 @@ public class GamePane extends Pane {
  
         gameMap = new GameMap(GameMap.MapSize.SMALL, 400);
         currentPlayer = playerList.get(0);
+        //Reset these later to just settler and warrior
         playerList.get(0).addUnit(new SettlerUnit(playerList.get(0), new Point(12,12)));
         playerList.get(0).addUnit(new WarriorUnit(playerList.get(0), new Point(12,13)));
+        ((SettlerUnit)playerList.get(0).getUnitList().get(0)).settle("Alabama");
+        playerList.get(0).getCityList().get(0).setProduction(UnitType.HORSEMAN);
+        playerList.get(0).addUnit(new BuilderUnit(playerList.get(0).getCityList().get(0)));
         playerList.get(0).startTurn();
     
        

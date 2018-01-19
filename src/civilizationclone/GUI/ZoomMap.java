@@ -127,7 +127,7 @@ public class ZoomMap extends Group {
             return;
         }
 
-        if (clickedTile.hasCity() && clickedTile.getCity().getPlayer() == currentPlayer) {
+        if (clickedTile.hasCity() && clickedTile.getCity().getPlayer() == currentPlayer && !clickedTile.hasUnit()) {
             ((GamePane) getParent()).addCityMenu(clickedTile.getCity());
             enableDragging(false);
         }
@@ -161,6 +161,7 @@ public class ZoomMap extends Group {
             cleanHighlight();
 
         }
+        
 
         e.consume();
         repaint();

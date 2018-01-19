@@ -24,8 +24,9 @@ public class UnitMenu extends Pane{
     Canvas infoDisplay;
     GraphicsContext gc;
     Text statusText;
+    Text opt1T, opt2T, opt3T, opt4T;
     
-    //Make menu option a private class
+    //TODO fix the menu options, right now the code is sloppy
     public UnitMenu(Unit unit, ZoomMap zmapRef) {
         this.unit = unit;
         
@@ -51,11 +52,41 @@ public class UnitMenu extends Pane{
         infoDisplay.setTranslateY(-60);
         infoDisplay.setVisible(true);
         
+        //Left info display
         statusText = new Text(displayUnitInfo());
-        statusText.setFont(Font.font("Times New Roman", 25));
+        statusText.setFont(Font.font("Times New Roman", 20));
         statusText.setFill(Color.WHITE);
-        statusText.setTranslateY(-15);
-        statusText.setTranslateX(-180); 
+        statusText.setTranslateY(-25);
+        statusText.setTranslateX(-180);
+        //Right options
+        opt1T = new Text(opt1.optionType);
+        opt2T = new Text(opt2.optionType);
+        opt3T = new Text(opt2.optionType);
+        opt4T = new Text(opt4.optionType);
+        
+        opt1T.setTranslateX(opt1.x+20);
+        opt1T.setTranslateY(opt1.y+25);
+        opt2T.setTranslateX(opt2.x+20);
+        opt2T.setTranslateY(opt2.y+25);
+        opt3T.setTranslateX(opt3.x+20);
+        opt3T.setTranslateY(opt3.y+25);
+        opt4T.setTranslateX(opt4.x+20);
+        opt4T.setTranslateY(opt4.y+25);
+        
+        opt1T.setFill(Color.WHITE);
+        opt2T.setFill(Color.WHITE);
+        opt3T.setFill(Color.WHITE);
+        opt4T.setFill(Color.WHITE);
+        
+        opt1T.setFont(Font.font("Times New Roman", 20));
+        opt2T.setFont(Font.font("Times New Roman", 20));
+        opt3T.setFont(Font.font("Times New Roman", 20));
+        opt4T.setFont(Font.font("Times New Roman", 20));
+        
+        opt1T.setMouseTransparent(true);
+        opt2T.setMouseTransparent(true);
+        opt3T.setMouseTransparent(true);
+        opt4T.setMouseTransparent(true);
         
         gc = infoDisplay.getGraphicsContext2D();
         gc.setFill(Color.GREEN);
@@ -78,6 +109,10 @@ public class UnitMenu extends Pane{
         this.getChildren().add(opt4);
         this.getChildren().add(infoDisplay);
         this.getChildren().add(statusText);
+        this.getChildren().add(opt1T);
+        this.getChildren().add(opt2T);
+        this.getChildren().add(opt3T);
+        this.getChildren().add(opt4T);
         this.setVisible(true);
         
         setOnMouseClicked((MouseEvent event) -> {
@@ -114,17 +149,19 @@ public class UnitMenu extends Pane{
     private String displayUnitInfo() {
         String msg = "";
 
+        msg = msg + unit.getPlayer().getName() + "'s " + unit.getClass().getSimpleName().substring(0, unit.getClass().getSimpleName().length()-4) + "\n\n";
+        
+        
         msg = msg + "Movement: " + unit.getMovement() + "/" + unit.getMAX_MOVEMENT() + "\n";
         if(unit instanceof MilitaryUnit){
             msg = msg + "Health: " + ((MilitaryUnit) unit).getHealth() + " / " +((MilitaryUnit) unit).getMAX_HEALTH() + "\n";
         }else{
             msg = msg + "Health: 1/1 \n";
         }
-        
-        //msg = msg + "\nTech income: " + city.getTechIncome();
-        //msg = msg + "\nGold income: " + city.getGoldIncome();
-
-        
+        if(unit instanceof BuilderUnit){
+            msg = msg + "Builds: " + ((BuilderUnit) unit).getActions();
+        }
+              
 
         return msg;
     }

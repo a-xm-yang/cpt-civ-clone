@@ -28,56 +28,7 @@ public class DisplayTile extends Polygon {
 
     static final double WIDTH = 102;
     static final double HEIGHT = 82;
-    //</editor-fold>
-
-    //resources and variables for image loading
-    //<editor-fold>
-    private static Image desert;
-    private static Image hills;
-    private static Image mountain;
-    private static Image ocean;
-    private static Image plains;
-    private static Image image;
-    private static Image city;
-
-    private static Image archer;
-    private static Image builder;
-    private static Image catapult;
-    private static Image destroyer;
-    private static Image galley;
-    private static Image scout;
-    private static Image settler;
-    private static Image swordsman;
-    private static Image slinger;
-    private static Image warrior;
-    //</editor-fold>
-
-    //staticly loading images
-    static {
-        try {
-            desert = new Image(new FileInputStream("src/Assets/Tiles/Desert.png"), 100, 110, false, false);
-            hills = new Image(new FileInputStream("src/Assets/Tiles/Hills.png"), 100, 110, false, false);
-            mountain = new Image(new FileInputStream("src/Assets/Tiles/Mountain.png"), 100, 110, false, false);
-            ocean = new Image(new FileInputStream("src/Assets/Tiles/Ocean.png"), 100, 110, false, false);
-            plains = new Image(new FileInputStream("src/Assets/Tiles/Plains.png"), 100, 110, false, false);
-            city = new Image(new FileInputStream("src/Assets/Tiles/City.png"), 90, 90, false, false);
-
-            archer = new Image(new FileInputStream("src/Assets/Units/Archer.png"), 70, 70, false, false);
-            builder = new Image(new FileInputStream("src/Assets/Units/Builder.png"), 70, 70, false, false);
-            //catapult = new Image(new FileInputStream("src/Assets/Units/Catapult.png"), 70, 70, false, false);
-            //destroyer = new Image(new FileInputStream("src/Assets/Units/Destroyer.png"), 70, 70, false, false);
-            //galley = new Image(new FileInputStream("src/Assets/Units/Galley.png"), 70, 70, false, false);
-            scout = new Image(new FileInputStream("src/Assets/Units/Scout.png"), 70, 70, false, false);
-            settler = new Image(new FileInputStream("src/Assets/Units/Settler.png"), 70, 70, false, false);
-            swordsman = new Image(new FileInputStream("src/Assets/Units/Swordsman.png"), 70, 70, false, false);
-            slinger = new Image(new FileInputStream("src/Assets/Units/Slinger.png"), 70, 70, false, false);
-            warrior = new Image(new FileInputStream("src/Assets/Units/Warrior.png"), 70, 70, false, false);
-        } catch (IOException e) {
-            System.out.println("Image loading failed");
-            System.out.println(e.getStackTrace());
-        }
-    }
-
+    
     public DisplayTile(Tile tile, int x, int y) {
 
         //tile reference
@@ -98,13 +49,13 @@ public class DisplayTile extends Polygon {
 
         gc = canvas.getGraphicsContext2D();
 
+        if (tile.hasCity()) {
+            gc.drawImage(ImageBuffer.getCityImage(), 5 + getTranslateX(), 10 + getTranslateY());
+        }
+        
         if (tile.hasUnit()) {
             gc.drawImage(ImageBuffer.getImage(tile.getUnit()), 15 + getTranslateX(), 20 + getTranslateY());
 
-        }
-
-        if (tile.hasCity()) {
-            gc.drawImage(ImageBuffer.getCityImage(), 5 + getTranslateX(), 10 + getTranslateY());
         }
 
         if (tile.isControlled()) {

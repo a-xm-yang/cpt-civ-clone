@@ -28,7 +28,15 @@ public class BuilderUnit extends Unit {
     
     public void improve(Improvement m){
         getMapRef().getTile(getX(), getY()).setImprovement(m);
+        actions--;
+        if (actions == 0); delete();
         System.out.println("Improved!");
     }
+
+    public int getActions() {
+        return actions;
+    }
+    
+    
 
 }
