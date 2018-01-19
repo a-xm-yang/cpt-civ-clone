@@ -22,6 +22,7 @@ public class DisplayTile extends Polygon {
 //    private Polygon polygon;
     private Tile tile;
     private static Canvas canvas;
+    private static GraphicsContext gc;
     //x y position of the tile
     private int x;
     private int y;
@@ -99,7 +100,7 @@ public class DisplayTile extends Polygon {
 
     public void update() {
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc = canvas.getGraphicsContext2D();
 
         if (tile.hasUnit()) {
             gc.drawImage(ImageBuffer.getImage(tile.getUnit()), 15 + getTranslateX(), 20 + getTranslateY());
@@ -152,6 +153,7 @@ public class DisplayTile extends Polygon {
 
     public static void referenceCanvas(Canvas ref) {
         canvas = ref;
+        gc = canvas.getGraphicsContext2D();
     }
 
     public void setHighlighted(boolean highlighted) {
