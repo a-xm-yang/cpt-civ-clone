@@ -8,6 +8,8 @@ package civilizationclone.GUI;
 import civilizationclone.City;
 import civilizationclone.Player;
 import civilizationclone.Tile.Tile;
+import civilizationclone.Unit.BuilderUnit;
+import civilizationclone.Unit.MilitaryUnit;
 import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.Unit;
 import java.awt.Point;
@@ -45,6 +47,7 @@ public class ZoomMap extends Group {
 
     private Player currentPlayer;
     private Unit selectedUnit;
+    private boolean openMenu = false;
 
     //size refers to the number of tiles
     public ZoomMap(int mapSize, int resX, int resY, int spareSize, Tile[][] tileMap) {
@@ -145,6 +148,13 @@ public class ZoomMap extends Group {
         if (highlightType == HighlightType.NONE) {
             if (clickedTile.hasUnit() && clickedTile.getUnit().getPlayer().equals(currentPlayer)) {
                 
+                UnitMenu u = new UnitMenu(clickedTile.getUnit(), this);
+                u.setTranslateX(((DisplayTile) e.getTarget()).getTranslateX());
+                u.setTranslateY(((DisplayTile) e.getTarget()).getTranslateY());
+                this.getChildren().add(u);
+                selectedUnit = clickedTile.getUnit();
+                
+                /*
                 //Remove the if statement and make the "else" the default after
                 if(clickedTile.getUnit() instanceof SettlerUnit && e.getButton()== MouseButton.SECONDARY){
                     ((SettlerUnit)clickedTile.getUnit()).settle("Memphis");
@@ -155,6 +165,7 @@ public class ZoomMap extends Group {
                 addHighlightedTiles(clickedTile.getUnit().getMoves());
                 selectedUnit = clickedTile.getUnit();
                 }
+                */
             }
         } else {
 
@@ -174,8 +185,46 @@ public class ZoomMap extends Group {
             cleanHighlight();
 
         }
+        
+        //if(e.getTarget() instanceof UnitMenu){
+            System.out.println(e);
+        
 
         repaint();
+    }
+    
+    public void activateAttack(){
+        
+        
+    }
+    public void activateMove(){
+        highlightType = HighlightType.MOVEMENT;
+        addHighlightedTiles(selectedUnit.getMoves());
+        repaint();  
+    }
+    public void activateSettle(){
+        ((SettlerUnit)selectedUnit).settle("Memphis");
+        repaint(); 
+    }
+    
+    public void activateHeal(){
+        ((MilitaryUnit)selectedUnit).heal();
+        repaint(); 
+    }
+    
+    public void activateKill(){
+        selectedUnit.delete();
+        repaint(); 
+    }
+    
+    public void activateImprove(){
+        //This line is fucked, fix later
+        //((BuilderUnit)selectedUnit).improve(((BuilderUnit)selectedUnit).getPossibleImprovements().get(0)));
+        repaint(); 
+    }
+    public void activateDestroy(){
+        //Also fucked, fix later
+        repaint(); 
     }
 
     public void repaint() {
@@ -228,6 +277,16 @@ public class ZoomMap extends Group {
         calculateBounds();
         adjustPosition();
 
+    }
+    
+    public void enableDragging(boolean enable) {
+        if (!enable) {
+            setOnMousePressed(null);
+            setOnMouseDragged(null);
+        } else {
+            setOnMousePressed(onMousePressedEventHandler);
+            setOnMouseDragged(onMouseDraggedEventHandler);
+        }
     }
 
     private void calculateBounds() {
