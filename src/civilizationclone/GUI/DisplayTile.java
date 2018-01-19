@@ -1,16 +1,12 @@
 package civilizationclone.GUI;
 
-import civilizationclone.City;
 import civilizationclone.Tile.*;
-import civilizationclone.Unit.*;
 import java.awt.Point;
 import java.io.FileInputStream;
 import java.io.IOException;
-import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;

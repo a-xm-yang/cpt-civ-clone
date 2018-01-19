@@ -8,10 +8,10 @@ import java.io.IOException;
 import javafx.scene.image.Image;
 
 enum MiscAsset {
-    CLOSE_BUTTON, CITY_BACKGROUND, WARNING;
+    CLOSE_BUTTON, CITY_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON;
 }
 
-public class ImageBuffer {
+public class ImageBuffer{
 
     private static Image desert;
     private static Image hills;
@@ -34,6 +34,9 @@ public class ImageBuffer {
     private static Image closeButton;
     private static Image cityBackground;
     private static Image warning;
+    private static Image citizenIcon;
+    private static Image productionIcon;
+    private static Image moneyIcon;
     
     static {
         try {
@@ -58,6 +61,9 @@ public class ImageBuffer {
             closeButton = new Image(new FileInputStream("src/Assets/Misc/close_button.png"), 60, 60, false, false);
             cityBackground = new Image(new FileInputStream("src/Assets/Misc/city_background.jpg"), 1080, 1920, false, false);
             warning = new Image(new FileInputStream("src/Assets/Misc/warning.png"), 70, 70, false, false);
+            citizenIcon = new Image(new FileInputStream("src/Assets/Misc/citizen_icon.png"), 70, 70, false, false);
+            productionIcon = new Image(new FileInputStream("src/Assets/Misc/production_icon.jpg"), 70, 70, false, false);
+            moneyIcon = new Image(new FileInputStream("src/Assets/Misc/money_icon.png"), 70, 70, false, false);
 
         } catch (IOException e) {
             System.out.println("Image loading failed");
@@ -77,6 +83,7 @@ public class ImageBuffer {
         } else {
             return mountain;
         }
+       
     }
 
     public static Image getImage(Unit unit) {
@@ -141,6 +148,12 @@ public class ImageBuffer {
                 return cityBackground;
             case WARNING:
                 return warning;
+            case MONEY_ICON:
+                return moneyIcon;
+            case PRODUCTION_ICON:
+                return productionIcon;
+            case CITIZEN_ICON:
+                return citizenIcon;
         }
 
         return destroyer;
