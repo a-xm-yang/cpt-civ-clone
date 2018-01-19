@@ -52,6 +52,8 @@ public class GamePane extends Pane {
             getChildren().remove(cityMenu);
         }
         cityMenu = null;
+        
+        zoomMap.enableDragging(true);
     }
     
     private ZoomMap createFalseMap(Tile[][] original) {

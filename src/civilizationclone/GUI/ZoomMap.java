@@ -129,12 +129,9 @@ public class ZoomMap extends Group {
             return;
         }
  
-        if (clickedTile.hasCity()) {
-            CityMenu c = new CityMenu(clickedTile.getCity(), resX,resY, this);
-            System.out.println("x: " + ((DisplayTile) e.getTarget()).getTranslateX() + "y: " + ((DisplayTile) e.getTarget()).getTranslateY());
-            c.setTranslateX(((DisplayTile) e.getTarget()).getTranslateX());
-            c.setTranslateY(((DisplayTile) e.getTarget()).getTranslateY());
-            this.getChildren().add(c);
+        if (clickedTile.hasCity() && clickedTile.getCity().getPlayer() == currentPlayer) {
+            ((GamePane)getParent()).addCityMenu(clickedTile.getCity());
+            enableDragging(false);
         }
  
         //testing for only movement highlight
@@ -146,19 +143,7 @@ public class ZoomMap extends Group {
                 u.setTranslateY(((DisplayTile) e.getTarget()).getTranslateY());
                 this.getChildren().add(u);
                 selectedUnit = clickedTile.getUnit();
-                
-                /*
-                //Remove the if statement and make the "else" the default after
-                if(clickedTile.getUnit() instanceof SettlerUnit && e.getButton()== MouseButton.SECONDARY){
-                    ((SettlerUnit)clickedTile.getUnit()).settle("Memphis");
-                }else{
-                //TODO Invoke a UnitOptionPane
-                //Right now it's just for movement
-                highlightType = HighlightType.MOVEMENT;
-                addHighlightedTiles(clickedTile.getUnit().getMoves());
-                selectedUnit = clickedTile.getUnit();
-                }
-                */
+               
             }
         } else {
  
@@ -185,6 +170,7 @@ public class ZoomMap extends Group {
         
         
     }
+    
     public void activateMove(){
         highlightType = HighlightType.MOVEMENT;
         addHighlightedTiles(selectedUnit.getMoves());
