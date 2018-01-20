@@ -566,6 +566,7 @@ public class CityMenu extends Pane {
                         city.getPlayer().setCurrentGold(city.getPlayer().getCurrentGold() - t.getPurchaseCost());
                         try {
                             city.getPlayer().addUnit((Unit) t.getCorrespondingClass().getConstructor(City.class).newInstance(city));
+                            city.getPlayer().getUnitList().get(city.getPlayer().getUnitList().size()-1).setMovement(5);
                         } catch (Exception e) {
                             System.out.println("Construcing unit from purchase failed!");
                         }

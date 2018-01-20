@@ -38,7 +38,7 @@ public class GUIMain extends Application {
         primaryStage.setTitle("Alex Yang's Colonization II");
         primaryStage.show();
         
-        Media media = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString()); //replace /Movies/test.mp3 with your file
+        Media media = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString()); 
         MediaPlayer player = new MediaPlayer(media); 
         player.play();
     }

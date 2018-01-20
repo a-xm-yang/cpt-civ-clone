@@ -2,16 +2,31 @@
 package civilizationclone.GUI;
 
 import civilizationclone.City;
+import civilizationclone.CityProject;
+import civilizationclone.Tile.Improvement;
 import static civilizationclone.Tile.Improvement.NONE;
 import civilizationclone.Unit.BuilderUnit;
+import civilizationclone.Unit.CalvaryUnit;
+import civilizationclone.Unit.MeleeUnit;
 import civilizationclone.Unit.MilitaryUnit;
+import civilizationclone.Unit.RangeUnit;
+import civilizationclone.Unit.ReconUnit;
+import civilizationclone.Unit.ScoutUnit;
 import civilizationclone.Unit.SettlerUnit;
+import civilizationclone.Unit.SiegeUnit;
 import civilizationclone.Unit.Unit;
+import civilizationclone.Unit.UnitType;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ComboBox;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -49,6 +64,11 @@ public class UnitMenu extends Pane{
         }else if(unit instanceof MilitaryUnit){
             opts[0] = new UnitOption(65, -60, 250, 40, "Move");
             opts[1] = new UnitOption(120, 0, 250, 40, "Attack");
+            opts[2] = new UnitOption(120, 60, 250, 40, "Heal");
+            opts[3] = new UnitOption(65, 120, 250, 40, "Kill");
+        }else if(unit instanceof ReconUnit){
+            opts[0] = new UnitOption(65, -60, 250, 40, "Move");
+            opts[1] = new UnitOption(120, 0, 250, 40, "Move");
             opts[2] = new UnitOption(120, 60, 250, 40, "Heal");
             opts[3] = new UnitOption(65, 120, 250, 40, "Kill");
         }
@@ -156,20 +176,21 @@ public class UnitMenu extends Pane{
                 }
             }else if(((UnitOption)e.getTarget()).getOptionType().equals("Heal") && ((UnitOption)e.getTarget()).getText().getFill() == Color.WHITE){
                 if(unit.getMovement() > 0){
-                    zmapRef.activateSettle();
+                    zmapRef.activateHeal();
                 }
             }else if(((UnitOption)e.getTarget()).getOptionType().equals("Kill") && ((UnitOption)e.getTarget()).getText().getFill() == Color.WHITE){
                 zmapRef.activateKill();
             }else if(((UnitOption)e.getTarget()).getOptionType().equals("Improve") && ((UnitOption)e.getTarget()).getText().getFill() == Color.WHITE){
                 if(((BuilderUnit)unit).getPossibleImprovements().length > 1 && ((BuilderUnit)unit).getMapRef().getTile(unit.getX(), unit.getY()).getImprovement() == NONE && unit.getMovement() > 0){
-                    zmapRef.activateImprove();
+                    getChildren().add(new BuildMenu(unit));
+                    return;
                 }
             }else if(((UnitOption)e.getTarget()).getOptionType().equals("Destroy") && ((UnitOption)e.getTarget()).getText().getFill() == Color.WHITE){
                 //zmapRef.activateDestroy();
             }
         }
     delete();
-
+    
     }
     
     private String displayUnitInfo() {
@@ -193,7 +214,7 @@ public class UnitMenu extends Pane{
     }
     
     void delete(){
-        zmapRef.getChildren().remove(zmapRef.getChildren().indexOf(this));
+        zmapRef.getChildren().remove(this);
     }
     
     private class UnitOption extends Rectangle{
@@ -234,8 +255,134 @@ public class UnitMenu extends Pane{
             return text;
         }
         
+    }
+    
+    private class BuildMenu extends Pane {
+
+        private Rectangle border;
+        private ComboBox comboBox;
+        private Circle closeButton, confirmButton;
+        private Text title, info;
+        private ImageView display;
+
+        private Unit unit;
+        private boolean canConfirm;
+
+        public BuildMenu(Unit unit) {
+
+            this.unit = unit;
+            canConfirm = false;
+
+            border = new Rectangle(600, 450);
+            border.setFill(Color.DARKSLATEGRAY);
+            setTranslateX(0);
+            setTranslateY(0);
+
+            closeButton = new Circle(530, 385, 30);
+            closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
+            closeButton.setOnMouseClicked((e) -> {
+                e.consume();
+                close();
+            });
+
+            confirmButton = new Circle(450, 385, 22);
+            confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
+            confirmButton.setOpacity(0.1);
+            confirmButton.setOnMouseClicked((e) -> {
+                e.consume();
+                if (canConfirm) {
+                    confirm();
+                }
+
+            });
+
+            title = new Text("WHAT WOULD YOU LIKE TO BUILD");
+            title.setFont(Font.font("Times New Roman", 25));
+            title.setFill(Color.WHITESMOKE);
+            title.setTranslateY(25);
+            title.setTranslateX(5);
+
+            initializeComboBox();
+            comboBox.setOnAction(e -> {
+                updateInfo();
+                e.consume();
+            });
+
+            //to be changed later
+            info = new Text();
+            info.setFont(Font.font("Times New Roman", 18));
+            info.setFill(Color.WHITESMOKE);
+            info.setWrappingWidth(200);
+            info.setTranslateX(350);
+            info.setTranslateY(160);
+
+            display = new ImageView();
+            display.setTranslateX(110);
+            display.setTranslateY(210);
+
+            getChildren().addAll(border, closeButton, confirmButton, title, comboBox, info, display);
+        }
+
+        private void updateInfo() {
+
+            String selection = (String) comboBox.getValue();
+            System.out.println(selection);
+            canConfirm = true;
+            confirmButton.setOpacity(1);
+
+
+            //Determine what exactly did the person click
+            for (Improvement i : ((BuilderUnit)unit).getPossibleImprovements()){
+                    display.setImage(ImageBuffer.getImage(i));
+                    info.setVisible(true);
+                    display.setVisible(true);
+                    return;
+                }
+            }
+    
         
 
-    }
+        private void confirm() {
 
+            String selection = (String) comboBox.getValue();
+
+            //Determine what exactly did the person click
+            for (Improvement i : ((BuilderUnit)unit).getPossibleImprovements()) {
+                if (i.name().equals(selection)) {
+
+                    ((BuilderUnit)unit).improve(i);
+
+                    close();
+                }
+            }
+
+            close();
+        }
+
+        private void close() {
+            if (getParent() instanceof UnitMenu) {
+                ((UnitMenu) getParent()).delete();
+            }
+        }
+
+        private void initializeComboBox() {
+            ObservableList<String> options = FXCollections.observableArrayList();
+
+            options.add("----- IMPROVEMENTS -----");
+
+            for (Improvement i : ((BuilderUnit)unit).getPossibleImprovements()) {
+                options.add(i.name());
+            }
+
+            
+
+            comboBox = new ComboBox(options);
+            comboBox.setTranslateX(0);
+            comboBox.setTranslateY(0);
+            comboBox.setPromptText("--- Please Select ---");
+            comboBox.setVisibleRowCount(8);
+
+        }
+    }
 }
+

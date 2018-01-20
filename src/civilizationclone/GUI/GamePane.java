@@ -36,10 +36,11 @@ public class GamePane extends Pane {
         gameMap = new GameMap(GameMap.MapSize.SMALL, 400);
         currentPlayer = playerList.get(0);
         //Reset these later to just settler and warrior
-        playerList.get(0).addUnit(new SettlerUnit(playerList.get(0), new Point(12, 12)));
-        playerList.get(0).addUnit(new WarriorUnit(playerList.get(0), new Point(12, 13)));
-        ((SettlerUnit) playerList.get(0).getUnitList().get(0)).settle("Alabama");
-        playerList.get(0).getCityList().get(0).setProduction(UnitType.HORSEMAN);
+        for(Player p: playerList){
+            p.addUnit(new SettlerUnit(playerList.get(0), new Point(12, 12)));
+            p.addUnit(new WarriorUnit(playerList.get(0), new Point(12, 13)));
+        }
+      
         //playerList.get(0).addUnit(new BuilderUnit(playerList.get(0).getCityList().get(0)));
         playerList.get(0).startTurn();
         playerList.get(0).addTech(TechType.AGRICULTURE);
