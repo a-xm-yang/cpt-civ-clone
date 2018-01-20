@@ -46,7 +46,7 @@ public class Player {
         ownedTech = EnumSet.of(TechType.NONE);
         buildableUnit = EnumSet.of(UnitType.BUILDER, UnitType.SCOUT, UnitType.SLINGER, UnitType.WARRIOR);
         researchableTech = EnumSet.noneOf(TechType.class);
-        ownedImprovement = EnumSet.noneOf(Improvement.class);
+        ownedImprovement = EnumSet.allOf(Improvement.class);
         ownedCityProject = EnumSet.noneOf(CityProject.class);
         exploredTiles = new HashSet<Tile>();
 

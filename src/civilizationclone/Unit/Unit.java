@@ -89,7 +89,7 @@ public abstract class Unit implements IMovement {
         mapRef.getTile(position.x, position.y).removeUnit();
         position = p;
         mapRef.getTile(position.x, position.y).setUnit(this);
-        movement--;
+        movement-=mapRef.getTile(position.x, position.y).getMovementCost();
     }
 
     public void delete() {

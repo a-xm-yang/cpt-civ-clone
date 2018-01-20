@@ -9,7 +9,7 @@ public class BuilderUnit extends Unit {
     private int actions;
 
     public BuilderUnit(City c) {
-        super(3, c);
+        super(50, c);
         actions = 3;
     }
 
@@ -29,7 +29,10 @@ public class BuilderUnit extends Unit {
     public void improve(Improvement m){
         getMapRef().getTile(getX(), getY()).setImprovement(m);
         actions--;
-        if (actions == 0); delete();
+        this.setMovement(0);
+        if (actions == 0){ 
+            delete();
+        }
         System.out.println("Improved!");
     }
 
