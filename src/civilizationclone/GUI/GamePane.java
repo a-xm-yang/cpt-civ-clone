@@ -43,7 +43,7 @@ public class GamePane extends Pane {
         //playerList.get(0).addUnit(new BuilderUnit(playerList.get(0).getCityList().get(0)));
         playerList.get(0).startTurn();
         playerList.get(0).addTech(TechType.AGRICULTURE);
-        playerList.get(0).setCurrentGold(10000);
+        playerList.get(0).setCurrentGold(100);
 
         zoomMap = createFalseMap(gameMap.getMap());
         zoomMap.setCurrentPlayer(currentPlayer);

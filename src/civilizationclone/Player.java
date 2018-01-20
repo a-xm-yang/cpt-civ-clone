@@ -134,7 +134,7 @@ public class Player {
     }
 
     public void calcTechIncome() {
-        
+
         int x = 0;
 
         for (City c : cityList) {
@@ -184,10 +184,6 @@ public class Player {
 
     //Getter && Setter
     //<editor-fold> 
-    public int getHappiness() {
-        return happiness;
-    }
-
     public Point[] getAllPositions() {
 
         //return a collection of ALL the positions (such as units and cities) that the player has
@@ -210,6 +206,10 @@ public class Player {
 
     public TechType getResearch() {
         return research;
+    }
+
+    public int getHappiness() {
+        return happiness;
     }
 
     public ArrayList<City> getCityList() {
@@ -303,10 +303,8 @@ public class Player {
     public void setOwnedCityProject(Set<CityProject> ownedCityProject) {
         this.ownedCityProject = ownedCityProject;
     }
-    
-    
-    //</editor-fold>
 
+    //</editor-fold>
     private void calculateHappiness() {
         // To be changed in future
         int total = 0;

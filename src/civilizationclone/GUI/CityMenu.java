@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -38,6 +39,7 @@ public class CityMenu extends Pane {
 
         this.city = city;
         this.zoomMapRef = zoomMapRef;
+       
 
         boolean hasOptionOpen = false;
 
@@ -95,12 +97,6 @@ public class CityMenu extends Pane {
         citizenIcon = new ImageView(ImageBuffer.getImage(MiscAsset.CITIZEN_ICON));
         citizenIcon.setTranslateX(175);
         citizenIcon.setTranslateY(740);
-
-        setOnMouseClicked(e -> {
-            System.out.println("X: " + e.getX());
-            System.out.println("Y: " + e.getY());
-            e.consume();
-        });
 
         getChildren().addAll(border, statusText, cityNameText, closeButton, productionDisplay, productionIcon, purchaseIcon, citizenIcon);
 

@@ -8,6 +8,7 @@ import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.Unit;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Set;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
@@ -37,6 +38,9 @@ public class ZoomMap extends Group {
 
     private Player currentPlayer;
     private Unit selectedUnit;
+
+    private Set<Tile> visibleTiles;
+    private Set<Tile> exploredTiles;
 
     //size refers to the number of tiles
     public ZoomMap(int mapSize, int resX, int resY, int spareSize, Tile[][] tileMap) {
@@ -146,6 +150,7 @@ public class ZoomMap extends Group {
                 for (Point p : highlightedTiles) {
                     if (clickPoint.x == p.x && clickPoint.y == p.y) {
                         selectedUnit.move(p);
+                        updateFogOfWar();
                     }
                 }
             }
@@ -156,9 +161,33 @@ public class ZoomMap extends Group {
             cleanHighlight();
 
         }
-        
 
         e.consume();
+        repaint();
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+        updateFogOfWar();
+    }
+
+    private void updateFogOfWar() {
+
+        visibleTiles = Unit.getMapRef().getVisibleTiles(currentPlayer.getAllPositions());
+        currentPlayer.addExploredTiles(visibleTiles);
+        exploredTiles = currentPlayer.getExploredTiles();
+
+        for (DisplayTile dt : tileList) {
+            Tile t = dt.getTile();
+            if (visibleTiles.contains(t)) {
+                dt.setAccessLevel(2);
+            } else if (exploredTiles.contains(t)) {
+                dt.setAccessLevel(1);
+            } else {
+                dt.setAccessLevel(0);
+            }
+        }
+
         repaint();
     }
 
@@ -174,6 +203,7 @@ public class ZoomMap extends Group {
 
     public void activateSettle() {
         ((SettlerUnit) selectedUnit).settle("Memphis");
+        updateFogOfWar();
         repaint();
     }
 
@@ -188,8 +218,8 @@ public class ZoomMap extends Group {
     }
 
     public void activateImprove() {
-        if(selectedUnit.getMapRef().getTile(new Point(selectedUnit.getX(), selectedUnit.getY())).getControllingCity().getPlayer().equals(selectedUnit.getPlayer())){
-            ((BuilderUnit)selectedUnit).improve(((BuilderUnit)selectedUnit).getPossibleImprovements()[0]);
+        if (selectedUnit.getMapRef().getTile(new Point(selectedUnit.getX(), selectedUnit.getY())).getControllingCity().getPlayer().equals(selectedUnit.getPlayer())) {
+            ((BuilderUnit) selectedUnit).improve(((BuilderUnit) selectedUnit).getPossibleImprovements()[0]);
         }
         repaint();
     }
@@ -201,6 +231,8 @@ public class ZoomMap extends Group {
 
     public void repaint() {
         canvas.getGraphicsContext2D().clearRect(0, 0, totalSizeX, sizeY);
+
+        //paint according to fog of war
         for (DisplayTile t : tileList) {
             t.update();
         }
@@ -238,7 +270,7 @@ public class ZoomMap extends Group {
                 clickEventHandling(event);
             });
         }
-        
+
         repaint();
     }
 
@@ -298,10 +330,6 @@ public class ZoomMap extends Group {
 
     //GETTERS AND SETTERS
     //<editor-fold>
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
     public HighlightType getHighlightType() {
         return highlightType;
     }

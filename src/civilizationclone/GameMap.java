@@ -178,7 +178,6 @@ public class GameMap {
         }
 
         return allVisibleTiles;
-
     }
 
     public Tile[][] getMap() {

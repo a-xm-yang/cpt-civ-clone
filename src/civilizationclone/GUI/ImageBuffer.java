@@ -8,10 +8,10 @@ import java.io.IOException;
 import javafx.scene.image.Image;
 
 enum MiscAsset {
-    CLOSE_ICON,CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND,WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON;
+    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD;
 }
 
-public class ImageBuffer{
+public class ImageBuffer {
 
     private static Image desert;
     private static Image hills;
@@ -39,10 +39,11 @@ public class ImageBuffer{
     private static Image citizenIcon;
     private static Image productionIcon;
     private static Image moneyIcon;
-    
+    private static Image cloud;
+
     private static Image farm;
     private static Image mine;
-    
+
     static {
         try {
             desert = new Image(new FileInputStream("src/Assets/Tiles/Desert.png"), 100, 110, false, false);
@@ -71,9 +72,10 @@ public class ImageBuffer{
             citizenIcon = new Image(new FileInputStream("src/Assets/Misc/citizen_icon.png"), 120, 120, false, false);
             productionIcon = new Image(new FileInputStream("src/Assets/Misc/production_icon.png"), 120, 120, false, false);
             moneyIcon = new Image(new FileInputStream("src/Assets/Misc/money_icon.png"), 120, 120, false, false);
-            
-            farm = new Image(new FileInputStream("src/Assets/Misc/farm.png"), 70, 70, false, false);
-            mine = new Image(new FileInputStream("src/Assets/Misc/mine.png"), 70, 70, false, false);
+            cloud = new Image(new FileInputStream("src/Assets/Misc/Cloud.jpg"), 225, 225, false, false);
+
+            farm = new Image(new FileInputStream("src/Assets/Improvement/farm.png"), 70, 70, false, false);
+            mine = new Image(new FileInputStream("src/Assets/Improvement/mine.png"), 70, 70, false, false);
 
         } catch (IOException e) {
             System.out.println("Image loading failed");
@@ -93,7 +95,7 @@ public class ImageBuffer{
         } else {
             return mountain;
         }
-       
+
     }
 
     public static Image getImage(Unit unit) {
@@ -134,7 +136,7 @@ public class ImageBuffer{
 
         return destroyer;
     }
-    
+
     public static Image getImage(Improvement i) {
         switch (i) {
             case FARM:
@@ -150,11 +152,11 @@ public class ImageBuffer{
         //Must be added more
         return destroyer;
     }
-    
-    public static Image getImage(CityProject c){
+
+    public static Image getImage(CityProject c) {
         //need to add more
         return destroyer;
-        
+
     }
 
     public static Image getImage(MiscAsset m) {
@@ -175,6 +177,8 @@ public class ImageBuffer{
                 return citizenIcon;
             case CONFIRM_ICON:
                 return confirmIcon;
+            case CLOUD:
+                return cloud;
         }
 
         return destroyer;
