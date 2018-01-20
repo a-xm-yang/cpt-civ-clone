@@ -80,7 +80,7 @@ public class City {
         calcFakePopulation();
 
         //if population reaches a certain threshold, you can expand a new tile
-        if (population > (ownedTiles.size() + 5)) {
+        if (population > (ownedTiles.size() + 5) && ownedTiles.size() < 36) {
             canExpand = true;
         }
 
@@ -243,6 +243,8 @@ public class City {
 
     public void addTile(Tile t) {
         this.ownedTiles.add(t);
+        t.setControllingCity(this);
+        canExpand = false;
     }
 
     public void addCityProject(CityProject c) {
@@ -302,15 +304,27 @@ public class City {
     }
 
     public Point[] getPossibleExpansion() {
+
+        //First find the list of all the tiles within 3 range that has not been added yet
         ArrayList<Point> threeRangeList = mapRef.getRange(POSITION, 3);
-        ArrayList<Point> list = new ArrayList<>();
+        ArrayList<Point> filteredList = new ArrayList<>();
+        
+        //cannot add the tile itself
+        threeRangeList.remove(POSITION);
 
         for (Point p : threeRangeList) {
+            if (!ownedTiles.contains(mapRef.getTile(p))) {
+                filteredList.add(p);
+            }
+        }
+
+        //Then filter again, with only ones that have 2 or more adjacencies left
+        ArrayList<Point> list = new ArrayList<>();
+        for (Point p : filteredList) {
 
             ArrayList<Point> adjacency = mapRef.getRange(p, 1);
 
             int count = 0;
-
             for (Point x : adjacency) {
                 if (count == 2) {
                     break;
@@ -323,6 +337,8 @@ public class City {
                 list.add(p);
             }
         }
+        
+        
 
         return list.toArray(new Point[list.size()]);
     }
@@ -443,6 +459,10 @@ public class City {
 
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
+    }
+
+    public void setCanExpand(boolean canExpand) {
+        this.canExpand = canExpand;
     }
     //</editor-fold>
 

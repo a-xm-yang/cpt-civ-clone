@@ -96,4 +96,7 @@ public class GamePane extends Pane {
 
     }
 
+    public ZoomMap getZoomMap() {
+        return zoomMap;
+    }
 }

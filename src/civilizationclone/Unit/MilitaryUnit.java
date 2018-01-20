@@ -46,6 +46,8 @@ public abstract class MilitaryUnit extends Unit {
         if (health > MAX_HEALTH) {
             health = MAX_HEALTH;
         }
+        
+        setMovement(0);
     }
 
     //filters out a list of attackables

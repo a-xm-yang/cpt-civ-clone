@@ -31,7 +31,7 @@ public class CityMenu extends Pane {
     //graphics related members
     private Rectangle border;
     private Text statusText, cityNameText;
-    private Circle closeButton;
+    private Circle closeButton, expansionIcon;
     private ImageView productionIcon, purchaseIcon, citizenIcon, productionDisplay;
     private boolean hasOptionOpen;
 
@@ -39,7 +39,6 @@ public class CityMenu extends Pane {
 
         this.city = city;
         this.zoomMapRef = zoomMapRef;
-       
 
         boolean hasOptionOpen = false;
 
@@ -49,15 +48,15 @@ public class CityMenu extends Pane {
         border.setFill(cityBackground);
 
         statusText = new Text(displayCityInfo());
-        statusText.setFont(Font.font("Times New Roman", 15));
+        statusText.setFont(Font.font("Times New Roman", 20));
         statusText.setFill(Color.WHITE);
-        statusText.setTranslateY(120);
+        statusText.setTranslateY(80);
         statusText.setTranslateX(25);
 
         cityNameText = new Text(city.getName());
         cityNameText.setFont(Font.font("Oswald", 50));
         cityNameText.setFill(Color.CORNSILK);
-        cityNameText.setTranslateX(30);
+        cityNameText.setTranslateX(25);
         cityNameText.setTranslateY(60);
 
         closeButton = new Circle(420, 40, 30);
@@ -69,7 +68,7 @@ public class CityMenu extends Pane {
 
         productionDisplay = new ImageView();
         productionDisplay.setTranslateX(300);
-        productionDisplay.setTranslateY(150);
+        productionDisplay.setTranslateY(160);
         updateProductionDisplay();
 
         productionIcon = new ImageView(ImageBuffer.getImage(MiscAsset.PRODUCTION_ICON));
@@ -97,8 +96,31 @@ public class CityMenu extends Pane {
         citizenIcon = new ImageView(ImageBuffer.getImage(MiscAsset.CITIZEN_ICON));
         citizenIcon.setTranslateX(175);
         citizenIcon.setTranslateY(740);
+        citizenIcon.setOnMouseClicked((MouseEvent e) -> {
+            if (!hasOptionOpen()) {
+                getChildren().add(new CitizenMenu(city, resX, resY));
+                setHasOptionOpen(true);
+            }
+            e.consume();
+        });
+
+        expansionIcon = new Circle(32);
+        expansionIcon.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.EXPANSION_ICON)));
+        expansionIcon.setTranslateX(370);
+        expansionIcon.setTranslateY(115);
+        expansionIcon.setOnMouseClicked(e -> {
+            zoomMapRef.activateExpansion();
+            e.consume();
+            close();
+        });
 
         getChildren().addAll(border, statusText, cityNameText, closeButton, productionDisplay, productionIcon, purchaseIcon, citizenIcon);
+
+        if (city.canExpand()) {
+            getChildren().add(expansionIcon);
+            statusText.setTranslateY(120);
+            productionDisplay.setTranslateY(200);
+        }
 
     }
 
@@ -125,20 +147,24 @@ public class CityMenu extends Pane {
 
         String msg = "";
 
-        msg = msg + "Population: " + city.getPopulation();
+        if (city.canExpand()) {
+            msg = msg + "City can expand! Click to expand - >";
+        }
+
+        msg = msg + "\n\nPopulation: " + city.getPopulation();
         msg = msg + "\nFood income: " + city.getFoodIncome();
         msg = msg + "\nTech income: " + city.getTechIncome();
         msg = msg + "\nGold income: " + city.getGoldIncome();
         msg = msg + "\nProduction income: " + city.getProductionIncome();
 
         if (city.getCurrentProject() != null) {
-            msg = msg + "\n\n     Current Project: " + city.getCurrentProject().name();
-            msg = msg + "\n    Progress: " + city.getCurrentProduction() + "/" + city.getCurrentProject().getProductionCost();
+            msg = msg + "\n\nCurrent Project: " + city.getCurrentProject().name();
+            msg = msg + "\nProgress: " + city.getCurrentProduction() + "/" + city.getCurrentProject().getProductionCost();
         } else if (city.getCurrentUnit() != null) {
-            msg = msg + "\n\n     Current Project: " + city.getCurrentUnit().name();
-            msg = msg + "\n     Progress: " + city.getCurrentProduction() + "/" + city.getCurrentUnit().getProductionCost();
+            msg = msg + "\n\nCurrent Project: " + city.getCurrentUnit().name();
+            msg = msg + "\nProgress: " + city.getCurrentProduction() + "/" + city.getCurrentUnit().getProductionCost();
         } else {
-            msg = msg + "\n\n    Nothing is being produced!";
+            msg = msg + "\n\nNothing is being produced!";
         }
 
         return msg;
@@ -562,7 +588,7 @@ public class CityMenu extends Pane {
                         city.getPlayer().setCurrentGold(city.getPlayer().getCurrentGold() - t.getPurchaseCost());
                         try {
                             city.getPlayer().addUnit((Unit) t.getCorrespondingClass().getConstructor(City.class).newInstance(city));
-                            city.getPlayer().getUnitList().get(city.getPlayer().getUnitList().size()-1).setMovement(5);
+                            city.getPlayer().getUnitList().get(city.getPlayer().getUnitList().size() - 1).setMovement(5);
                         } catch (Exception e) {
                             System.out.println("Construcing unit from purchase failed!");
                         }
@@ -588,7 +614,8 @@ public class CityMenu extends Pane {
 
         private void close() {
             if (getParent() instanceof CityMenu) {
-                ((CityMenu) getParent()).close();
+                ((CityMenu) getParent()).updateProductionDisplay();
+                ((CityMenu) getParent()).zoomMapRef.repaint();
                 ((CityMenu) getParent()).removeOption(this);
             }
         }
@@ -619,7 +646,37 @@ public class CityMenu extends Pane {
 
     private class CitizenMenu extends Pane {
 
-        Rectangle border;
+        private Rectangle border;
+        private Text title;
+        private Circle closeButton;
+
+        private City city;
+
+        public CitizenMenu(City city, int resX, int resY) {
+            this.city = city;
+
+            border = new Rectangle(600, 450);
+            border.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CITY_OPTION_BACKGROUND), 0, 0, 1, 1, true));
+            setTranslateX(resX / 2 - border.getWidth() / 2 - (resX - 450));
+            setTranslateY(resY / 2 - border.getHeight() / 2);
+
+            title = new Text("SELECT WORKED TILES");
+            title.setFont(Font.font("Times New Roman", 25));
+            title.setFill(Color.WHITESMOKE);
+            title.setTranslateY(25);
+            title.setTranslateX(5);
+
+            closeButton = new Circle(530, 385, 30);
+            closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
+            closeButton.setOnMouseClicked((e) -> {
+                e.consume();
+                close();
+            });
+
+            getChildren().addAll(border, title, closeButton);
+
+        }
+
     }
 
     //<e/ditor-fold>
