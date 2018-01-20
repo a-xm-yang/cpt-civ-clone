@@ -242,6 +242,8 @@ public class ZoomMap extends Group {
                 clickEventHandling(event);
             });
         }
+        
+        repaint();
     }
 
     //handlers for scrolling ---------------

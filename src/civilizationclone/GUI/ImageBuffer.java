@@ -8,7 +8,7 @@ import java.io.IOException;
 import javafx.scene.image.Image;
 
 enum MiscAsset {
-    CLOSE_BUTTON, CITY_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON;
+    CLOSE_ICON,CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND,WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON;
 }
 
 public class ImageBuffer{
@@ -31,8 +31,10 @@ public class ImageBuffer{
     private static Image slinger;
     private static Image warrior;
 
-    private static Image closeButton;
+    private static Image closeIcon;
+    private static Image confirmIcon;
     private static Image cityBackground;
+    private static Image cityOptionBackground;
     private static Image warning;
     private static Image citizenIcon;
     private static Image productionIcon;
@@ -58,12 +60,14 @@ public class ImageBuffer{
             slinger = new Image(new FileInputStream("src/Assets/Units/Slinger.png"), 70, 70, false, false);
             warrior = new Image(new FileInputStream("src/Assets/Units/Warrior.png"), 70, 70, false, false);
 
-            closeButton = new Image(new FileInputStream("src/Assets/Misc/close_button.png"), 60, 60, false, false);
+            closeIcon = new Image(new FileInputStream("src/Assets/Misc/close_button.png"), 60, 60, false, false);
+            confirmIcon = new Image(new FileInputStream("src/Assets/Misc/confirm_icon.png"), 60, 60, true, false);
             cityBackground = new Image(new FileInputStream("src/Assets/Misc/city_background.jpg"), 1080, 1920, false, false);
+            cityOptionBackground = new Image(new FileInputStream("src/Assets/Misc/city_option_background.jpg"), 1280, 800, false, false);
             warning = new Image(new FileInputStream("src/Assets/Misc/warning.png"), 70, 70, false, false);
-            citizenIcon = new Image(new FileInputStream("src/Assets/Misc/citizen_icon.png"), 70, 70, false, false);
-            productionIcon = new Image(new FileInputStream("src/Assets/Misc/production_icon.png"), 70, 70, false, false);
-            moneyIcon = new Image(new FileInputStream("src/Assets/Misc/money_icon.png"), 70, 70, false, false);
+            citizenIcon = new Image(new FileInputStream("src/Assets/Misc/citizen_icon.png"), 120, 120, false, false);
+            productionIcon = new Image(new FileInputStream("src/Assets/Misc/production_icon.png"), 120, 120, false, false);
+            moneyIcon = new Image(new FileInputStream("src/Assets/Misc/money_icon.png"), 120, 120, false, false);
 
         } catch (IOException e) {
             System.out.println("Image loading failed");
@@ -142,10 +146,12 @@ public class ImageBuffer{
 
     public static Image getImage(MiscAsset m) {
         switch (m) {
-            case CLOSE_BUTTON:
-                return closeButton;
+            case CLOSE_ICON:
+                return closeIcon;
             case CITY_BACKGROUND:
                 return cityBackground;
+            case CITY_OPTION_BACKGROUND:
+                return cityOptionBackground;
             case WARNING:
                 return warning;
             case MONEY_ICON:
@@ -154,6 +160,8 @@ public class ImageBuffer{
                 return productionIcon;
             case CITIZEN_ICON:
                 return citizenIcon;
+            case CONFIRM_ICON:
+                return confirmIcon;
         }
 
         return destroyer;

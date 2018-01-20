@@ -263,6 +263,48 @@ public class Player {
     public void setResearch(TechType research) {
         this.research = research;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTechProgress(int techProgress) {
+        this.techProgress = techProgress;
+    }
+
+    public void setTechIncome(int techIncome) {
+        this.techIncome = techIncome;
+    }
+
+    public void setGoldIncome(int goldIncome) {
+        this.goldIncome = goldIncome;
+    }
+
+    public void setCurrentGold(int currentGold) {
+        this.currentGold = currentGold;
+    }
+
+    public void setHappiness(int happiness) {
+        this.happiness = happiness;
+    }
+
+    public void setOwnedTech(Set<TechType> ownedTech) {
+        this.ownedTech = ownedTech;
+    }
+
+    public void setResearchableTech(Set<TechType> researchableTech) {
+        this.researchableTech = researchableTech;
+    }
+
+    public void setOwnedImprovement(Set<Improvement> ownedImprovement) {
+        this.ownedImprovement = ownedImprovement;
+    }
+
+    public void setOwnedCityProject(Set<CityProject> ownedCityProject) {
+        this.ownedCityProject = ownedCityProject;
+    }
+    
+    
     //</editor-fold>
 
     private void calculateHappiness() {

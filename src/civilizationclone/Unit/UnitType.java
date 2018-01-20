@@ -2,18 +2,21 @@ package civilizationclone.Unit;
 
 public enum UnitType {
 
-    SETTLER(90,150),
-    BUILDER(60, 120),
-    SCOUT(40, 80), 
-    WARRIOR(50, 110), 
-    SLINGER(50, 110), 
-    HORSEMAN(60,130),
-    ARCHER(80,145);
+    SETTLER(90,150, SettlerUnit.class),
+    BUILDER(60, 120, BuilderUnit.class),
+    SCOUT(40, 80, ScoutUnit.class), 
+    WARRIOR(50, 110, WarriorUnit.class), 
+    SLINGER(50, 110, SlingerUnit.class),
+    HORSEMAN(60,120, HorsemanUnit.class),
+    ARCHER(80,145, ArcherUnit.class);
 
     private int productionCost;
     private int purchaseCost;
+    private Class correspondingClass;
 
-    private UnitType(int productionCost, int purchaseCost) {
+
+    private UnitType(int productionCost, int purchaseCost, Class c) {
+        this.correspondingClass = c;
         this.productionCost = productionCost;
         this.purchaseCost = purchaseCost;
     }
@@ -25,5 +28,10 @@ public enum UnitType {
     public int getPurchaseCost() {
         return purchaseCost;
     }
+
+    public Class getCorrespondingClass() {
+        return correspondingClass;
+    }
+    
 
 }

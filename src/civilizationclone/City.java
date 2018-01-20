@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class City {
 
@@ -86,7 +88,11 @@ public class City {
 
         if (currentUnit != null) {
             if (currentProduction >= currentUnit.getProductionCost()) {
-                buildUnit();
+                if (!mapRef.getTile(POSITION).hasUnit()) {
+                    buildUnit();
+                } else {
+                    System.out.println("This tile is occupied! Move your unit away!");
+                }
             }
         } else {
             if (currentProduction >= currentProject.getProductionCost()) {
@@ -188,7 +194,7 @@ public class City {
 
     private void calcProductionIncome() {
         //calc production income
-        int production = 10;
+        int production = 5;
 
         //add from tiles
         for (Tile t : workedTiles) {
@@ -214,21 +220,10 @@ public class City {
         //adds the unit object onto the list then clean production queue
         currentProduction = 0;
 
-        switch (currentUnit) {
-            case BUILDER:
-                player.addUnit(new BuilderUnit(this));
-                break;
-            case WARRIOR:
-                player.addUnit(new WarriorUnit(this));
-                break;
-            case SCOUT:
-                player.addUnit(new ScoutUnit(this));
-                break;
-            case SLINGER:
-                player.addUnit(new SlingerUnit(this));
-                break;
-            case SETTLER:
-                player.addUnit(new SettlerUnit(this));
+        try {
+            getPlayer().addUnit((Unit) currentUnit.getCorrespondingClass().getConstructor(City.class).newInstance(this));
+        } catch (Exception e) {
+            System.out.println("Constructing unit from production failed!");
         }
 
         currentUnit = null;
@@ -248,6 +243,11 @@ public class City {
 
     public void addTile(Tile t) {
         this.ownedTiles.add(t);
+    }
+
+    public void addCityProject(CityProject c) {
+        builtProjects.add(c);
+        calcIncome();
     }
 
     public void attack(Unit x) {
@@ -274,6 +274,10 @@ public class City {
 
     //GETTER
     //<editor-fold>
+    public Tile getCityTile() {
+        return mapRef.getTile(POSITION);
+    }
+
     public Point[] getAttackable() {
 
         ArrayList<Point> list = mapRef.getRange(POSITION, 3);
@@ -424,11 +428,13 @@ public class City {
     public void setProduction(CityProject currentProject) {
         this.currentProject = currentProject;
         currentUnit = null;
+        currentProduction = 0;
     }
 
     public void setProduction(UnitType currentUnit) {
         this.currentUnit = currentUnit;
         currentProject = null;
+        currentProduction = 0;
     }
 
     public void setHealth(int health) {
