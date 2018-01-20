@@ -81,9 +81,13 @@ public class DisplayTile extends Polygon {
             } else {
 
                 //FULL ACCESS
+                if (tile.getImprovement() != NONE) {
+                    gc.drawImage(ImageBuffer.getImage(tile.getImprovement()), 15 + getTranslateX(), 20 + getTranslateY());
+                }
                 if (tile.hasUnit()) {
                     gc.drawImage(ImageBuffer.getImage(tile.getUnit()), 15 + getTranslateX(), 20 + getTranslateY());
                 }
+                
 
                 setEffect(null);
             }

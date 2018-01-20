@@ -7,6 +7,7 @@ import civilizationclone.Unit.UnitType;
 import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
 import java.util.ArrayList;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class GamePane extends Pane {
@@ -15,6 +16,7 @@ public class GamePane extends Pane {
     private int resX, resY;
     private ZoomMap zoomMap;
     private CityMenu cityMenu;
+    private NextTurnPane nextButton;
 
     //game data
     private GameMap gameMap;
@@ -44,7 +46,17 @@ public class GamePane extends Pane {
 
         zoomMap = createFalseMap(gameMap.getMap());
         zoomMap.setCurrentPlayer(currentPlayer);
+        
+        nextButton = new NextTurnPane(currentPlayer, resX, resY);
+        
         getChildren().add(zoomMap);
+        getChildren().add(nextButton);
+        
+        
+        
+        setOnMouseClicked((MouseEvent e) -> {
+            nextButton.updateText();
+        });
     }
 
     public void addCityMenu(City c) {

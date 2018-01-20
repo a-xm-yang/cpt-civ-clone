@@ -85,27 +85,27 @@ public class Player {
 
     }
 
-    public boolean canEndTurn() {
+    public int canEndTurn() {
         for (Unit u : unitList) {
             if (u.canMove()) {
                 System.out.println("Unit needs to move");
-                return false;
+                return 1;
             }
         }
 
         for (City c : cityList) {
             if (!c.canEndTurn()) {
                 System.out.println("Needs to select city project for " + c.getName());
-                return false;
+                return 2;
             }
         }
 
         if (research == null) {
             System.out.println("Need to select project");
-            return false;
+            return 3;
         }
 
-        return true;
+        return 0;
     }
 
     private void calcResearchableTech() {

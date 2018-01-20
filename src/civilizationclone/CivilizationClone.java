@@ -16,7 +16,7 @@ EARLY DEVELOPMENT
 public class CivilizationClone{
 
     public static void main(String[] args) {
-      //  new GameLoop();
+       //new GameLoop();
        Application.launch(GUIMain.class,args);
     }
 

@@ -351,6 +351,8 @@ public class UnitMenu extends Pane{
                 if (i.name().equals(selection)) {
 
                     ((BuilderUnit)unit).improve(i);
+                    zmapRef.repaint();
+                    System.out.println(unit.getMapRef().getTile(unit.getX(), unit.getY()).getImprovement());
 
                     close();
                 }
