@@ -273,19 +273,19 @@ public class UnitMenu extends Pane{
             this.unit = unit;
             canConfirm = false;
 
-            border = new Rectangle(600, 450);
+            border = new Rectangle(160, 150);
             border.setFill(Color.DARKSLATEGRAY);
-            setTranslateX(0);
-            setTranslateY(0);
+            setTranslateX(-190);
+            setTranslateY(-55);
 
-            closeButton = new Circle(530, 385, 30);
+            closeButton = new Circle(130, 180, 30);
             closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
             closeButton.setOnMouseClicked((e) -> {
                 e.consume();
                 close();
             });
 
-            confirmButton = new Circle(450, 385, 22);
+            confirmButton = new Circle(80, 180, 22);
             confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
             confirmButton.setOpacity(0.1);
             confirmButton.setOnMouseClicked((e) -> {
@@ -296,8 +296,8 @@ public class UnitMenu extends Pane{
 
             });
 
-            title = new Text("WHAT WOULD YOU LIKE TO BUILD");
-            title.setFont(Font.font("Times New Roman", 25));
+            title = new Text("WHAT WOULD YOU \n LIKE TO BUILD");
+            title.setFont(Font.font("Times New Roman", 22));
             title.setFill(Color.WHITESMOKE);
             title.setTranslateY(25);
             title.setTranslateX(5);
@@ -317,8 +317,8 @@ public class UnitMenu extends Pane{
             info.setTranslateY(160);
 
             display = new ImageView();
-            display.setTranslateX(110);
-            display.setTranslateY(210);
+            display.setTranslateX(40);
+            display.setTranslateY(85);
 
             getChildren().addAll(border, closeButton, confirmButton, title, comboBox, info, display);
         }
@@ -363,6 +363,7 @@ public class UnitMenu extends Pane{
             if (getParent() instanceof UnitMenu) {
                 ((UnitMenu) getParent()).delete();
             }
+            zmapRef.repaint();
         }
 
         private void initializeComboBox() {
@@ -377,8 +378,9 @@ public class UnitMenu extends Pane{
             
 
             comboBox = new ComboBox(options);
-            comboBox.setTranslateX(0);
-            comboBox.setTranslateY(0);
+            comboBox.setMaxWidth(160);
+            comboBox.setTranslateX(2);
+            comboBox.setTranslateY(55);
             comboBox.setPromptText("--- Please Select ---");
             comboBox.setVisibleRowCount(8);
 
