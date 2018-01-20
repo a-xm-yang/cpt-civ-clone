@@ -1,5 +1,7 @@
 package civilizationclone.Tile;
 
+import static civilizationclone.Tile.Plains.possibleImprovement;
+import static civilizationclone.Tile.Resource.NONE;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -22,7 +24,9 @@ public class Ocean extends Tile {
        @Override
     public Set<Improvement> getPossibleImprovements() {
         Set<Improvement> improve = possibleImprovement;
-        improve.add(this.getResource().getImprovementType());
+        if(this.getResource() != NONE){
+            improve.add(this.getResource().getImprovementType());
+        }
         return improve;
     }
 

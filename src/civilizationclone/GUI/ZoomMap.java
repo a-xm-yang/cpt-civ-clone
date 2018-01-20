@@ -1,6 +1,5 @@
 package civilizationclone.GUI;
 
-import civilizationclone.City;
 import civilizationclone.Player;
 import civilizationclone.Tile.Tile;
 import civilizationclone.Unit.BuilderUnit;
@@ -9,13 +8,9 @@ import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.Unit;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Iterator;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
@@ -193,13 +188,14 @@ public class ZoomMap extends Group {
     }
 
     public void activateImprove() {
-        //This line is fucked, fix later
-        //((BuilderUnit)selectedUnit).improve(((BuilderUnit)selectedUnit).getPossibleImprovements().get(0)));
+        if(selectedUnit.getMapRef().getTile(new Point(selectedUnit.getX(), selectedUnit.getY())).getControllingCity().getPlayer().equals(selectedUnit.getPlayer())){
+            ((BuilderUnit)selectedUnit).improve(((BuilderUnit)selectedUnit).getPossibleImprovements()[0]);
+        }
         repaint();
     }
 
     public void activateDestroy() {
-        //Also fucked, fix later
+        //fucked up, fix later
         repaint();
     }
 

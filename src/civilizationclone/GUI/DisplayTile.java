@@ -1,6 +1,7 @@
 package civilizationclone.GUI;
 
 import civilizationclone.Tile.*;
+import static civilizationclone.Tile.Improvement.NONE;
 import java.awt.Point;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -53,10 +54,15 @@ public class DisplayTile extends Polygon {
             gc.drawImage(ImageBuffer.getCityImage(), 5 + getTranslateX(), 10 + getTranslateY());
         }
         
+        if (tile.getImprovement() != NONE){
+            gc.drawImage(ImageBuffer.getImage(tile.getImprovement()), 15 + getTranslateX(), 20 + getTranslateY());
+        }
+        
         if (tile.hasUnit()) {
             gc.drawImage(ImageBuffer.getImage(tile.getUnit()), 15 + getTranslateX(), 20 + getTranslateY());
 
         }
+        
 
         if (tile.isControlled()) {
             blueHighlighted = true;
