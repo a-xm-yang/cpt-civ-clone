@@ -137,27 +137,46 @@ public class ZoomMap extends Group {
                 selectedTile = clickedTile;
 
             } else if (clickedTile.hasCity() && clickedTile.getCity().getPlayer() == currentPlayer && !clickedTile.hasUnit()) {
+
                 ((GamePane) getParent()).addCityMenu(clickedTile.getCity());
                 enableDragging(false);
                 selectedTile = clickedTile;
+
             }
         } else {
 
+            Point clickPoint = ((DisplayTile) e.getTarget()).getPoint();
+
             //if movement is desired
             if (highlightType == highlightType.MOVEMENT) {
-                Point clickPoint = ((DisplayTile) e.getTarget()).getPoint();
                 for (Point p : highlightedTiles) {
-                    if (clickPoint.x == p.x && clickPoint.y == p.y) {
+                    if (clickPoint.equals(p)) {
                         selectedTile.getUnit().move(p);
                         updateFogOfWar();
                     }
                 }
             }
 
-            if (highlightType == highlightType.EXPANSION) {
-                Point clickPoint = ((DisplayTile) e.getTarget()).getPoint();
+            if (highlightType == highlightType.ATTACK) {
                 for (Point p : highlightedTiles) {
-                    if (clickPoint.x == p.x && clickPoint.y == p.y) {
+                    if (clickPoint.equals(p)) {
+
+                        MilitaryUnit m = (MilitaryUnit) selectedTile.getUnit();
+
+                        if (Unit.getMapRef().getTile(p).hasUnit()) {
+                            m.attack(Unit.getMapRef().getTile(p).getUnit());
+                        } else {
+                            m.siegeAttack(Unit.getMapRef().getTile(p).getCity());
+                        }
+
+                        updateFogOfWar();
+                    }
+                }
+            }
+
+            if (highlightType == highlightType.EXPANSION) {
+                for (Point p : highlightedTiles) {
+                    if (clickPoint.equals(p)) {
                         selectedTile.getCity().addTile(clickedTile);
                         updateFogOfWar();
                     }
@@ -201,7 +220,21 @@ public class ZoomMap extends Group {
     }
 
     public void activateAttack() {
+        highlightType = HighlightType.ATTACK;
 
+        MilitaryUnit m = (MilitaryUnit) selectedTile.getUnit();
+        ArrayList<Point> combinedList = new ArrayList<Point>();
+
+        for (Point p : m.getAttackable()) {
+            combinedList.add(p);
+        }
+
+        for (Point p : m.getSiegable()) {
+            combinedList.add(p);
+        }
+
+        addHighlightedTiles(combinedList.toArray(new Point[combinedList.size()]));
+        repaint();
     }
 
     public void activateMove() {
