@@ -214,6 +214,7 @@ public class ZoomMap extends Group {
 
     public void activateKill() {
         selectedUnit.delete();
+        updateFogOfWar();
         repaint();
     }
 

@@ -2,15 +2,11 @@ package civilizationclone.GUI;
 
 import civilizationclone.*;
 import civilizationclone.Tile.*;
-import civilizationclone.Unit.BuilderUnit;
 import civilizationclone.Unit.SettlerUnit;
-import civilizationclone.Unit.Unit;
 import civilizationclone.Unit.UnitType;
 import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
 import java.util.ArrayList;
-import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class GamePane extends Pane {
