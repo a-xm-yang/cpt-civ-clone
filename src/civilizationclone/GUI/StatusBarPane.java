@@ -88,7 +88,7 @@ public class StatusBarPane extends Group{
     
     public void updateTexts(){
         goldT.setText(Integer.toString(player.getCurrentGold()) + "(" + Integer.toString(player.getGoldIncome()) + ")");
-        sciT.setText(Integer.toString(player.getTechProgress()));
+        sciT.setText(Integer.toString(player.getTechIncome()));
         happyT.setText(Integer.toString(player.getHappiness()));
         turnT.setText("Turn: 0 | 4000 BC");
         

@@ -842,8 +842,7 @@ public class CityMenu extends Pane {
                 GraphicsContext gc = canvas.getGraphicsContext2D();
 
                 if (tile.getResource() != Resource.NONE) {
-                    //Draw resource
-
+                    gc.drawImage(ImageBuffer.getImage(tile.getResource()), getTranslateX() + 55, getTranslateY() + 35);
                 }
 
                 if (tile.getImprovement() != Improvement.NONE) {
