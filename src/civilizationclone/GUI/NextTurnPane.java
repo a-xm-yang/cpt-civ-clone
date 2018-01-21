@@ -37,16 +37,21 @@ public class NextTurnPane extends Group {
 
         setOnMouseClicked((MouseEvent e) -> {
 
-            if (player.canEndTurn() == 0) {
-                gamePaneRef.nextTurn();
-
-            }
-
-            updateText();
-
-            e.consume();
+            clickEvent(e);
         });
 
+    }
+    
+    public void clickEvent(MouseEvent e){
+        
+        if (this.player.canEndTurn() == 0) {
+            gamePaneRef.nextTurn();
+            //delete();
+        }
+
+        updateText();
+
+        e.consume();
     }
 
     public void setCurrentPlayer(Player player) {
@@ -69,6 +74,10 @@ public class NextTurnPane extends Group {
         text.setTranslateX((280 - text.getLayoutBounds().getWidth()) / 2);
         text.setTranslateY(text.getLayoutBounds().getHeight());
         zMapRef.repaint();
+    }
+    
+    void delete(){
+        gamePaneRef.getChildren().remove(this);
     }
 
 }
