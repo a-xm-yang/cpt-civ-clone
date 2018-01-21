@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import javax.swing.JFrame;
@@ -25,17 +26,30 @@ public class GameLoop extends JPanel {
     JFrame frame;
     Scanner scan;
     int choice;
+    Random rand = new Random();
+    Point p;
 
     public GameLoop() {
 
         scan = new Scanner(System.in);
-        map = new GameMap(MapSize.MEDIUM, 90);
+        map = new GameMap(MapSize.SMALL, 400);
 
         playerList = new ArrayList<Player>();
         playerList.add(new Player("Joseph Stalin"));
-        playerList.add(new Player("Mao"));
-        playerList.get(0).addUnit(new SettlerUnit(playerList.get(0), new Point(30, 65)));
-        playerList.get(0).addUnit(new WarriorUnit(playerList.get(0), new Point(30, 64)));
+        //playerList.add(new Player("Mao"));
+        do{
+            p = new Point((int) (Math.random() * map.getSize()), (int) (Math.random() * map.getSize()));
+            System.out.println(p);
+            if((map.getTile(p) instanceof Plains || map.getTile(p) instanceof Hills || map.getTile(p) instanceof Desert) && (map.getTile(p.x, p.y+1) instanceof Plains || 
+                    map.getTile(p.x, p.y+1) instanceof Hills || map.getTile(p.x, p.y+1) instanceof Desert) && !map.getTile(p).hasUnit() && !map.getTile(p.x, p.y+1).hasUnit()){
+                playerList.get(0).addUnit(new SettlerUnit(playerList.get(0), p));
+                playerList.get(0).addUnit(new WarriorUnit(playerList.get(0), new Point(p.x, p.y+1)));
+                break;
+            }
+        }while(true);
+        
+        //playerList.get(0).addUnit(new SettlerUnit(playerList.get(0), new Point(11, 12)));
+        //playerList.get(0).addUnit(new WarriorUnit(playerList.get(0), new Point(11, 11)));
 
         initializeGraphics();
         repaint();
@@ -66,7 +80,7 @@ public class GameLoop extends JPanel {
                 } else if (choice == 3) {
                     setResearch(player, player.getResearchableTech());
                 } else if (choice == 4) {
-                    if (player.canEndTurn()) {
+                    if (player.canEndTurn()==0) {
                         System.out.println("End turn!");
                         break;
                     } else {

@@ -8,7 +8,7 @@ import java.io.IOException;
 import javafx.scene.image.Image;
 
 enum MiscAsset {
-    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD;
+    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, GOLD, SCIENCE, HAPPY;
 }
 
 public class ImageBuffer {
@@ -43,6 +43,10 @@ public class ImageBuffer {
 
     private static Image farm;
     private static Image mine;
+    
+    private static Image gold;
+    private static Image science;
+    private static Image happy;
 
     static {
         try {
@@ -76,7 +80,12 @@ public class ImageBuffer {
 
             farm = new Image(new FileInputStream("src/Assets/Improvement/farm.png"), 70, 70, false, false);
             mine = new Image(new FileInputStream("src/Assets/Improvement/mine.png"), 70, 70, false, false);
-
+            
+            gold = new Image(new FileInputStream("src/Assets/Misc/gold.png"), 25, 25, false, false);
+            science = new Image(new FileInputStream("src/Assets/Misc/science.png"), 25, 25, false, false);
+            happy = new Image(new FileInputStream("src/Assets/Misc/happy.png"), 25, 25, false , false);
+            
+            
         } catch (IOException e) {
             System.out.println("Image loading failed");
             System.out.println(e.getStackTrace());
@@ -179,6 +188,12 @@ public class ImageBuffer {
                 return confirmIcon;
             case CLOUD:
                 return cloud;
+            case GOLD:
+                return gold;
+            case SCIENCE:
+                return science;
+            case HAPPY:
+                return happy;
         }
 
         return destroyer;

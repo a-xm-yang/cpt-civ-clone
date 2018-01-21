@@ -27,6 +27,7 @@ public class GUIMain extends Application {
 
         //Create the zoompane called "root" in the scene
         
+        
         ArrayList<Player> p = new ArrayList<Player>();
         p.add(new Player("Stalin"));
         

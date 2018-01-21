@@ -1,10 +1,15 @@
 package civilizationclone;
 
+import civilizationclone.Tile.Desert;
+import civilizationclone.Tile.Hills;
 import civilizationclone.Tile.Improvement;
+import civilizationclone.Tile.Plains;
 import civilizationclone.Tile.Tile;
 import civilizationclone.Unit.MilitaryUnit;
+import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.Unit;
 import civilizationclone.Unit.UnitType;
+import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -36,6 +41,8 @@ public class Player {
     //lists of things owned
     private ArrayList<Unit> unitList;
     private ArrayList<City> cityList;
+    
+    private static GameMap mapRef;
     //</editor-fold>
 
     //constructor
@@ -54,7 +61,8 @@ public class Player {
 
         unitList = new ArrayList<Unit>();
         cityList = new ArrayList<City>();
-    }
+        
+            }
 
     public void startTurn() {
 

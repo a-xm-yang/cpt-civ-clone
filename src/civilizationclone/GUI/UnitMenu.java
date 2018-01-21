@@ -197,8 +197,7 @@ public class UnitMenu extends Pane{
         String msg = "";
 
         msg = msg + unit.getPlayer().getName() + "'s " + unit.getClass().getSimpleName().substring(0, unit.getClass().getSimpleName().length()-4) + "\n\n";
-        
-        
+
         msg = msg + "Movement: " + unit.getMovement() + "/" + unit.getMAX_MOVEMENT() + "\n";
         if(unit instanceof MilitaryUnit){
             msg = msg + "Health: " + ((MilitaryUnit) unit).getHealth() + " / " +((MilitaryUnit) unit).getMAX_HEALTH() + "\n";

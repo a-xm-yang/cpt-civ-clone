@@ -162,7 +162,7 @@ public class ZoomMap extends Group {
 
         }
 
-        e.consume();
+        //e.consume();
         repaint();
     }
 

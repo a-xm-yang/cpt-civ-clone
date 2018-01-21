@@ -17,6 +17,7 @@ public class GamePane extends Pane {
     private ZoomMap zoomMap;
     private CityMenu cityMenu;
     private NextTurnPane nextButton;
+    private StatusBarPane statusBar;
 
     //game data
     private GameMap gameMap;
@@ -34,9 +35,16 @@ public class GamePane extends Pane {
         gameMap = new GameMap(GameMap.MapSize.SMALL, 400);
         currentPlayer = playerList.get(0);
         //Reset these later to just settler and warrior
-        for(Player p: playerList){
-            p.addUnit(new SettlerUnit(playerList.get(0), new Point(12, 12)));
-            p.addUnit(new WarriorUnit(playerList.get(0), new Point(12, 13)));
+        for(Player player: playerList){
+            do{
+            Point p = new Point((int) (Math.random() * gameMap.getSize()), (int) (Math.random() * gameMap.getSize()));
+            if((gameMap.getTile(p) instanceof Plains || gameMap.getTile(p) instanceof Hills || gameMap.getTile(p) instanceof Desert) && (gameMap.getTile(p.x, p.y+1) instanceof Plains || 
+                    gameMap.getTile(p.x, p.y+1) instanceof Hills || gameMap.getTile(p.x, p.y+1) instanceof Desert) && !gameMap.getTile(p).hasUnit() && !gameMap.getTile(p.x, p.y+1).hasUnit()){
+                player.addUnit(new SettlerUnit(player, p));
+                player.addUnit(new WarriorUnit(player, new Point(p.x, p.y+1)));
+                break;
+            }
+        }while(true);
         }
       
         //playerList.get(0).addUnit(new BuilderUnit(playerList.get(0).getCityList().get(0)));
@@ -47,11 +55,12 @@ public class GamePane extends Pane {
         zoomMap = createFalseMap(gameMap.getMap());
         zoomMap.setCurrentPlayer(currentPlayer);
         
-        nextButton = new NextTurnPane(currentPlayer, resX, resY);
+        nextButton = new NextTurnPane(currentPlayer, resX, resY, zoomMap);
+        statusBar = new StatusBarPane(currentPlayer, resX, resY, zoomMap);
         
         getChildren().add(zoomMap);
         getChildren().add(nextButton);
-        
+        getChildren().add(statusBar);
         
         
         setOnMouseClicked((MouseEvent e) -> {
