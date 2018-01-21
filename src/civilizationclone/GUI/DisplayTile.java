@@ -6,6 +6,7 @@ import java.awt.Point;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
@@ -20,6 +21,7 @@ public class DisplayTile extends Polygon {
     private static ColorAdjust shade;
     private static ImagePattern cloudFill;
     private ImagePattern tileFill;
+    private Image resourceImage;
     private boolean highlighted = false;
     //Data-related members
     private int x;
@@ -43,6 +45,11 @@ public class DisplayTile extends Polygon {
         setStroke(Color.BLACK);
         getPoints().addAll(new Double[]{50.0, 0.0, 100.0, 30.0, 100.0, 80.0, 50.0, 110.0, 0.0, 80.0, 0.0, 30.0});
         tileFill = new ImagePattern(ImageBuffer.getImage(tile));
+
+        if (tile.getResource() != Resource.NONE) {
+            resourceImage = ImageBuffer.getImage(tile.getResource());
+        }
+
         setStrokeWidth(3);
     }
 
@@ -51,15 +58,12 @@ public class DisplayTile extends Polygon {
         //Access level 0: Complete Coverage
         //Access level 1: Show terrain, city, and resource
         //Access level 2: Show everything
-        gc = canvas.getGraphicsContext2D();
-
         if (accessLevel == 0) {
-            
             setFill(cloudFill);
             setEffect(null);
             setStroke(Color.LIGHTGRAY);
         } else {
-            
+
             setFill(tileFill);
             setStroke(Color.BLACK);
 
@@ -67,17 +71,14 @@ public class DisplayTile extends Polygon {
                 gc.drawImage(ImageBuffer.getCityImage(), 5 + getTranslateX(), 10 + getTranslateY());
             }
 
+            if (resourceImage != null) {
+                gc.drawImage(resourceImage, getTranslateX() + 55, getTranslateY() + 35);
+            }
+
             if (accessLevel == 1) {
-
                 //ADD RESOURCE PRINTING
-                if (tile.getImprovement() != NONE) {
-                    gc.drawImage(ImageBuffer.getImage(tile.getImprovement()), 15 + getTranslateX(), 20 + getTranslateY());
-                }
-
                 setEffect(shade);
-
             } else {
-
                 //FULL ACCESS
                 if (tile.getImprovement() != NONE) {
                     gc.drawImage(ImageBuffer.getImage(tile.getImprovement()), 15 + getTranslateX(), 20 + getTranslateY());
@@ -85,8 +86,8 @@ public class DisplayTile extends Polygon {
                 if (tile.hasUnit()) {
                     gc.drawImage(ImageBuffer.getImage(tile.getUnit()), 15 + getTranslateX(), 20 + getTranslateY());
                 }
-                
-                if (tile.isControlled()){
+
+                if (tile.isControlled()) {
                     setStroke(Color.AQUA);
                 }
 

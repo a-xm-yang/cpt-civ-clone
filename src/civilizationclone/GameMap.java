@@ -87,7 +87,7 @@ public class GameMap {
     private void grantResource(float value, Tile tile) {
 
         //if value is greater than 0.7 and is not a mountain, grant a random resource according to pseudorandom calculation
-        if (value > 0.72) {
+        if (value > 0.75) {
             if (!(tile instanceof Mountain)) {
 
                 int pseudoRandom = (int) ((value * 10000) % 10);
@@ -103,7 +103,7 @@ public class GameMap {
                             tile.setResource(Resource.WHEAT);
                             break;
                         case 2:
-                            tile.setResource(Resource.CORN);
+                            tile.setResource(Resource.RICE);
                             break;
                         case 3:
                             tile.setResource(Resource.COTTON);
@@ -112,13 +112,13 @@ public class GameMap {
                             tile.setResource(Resource.BANANA);
                             break;
                         case 5:
-                            tile.setResource(Resource.DYE);
+                            tile.setResource(Resource.WINE);
                             break;
                         case 6:
-                            tile.setResource(Resource.EGG);
+                            tile.setResource(Resource.SHEEP);
                             break;
                         case 7:
-                            tile.setResource(Resource.MILK);
+                            tile.setResource(Resource.CATTLE);
                             break;
                         case 8:
                             tile.setResource(Resource.TRUFFLE);
@@ -143,17 +143,17 @@ public class GameMap {
                 //<editor-fold>
                 else if (tile instanceof Hills) {
                     if (pseudoRandom < 1) {
-                        tile.setResource(Resource.MILK);
+                        tile.setResource(Resource.CATTLE);
                     } else if (pseudoRandom < 2) {
-                        tile.setResource(Resource.EGG);
+                        tile.setResource(Resource.SHEEP);
                     } else if (pseudoRandom < 3) {
                         tile.setResource(Resource.TRUFFLE);
                     } else if (pseudoRandom < 5) {
-                        tile.setResource(Resource.MERCURY);
+                        tile.setResource(Resource.STONE);
                     } else if (pseudoRandom < 9) {
                         tile.setResource(Resource.IRON);
                     } else {
-                        tile.setResource(Resource.GOLD);
+                        tile.setResource(Resource.MERCURY);
                     }
                 }
                 //</editor-fold>

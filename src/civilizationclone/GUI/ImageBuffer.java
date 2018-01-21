@@ -8,11 +8,14 @@ import java.io.IOException;
 import javafx.scene.image.Image;
 
 enum MiscAsset {
-    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, GOLD, SCIENCE, HAPPY, EXPANSION_ICON, GOLD_ICON;
+    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, GOLD, SCIENCE, HAPPY, EXPANSION_ICON, GOLD_ICON, CITY;
 }
 
 public class ImageBuffer {
 
+    //IMAGE VARS ----------------------------
+    //<editor-fold>
+    //TILES
     private static Image desert;
     private static Image hills;
     private static Image mountain;
@@ -20,6 +23,7 @@ public class ImageBuffer {
     private static Image plains;
     private static Image city;
 
+    //UNITS
     private static Image archer;
     private static Image builder;
     private static Image catapult;
@@ -31,6 +35,7 @@ public class ImageBuffer {
     private static Image slinger;
     private static Image warrior;
 
+    //MISC
     private static Image closeIcon;
     private static Image confirmIcon;
     private static Image cityBackground;
@@ -44,12 +49,31 @@ public class ImageBuffer {
     private static Image techIcon;
     private static Image cloud;
 
+    //IMPROVEMENT
     private static Image farm;
     private static Image mine;
-    
+
+    //ICONS
     private static Image gold;
     private static Image science;
     private static Image happy;
+
+    //RESOURCE
+    private static Image wheat;
+    private static Image rice;
+    private static Image cotton;
+    private static Image banana;
+    private static Image wine;
+    private static Image iron;
+    private static Image stone;
+    private static Image mercury;
+    private static Image cattle;
+    private static Image sheep;
+    private static Image truffle;
+    private static Image fish;
+    private static Image crab;
+    private static Image whale;
+    //</editor-fold>
 
     static {
         try {
@@ -84,12 +108,25 @@ public class ImageBuffer {
 
             farm = new Image(new FileInputStream("src/Assets/Improvement/farm.png"), 70, 70, false, false);
             mine = new Image(new FileInputStream("src/Assets/Improvement/mine.png"), 70, 70, false, false);
-            
+
             gold = new Image(new FileInputStream("src/Assets/Misc/gold.png"), 25, 25, false, false);
             science = new Image(new FileInputStream("src/Assets/Misc/science.png"), 25, 25, false, false);
-            happy = new Image(new FileInputStream("src/Assets/Misc/happy.png"), 25, 25, false , false);
-            
-            
+            happy = new Image(new FileInputStream("src/Assets/Misc/happy.png"), 25, 25, false, false);
+
+            wheat = new Image(new FileInputStream("src/Assets/Resource/wheat.png"), 45, 45, false, false);
+            banana = new Image(new FileInputStream("src/Assets/Resource/banana.png"), 45, 45, false, false);
+            cattle = new Image(new FileInputStream("src/Assets/Resource/cattle.png"), 45, 45, false, false);
+            crab = new Image(new FileInputStream("src/Assets/Resource/crab.png"), 45, 45, false, false);
+            fish = new Image(new FileInputStream("src/Assets/Resource/fish.png"), 45, 45, false, false);
+            iron = new Image(new FileInputStream("src/Assets/Resource/iron.png"), 45, 45, false, false);
+            mercury = new Image(new FileInputStream("src/Assets/Resource/mercury.png"), 45, 45, false, false);
+            rice = new Image(new FileInputStream("src/Assets/Resource/rice.png"), 45, 45, false, false);
+            sheep = new Image(new FileInputStream("src/Assets/Resource/sheep.png"), 45, 45, false, false);
+            stone = new Image(new FileInputStream("src/Assets/Resource/stone.png"), 45, 45, false, false);
+            truffle = new Image(new FileInputStream("src/Assets/Resource/truffle.png"), 45, 45, false, false);
+            whale = new Image(new FileInputStream("src/Assets/Resource/whale.png"), 45, 45, false, false);
+            wine = new Image(new FileInputStream("src/Assets/Resource/wine.png"), 45, 45, false, false);
+
         } catch (IOException e) {
             System.out.println("Image loading failed");
             System.out.println(e.getStackTrace());
@@ -162,7 +199,38 @@ public class ImageBuffer {
     }
 
     public static Image getImage(Resource r) {
-        //Must be added more
+
+        switch (r) {
+            case WHEAT:
+                return wheat;
+            case RICE:
+                return rice;
+            case BANANA:
+                return banana;
+            case CATTLE:
+                return cattle;
+            case COTTON:
+                return cotton;
+            case CRAB:
+                return crab;
+            case FISH:
+                return fish;
+            case IRON:
+                return iron;
+            case MERCURY:
+                return mercury;
+            case SHEEP:
+                return sheep;
+            case STONE:
+                return stone;
+            case TRUFFLE:
+                return truffle;
+            case WHALE:
+                return whale;
+            case WINE:
+                return wine;
+        }
+
         return destroyer;
     }
 
@@ -198,6 +266,8 @@ public class ImageBuffer {
                 return science;
             case HAPPY:
                 return happy;
+            case CITY:
+                return city;
         }
 
         return destroyer;
