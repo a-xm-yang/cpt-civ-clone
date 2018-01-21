@@ -21,8 +21,6 @@ public class DisplayTile extends Polygon {
     private static ImagePattern cloudFill;
     private ImagePattern tileFill;
     private boolean highlighted = false;
-    private boolean greenHighlighted = false;
-    private boolean blueHighlighted = false;
     //Data-related members
     private int x;
     private int y;
@@ -88,13 +86,12 @@ public class DisplayTile extends Polygon {
                     gc.drawImage(ImageBuffer.getImage(tile.getUnit()), 15 + getTranslateX(), 20 + getTranslateY());
                 }
                 
+                if (tile.isControlled()){
+                    setStroke(Color.AQUA);
+                }
 
                 setEffect(null);
             }
-        }
-
-        if (tile.isControlled()) {
-            blueHighlighted = true;
         }
 
         //will be changed later

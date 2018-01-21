@@ -1,21 +1,9 @@
 
 package civilizationclone.GUI;
 
-import civilizationclone.City;
-import civilizationclone.CityProject;
 import civilizationclone.Tile.Improvement;
 import static civilizationclone.Tile.Improvement.NONE;
-import civilizationclone.Unit.BuilderUnit;
-import civilizationclone.Unit.CalvaryUnit;
-import civilizationclone.Unit.MeleeUnit;
-import civilizationclone.Unit.MilitaryUnit;
-import civilizationclone.Unit.RangeUnit;
-import civilizationclone.Unit.ReconUnit;
-import civilizationclone.Unit.ScoutUnit;
-import civilizationclone.Unit.SettlerUnit;
-import civilizationclone.Unit.SiegeUnit;
-import civilizationclone.Unit.Unit;
-import civilizationclone.Unit.UnitType;
+import civilizationclone.Unit.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
@@ -105,7 +93,7 @@ public class UnitMenu extends Pane{
                     o.getText().setFill(Color.DARKGREY);
                 }
             }else if(o.getOptionType().equals("Attack")){
-                if(((MilitaryUnit)unit).getAttackable().length > 0 && unit.getMovement() > 0){
+                if((((MilitaryUnit)unit).getAttackable().length > 0|| ((MilitaryUnit)unit).getSiegable().length > 0 ) && unit.getMovement() > 0){
                     o.getText().setFill(Color.WHITE);
                 }else{
                     o.getText().setFill(Color.DARKGREY);
@@ -167,7 +155,7 @@ public class UnitMenu extends Pane{
                     zmapRef.activateMove();
                 }
             }else if(((UnitOption)e.getTarget()).getOptionType().equals("Attack") && ((UnitOption)e.getTarget()).getText().getFill() == Color.WHITE){
-                if(((MilitaryUnit)unit).getAttackable().length > 0 && unit.getMovement() > 0){
+                if((((MilitaryUnit)unit).getAttackable().length > 0|| ((MilitaryUnit)unit).getSiegable().length > 0 ) && unit.getMovement() > 0){
                     zmapRef.activateAttack();
                 }
             }else if(((UnitOption)e.getTarget()).getOptionType().equals("Settle") && ((UnitOption)e.getTarget()).getText().getFill() == Color.WHITE){

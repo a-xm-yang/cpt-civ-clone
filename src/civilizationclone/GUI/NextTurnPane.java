@@ -12,12 +12,12 @@ import javafx.scene.text.Text;
 
 public class NextTurnPane extends Group{
 
-    Rectangle rect;
-    Text text;
-    int resX;
-    int resY;
-    Player player;
-    static ZoomMap zMapRef;
+    private Rectangle rect;
+    private Text text;
+    private int resX;
+    private int resY;
+    private Player player;
+    private ZoomMap zMapRef;
 
     public NextTurnPane(Player player, int resX, int resY, ZoomMap zMapRef) {
         this.text = new Text();
@@ -42,11 +42,13 @@ public class NextTurnPane extends Group{
                 player.startTurn();
                 
             }
+            
+            e.consume();
         });
         
     }
     
-    void updateText(){
+    public void updateText(){
         if(player.canEndTurn()==2){
             text.setText("MUST SELECT CITY PROJECT");
         }else if(player.canEndTurn()==1){

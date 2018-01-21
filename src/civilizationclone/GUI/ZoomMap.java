@@ -37,7 +37,7 @@ public class ZoomMap extends Group {
     private HighlightType highlightType;
 
     private Player currentPlayer;
-    private Unit selectedUnit;
+    private Tile selectedTile;
 
     private Set<Tile> visibleTiles;
     private Set<Tile> exploredTiles;
@@ -126,11 +126,6 @@ public class ZoomMap extends Group {
             return;
         }
 
-        if (clickedTile.hasCity() && clickedTile.getCity().getPlayer() == currentPlayer && !clickedTile.hasUnit()) {
-            ((GamePane) getParent()).addCityMenu(clickedTile.getCity());
-            enableDragging(false);
-        }
-
         //testing for only movement highlight
         if (highlightType == HighlightType.NONE) {
             if (clickedTile.hasUnit() && clickedTile.getUnit().getPlayer().equals(currentPlayer)) {
@@ -139,24 +134,57 @@ public class ZoomMap extends Group {
                 u.setTranslateX(((DisplayTile) e.getTarget()).getTranslateX());
                 u.setTranslateY(((DisplayTile) e.getTarget()).getTranslateY());
                 this.getChildren().add(u);
-                selectedUnit = clickedTile.getUnit();
+                selectedTile = clickedTile;
+
+            } else if (clickedTile.hasCity() && clickedTile.getCity().getPlayer() == currentPlayer && !clickedTile.hasUnit()) {
+
+                ((GamePane) getParent()).addCityMenu(clickedTile.getCity());
+                enableDragging(false);
+                selectedTile = clickedTile;
 
             }
         } else {
 
+            Point clickPoint = ((DisplayTile) e.getTarget()).getPoint();
+
             //if movement is desired
             if (highlightType == highlightType.MOVEMENT) {
-                Point clickPoint = ((DisplayTile) e.getTarget()).getPoint();
                 for (Point p : highlightedTiles) {
-                    if (clickPoint.x == p.x && clickPoint.y == p.y) {
-                        selectedUnit.move(p);
+                    if (clickPoint.equals(p)) {
+                        selectedTile.getUnit().move(p);
+                        updateFogOfWar();
+                    }
+                }
+            }
+
+            if (highlightType == highlightType.ATTACK) {
+                for (Point p : highlightedTiles) {
+                    if (clickPoint.equals(p)) {
+
+                        MilitaryUnit m = (MilitaryUnit) selectedTile.getUnit();
+
+                        if (Unit.getMapRef().getTile(p).hasUnit()) {
+                            m.attack(Unit.getMapRef().getTile(p).getUnit());
+                        } else {
+                            m.siegeAttack(Unit.getMapRef().getTile(p).getCity());
+                        }
+
+                        updateFogOfWar();
+                    }
+                }
+            }
+
+            if (highlightType == highlightType.EXPANSION) {
+                for (Point p : highlightedTiles) {
+                    if (clickPoint.equals(p)) {
+                        selectedTile.getCity().addTile(clickedTile);
                         updateFogOfWar();
                     }
                 }
             }
 
             //reset the highlight status
-            selectedUnit = null;
+            selectedTile = null;
             highlightType = HighlightType.NONE;
             cleanHighlight();
 
@@ -192,33 +220,49 @@ public class ZoomMap extends Group {
     }
 
     public void activateAttack() {
+        highlightType = HighlightType.ATTACK;
 
+        MilitaryUnit m = (MilitaryUnit) selectedTile.getUnit();
+        ArrayList<Point> combinedList = new ArrayList<Point>();
+
+        for (Point p : m.getAttackable()) {
+            combinedList.add(p);
+        }
+
+        for (Point p : m.getSiegable()) {
+            combinedList.add(p);
+        }
+
+        addHighlightedTiles(combinedList.toArray(new Point[combinedList.size()]));
+        repaint();
     }
 
     public void activateMove() {
         highlightType = HighlightType.MOVEMENT;
-        addHighlightedTiles(selectedUnit.getMoves());
+        addHighlightedTiles(selectedTile.getUnit().getMoves());
         repaint();
     }
 
     public void activateSettle() {
-        ((SettlerUnit) selectedUnit).settle("Memphis");
+        ((SettlerUnit) selectedTile.getUnit()).settle("Memphis");
         updateFogOfWar();
         repaint();
     }
 
     public void activateHeal() {
-        ((MilitaryUnit) selectedUnit).heal();
+        ((MilitaryUnit) selectedTile.getUnit()).heal();
         repaint();
     }
 
     public void activateKill() {
-        selectedUnit.delete();
+        selectedTile.getUnit().delete();
         updateFogOfWar();
         repaint();
     }
 
     public void activateImprove() {
+        Unit selectedUnit = selectedTile.getUnit();
+
         if (selectedUnit.getMapRef().getTile(new Point(selectedUnit.getX(), selectedUnit.getY())).getControllingCity().getPlayer().equals(selectedUnit.getPlayer())) {
             ((BuilderUnit) selectedUnit).improve(((BuilderUnit) selectedUnit).getPossibleImprovements()[0]);
         }
@@ -227,6 +271,17 @@ public class ZoomMap extends Group {
 
     public void activateDestroy() {
         //fucked up, fix later
+        repaint();
+    }
+
+    public void activateExpansion() {
+        highlightType = HighlightType.EXPANSION;
+
+        //activate possible highlights for expansion
+        if (selectedTile != null) {
+            addHighlightedTiles(selectedTile.getCity().getPossibleExpansion());
+        }
+
         repaint();
     }
 
@@ -239,10 +294,10 @@ public class ZoomMap extends Group {
         }
     }
 
-    public void addHighlightedTiles(Point[] possibleMoves) {
-        highlightedTiles = possibleMoves;
+    public void addHighlightedTiles(Point[] possibleOptions) {
+        highlightedTiles = possibleOptions;
 
-        for (Point p : possibleMoves) {
+        for (Point p : possibleOptions) {
             for (DisplayTile t : tileList) {
                 if (t.getX() == p.x && t.getY() == p.y) {
                     t.setHighlighted(true);

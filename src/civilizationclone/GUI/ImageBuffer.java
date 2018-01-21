@@ -8,7 +8,7 @@ import java.io.IOException;
 import javafx.scene.image.Image;
 
 enum MiscAsset {
-    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, GOLD, SCIENCE, HAPPY;
+    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, GOLD, SCIENCE, HAPPY, EXPANSION_ICON;
 }
 
 public class ImageBuffer {
@@ -39,6 +39,7 @@ public class ImageBuffer {
     private static Image citizenIcon;
     private static Image productionIcon;
     private static Image moneyIcon;
+    private static Image expansionIcon;
     private static Image cloud;
 
     private static Image farm;
@@ -77,6 +78,7 @@ public class ImageBuffer {
             productionIcon = new Image(new FileInputStream("src/Assets/Misc/production_icon.png"), 120, 120, false, false);
             moneyIcon = new Image(new FileInputStream("src/Assets/Misc/money_icon.png"), 120, 120, false, false);
             cloud = new Image(new FileInputStream("src/Assets/Misc/Cloud.jpg"), 225, 225, false, false);
+            expansionIcon = new Image(new FileInputStream("src/Assets/Misc/expand_icon.png"), 75, 75, false, false);
 
             farm = new Image(new FileInputStream("src/Assets/Improvement/farm.png"), 70, 70, false, false);
             mine = new Image(new FileInputStream("src/Assets/Improvement/mine.png"), 70, 70, false, false);

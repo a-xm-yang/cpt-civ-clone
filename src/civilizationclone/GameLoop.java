@@ -80,7 +80,7 @@ public class GameLoop extends JPanel {
                 } else if (choice == 3) {
                     setResearch(player, player.getResearchableTech());
                 } else if (choice == 4) {
-                    if (player.canEndTurn()==0) {
+                    if (player.canEndTurn() == 0) {
                         System.out.println("End turn!");
                         break;
                     } else {

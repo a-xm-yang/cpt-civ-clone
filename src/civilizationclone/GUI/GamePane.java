@@ -34,17 +34,18 @@ public class GamePane extends Pane {
 
         gameMap = new GameMap(GameMap.MapSize.SMALL, 400);
         currentPlayer = playerList.get(0);
+        
         //Reset these later to just settler and warrior
         for(Player player: playerList){
             do{
             Point p = new Point((int) (Math.random() * gameMap.getSize()), (int) (Math.random() * gameMap.getSize()));
             if((gameMap.getTile(p) instanceof Plains || gameMap.getTile(p) instanceof Hills || gameMap.getTile(p) instanceof Desert) && (gameMap.getTile(p.x, p.y+1) instanceof Plains || 
                     gameMap.getTile(p.x, p.y+1) instanceof Hills || gameMap.getTile(p.x, p.y+1) instanceof Desert) && !gameMap.getTile(p).hasUnit() && !gameMap.getTile(p.x, p.y+1).hasUnit()){
-                player.addUnit(new SettlerUnit(player, p));
-                player.addUnit(new WarriorUnit(player, new Point(p.x, p.y+1)));
-                break;
-            }
-        }while(true);
+                    player.addUnit(new SettlerUnit(player, p));
+                    player.addUnit(new WarriorUnit(player, new Point(p.x, p.y+1)));
+                    break;
+                }
+            }while(true);
         }
       
         //playerList.get(0).addUnit(new BuilderUnit(playerList.get(0).getCityList().get(0)));
@@ -117,4 +118,7 @@ public class GamePane extends Pane {
 
     }
 
+    public ZoomMap getZoomMap() {
+        return zoomMap;
+    }
 }
