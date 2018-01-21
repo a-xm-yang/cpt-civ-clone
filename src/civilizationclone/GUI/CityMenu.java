@@ -2,16 +2,21 @@ package civilizationclone.GUI;
 
 import civilizationclone.City;
 import civilizationclone.CityProject;
+import civilizationclone.Tile.Improvement;
+import civilizationclone.Tile.Resource;
+import civilizationclone.Tile.Tile;
 import civilizationclone.Unit.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -19,8 +24,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class CityMenu extends Pane {
@@ -82,7 +89,7 @@ public class CityMenu extends Pane {
             e.consume();
         });
 
-        purchaseIcon = new ImageView(ImageBuffer.getImage(MiscAsset.MONEY_ICON));
+        purchaseIcon = new ImageView(ImageBuffer.getImage(MiscAsset.GOLD_ICON));
         purchaseIcon.setTranslateX(175);
         purchaseIcon.setTranslateY(540);
         purchaseIcon.setOnMouseClicked((MouseEvent e) -> {
@@ -213,6 +220,9 @@ public class CityMenu extends Pane {
             border.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CITY_OPTION_BACKGROUND), 0, 0, 1, 1, true));
             setTranslateX(resX / 2 - border.getWidth() / 2 - (resX - 450));
             setTranslateY(resY / 2 - border.getHeight() / 2);
+
+            border.setStrokeWidth(5);
+            border.setStroke(Color.BROWN);
 
             closeButton = new Circle(530, 385, 30);
             closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
@@ -426,6 +436,9 @@ public class CityMenu extends Pane {
             setTranslateX(resX / 2 - border.getWidth() / 2 - (resX - 450));
             setTranslateY(resY / 2 - border.getHeight() / 2);
 
+            border.setStrokeWidth(5);
+            border.setStroke(Color.GOLD);
+
             closeButton = new Circle(530, 385, 30);
             closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
             closeButton.setOnMouseClicked((e) -> {
@@ -614,7 +627,6 @@ public class CityMenu extends Pane {
 
         private void close() {
             if (getParent() instanceof CityMenu) {
-                ((CityMenu) getParent()).updateProductionDisplay();
                 ((CityMenu) getParent()).zoomMapRef.repaint();
                 ((CityMenu) getParent()).removeOption(this);
             }
@@ -647,24 +659,37 @@ public class CityMenu extends Pane {
     private class CitizenMenu extends Pane {
 
         private Rectangle border;
-        private Text title;
+        private Text title, workerDisplay;
         private Circle closeButton;
+        private ScrollPane scrollSelection;
 
+        private Group collection;
         private City city;
 
         public CitizenMenu(City city, int resX, int resY) {
             this.city = city;
 
+            city.setPopulation(3);
+
             border = new Rectangle(600, 450);
             border.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CITY_OPTION_BACKGROUND), 0, 0, 1, 1, true));
             setTranslateX(resX / 2 - border.getWidth() / 2 - (resX - 450));
             setTranslateY(resY / 2 - border.getHeight() / 2);
+            border.setStrokeWidth(5);
+            border.setStroke(Color.WHEAT);
 
             title = new Text("SELECT WORKED TILES");
             title.setFont(Font.font("Times New Roman", 25));
             title.setFill(Color.WHITESMOKE);
             title.setTranslateY(25);
             title.setTranslateX(5);
+
+            workerDisplay = new Text();
+            updateText();
+            workerDisplay.setFont(Font.font("Times New Roman", FontWeight.BOLD, 25));
+            workerDisplay.setFill(Color.WHITESMOKE);
+            workerDisplay.setTranslateX(320);
+            workerDisplay.setTranslateY(80);
 
             closeButton = new Circle(530, 385, 30);
             closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
@@ -673,8 +698,197 @@ public class CityMenu extends Pane {
                 close();
             });
 
-            getChildren().addAll(border, title, closeButton);
+            scrollSelection = new ScrollPane();
+            scrollSelection.setPrefWidth(500);
+            scrollSelection.setPrefHeight(185);
+            scrollSelection.setTranslateX(50);
+            scrollSelection.setTranslateY(130);
+            scrollSelection.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+            scrollSelection.setVbarPolicy(ScrollBarPolicy.NEVER);
+            initializeScrollPane();
 
+            getChildren().addAll(border, title, workerDisplay, closeButton, scrollSelection);
+
+        }
+
+        public void changeWorkedTile(Tile tile, boolean change) {
+
+            //add or remove tiles to worked tiles according to the change
+            if (change) {
+                city.getWorkedTiles().add(tile);
+            } else {
+                city.getWorkedTiles().remove(tile);
+            }
+
+            updateText();
+
+            //If you can select no more workers, selection should be capped
+            if (city.getWorkedTiles().size() >= city.getPopulation()) {
+                for (Node n : collection.getChildren()) {
+                    if (n instanceof TileSelection) {
+                        if (!((TileSelection) n).getCheckBox().selectedProperty().getValue()) {
+                            ((TileSelection) n).disableCheckBox(true);
+                        }
+                    }
+                }
+            } else {
+                //Allow all selections
+                for (Node n : collection.getChildren()) {
+                    if (n instanceof TileSelection) {
+                        ((TileSelection) n).disableCheckBox(false);
+                    }
+                }
+
+            }
+
+            //reset city income
+            city.calcIncome();
+            updateProductionDisplay();
+            updateDisplayOrder();
+        }
+
+        private void updateText() {
+            workerDisplay.setText("Available Worker: " + Integer.toString(city.getPopulation() - city.getWorkedTiles().size()));
+        }
+
+        private void updateDisplayOrder() {
+
+            FXCollections.sort(collection.getChildren(), (Node o1, Node o2) -> {
+                return ((TileSelection) o1).compareTo((TileSelection) o2);
+            });
+
+            for (int i = 0; i < collection.getChildren().size(); i++) {
+                collection.getChildren().get(i).setTranslateX(i * 180);
+            }
+        }
+
+        private void initializeScrollPane() {
+
+            collection = new Group();
+
+            for (Tile t : city.getOwnedTiles()) {
+                if (city.getWorkedTiles().contains(t)) {
+                    collection.getChildren().add(new TileSelection(t, true));
+                } else {
+                    collection.getChildren().add(new TileSelection(t, false));
+                }
+            }
+
+            updateDisplayOrder();
+            scrollSelection.setContent(collection);
+
+        }
+
+        private void close() {
+            if (getParent() instanceof CityMenu) {
+                ((CityMenu) getParent()).removeOption(this);
+            }
+        }
+
+        private class TileSelection extends Group implements Comparable<TileSelection> {
+
+            Tile tile;
+            City city;
+
+            Rectangle border;
+            Polygon tileShape;
+            Canvas canvas;
+            Text infoText;
+            CheckBox checkBox;
+
+            public TileSelection(Tile tile, boolean selected) {
+                this.tile = tile;
+                city = tile.getControllingCity();
+
+                border = new Rectangle(180, 180);
+                border.setFill(Color.BLACK);
+                border.setStrokeWidth(5);
+                border.setStroke(Color.WHEAT);
+
+                infoText = new Text(getInfo());
+                infoText.setFill(Color.WHITESMOKE);
+                infoText.setFont(Font.font("Times New Roman", FontWeight.BOLD, 16));
+                infoText.setTranslateY(140);
+                infoText.setTranslateX(10);
+
+                tileShape = new Polygon();
+                tileShape.getPoints().addAll(new Double[]{50.0, 0.0, 100.0, 30.0, 100.0, 80.0, 50.0, 110.0, 0.0, 80.0, 0.0, 30.0});
+                tileShape.setFill(new ImagePattern(ImageBuffer.getImage(tile)));
+                tileShape.setTranslateX(5);
+                tileShape.setTranslateY(5);
+
+                checkBox = new CheckBox("WORK");
+                checkBox.setSelected(selected);
+                checkBox.setTranslateX(115);
+                checkBox.setTranslateY(25);
+                checkBox.setTextFill(Color.WHITE);
+                checkBox.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
+                    checkBoxAction(old_val, new_val);
+                });
+
+                canvas = new Canvas(100, 110);
+                canvas.setTranslateX(5);
+                canvas.setTranslateY(5);
+                updateCanvas();
+
+                getChildren().addAll(border, infoText, tileShape, canvas, checkBox);
+
+            }
+
+            private void checkBoxAction(boolean oldValue, boolean newValue) {
+                if (oldValue != newValue) {
+                    changeWorkedTile(tile, newValue);
+                }
+            }
+
+            private void updateCanvas() {
+                GraphicsContext gc = canvas.getGraphicsContext2D();
+
+                if (tile.getResource() != Resource.NONE) {
+                    //Draw resource
+
+                }
+
+                if (tile.getImprovement() != Improvement.NONE) {
+                    gc.drawImage(ImageBuffer.getImage(tile.getImprovement()), 15, 15);
+                }
+
+            }
+
+            private String getInfo() {
+
+                String s = "";
+
+                s = s + "Food: " + tile.getFoodOutput();
+                s = s + "\t\t Gold: " + tile.getGoldOutput();
+                s = s + "\nProduction: " + tile.getProductionOutput();
+                s = s + "\t Tech: " + tile.getScienceOutput();
+
+                return s;
+            }
+
+            public void disableCheckBox(boolean enable) {
+                checkBox.setDisable(enable);
+            }
+
+            public CheckBox getCheckBox() {
+                return checkBox;
+            }
+
+            @Override
+            public int compareTo(TileSelection o) {
+
+                boolean thisSelected = getCheckBox().selectedProperty().getValue();
+                boolean thatSelected = o.getCheckBox().selectedProperty().getValue();
+
+                if (thisSelected == thatSelected) {
+                    return 0;
+                } else if (thisSelected) {
+                    return -1;
+                }
+
+                return 1;
+            }
         }
 
     }

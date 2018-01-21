@@ -78,6 +78,7 @@ public class GameMap {
         for (int i = 0; i < simplexNoise.length; i++) {
             for (int k = 0; k < simplexNoise[i].length; k++) {
                 grantResource(simplexNoise[i][k], getTile(i, k));
+                getTile(i,k).calcOutput();
             }
         }
 
@@ -125,6 +126,7 @@ public class GameMap {
                         default:
                             tile.setResource(Resource.WHEAT);
                     }
+                    
                 } //</editor-fold>
                 //possibility for Ocean
                 //<editor-fold>
@@ -155,8 +157,6 @@ public class GameMap {
                     }
                 }
                 //</editor-fold>
-
-                tile.calcOutput();
             }
         }
     }

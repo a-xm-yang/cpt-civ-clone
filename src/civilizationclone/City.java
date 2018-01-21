@@ -62,6 +62,7 @@ public class City {
             ownedTiles.add(mapRef.getTile(p.x, p.y));
             mapRef.getTile(p.x, p.y).setControllingCity(this);
         }
+
         ownedTiles.remove(mapRef.getTile(POSITION.x, POSITION.y));
 
         mapRef.getTile(POSITION.x, POSITION.y).setCity(this);
@@ -308,7 +309,7 @@ public class City {
         //First find the list of all the tiles within 3 range that has not been added yet
         ArrayList<Point> threeRangeList = mapRef.getRange(POSITION, 3);
         ArrayList<Point> filteredList = new ArrayList<>();
-        
+
         //cannot add the tile itself
         threeRangeList.remove(POSITION);
 
@@ -337,8 +338,6 @@ public class City {
                 list.add(p);
             }
         }
-        
-        
 
         return list.toArray(new Point[list.size()]);
     }
@@ -437,6 +436,14 @@ public class City {
 
     //SETTER
     //<editor-fold>
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFoodIncome(int foodIncome) {
+        this.foodIncome = foodIncome;
+    }
+
     public void setWorkedTiles(Set<Tile> workedTiles) {
         this.workedTiles = workedTiles;
     }
@@ -463,6 +470,50 @@ public class City {
 
     public void setCanExpand(boolean canExpand) {
         this.canExpand = canExpand;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setCombat(int combat) {
+        this.combat = combat;
+    }
+
+    public void setPopulation(int population) {
+        this.population = population;
+    }
+
+    public void setRealPopulation(int realPopulation) {
+        this.realPopulation = realPopulation;
+    }
+
+    public void setCurrentProject(CityProject currentProject) {
+        this.currentProject = currentProject;
+    }
+
+    public void setCurrentUnit(UnitType currentUnit) {
+        this.currentUnit = currentUnit;
+    }
+
+    public void setCurrentProduction(int currentProduction) {
+        this.currentProduction = currentProduction;
+    }
+
+    public void setCanAttack(boolean canAttack) {
+        this.canAttack = canAttack;
+    }
+
+    public void setGoldIncome(int goldIncome) {
+        this.goldIncome = goldIncome;
+    }
+
+    public void setTechIncome(int techIncome) {
+        this.techIncome = techIncome;
+    }
+
+    public void setProductionIncome(int productionIncome) {
+        this.productionIncome = productionIncome;
     }
     //</editor-fold>
 

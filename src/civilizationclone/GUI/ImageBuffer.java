@@ -8,7 +8,7 @@ import java.io.IOException;
 import javafx.scene.image.Image;
 
 enum MiscAsset {
-    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, EXPANSION_ICON;
+    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, PRODUCTION_ICON, GOLD_ICON, CLOUD, EXPANSION_ICON;
 }
 
 public class ImageBuffer {
@@ -38,8 +38,10 @@ public class ImageBuffer {
     private static Image warning;
     private static Image citizenIcon;
     private static Image productionIcon;
-    private static Image moneyIcon;
+    private static Image goldIcon;
     private static Image expansionIcon;
+    private static Image foodIcon;
+    private static Image techIcon;
     private static Image cloud;
 
     private static Image farm;
@@ -72,7 +74,7 @@ public class ImageBuffer {
             warning = new Image(new FileInputStream("src/Assets/Misc/warning.png"), 70, 70, false, false);
             citizenIcon = new Image(new FileInputStream("src/Assets/Misc/citizen_icon.png"), 120, 120, false, false);
             productionIcon = new Image(new FileInputStream("src/Assets/Misc/production_icon.png"), 120, 120, false, false);
-            moneyIcon = new Image(new FileInputStream("src/Assets/Misc/money_icon.png"), 120, 120, false, false);
+            goldIcon = new Image(new FileInputStream("src/Assets/Misc/gold_icon.png"), 120, 120, false, false);
             cloud = new Image(new FileInputStream("src/Assets/Misc/Cloud.jpg"), 225, 225, false, false);
             expansionIcon = new Image(new FileInputStream("src/Assets/Misc/expand_icon.png"), 75, 75, false, false);
 
@@ -171,8 +173,8 @@ public class ImageBuffer {
                 return cityOptionBackground;
             case WARNING:
                 return warning;
-            case MONEY_ICON:
-                return moneyIcon;
+            case GOLD_ICON:
+                return goldIcon;
             case PRODUCTION_ICON:
                 return productionIcon;
             case CITIZEN_ICON:

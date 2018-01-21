@@ -5,6 +5,8 @@
  */
 package civilizationclone.GUI;
 
+import civilizationclone.GameMap;
+import civilizationclone.GameMap.MapSize;
 import civilizationclone.Player;
 import java.io.File;
 import java.util.ArrayList;
@@ -26,11 +28,11 @@ public class GUIMain extends Application {
         int resY = 1000;
 
         //Create the zoompane called "root" in the scene
-        
+        GameMap gameMap = new GameMap(MapSize.SMALL,400);
         ArrayList<Player> p = new ArrayList<Player>();
         p.add(new Player("Stalin"));
         
-        root = new GamePane(p, resX, resY);
+        root = new GamePane(gameMap, p, resX, resY);
 
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, resX, resY, Color.BLACK));
@@ -40,7 +42,9 @@ public class GUIMain extends Application {
         
         Media media = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString()); 
         MediaPlayer player = new MediaPlayer(media); 
-        player.play();
+       // player.play();
     }
 
+    
+    //TODO -- Finish resource import and printing
 }

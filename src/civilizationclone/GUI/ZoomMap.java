@@ -260,15 +260,6 @@ public class ZoomMap extends Group {
         repaint();
     }
 
-    public void activateImprove() {
-        Unit selectedUnit = selectedTile.getUnit();
-
-        if (selectedUnit.getMapRef().getTile(new Point(selectedUnit.getX(), selectedUnit.getY())).getControllingCity().getPlayer().equals(selectedUnit.getPlayer())) {
-            ((BuilderUnit) selectedUnit).improve(((BuilderUnit) selectedUnit).getPossibleImprovements()[0]);
-        }
-        repaint();
-    }
-
     public void activateDestroy() {
         //fucked up, fix later
         repaint();

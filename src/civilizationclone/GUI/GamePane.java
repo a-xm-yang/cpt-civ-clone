@@ -23,15 +23,15 @@ public class GamePane extends Pane {
     private ArrayList<Player> playerList;
     private Player currentPlayer;
 
-    public GamePane(ArrayList<Player> playerList, int resX, int resY) {
+    public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY) {
 
+        this.gameMap = gameMap;
         this.playerList = playerList;
         this.resX = resX;
         this.resY = resY;
         this.setPrefHeight(resY);
         this.setPrefWidth(resX);
 
-        gameMap = new GameMap(GameMap.MapSize.SMALL, 400);
         currentPlayer = playerList.get(0);
         
         //Reset these later to just settler and warrior
@@ -39,14 +39,14 @@ public class GamePane extends Pane {
             p.addUnit(new SettlerUnit(playerList.get(0), new Point(12, 12)));
             p.addUnit(new WarriorUnit(playerList.get(0), new Point(12, 13)));
         }
-      
-        //playerList.get(0).addUnit(new BuilderUnit(playerList.get(0).getCityList().get(0)));
+        
+        
         playerList.get(0).startTurn();
-        playerList.get(0).addTech(TechType.AGRICULTURE);
         playerList.get(0).setCurrentGold(100);
 
         zoomMap = createFalseMap(gameMap.getMap());
         zoomMap.setCurrentPlayer(currentPlayer);
+       
         
         nextButton = new NextTurnPane(currentPlayer, resX, resY);
         
