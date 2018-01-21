@@ -22,6 +22,8 @@ public class SettlerUnit extends Unit{
         
         getMapRef().getTile(getX(), getY()).setCity(c);
         getPlayer().addCity(c);
+        getPlayer().calcGoldIncome();
+        getPlayer().calcTechIncome();
         delete();
     }
     

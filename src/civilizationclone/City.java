@@ -377,10 +377,6 @@ public class City {
         return workedTiles;
     }
 
-    public Set<CityProject> getBuiltProject() {
-        return builtProjects;
-    }
-
     public int getProductionIncome() {
         return productionIncome;
     }

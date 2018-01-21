@@ -95,9 +95,6 @@ public class ZoomMap extends Group {
 
         getChildren().add(canvas);
 
-        //shifts to original position
-        setTranslateX(-1 * getSpareWidth());
-
         //handler for resizing the map
         setOnScroll((ScrollEvent event) -> {
             resize(event);
@@ -195,8 +192,21 @@ public class ZoomMap extends Group {
     }
 
     public void setCurrentPlayer(Player currentPlayer) {
+        //update fog of war according to the player, and center the screen around that player
         this.currentPlayer = currentPlayer;
         updateFogOfWar();
+        
+        //reset scaling for new player
+
+        if (currentPlayer.getCityList().size() > 0) {
+            setTranslateX(leftCap - (currentPlayer.getCityList().get(0).getPosition().y * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
+            setTranslateY((currentPlayer.getCityList().get(0).getPosition().x * DisplayTile.HEIGHT * getScaleY()) * -1 + resY/2 * getScaleY());
+        } else if (currentPlayer.getUnitList().size() > 0) {
+            setTranslateX(leftCap - (currentPlayer.getUnitList().get(0).getY() * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
+            setTranslateY((currentPlayer.getUnitList().get(0).getX() * DisplayTile.HEIGHT * getScaleY()) * -1 + resY/2 * getScaleY());
+        }
+        
+        adjustPosition();
     }
 
     private void updateFogOfWar() {

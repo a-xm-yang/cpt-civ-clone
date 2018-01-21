@@ -1,15 +1,10 @@
 package civilizationclone;
 
-import civilizationclone.Tile.Desert;
-import civilizationclone.Tile.Hills;
 import civilizationclone.Tile.Improvement;
-import civilizationclone.Tile.Plains;
 import civilizationclone.Tile.Tile;
 import civilizationclone.Unit.MilitaryUnit;
-import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.Unit;
 import civilizationclone.Unit.UnitType;
-import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -41,8 +36,6 @@ public class Player {
     //lists of things owned
     private ArrayList<Unit> unitList;
     private ArrayList<City> cityList;
-    
-    private static GameMap mapRef;
     //</editor-fold>
 
     //constructor
@@ -80,7 +73,7 @@ public class Player {
         if (techProgress >= research.getTechCost()) {
             addTech(research);
             calcResearchableTech();
-            research = null;
+            research = TechType.NONE;
             techProgress = 0;
         }
 
@@ -324,7 +317,7 @@ public class Player {
                     total += 4;
                 }
             }
-            for (CityProject p : c.getBuiltProject()) {
+            for (CityProject p : c.getBuiltProjects()) {
                 total += 1;
                 //TODO Make so only certain building increase happiness and some increase more than others
             }

@@ -46,8 +46,6 @@ public class StatusBarPane extends Group{
         this.resY = resY;
         this.zMapRef = zMapRef;
         this.rect = new Rectangle(0, 0, resX + 50, 40);
-        this.setTranslateX(0);
-        this.setTranslateY(0);
         rect.setFill(Color.BLACK);
         
         updateTexts();

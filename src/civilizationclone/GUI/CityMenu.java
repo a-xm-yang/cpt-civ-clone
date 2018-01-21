@@ -189,8 +189,10 @@ public class CityMenu extends Pane {
 
     private void close() {
 
-        //should be able to start dragginag again after menu is closed
-        //  zoomMapRef.enableDragging(true);
+        city.getPlayer().calcGoldIncome();
+        city.getPlayer().calcTechIncome();
+
+        //remove this pane
         if (this.getParent() instanceof GamePane) {
             ((GamePane) this.getParent()).removeCityMenu();
         }
@@ -297,14 +299,17 @@ public class CityMenu extends Pane {
             }
 
             for (CityProject c : city.getPlayer().getOwnedCityProject()) {
-                if (c.name().equals(selection)) {
+                if (selection.startsWith(c.name())) {
                     info.setText(getInfo(c));
                     display.setImage(ImageBuffer.getImage(c));
-
-                    canConfirm = true;
-                    confirmButton.setOpacity(1);
                     info.setVisible(true);
                     display.setVisible(true);
+
+                    if (selection.equals(c.name())) {
+                        canConfirm = true;
+                        confirmButton.setOpacity(1);
+                    }
+                    
                     return;
                 }
             }
@@ -401,7 +406,11 @@ public class CityMenu extends Pane {
             options.add("----- PROJECTS -----");
 
             for (CityProject c : city.getPlayer().getOwnedCityProject()) {
-                options.add(c.name());
+                if (!city.getBuiltProjects().contains(c)) {
+                    options.add(c.name());
+                } else {
+                    options.add(c.name() + " (Owned)");
+                }
             }
 
             comboBox = new ComboBox(options);
@@ -518,9 +527,9 @@ public class CityMenu extends Pane {
             }
 
             for (CityProject c : city.getPlayer().getOwnedCityProject()) {
-                if (c.name().equals(selection)) {
+                if (selection.startsWith(c.name())) {
 
-                    if (city.getPlayer().getCurrentGold() >= c.getPurchaseCost()) {
+                    if (city.getPlayer().getCurrentGold() >= c.getPurchaseCost() && selection.equals(c.name())) {
                         canConfirm = true;
                         confirmButton.setOpacity(1);
                     } else {
@@ -643,7 +652,11 @@ public class CityMenu extends Pane {
             options.add("----- PROJECTS -----");
 
             for (CityProject c : city.getPlayer().getOwnedCityProject()) {
-                options.add(c.name());
+                if (!city.getBuiltProjects().contains(c)) {
+                    options.add(c.name());
+                } else {
+                    options.add(c.name() + " (Owned)");
+                }
             }
 
             comboBox = new ComboBox(options);

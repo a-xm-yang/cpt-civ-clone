@@ -18,6 +18,7 @@ public class GamePane extends Pane {
     private CityMenu cityMenu;
     private NextTurnPane nextButton;
     private StatusBarPane statusBar;
+    private SciencePane sciencePane;
 
     //game data
     private GameMap gameMap;
@@ -34,55 +35,55 @@ public class GamePane extends Pane {
         this.setPrefWidth(resX);
 
         currentPlayer = playerList.get(0);
-        
+
         //Reset these later to just settler and warrior
-        for(Player player: playerList){
-            do{
-            Point p = new Point((int) (Math.random() * gameMap.getSize()), (int) (Math.random() * gameMap.getSize() - 1));
-            if((gameMap.getTile(p) instanceof Plains || gameMap.getTile(p) instanceof Hills || gameMap.getTile(p) instanceof Desert) && (gameMap.getTile(p.x, p.y+1) instanceof Plains || 
-                    gameMap.getTile(p.x, p.y+1) instanceof Hills || gameMap.getTile(p.x, p.y+1) instanceof Desert) && !gameMap.getTile(p).hasUnit() && !gameMap.getTile(p.x, p.y+1).hasUnit()){
+        for (Player player : playerList) {
+            do {
+                Point p = new Point((int) (Math.random() * gameMap.getSize()), (int) (Math.random() * gameMap.getSize() - 1));
+                if ((gameMap.getTile(p) instanceof Plains || gameMap.getTile(p) instanceof Hills || gameMap.getTile(p) instanceof Desert) && (gameMap.getTile(p.x, p.y + 1) instanceof Plains
+                        || gameMap.getTile(p.x, p.y + 1) instanceof Hills || gameMap.getTile(p.x, p.y + 1) instanceof Desert) && !gameMap.getTile(p).hasUnit() && !gameMap.getTile(p.x, p.y + 1).hasUnit()) {
                     player.addUnit(new SettlerUnit(player, p));
-                    player.addUnit(new WarriorUnit(player, new Point(p.x, p.y+1)));
+                    player.addUnit(new WarriorUnit(player, new Point(p.x, p.y + 1)));
                     break;
                 }
-            }while(true);
+            } while (true);
         }
-        
-        
+
         playerList.get(0).startTurn();
         playerList.get(0).setCurrentGold(100);
 
         zoomMap = createFalseMap(gameMap.getMap());
         zoomMap.setCurrentPlayer(currentPlayer);
-        
-        
+
         nextButton = new NextTurnPane(currentPlayer, resX, resY, this);
         statusBar = new StatusBarPane(currentPlayer, resX, resY, zoomMap);
-        
+        sciencePane = new SciencePane(currentPlayer, resX, resY, this);
+
         getChildren().add(zoomMap);
         getChildren().add(nextButton);
         getChildren().add(statusBar);
-        
-        
+        getChildren().add(sciencePane);
+
         setOnMouseClicked((MouseEvent e) -> {
             nextButton.updateText();
             statusBar.updateTexts();
+            sciencePane.updateInfo();
         });
     }
-    
-    public void nextTurn(){
-        if(playerList.indexOf(currentPlayer)==playerList.size()-1){
+
+    public void nextTurn() {
+        if (playerList.indexOf(currentPlayer) == playerList.size() - 1) {
             currentPlayer = playerList.get(0);
-        }else{
-            currentPlayer = playerList.get(playerList.indexOf(currentPlayer)+1);
+        } else {
+            currentPlayer = playerList.get(playerList.indexOf(currentPlayer) + 1);
         }
-        System.out.println(currentPlayer);
-        
+
+        currentPlayer.startTurn();
+
         nextButton.setCurrentPlayer(currentPlayer);
         statusBar.setCurrentPlayer(currentPlayer);
+        sciencePane.setCurrentPlayer(currentPlayer);
         zoomMap.setCurrentPlayer(currentPlayer);
-        
-        currentPlayer.startTurn();
     }
 
     public void addCityMenu(City c) {

@@ -1,6 +1,7 @@
 package civilizationclone.GUI;
 
 import civilizationclone.CityProject;
+import civilizationclone.TechType;
 import civilizationclone.Tile.*;
 import civilizationclone.Unit.*;
 import java.io.FileInputStream;
@@ -73,6 +74,10 @@ public class ImageBuffer {
     private static Image fish;
     private static Image crab;
     private static Image whale;
+
+    //TECHTYPES
+    private static Image defaultTech;
+    private static Image pottery;
     //</editor-fold>
 
     static {
@@ -127,25 +132,13 @@ public class ImageBuffer {
             whale = new Image(new FileInputStream("src/Assets/Resource/whale.png"), 45, 45, false, false);
             wine = new Image(new FileInputStream("src/Assets/Resource/wine.png"), 45, 45, false, false);
 
+            defaultTech = new Image(new FileInputStream("src/Assets/Tech/default.png"), 100, 100, false, false);
+            pottery = new Image(new FileInputStream("src/Assets/Tech/pottery.png"), 100, 100, false, false);
+
         } catch (IOException e) {
             System.out.println("Image loading failed");
             System.out.println(e.getStackTrace());
         }
-    }
-
-    public static Image getImage(Tile tile) {
-        if (tile instanceof Ocean) {
-            return ocean;
-        } else if (tile instanceof Plains) {
-            return plains;
-        } else if (tile instanceof Hills) {
-            return hills;
-        } else if (tile instanceof Desert) {
-            return desert;
-        } else {
-            return mountain;
-        }
-
     }
 
     public static Image getImage(Unit unit) {
@@ -187,48 +180,23 @@ public class ImageBuffer {
         return destroyer;
     }
 
+    public static Image getImage(TechType t) {
+
+        switch (t){
+            case POTTERY:
+                return pottery;
+            default:
+                return defaultTech;
+        }
+
+    }
+
     public static Image getImage(Improvement i) {
         switch (i) {
             case FARM:
                 return farm;
             case MINE:
                 return mine;
-        }
-
-        return destroyer;
-    }
-
-    public static Image getImage(Resource r) {
-
-        switch (r) {
-            case WHEAT:
-                return wheat;
-            case RICE:
-                return rice;
-            case BANANA:
-                return banana;
-            case CATTLE:
-                return cattle;
-            case COTTON:
-                return cotton;
-            case CRAB:
-                return crab;
-            case FISH:
-                return fish;
-            case IRON:
-                return iron;
-            case MERCURY:
-                return mercury;
-            case SHEEP:
-                return sheep;
-            case STONE:
-                return stone;
-            case TRUFFLE:
-                return truffle;
-            case WHALE:
-                return whale;
-            case WINE:
-                return wine;
         }
 
         return destroyer;
@@ -275,6 +243,57 @@ public class ImageBuffer {
 
     public static Image getCityImage() {
         return city;
+    }
+
+    public static Image getImage(Tile tile) {
+        if (tile instanceof Ocean) {
+            return ocean;
+        } else if (tile instanceof Plains) {
+            return plains;
+        } else if (tile instanceof Hills) {
+            return hills;
+        } else if (tile instanceof Desert) {
+            return desert;
+        } else {
+            return mountain;
+        }
+
+    }
+
+    public static Image getImage(Resource r) {
+
+        switch (r) {
+            case WHEAT:
+                return wheat;
+            case RICE:
+                return rice;
+            case BANANA:
+                return banana;
+            case CATTLE:
+                return cattle;
+            case COTTON:
+                return cotton;
+            case CRAB:
+                return crab;
+            case FISH:
+                return fish;
+            case IRON:
+                return iron;
+            case MERCURY:
+                return mercury;
+            case SHEEP:
+                return sheep;
+            case STONE:
+                return stone;
+            case TRUFFLE:
+                return truffle;
+            case WHALE:
+                return whale;
+            case WINE:
+                return wine;
+        }
+
+        return destroyer;
     }
 
 }
