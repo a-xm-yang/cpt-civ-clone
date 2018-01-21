@@ -17,13 +17,15 @@ public class NextTurnPane extends Group{
     private int resX;
     private int resY;
     private Player player;
+    private ZoomMap zMapRef;
 
-    public NextTurnPane(Player player, int resX, int resY) {
+    public NextTurnPane(Player player, int resX, int resY, ZoomMap zMapRef) {
         this.text = new Text();
         this.resX = resX;
         this.resY = resY;
         this.player = player;
         this.rect = new Rectangle(0, 0, 280, 40);
+        this.zMapRef = zMapRef;
         this.setTranslateX(resX - 310);
         this.setTranslateY(resY - 240);
         rect.setFill(Color.BLACK);
@@ -38,8 +40,10 @@ public class NextTurnPane extends Group{
             
             if(player.canEndTurn()==0){
                 player.startTurn();
+                
             }
             
+            zMapRef.repaint();
             e.consume();
         });
         
@@ -61,7 +65,7 @@ public class NextTurnPane extends Group{
         text.setFont(Font.font("Oswald", 20));
         text.setTranslateX((280 - text.getLayoutBounds().getWidth())/2);
         text.setTranslateY(text.getLayoutBounds().getHeight());
-    }  
-    
+        zMapRef.repaint();
+    }    
     
 }

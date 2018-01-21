@@ -669,8 +669,6 @@ public class CityMenu extends Pane {
         public CitizenMenu(City city, int resX, int resY) {
             this.city = city;
 
-            city.setPopulation(3);
-
             border = new Rectangle(600, 450);
             border.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CITY_OPTION_BACKGROUND), 0, 0, 1, 1, true));
             setTranslateX(resX / 2 - border.getWidth() / 2 - (resX - 450));
