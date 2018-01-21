@@ -54,9 +54,9 @@ public class GamePane extends Pane {
 
         zoomMap = createFalseMap(gameMap.getMap());
         zoomMap.setCurrentPlayer(currentPlayer);
-       
         
-        nextButton = new NextTurnPane(currentPlayer, resX, resY, zoomMap);
+        
+        nextButton = new NextTurnPane(currentPlayer, resX, resY, this);
         statusBar = new StatusBarPane(currentPlayer, resX, resY, zoomMap);
         
         getChildren().add(zoomMap);
@@ -66,7 +66,25 @@ public class GamePane extends Pane {
         
         setOnMouseClicked((MouseEvent e) -> {
             nextButton.updateText();
+            statusBar.updateTexts();
         });
+    }
+    
+    public void nextTurn(){
+        if(playerList.indexOf(currentPlayer)==playerList.size()-1){
+            currentPlayer = playerList.get(0);
+        }else{
+            currentPlayer = playerList.get(playerList.indexOf(currentPlayer)+1);
+        }
+        System.out.println(currentPlayer);
+        
+        nextButton = new NextTurnPane(currentPlayer, resX, resY, this);
+        statusBar = new StatusBarPane(currentPlayer, resX, resY, zoomMap);
+        
+        zoomMap.setCurrentPlayer(currentPlayer);
+        currentPlayer.startTurn();
+        
+        
     }
 
     public void addCityMenu(City c) {

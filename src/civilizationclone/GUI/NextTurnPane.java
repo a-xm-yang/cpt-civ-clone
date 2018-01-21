@@ -17,15 +17,17 @@ public class NextTurnPane extends Group{
     private int resX;
     private int resY;
     private Player player;
+    private GamePane gamePaneRef;
     private ZoomMap zMapRef;
 
-    public NextTurnPane(Player player, int resX, int resY, ZoomMap zMapRef) {
+    public NextTurnPane(Player player, int resX, int resY, GamePane gamePaneRef) {
         this.text = new Text();
         this.resX = resX;
         this.resY = resY;
         this.player = player;
         this.rect = new Rectangle(0, 0, 280, 40);
-        this.zMapRef = zMapRef;
+        this.gamePaneRef = gamePaneRef;
+        this.zMapRef = gamePaneRef.getZoomMap();
         this.setTranslateX(resX - 310);
         this.setTranslateY(resY - 240);
         rect.setFill(Color.BLACK);
@@ -39,7 +41,7 @@ public class NextTurnPane extends Group{
             updateText();
             
             if(player.canEndTurn()==0){
-                player.startTurn();
+                gamePaneRef.nextTurn();
                 
             }
             
