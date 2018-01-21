@@ -91,7 +91,7 @@ public class StatusBarPane extends Group{
         turnT.setText("Turn: 0 | 4000 BC");
         
         if(player.getHappiness()>=0){
-            happyT.setFill(Color.GREEN);
+            happyT.setFill(Color.LAWNGREEN);
         }else{
             happyT.setFill(Color.RED);
         }
