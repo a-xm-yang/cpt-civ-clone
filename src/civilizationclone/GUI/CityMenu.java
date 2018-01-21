@@ -69,7 +69,6 @@ public class CityMenu extends Pane {
         closeButton = new Circle(420, 40, 30);
         closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
         closeButton.setOnMouseClicked((e) -> {
-            e.consume();
             close();
         });
 
@@ -502,7 +501,7 @@ public class CityMenu extends Pane {
             for (UnitType t : city.getPlayer().getBuildableUnit()) {
                 if (t.name().equals(selection)) {
 
-                    if (city.getPlayer().getCurrentGold() >= t.getProductionCost()) {
+                    if (city.getPlayer().getCurrentGold() >= t.getPurchaseCost()) {
                         canConfirm = true;
                         confirmButton.setOpacity(1);
                     } else {
@@ -521,7 +520,7 @@ public class CityMenu extends Pane {
             for (CityProject c : city.getPlayer().getOwnedCityProject()) {
                 if (c.name().equals(selection)) {
 
-                    if (city.getPlayer().getCurrentGold() >= c.getProductionCost()) {
+                    if (city.getPlayer().getCurrentGold() >= c.getPurchaseCost()) {
                         canConfirm = true;
                         confirmButton.setOpacity(1);
                     } else {

@@ -38,7 +38,7 @@ public class GamePane extends Pane {
         //Reset these later to just settler and warrior
         for(Player player: playerList){
             do{
-            Point p = new Point((int) (Math.random() * gameMap.getSize()), (int) (Math.random() * gameMap.getSize()));
+            Point p = new Point((int) (Math.random() * gameMap.getSize()), (int) (Math.random() * gameMap.getSize() - 1));
             if((gameMap.getTile(p) instanceof Plains || gameMap.getTile(p) instanceof Hills || gameMap.getTile(p) instanceof Desert) && (gameMap.getTile(p.x, p.y+1) instanceof Plains || 
                     gameMap.getTile(p.x, p.y+1) instanceof Hills || gameMap.getTile(p.x, p.y+1) instanceof Desert) && !gameMap.getTile(p).hasUnit() && !gameMap.getTile(p.x, p.y+1).hasUnit()){
                     player.addUnit(new SettlerUnit(player, p));
@@ -78,13 +78,11 @@ public class GamePane extends Pane {
         }
         System.out.println(currentPlayer);
         
-        nextButton = new NextTurnPane(currentPlayer, resX, resY, this);
-        statusBar = new StatusBarPane(currentPlayer, resX, resY, zoomMap);
-        
+        nextButton.setCurrentPlayer(currentPlayer);
+        statusBar.setCurrentPlayer(currentPlayer);
         zoomMap.setCurrentPlayer(currentPlayer);
+        
         currentPlayer.startTurn();
-        
-        
     }
 
     public void addCityMenu(City c) {

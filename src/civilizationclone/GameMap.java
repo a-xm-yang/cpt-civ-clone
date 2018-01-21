@@ -78,7 +78,7 @@ public class GameMap {
         for (int i = 0; i < simplexNoise.length; i++) {
             for (int k = 0; k < simplexNoise[i].length; k++) {
                 grantResource(simplexNoise[i][k], getTile(i, k));
-                getTile(i,k).calcOutput();
+                getTile(i, k).calcOutput();
             }
         }
 
@@ -126,7 +126,7 @@ public class GameMap {
                         default:
                             tile.setResource(Resource.WHEAT);
                     }
-                    
+
                 } //</editor-fold>
                 //possibility for Ocean
                 //<editor-fold>
@@ -250,12 +250,14 @@ public class GameMap {
         for (int i = p.x + 1; i <= p.x + range; i++) {
             start = ((Math.abs(i - p.x) + offset) / 2) + (p.y - range);
             for (int n = start; n < start + range * 2 + 1 - (i - p.x); n++) {
-                if (n < 0) {
-                    boundaries.add(new Point(i, size + n)); //Add the new point to an array list of boundaries
-                } else if (n >= size) {
-                    boundaries.add(new Point(i, n - size));
-                } else {
-                    boundaries.add(new Point(i, n));
+                if (i >= 0 && i < size) {
+                    if (n < 0) {
+                        boundaries.add(new Point(i, size + n)); //Add the new point to an array list of boundaries
+                    } else if (n >= size) {
+                        boundaries.add(new Point(i, n - size));
+                    } else {
+                        boundaries.add(new Point(i, n));
+                    }
                 }
             }
         }

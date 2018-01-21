@@ -81,7 +81,12 @@ public class StatusBarPane extends Group{
         getChildren().addAll(rect, sciT, goldT, happyT, turnT, sciI, goldI, happyI);
     }
     
-    void updateTexts(){
+    public void setCurrentPlayer(Player p){
+        player = p;
+        updateTexts();
+    }
+    
+    public void updateTexts(){
         goldT.setText(Integer.toString(player.getCurrentGold()) + "(" + Integer.toString(player.getGoldIncome()) + ")");
         sciT.setText(Integer.toString(player.getTechProgress()));
         happyT.setText(Integer.toString(player.getHappiness()));

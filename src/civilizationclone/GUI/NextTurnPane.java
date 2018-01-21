@@ -1,4 +1,3 @@
-
 package civilizationclone.GUI;
 
 import civilizationclone.Player;
@@ -10,7 +9,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class NextTurnPane extends Group{
+public class NextTurnPane extends Group {
 
     private Rectangle rect;
     private Text text;
@@ -32,42 +31,44 @@ public class NextTurnPane extends Group{
         this.setTranslateY(resY - 240);
         rect.setFill(Color.BLACK);
         updateText();
-        
+
         getChildren().add(rect);
         getChildren().add(text);
-        
-        
+
         setOnMouseClicked((MouseEvent e) -> {
-            updateText();
-            
-            if(player.canEndTurn()==0){
+
+            if (player.canEndTurn() == 0) {
                 gamePaneRef.nextTurn();
-                
+
             }
-            
-            zMapRef.repaint();
+
+            updateText();
+
             e.consume();
         });
-        
+
     }
-    
-    public void updateText(){
-        if(player.canEndTurn()==2){
+
+    public void setCurrentPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void updateText() {
+        if (player.canEndTurn() == 2) {
             text.setText("MUST SELECT CITY PROJECT");
-        }else if(player.canEndTurn()==1){
+        } else if (player.canEndTurn() == 1) {
             text.setText("A UNIT NEEDS ORDERS");
-        }else if(player.canEndTurn()==3){
+        } else if (player.canEndTurn() == 3) {
             text.setText("MUST SELECT REASEARCH");
-        }
-        else{
+        } else {
             text.setText("NEXT TURN");
         }
-        
+
         text.setFill(Color.WHITE);
         text.setFont(Font.font("Oswald", 20));
-        text.setTranslateX((280 - text.getLayoutBounds().getWidth())/2);
+        text.setTranslateX((280 - text.getLayoutBounds().getWidth()) / 2);
         text.setTranslateY(text.getLayoutBounds().getHeight());
         zMapRef.repaint();
-    }    
-    
+    }
+
 }
