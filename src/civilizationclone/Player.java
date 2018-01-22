@@ -308,7 +308,7 @@ public class Player {
     //</editor-fold>
     private void calculateHappiness() {
         // To be changed in future
-        int total = 0;
+        int total = 5;
 
         //Calculate happiness
         for (City c : cityList) {
