@@ -1,16 +1,9 @@
 package civilizationclone.GUI;
 
-import civilizationclone.City;
 import civilizationclone.CityProject;
 import civilizationclone.Player;
 import civilizationclone.TechType;
-import civilizationclone.Unit.BuilderUnit;
-import civilizationclone.Unit.CalvaryUnit;
-import civilizationclone.Unit.MeleeUnit;
-import civilizationclone.Unit.RangeUnit;
-import civilizationclone.Unit.ScoutUnit;
-import civilizationclone.Unit.SettlerUnit;
-import civilizationclone.Unit.SiegeUnit;
+import civilizationclone.Tile.Improvement;
 import civilizationclone.Unit.UnitType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,11 +33,15 @@ public class SciencePane extends Pane {
     private GamePane gamePaneRef;
     private Player player;
 
+    private boolean hasMenuOpen;
+
     public SciencePane(Player player, int resX, int resY, GamePane gamePaneRef) {
         this.player = player;
         this.resX = resX;
         this.resY = resY;
         this.gamePaneRef = gamePaneRef;
+
+        hasMenuOpen = false;
 
         setTranslateY(43);
 
@@ -87,8 +84,18 @@ public class SciencePane extends Pane {
         infoText.setTranslateY(34);
         infoText.setTranslateX(145);
 
+        setOnMouseClicked(e -> {
+            if (!hasMenuOpen) {
+                getChildren().add(new ScienceMenu(player, resX, resY));
+                hasMenuOpen = true;
+                e.consume();
+            }
+        });
+
         updateInfo();
-        getChildren().addAll(textBackground, progressBackground, progress, techImage, infoText);
+
+        getChildren()
+                .addAll(textBackground, progressBackground, progress, techImage, infoText);
     }
 
     public void setCurrentPlayer(Player player) {
@@ -108,23 +115,26 @@ public class SciencePane extends Pane {
                 turnInfo = "(settle a city to start research)";
             }
             infoText.setText(player.getResearch().name() + " " + turnInfo);
-        } else{
+        } else {
             infoText.setText("Select new research!");
         }
     }
-    
-    public void removeMenu(ScienceMenu sm){
+
+    public void removeMenu(ScienceMenu sm) {
         getChildren().remove(sm);
+        hasMenuOpen = false;
         updateInfo();
+
     }
-    
-    private class ScienceMenu extends Pane{
-        
+
+    private class ScienceMenu extends Pane {
+
         private Rectangle border;
         private ComboBox comboBox;
         private Circle closeButton, confirmButton;
         private Text title, info;
         private ImageView display;
+        private boolean canConfirm;
 
         private Player player;
 
@@ -134,11 +144,12 @@ public class SciencePane extends Pane {
 
             border = new Rectangle(600, 450);
             border.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CITY_OPTION_BACKGROUND), 0, 0, 1, 1, true));
-            setTranslateX(resX / 2 - border.getWidth() / 2 - (resX - 450));
-            setTranslateY(resY / 2 - border.getHeight() / 2);
+
+            setTranslateX(resX / 2 - border.getWidth() / 2);
+            setTranslateY(resY / 2 - border.getHeight() / 2 - 43);
 
             border.setStrokeWidth(5);
-            border.setStroke(Color.BROWN);
+            border.setStroke(Color.BEIGE);
 
             closeButton = new Circle(530, 385, 30);
             closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
@@ -152,11 +163,13 @@ public class SciencePane extends Pane {
             confirmButton.setOpacity(0.1);
             confirmButton.setOnMouseClicked((e) -> {
                 e.consume();
-                confirm();
-                close();
+                if (canConfirm) {
+                    confirm();
+                    close();
+                }
             });
 
-            title = new Text("SELECT CITY PRODUCTION");
+            title = new Text("SELECT RESEARCH PROJECT");
             title.setFont(Font.font("Times New Roman", 25));
             title.setFill(Color.WHITESMOKE);
             title.setTranslateY(25);
@@ -169,11 +182,11 @@ public class SciencePane extends Pane {
 
             //to be changed later
             info = new Text();
-            info.setFont(Font.font("Times New Roman", 18));
+            info.setFont(Font.font("Times New Roman", 15));
             info.setFill(Color.WHITESMOKE);
             info.setWrappingWidth(200);
             info.setTranslateX(350);
-            info.setTranslateY(160);
+            info.setTranslateY(120);
 
             display = new ImageView();
             display.setTranslateX(110);
@@ -187,6 +200,20 @@ public class SciencePane extends Pane {
             String selection = (String) comboBox.getValue();
             System.out.println(selection);
 
+            for (TechType t : player.getResearchableTech()) {
+                if (selection.equals(t.name())) {
+                    info.setText(getInfo(t));
+                    display.setImage(ImageBuffer.getImage(t));
+                    if (player.getResearch() != t) {
+                        canConfirm = true;
+                        confirmButton.setOpacity(1);
+                    } else {
+                        canConfirm = false;
+                        confirmButton.setOpacity(0.25);
+                    }
+                    break;
+                }
+            }
 
         }
 
@@ -194,44 +221,38 @@ public class SciencePane extends Pane {
 
             String s = "";
 
-            if (e instanceof UnitType) {
-                s = s + "Produciton Cost: " + ((UnitType) e).getProductionCost() + "\n";
+            if (e instanceof TechType) {
+                TechType t = (TechType) e;
 
-                if (BuilderUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nCivilian unit that can build improvements on tiles to increase resource outputs.";
-                } else if (MeleeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nMelee fighting unit that attacks at a close range and has decent health.";
-                } else if (RangeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nRanged unit that attack can from afar without taking any damage. Relatively weak in health and close-ranged combats.";
-                } else if (CalvaryUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nFast-moving melee units that can roam around the battlefield with incredible speed. Strong against ranged units yet weak against melee. Weak in sieging.";
-                } else if (SiegeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nA slow-moving unit that specializes in taking down enemy cities.";
-                } else if (ScoutUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nVery fast-moving civilian unit that scouts the map.";
-                } else if (SettlerUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nA civilian unit that allows you to settle another city elsewhere.";
+                s = s + "Research Cost: " + t.getTechCost();
+
+                if (t.getUnlockUnit() != null) {
+                    s = s + "\n\nUnlock Unit: ";
+                    for (UnitType u : t.getUnlockUnit()) {
+                        s = s + u.name() + "  ";
+                    }
                 }
 
-            } else if (e instanceof CityProject) {
-
-                //add descriptions later
-                s = s + "Production Cost: " + ((CityProject) e).getProductionCost();
-
-                if (((CityProject) e).getFoodBonus() > 0) {
-                    s = s + "\n\nFood Bonus: " + ((CityProject) e).getFoodBonus();
+                if (t.getUnlockProject() != null) {
+                    s = s + "\n\nUnlock City Project: ";
+                    for (CityProject c : t.getUnlockProject()) {
+                        s = s + c.name() + "  ";
+                    }
                 }
 
-                if (((CityProject) e).getTechBonus() > 0) {
-                    s = s + "\nTech Bonus: " + ((CityProject) e).getTechBonus();
+                if (t.getUnlockImprovement() != null) {
+                    s = s + "\n\nUnlock Tile Improvement: ";
+                    for (Improvement i : t.getUnlockImprovement()) {
+                        s = s + i.name() + "  ";
+                    }
                 }
 
-                if (((CityProject) e).getProductionBonus() > 0) {
-                    s = s + "\nProduction Bonus: " + ((CityProject) e).getProductionBonus();
-                }
+                s = s + "\n\nUnlock Science Project: ";
 
-                if (((CityProject) e).getGoldBonus() > 0) {
-                    s = s + "\nGold Bonus: " + ((CityProject) e).getGoldBonus();
+                for (TechType tech : TechType.values()) {
+                    if (tech.getPrerequisites().contains(t)) {
+                        s = s + tech.name() + "  ";
+                    }
                 }
 
             }
@@ -244,6 +265,12 @@ public class SciencePane extends Pane {
 
             String selection = (String) comboBox.getValue();
 
+            for (TechType t : player.getResearchableTech()) {
+                if (selection.equals(t.name())) {
+                    player.setResearch(t);
+                    break;
+                }
+            }
 
             close();
         }
@@ -257,15 +284,15 @@ public class SciencePane extends Pane {
         private void initializeComboBox() {
             ObservableList<String> options = FXCollections.observableArrayList();
 
-            options.add("----- UNITS -----");
-
-
+            for (TechType t : player.getResearchableTech()) {
+                options.add(t.name());
+            }
 
             comboBox = new ComboBox(options);
             comboBox.setTranslateX(70);
             comboBox.setTranslateY(80);
             comboBox.setPromptText("--- Please Select ---");
-            comboBox.setVisibleRowCount(8);
+            comboBox.setVisibleRowCount(5);
 
         }
     }

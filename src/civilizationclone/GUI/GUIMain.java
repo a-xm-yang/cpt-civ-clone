@@ -31,9 +31,10 @@ public class GUIMain extends Application {
         GameMap gameMap = new GameMap(MapSize.SMALL,400);
         ArrayList<Player> p = new ArrayList<Player>();
         p.add(new Player("Иосиф Сталин"));
-        p.add(new Player("Adolf Hitler"));
-        p.add(new Player("毛泽东"));
-        p.add(new Player("Teddy Roosevelt"));
+        p.get(0).setTechIncome(10);
+      //  p.add(new Player("Adolf Hitler"));
+      //  p.add(new Player("毛泽东"));
+      //  p.add(new Player("Teddy Roosevelt"));
         
         root = new GamePane(gameMap, p, resX, resY);
 

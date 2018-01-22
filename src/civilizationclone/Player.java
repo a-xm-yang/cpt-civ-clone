@@ -50,12 +50,12 @@ public class Player {
         ownedCityProject = EnumSet.noneOf(CityProject.class);
         exploredTiles = new HashSet<Tile>();
 
-        research = TechType.AGRICULTURE;
+        research = TechType.NONE;
 
         unitList = new ArrayList<Unit>();
         cityList = new ArrayList<City>();
-        
-            }
+
+    }
 
     public void startTurn() {
 
@@ -263,6 +263,7 @@ public class Player {
 
     public void setResearch(TechType research) {
         this.research = research;
+        techProgress = 0;
     }
 
     public void setName(String name) {
