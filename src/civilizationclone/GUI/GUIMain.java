@@ -50,5 +50,4 @@ public class GUIMain extends Application {
     }
 
     
-    //TODO -- Finish resource import and printing
 }

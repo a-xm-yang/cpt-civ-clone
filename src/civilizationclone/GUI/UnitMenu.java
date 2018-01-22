@@ -117,7 +117,8 @@ public class UnitMenu extends Pane{
                         ((BuilderUnit)unit).getMapRef().getTile(unit.getX(), unit.getY()).getImprovement() == NONE && 
                         unit.getMovement() > 0 &&
                         ((BuilderUnit)unit).getMapRef().getTile(unit.getX(), unit.getY()).getControllingCity() != (null) &&
-                        ((BuilderUnit)unit).getMapRef().getTile(unit.getX(), unit.getY()).getControllingCity().getPlayer().equals(unit.getPlayer())){
+                        ((BuilderUnit)unit).getMapRef().getTile(unit.getX(), unit.getY()).getControllingCity().getPlayer().equals(unit.getPlayer()) &&
+                        !(unit.getMapRef().getTile(unit.getX(), unit.getY()).hasCity())){
                     o.getText().setFill(Color.WHITE);
                 }else{
                     o.getText().setFill(Color.DARKGREY);

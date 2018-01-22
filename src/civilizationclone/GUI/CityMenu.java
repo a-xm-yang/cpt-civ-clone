@@ -309,7 +309,7 @@ public class CityMenu extends Pane {
                         canConfirm = true;
                         confirmButton.setOpacity(1);
                     }
-                    
+
                     return;
                 }
             }
@@ -716,6 +716,8 @@ public class CityMenu extends Pane {
             scrollSelection.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
             scrollSelection.setVbarPolicy(ScrollBarPolicy.NEVER);
             initializeScrollPane();
+            
+            updateCheckBox();
 
             getChildren().addAll(border, title, workerDisplay, closeButton, scrollSelection);
 
@@ -730,9 +732,18 @@ public class CityMenu extends Pane {
                 city.getWorkedTiles().remove(tile);
             }
 
+            //update things of this checkbox
             updateText();
+            updateCheckBox();
 
-            //If you can select no more workers, selection should be capped
+            //reset city income
+            city.calcIncome();
+            updateProductionDisplay();
+            updateDisplayOrder();
+        }
+
+        private void updateCheckBox() {
+            //Selections should be capped if you can select n omore workers
             if (city.getWorkedTiles().size() >= city.getPopulation()) {
                 for (Node n : collection.getChildren()) {
                     if (n instanceof TileSelection) {
@@ -748,13 +759,7 @@ public class CityMenu extends Pane {
                         ((TileSelection) n).disableCheckBox(false);
                     }
                 }
-
             }
-
-            //reset city income
-            city.calcIncome();
-            updateProductionDisplay();
-            updateDisplayOrder();
         }
 
         private void updateText() {
@@ -858,8 +863,8 @@ public class CityMenu extends Pane {
                     gc.drawImage(ImageBuffer.getImage(tile.getResource()), getTranslateX() + 55, getTranslateY() + 35);
                 }
 
-                if (tile.getImprovement() != Improvement.NONE) {
-                    gc.drawImage(ImageBuffer.getImage(tile.getImprovement()), 15, 15);
+               if (tile.getImprovement() != Improvement.NONE) {
+                    gc.drawImage(ImageBuffer.getImage(tile.getImprovement()), 5 + getTranslateX(), 20 + getTranslateY());
                 }
 
             }

@@ -89,20 +89,17 @@ public class Player {
     public int canEndTurn() {
         for (Unit u : unitList) {
             if (u.canMove()) {
-                System.out.println("Unit needs to move");
                 return 1;
             }
         }
 
         for (City c : cityList) {
             if (!c.canEndTurn()) {
-                System.out.println("Needs to select city project for " + c.getName());
                 return 2;
             }
         }
 
         if (research == null) {
-            System.out.println("Need to select project");
             return 3;
         }
 

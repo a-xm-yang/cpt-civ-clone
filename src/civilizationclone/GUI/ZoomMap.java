@@ -14,6 +14,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.Pane;
 
 public class ZoomMap extends Group {
 
@@ -471,6 +472,10 @@ public class ZoomMap extends Group {
         }
 
     };
+    
+    private class SettlePrompt extends Pane{
+        
+    }
 }
 
 enum HighlightType {

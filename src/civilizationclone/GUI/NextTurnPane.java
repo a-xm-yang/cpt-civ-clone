@@ -46,7 +46,6 @@ public class NextTurnPane extends Group {
         
         if (this.player.canEndTurn() == 0) {
             gamePaneRef.nextTurn();
-            //delete();
         }
 
         updateText();

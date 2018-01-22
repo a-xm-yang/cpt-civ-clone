@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class City {
 
@@ -113,17 +111,19 @@ public class City {
     }
 
     private void calcFakePopulation() {
-        this.population = (int) Math.pow((realPopulation / 1000), -2.8);
+        this.population = (int) (Math.pow((realPopulation/1000), 1 / 2.9));
     }
 
     private void inceaseRealPopulation() {
         if (player.getHappiness() > 2) {
             this.realPopulation += (this.foodIncome - this.population) * 500; //Fiddle around with this number to make it good
-        } else if (player.getHappiness() > 0) {
+        } else if (player.getHappiness() >= 0) {
             this.realPopulation += (this.foodIncome - this.population) * 400; //Fiddle around with this number to make it good
         } else {
             this.realPopulation += (this.foodIncome - this.population) * 300;
         }
+        
+        System.out.println(realPopulation);
     }
 
     public boolean canEndTurn() {

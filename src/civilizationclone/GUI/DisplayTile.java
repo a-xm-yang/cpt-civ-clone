@@ -80,8 +80,8 @@ public class DisplayTile extends Polygon {
                 setEffect(shade);
             } else {
                 //FULL ACCESS
-                if (tile.getImprovement() != NONE) {
-                    gc.drawImage(ImageBuffer.getImage(tile.getImprovement()), 15 + getTranslateX(), 20 + getTranslateY());
+                if (tile.getImprovement() != Improvement.NONE) {
+                    gc.drawImage(ImageBuffer.getImage(tile.getImprovement()), 5 + getTranslateX(), 20 + getTranslateY());
                 }
                 if (tile.hasUnit()) {
                     gc.drawImage(ImageBuffer.getImage(tile.getUnit()), 15 + getTranslateX(), 20 + getTranslateY());
