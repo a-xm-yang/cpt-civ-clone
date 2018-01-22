@@ -160,7 +160,7 @@ public class SciencePane extends Pane {
 
             confirmButton = new Circle(450, 385, 22);
             confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
-            confirmButton.setOpacity(0.1);
+            confirmButton.setOpacity(0.25);
             confirmButton.setOnMouseClicked((e) -> {
                 e.consume();
                 if (canConfirm) {

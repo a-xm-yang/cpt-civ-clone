@@ -61,7 +61,11 @@ public class CityMenu extends Pane {
         statusText.setTranslateX(25);
 
         cityNameText = new Text(city.getName());
-        cityNameText.setFont(Font.font("Oswald", 50));
+        if (city.getName().length() < 8) {
+            cityNameText.setFont(Font.font("Oswald", 50));
+        } else {
+            cityNameText.setFont(Font.font("Oswald", 35));
+        }
         cityNameText.setFill(Color.CORNSILK);
         cityNameText.setTranslateX(25);
         cityNameText.setTranslateY(60);
@@ -234,7 +238,7 @@ public class CityMenu extends Pane {
 
             confirmButton = new Circle(450, 385, 22);
             confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
-            confirmButton.setOpacity(0.1);
+            confirmButton.setOpacity(0.25);
             confirmButton.setOnMouseClicked((e) -> {
                 e.consume();
                 if (canConfirm) {
@@ -277,7 +281,7 @@ public class CityMenu extends Pane {
 
             //If the value is one of the fillers
             if (comboBox.getValue().equals("----- UNITS -----") || comboBox.getValue().equals("----- PROJECTS -----")) {
-                confirmButton.setOpacity(0.1);
+                confirmButton.setOpacity(0.25);
                 info.setVisible(false);
                 display.setVisible(false);
                 canConfirm = false;
@@ -456,7 +460,7 @@ public class CityMenu extends Pane {
 
             confirmButton = new Circle(450, 385, 22);
             confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
-            confirmButton.setOpacity(0.1);
+            confirmButton.setOpacity(0.25);
             confirmButton.setOnMouseClicked((e) -> {
                 e.consume();
                 if (canConfirm) {
@@ -499,7 +503,7 @@ public class CityMenu extends Pane {
 
             //If the value is one of the fillers
             if (comboBox.getValue().equals("----- UNITS -----") || comboBox.getValue().equals("----- PROJECTS -----")) {
-                confirmButton.setOpacity(0.1);
+                confirmButton.setOpacity(0.25);
                 info.setVisible(false);
                 display.setVisible(false);
                 canConfirm = false;
@@ -514,7 +518,7 @@ public class CityMenu extends Pane {
                         canConfirm = true;
                         confirmButton.setOpacity(1);
                     } else {
-                        confirmButton.setOpacity(0.1);
+                        confirmButton.setOpacity(0.25);
                         canConfirm = false;
                     }
 
@@ -533,7 +537,7 @@ public class CityMenu extends Pane {
                         canConfirm = true;
                         confirmButton.setOpacity(1);
                     } else {
-                        confirmButton.setOpacity(0.1);
+                        confirmButton.setOpacity(0.25);
                         canConfirm = false;
                     }
 
@@ -716,7 +720,7 @@ public class CityMenu extends Pane {
             scrollSelection.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
             scrollSelection.setVbarPolicy(ScrollBarPolicy.NEVER);
             initializeScrollPane();
-            
+
             updateCheckBox();
 
             getChildren().addAll(border, title, workerDisplay, closeButton, scrollSelection);
@@ -863,7 +867,7 @@ public class CityMenu extends Pane {
                     gc.drawImage(ImageBuffer.getImage(tile.getResource()), getTranslateX() + 55, getTranslateY() + 35);
                 }
 
-               if (tile.getImprovement() != Improvement.NONE) {
+                if (tile.getImprovement() != Improvement.NONE) {
                     gc.drawImage(ImageBuffer.getImage(tile.getImprovement()), 5 + getTranslateX(), 20 + getTranslateY());
                 }
 

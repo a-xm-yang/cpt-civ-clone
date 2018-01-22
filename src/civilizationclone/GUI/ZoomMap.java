@@ -2,19 +2,27 @@ package civilizationclone.GUI;
 
 import civilizationclone.Player;
 import civilizationclone.Tile.Tile;
-import civilizationclone.Unit.BuilderUnit;
 import civilizationclone.Unit.MilitaryUnit;
 import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.Unit;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Set;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class ZoomMap extends Group {
 
@@ -196,17 +204,16 @@ public class ZoomMap extends Group {
         //update fog of war according to the player, and center the screen around that player
         this.currentPlayer = currentPlayer;
         updateFogOfWar();
-        
-        //reset scaling for new player
 
+        //reset scaling for new player
         if (currentPlayer.getCityList().size() > 0) {
             setTranslateX(leftCap - (currentPlayer.getCityList().get(0).getPosition().y * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
-            setTranslateY((currentPlayer.getCityList().get(0).getPosition().x * DisplayTile.HEIGHT * getScaleY()) * -1 + resY/2 * getScaleY());
+            setTranslateY((currentPlayer.getCityList().get(0).getPosition().x * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY());
         } else if (currentPlayer.getUnitList().size() > 0) {
             setTranslateX(leftCap - (currentPlayer.getUnitList().get(0).getY() * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
-            setTranslateY((currentPlayer.getUnitList().get(0).getX() * DisplayTile.HEIGHT * getScaleY()) * -1 + resY/2 * getScaleY());
+            setTranslateY((currentPlayer.getUnitList().get(0).getX() * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY());
         }
-        
+
         adjustPosition();
     }
 
@@ -255,7 +262,14 @@ public class ZoomMap extends Group {
     }
 
     public void activateSettle() {
-        ((SettlerUnit) selectedTile.getUnit()).settle("Memphis");
+        enableDragging(false);
+        getChildren().add(new SettlePrompt((SettlerUnit) selectedTile.getUnit(), resX, resY, getTranslateX(), getTranslateY()));
+        repaint();
+    }
+
+    public void removeSettlePrompt(SettlePrompt sp) {
+        getChildren().remove(sp);
+        enableDragging(true);
         updateFogOfWar();
         repaint();
     }
@@ -472,9 +486,86 @@ public class ZoomMap extends Group {
         }
 
     };
-    
-    private class SettlePrompt extends Pane{
+
+    private class SettlePrompt extends Pane {
+
+        private Rectangle border;
+        private Circle closeButton, confirmButton;
+        private TextField textField;
+        private Text title;
+
+        private SettlerUnit selectedUnit;
+        private boolean canConfirm;
+
+        public SettlePrompt(SettlerUnit selectedUnit, int resX, int resY, double zoomMapX, double zoomMapY) {
+            this.selectedUnit = selectedUnit;
+            canConfirm = true;
+
+            border = new Rectangle(300, 150);
+            border.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CITY_OPTION_BACKGROUND), 0, 0, 1, 1, true));
+            border.setStrokeWidth(5);
+            border.setStroke(Color.BLACK);
+
+            setTranslateX(zoomMapX * -1 + resX / 2 - border.getX() / 2 - border.getX()/2);
+            setTranslateY(zoomMapY * -1 + resY / 2 - border.getY() / 2 - border.getY()/2);
+
+            closeButton = new Circle(280, 120, 20);
+            closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
+            closeButton.setOnMouseClicked((e) -> {
+                e.consume();
+                close();
+            });
+
+            title = new Text("INPUT CITY NAME");
+            title.setFont(Font.font("Times New Roman", 20));
+            title.setFill(Color.WHITESMOKE);
+            title.setTranslateY(25);
+            title.setTranslateX(5);
+            
+            textField = new TextField("City");
+            textField.setAlignment(Pos.CENTER);
+            textField.setFont(Font.font("Times New Roman", 18));
+            textField.setPrefColumnCount(12);
+            textField.setPrefHeight(20);
+            textField.setTranslateX(40);
+            textField.setTranslateY(40);
+            textField.textProperty().addListener((observable, oldValue, newValue) -> {
+                textCheck();
+            });
+            
+
+            confirmButton = new Circle(230, 120, 14.5);
+            confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
+            confirmButton.setOnMouseClicked((e) -> {
+                e.consume();
+                if (canConfirm) {
+                    confirm();
+                    close();
+                }
+            });
+            
+            getChildren().addAll(border, closeButton, title, confirmButton, textField);
+
+        }
         
+        private void textCheck(){
+            if (textField.getCharacters().toString().length() > 0 && textField.getCharacters().toString().length() <= 12){
+                canConfirm = true;
+                confirmButton.setOpacity(1);
+            } else{
+                canConfirm = false;
+                confirmButton.setOpacity(0.25);
+            }
+        }
+
+        private void confirm() {
+            selectedUnit.settle(textField.getCharacters().toString());
+        }
+
+        private void close() {
+            removeSettlePrompt(this);
+        }
+
     }
 }
 
