@@ -67,6 +67,10 @@ public class Player {
         calculateHappiness();
         calcGoldIncome();
         calcTechIncome();
+        
+        //for(Improvement i: ownedImprovement){
+        //    System.out.println(i);
+        //}
 
         techProgress += techIncome;
 
@@ -99,7 +103,7 @@ public class Player {
             }
         }
 
-        if (research == null) {
+        if (research == TechType.NONE) {
             return 3;
         }
 

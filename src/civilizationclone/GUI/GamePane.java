@@ -35,6 +35,7 @@ public class GamePane extends Pane {
         this.setPrefWidth(resX);
 
         currentPlayer = playerList.get(0);
+        
 
         //Reset these later to just settler and warrior
         for (Player player : playerList) {
@@ -50,7 +51,7 @@ public class GamePane extends Pane {
         }
 
         playerList.get(0).startTurn();
-        playerList.get(0).setCurrentGold(100);
+        
 
         zoomMap = createFalseMap(gameMap.getMap());
         zoomMap.setCurrentPlayer(currentPlayer);

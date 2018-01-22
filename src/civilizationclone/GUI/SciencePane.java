@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -40,6 +41,8 @@ public class SciencePane extends Pane {
         this.resX = resX;
         this.resY = resY;
         this.gamePaneRef = gamePaneRef;
+        
+        System.out.println("Current Player Science: " + player.getName());
 
         hasMenuOpen = false;
 
@@ -85,17 +88,21 @@ public class SciencePane extends Pane {
         infoText.setTranslateX(145);
 
         setOnMouseClicked(e -> {
-            if (!hasMenuOpen) {
-                getChildren().add(new ScienceMenu(player, resX, resY));
-                hasMenuOpen = true;
-                e.consume();
-            }
+            clickEvent(e);
         });
 
         updateInfo();
 
         getChildren()
                 .addAll(textBackground, progressBackground, progress, techImage, infoText);
+    }
+    
+    public void clickEvent(MouseEvent e){
+        if (!hasMenuOpen) {
+                getChildren().add(new ScienceMenu(player, resX, resY));
+                hasMenuOpen = true;
+                e.consume();
+            }
     }
 
     public void setCurrentPlayer(Player player) {
@@ -124,6 +131,7 @@ public class SciencePane extends Pane {
         getChildren().remove(sm);
         hasMenuOpen = false;
         updateInfo();
+        gamePaneRef.updateInfo();
 
     }
 

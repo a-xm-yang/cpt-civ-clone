@@ -113,7 +113,7 @@ public class UnitMenu extends Pane{
             }else if(o.getOptionType().equals("Kill")){
                 o.getText().setFill(Color.WHITE);
             }else if(o.getOptionType().equals("Improve")){
-                if(((BuilderUnit)unit).getPossibleImprovements().length > 1 && 
+                if(((BuilderUnit)unit).getPossibleImprovements().length >= 1 && 
                         ((BuilderUnit)unit).getMapRef().getTile(unit.getX(), unit.getY()).getImprovement() == NONE && 
                         unit.getMovement() > 0 &&
                         ((BuilderUnit)unit).getMapRef().getTile(unit.getX(), unit.getY()).getControllingCity() != (null) &&
@@ -170,7 +170,7 @@ public class UnitMenu extends Pane{
             }else if(((UnitOption)e.getTarget()).getOptionType().equals("Kill") && ((UnitOption)e.getTarget()).getText().getFill() == Color.WHITE){
                 zmapRef.activateKill();
             }else if(((UnitOption)e.getTarget()).getOptionType().equals("Improve") && ((UnitOption)e.getTarget()).getText().getFill() == Color.WHITE){
-                if(((BuilderUnit)unit).getPossibleImprovements().length > 1 && ((BuilderUnit)unit).getMapRef().getTile(unit.getX(), unit.getY()).getImprovement() == NONE && unit.getMovement() > 0){
+                if(((BuilderUnit)unit).getPossibleImprovements().length >= 1 && ((BuilderUnit)unit).getMapRef().getTile(unit.getX(), unit.getY()).getImprovement() == NONE && unit.getMovement() > 0){
                     getChildren().add(new BuildMenu(unit));
                     return;
                 }

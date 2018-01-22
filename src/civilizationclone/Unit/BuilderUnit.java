@@ -17,6 +17,7 @@ public class BuilderUnit extends Unit {
         
         ArrayList<Improvement> list = new ArrayList<>();
         
+        
         for (Improvement p: getMapRef().getTile(getX(),getY()).getPossibleImprovements()){
             if (getPlayer().getOwnedImprovement().contains(p)){
                 list.add(p);

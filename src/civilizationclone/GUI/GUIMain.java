@@ -8,6 +8,7 @@ package civilizationclone.GUI;
 import civilizationclone.GameMap;
 import civilizationclone.GameMap.MapSize;
 import civilizationclone.Player;
+import civilizationclone.TechType;
 import java.io.File;
 import java.util.ArrayList;
 import javafx.application.Application;
@@ -32,7 +33,9 @@ public class GUIMain extends Application {
         ArrayList<Player> p = new ArrayList<Player>();
         p.add(new Player("Иосиф Сталин"));
         p.get(0).setTechIncome(10);
-      //  p.add(new Player("Adolf Hitler"));
+        p.get(0).setCurrentGold(100);
+        p.add(new Player("Adolf Hitler"));
+        p.get(1).setCurrentGold(100);
       //  p.add(new Player("毛泽东"));
       //  p.add(new Player("Teddy Roosevelt"));
         
