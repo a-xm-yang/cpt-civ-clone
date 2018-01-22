@@ -901,6 +901,5 @@ public class CityMenu extends Pane {
         }
 
     }
-
     //<e/ditor-fold>
 }

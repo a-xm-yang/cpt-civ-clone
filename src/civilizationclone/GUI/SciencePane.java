@@ -1,7 +1,21 @@
 package civilizationclone.GUI;
 
+import civilizationclone.City;
+import civilizationclone.CityProject;
 import civilizationclone.Player;
 import civilizationclone.TechType;
+import civilizationclone.Unit.BuilderUnit;
+import civilizationclone.Unit.CalvaryUnit;
+import civilizationclone.Unit.MeleeUnit;
+import civilizationclone.Unit.RangeUnit;
+import civilizationclone.Unit.ScoutUnit;
+import civilizationclone.Unit.SettlerUnit;
+import civilizationclone.Unit.SiegeUnit;
+import civilizationclone.Unit.UnitType;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -96,6 +110,163 @@ public class SciencePane extends Pane {
             infoText.setText(player.getResearch().name() + " " + turnInfo);
         } else{
             infoText.setText("Select new research!");
+        }
+    }
+    
+    public void removeMenu(ScienceMenu sm){
+        getChildren().remove(sm);
+        updateInfo();
+    }
+    
+    private class ScienceMenu extends Pane{
+        
+        private Rectangle border;
+        private ComboBox comboBox;
+        private Circle closeButton, confirmButton;
+        private Text title, info;
+        private ImageView display;
+
+        private Player player;
+
+        public ScienceMenu(Player player, int resX, int resY) {
+
+            this.player = player;
+
+            border = new Rectangle(600, 450);
+            border.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CITY_OPTION_BACKGROUND), 0, 0, 1, 1, true));
+            setTranslateX(resX / 2 - border.getWidth() / 2 - (resX - 450));
+            setTranslateY(resY / 2 - border.getHeight() / 2);
+
+            border.setStrokeWidth(5);
+            border.setStroke(Color.BROWN);
+
+            closeButton = new Circle(530, 385, 30);
+            closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
+            closeButton.setOnMouseClicked((e) -> {
+                e.consume();
+                close();
+            });
+
+            confirmButton = new Circle(450, 385, 22);
+            confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
+            confirmButton.setOpacity(0.1);
+            confirmButton.setOnMouseClicked((e) -> {
+                e.consume();
+                confirm();
+                close();
+            });
+
+            title = new Text("SELECT CITY PRODUCTION");
+            title.setFont(Font.font("Times New Roman", 25));
+            title.setFill(Color.WHITESMOKE);
+            title.setTranslateY(25);
+            title.setTranslateX(5);
+            initializeComboBox();
+            comboBox.setOnAction(e -> {
+                updateInfo();
+                e.consume();
+            });
+
+            //to be changed later
+            info = new Text();
+            info.setFont(Font.font("Times New Roman", 18));
+            info.setFill(Color.WHITESMOKE);
+            info.setWrappingWidth(200);
+            info.setTranslateX(350);
+            info.setTranslateY(160);
+
+            display = new ImageView();
+            display.setTranslateX(110);
+            display.setTranslateY(210);
+
+            getChildren().addAll(border, closeButton, confirmButton, title, comboBox, info, display);
+        }
+
+        private void updateInfo() {
+
+            String selection = (String) comboBox.getValue();
+            System.out.println(selection);
+
+
+        }
+
+        private String getInfo(Enum e) {
+
+            String s = "";
+
+            if (e instanceof UnitType) {
+                s = s + "Produciton Cost: " + ((UnitType) e).getProductionCost() + "\n";
+
+                if (BuilderUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                    s = s + "\nCivilian unit that can build improvements on tiles to increase resource outputs.";
+                } else if (MeleeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                    s = s + "\nMelee fighting unit that attacks at a close range and has decent health.";
+                } else if (RangeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                    s = s + "\nRanged unit that attack can from afar without taking any damage. Relatively weak in health and close-ranged combats.";
+                } else if (CalvaryUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                    s = s + "\nFast-moving melee units that can roam around the battlefield with incredible speed. Strong against ranged units yet weak against melee. Weak in sieging.";
+                } else if (SiegeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                    s = s + "\nA slow-moving unit that specializes in taking down enemy cities.";
+                } else if (ScoutUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                    s = s + "\nVery fast-moving civilian unit that scouts the map.";
+                } else if (SettlerUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                    s = s + "\nA civilian unit that allows you to settle another city elsewhere.";
+                }
+
+            } else if (e instanceof CityProject) {
+
+                //add descriptions later
+                s = s + "Production Cost: " + ((CityProject) e).getProductionCost();
+
+                if (((CityProject) e).getFoodBonus() > 0) {
+                    s = s + "\n\nFood Bonus: " + ((CityProject) e).getFoodBonus();
+                }
+
+                if (((CityProject) e).getTechBonus() > 0) {
+                    s = s + "\nTech Bonus: " + ((CityProject) e).getTechBonus();
+                }
+
+                if (((CityProject) e).getProductionBonus() > 0) {
+                    s = s + "\nProduction Bonus: " + ((CityProject) e).getProductionBonus();
+                }
+
+                if (((CityProject) e).getGoldBonus() > 0) {
+                    s = s + "\nGold Bonus: " + ((CityProject) e).getGoldBonus();
+                }
+
+            }
+
+            return s;
+
+        }
+
+        private void confirm() {
+
+            String selection = (String) comboBox.getValue();
+
+
+            close();
+        }
+
+        private void close() {
+            if (getParent() instanceof SciencePane) {
+                ((SciencePane) getParent()).removeMenu(this);
+            }
+        }
+
+        private void initializeComboBox() {
+            ObservableList<String> options = FXCollections.observableArrayList();
+
+            options.add("----- UNITS -----");
+
+
+
+            comboBox = new ComboBox(options);
+            comboBox.setTranslateX(70);
+            comboBox.setTranslateY(80);
+            comboBox.setPromptText("--- Please Select ---");
+            comboBox.setVisibleRowCount(8);
+
         }
     }
 
