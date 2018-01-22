@@ -506,8 +506,8 @@ public class ZoomMap extends Group {
             border.setStrokeWidth(5);
             border.setStroke(Color.BLACK);
 
-            setTranslateX(zoomMapX * -1 + resX / 2 - border.getX() / 2 - border.getX()/2);
-            setTranslateY(zoomMapY * -1 + resY / 2 - border.getY() / 2 - border.getY()/2);
+            setTranslateX(zoomMapX * -1 + resX / 2 - border.getX() / 2 - border.getX() / 2);
+            setTranslateY(zoomMapY * -1 + resY / 2 - border.getY() / 2 - border.getY() / 2);
 
             closeButton = new Circle(280, 120, 20);
             closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
@@ -521,7 +521,7 @@ public class ZoomMap extends Group {
             title.setFill(Color.WHITESMOKE);
             title.setTranslateY(25);
             title.setTranslateX(5);
-            
+
             textField = new TextField("City");
             textField.setAlignment(Pos.CENTER);
             textField.setFont(Font.font("Times New Roman", 18));
@@ -532,7 +532,6 @@ public class ZoomMap extends Group {
             textField.textProperty().addListener((observable, oldValue, newValue) -> {
                 textCheck();
             });
-            
 
             confirmButton = new Circle(230, 120, 14.5);
             confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
@@ -543,16 +542,16 @@ public class ZoomMap extends Group {
                     close();
                 }
             });
-            
+
             getChildren().addAll(border, closeButton, title, confirmButton, textField);
 
         }
-        
-        private void textCheck(){
-            if (textField.getCharacters().toString().length() > 0 && textField.getCharacters().toString().length() <= 12){
+
+        private void textCheck() {
+            if (textField.getCharacters().toString().length() > 0 && textField.getCharacters().toString().length() <= 12) {
                 canConfirm = true;
                 confirmButton.setOpacity(1);
-            } else{
+            } else {
                 canConfirm = false;
                 confirmButton.setOpacity(0.25);
             }
@@ -560,6 +559,9 @@ public class ZoomMap extends Group {
 
         private void confirm() {
             selectedUnit.settle(textField.getCharacters().toString());
+            if (getParent().getParent() instanceof GamePane) {
+                ((GamePane) getParent().getParent()).updateInfo();
+            }
         }
 
         private void close() {

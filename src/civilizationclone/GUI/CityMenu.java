@@ -193,6 +193,7 @@ public class CityMenu extends Pane {
 
     private void close() {
 
+        city.getPlayer().calculateHappiness();
         city.getPlayer().calcGoldIncome();
         city.getPlayer().calcTechIncome();
 

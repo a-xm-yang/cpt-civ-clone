@@ -65,9 +65,7 @@ public class GamePane extends Pane {
         getChildren().add(sciencePane);
 
         setOnMouseClicked((MouseEvent e) -> {
-            nextButton.updateText();
-            statusBar.updateTexts();
-            sciencePane.updateInfo();
+            updateInfo();
         });
     }
 
@@ -95,9 +93,17 @@ public class GamePane extends Pane {
         if (getChildren().contains(cityMenu)) {
             getChildren().remove(cityMenu);
         }
+
         cityMenu = null;
+        updateInfo();
 
         zoomMap.enableDragging(true);
+    }
+    
+    public void updateInfo(){
+        nextButton.updateText();
+            statusBar.updateTexts();
+            sciencePane.updateInfo();
     }
 
     private ZoomMap createFalseMap(Tile[][] original) {

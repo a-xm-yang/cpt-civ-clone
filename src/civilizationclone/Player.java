@@ -46,7 +46,7 @@ public class Player {
         ownedTech = EnumSet.of(TechType.NONE);
         buildableUnit = EnumSet.of(UnitType.BUILDER, UnitType.SCOUT, UnitType.SLINGER, UnitType.WARRIOR);
         researchableTech = EnumSet.noneOf(TechType.class);
-        ownedImprovement = EnumSet.allOf(Improvement.class);
+        ownedImprovement = EnumSet.noneOf(Improvement.class);
         ownedCityProject = EnumSet.noneOf(CityProject.class);
         exploredTiles = new HashSet<Tile>();
 
@@ -64,9 +64,9 @@ public class Player {
             city.startTurn();
         }
 
+        calculateHappiness();
         calcGoldIncome();
         calcTechIncome();
-        calculateHappiness();
 
         techProgress += techIncome;
 
@@ -140,6 +140,33 @@ public class Player {
         }
 
         techIncome = x;
+    }
+
+    public void calculateHappiness() {
+        // To be changed in future
+        int total = 5;
+
+        //Calculate happiness
+        for (City c : cityList) {
+            for (Tile t : c.getOwnedTiles()) {
+                if (t.getResource().isLuxury()) {
+                    total += 4;
+                }
+            }
+            for (CityProject p : c.getBuiltProjects()) {
+                total += 1;
+                //TODO Make so only certain building increase happiness and some increase more than others
+            }
+        }
+        //Calculate unhappiness
+        for (City c : cityList) {
+            total -= 2;
+            total -= c.getPopulation();
+            if (!c.getOriginalOwner().equals(this)) {
+                total -= 2;
+            }
+        }
+        happiness = total;
     }
 
     //ADDING FUNCTIONS FOR PLAYER
@@ -304,31 +331,4 @@ public class Player {
     }
 
     //</editor-fold>
-    private void calculateHappiness() {
-        // To be changed in future
-        int total = 5;
-
-        //Calculate happiness
-        for (City c : cityList) {
-            for (Tile t : c.getOwnedTiles()) {
-                if (t.getResource().isLuxury()) {
-                    total += 4;
-                }
-            }
-            for (CityProject p : c.getBuiltProjects()) {
-                total += 1;
-                //TODO Make so only certain building increase happiness and some increase more than others
-            }
-        }
-        //Calculate unhappiness
-        for (City c : cityList) {
-            total -= 2;
-            total -= c.getPopulation();
-            if (!c.getOriginalOwner().equals(this)) {
-                total -= 2;
-            }
-        }
-        happiness = total;
-    }
-
 }
