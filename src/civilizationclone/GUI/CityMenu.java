@@ -37,6 +37,7 @@ public class CityMenu extends Pane {
 
     //graphics related members
     private Rectangle border;
+    private int resX, resY;
     private Text statusText, cityNameText;
     private Circle closeButton, expansionIcon;
     private ImageView productionIcon, purchaseIcon, citizenIcon, productionDisplay;
@@ -46,6 +47,8 @@ public class CityMenu extends Pane {
 
         this.city = city;
         this.zoomMapRef = zoomMapRef;
+        this.resX = resX;
+        this.resY = resY;
 
         boolean hasOptionOpen = false;
 
@@ -85,10 +88,7 @@ public class CityMenu extends Pane {
         productionIcon.setTranslateX(175);
         productionIcon.setTranslateY(340);
         productionIcon.setOnMouseClicked((MouseEvent e) -> {
-            if (!hasOptionOpen()) {
-                getChildren().add(new ProductionMenu(city, resX, resY));
-                setHasOptionOpen(true);
-            }
+            openProductionMenu();
             e.consume();
         });
 
@@ -96,10 +96,7 @@ public class CityMenu extends Pane {
         purchaseIcon.setTranslateX(175);
         purchaseIcon.setTranslateY(540);
         purchaseIcon.setOnMouseClicked((MouseEvent e) -> {
-            if (!hasOptionOpen()) {
-                getChildren().add(new PurchaseMenu(city, resX, resY));
-                setHasOptionOpen(true);
-            }
+            openPurchaseMenu();
             e.consume();
         });
 
@@ -107,10 +104,7 @@ public class CityMenu extends Pane {
         citizenIcon.setTranslateX(175);
         citizenIcon.setTranslateY(740);
         citizenIcon.setOnMouseClicked((MouseEvent e) -> {
-            if (!hasOptionOpen()) {
-                getChildren().add(new CitizenMenu(city, resX, resY));
-                setHasOptionOpen(true);
-            }
+            openExpansionMenu();
             e.consume();
         });
 
@@ -119,9 +113,8 @@ public class CityMenu extends Pane {
         expansionIcon.setTranslateX(370);
         expansionIcon.setTranslateY(115);
         expansionIcon.setOnMouseClicked(e -> {
-            zoomMapRef.activateExpansion();
+            activateExpansion();
             e.consume();
-            close();
         });
 
         getChildren().addAll(border, statusText, cityNameText, closeButton, productionDisplay, productionIcon, purchaseIcon, citizenIcon);
@@ -132,6 +125,32 @@ public class CityMenu extends Pane {
             productionDisplay.setTranslateY(200);
         }
 
+    }
+
+    private void activateExpansion() {
+        zoomMapRef.activateExpansion();
+        close();
+    }
+
+    private void openProductionMenu() {
+        if (!hasOptionOpen()) {
+            getChildren().add(new ProductionMenu(city, resX, resY));
+            setHasOptionOpen(true);
+        }
+    }
+
+    private void openPurchaseMenu() {
+        if (!hasOptionOpen()) {
+            getChildren().add(new PurchaseMenu(city, resX, resY));
+            setHasOptionOpen(true);
+        }
+    }
+
+    private void openExpansionMenu() {
+        if (!hasOptionOpen()) {
+            getChildren().add(new CitizenMenu(city, resX, resY));
+            setHasOptionOpen(true);
+        }
     }
 
     private void setHasOptionOpen(boolean has) {
