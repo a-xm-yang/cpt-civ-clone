@@ -8,20 +8,20 @@ public abstract class RangeUnit extends MilitaryUnit {
 
     int closeCombat;
 
-    public RangeUnit(int MAX_MOVEMENT, City c, int MAX_HEALTH, int combat, int closeCombat, int maintainence) {
-        super(MAX_MOVEMENT, c, MAX_HEALTH, combat, maintainence);
+    public RangeUnit(int MAX_MOVEMENT, City c,   int combat, int closeCombat, int maintainence) {
+        super(MAX_MOVEMENT, c,   combat, maintainence);
         this.closeCombat = closeCombat;
     }
 
-    public RangeUnit(int MAX_MOVEMENT, MilitaryUnit u, int MAX_HEALTH, int combat, int closeCombat, int maintainence) {
-        super(u, MAX_MOVEMENT, MAX_HEALTH, combat, maintainence);
+    public RangeUnit(int MAX_MOVEMENT, MilitaryUnit u,   int combat, int closeCombat, int maintainence) {
+        super(u, MAX_MOVEMENT,   combat, maintainence);
         this.closeCombat = closeCombat;
     }
 
     @Override
     public Point[] getAttackable() {
 
-        ArrayList<Point> list = getAdjacent(3);
+        ArrayList<Point> list = getAdjacent(2);
         ArrayList<Point> attackable = new ArrayList<Point>();
 
         //get a list of all the adjacent tiles, check to see ones that has a unit, is not water, and belongs to opposing players, removing everything else that's not

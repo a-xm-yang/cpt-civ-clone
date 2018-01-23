@@ -8,27 +8,28 @@ import java.util.ArrayList;
 
 public abstract class NavalUnit extends MilitaryUnit {
 
-    public NavalUnit(int MAX_MOVEMENT, City c, int MAX_HEALTH, int combat, int maintainence) {
-        super(MAX_MOVEMENT, c, MAX_HEALTH, combat, maintainence);
+    public NavalUnit(int MAX_MOVEMENT, City c, int combat, int maintainence) {
+        super(MAX_MOVEMENT, c, combat, maintainence);
     }
 
-    public NavalUnit(int MAX_MOVEMENT, MilitaryUnit u, int MAX_HEALTH, int combat, int maintainence) {
-        super(u, MAX_MOVEMENT, MAX_HEALTH, combat, maintainence);
+    public NavalUnit(int MAX_MOVEMENT, MilitaryUnit u, int combat, int maintainence) {
+        super(u, MAX_MOVEMENT, combat, maintainence);
     }
 
     @Override
     public Point[] getMoves() {
 
-        ArrayList<Point> list = this.getAdjacent();
+        ArrayList<Point> list = getAdjacent();
+        ArrayList<Point> moves = new ArrayList<>();
 
         for (Point p : list) {
             Tile t = getMapRef().getTile(p.x, p.y);
-            if (t.hasUnit() || !t.isWater()) {
-                list.remove(p);
+            if (!t.hasUnit() && t.isWater() && getMovement() >= t.getMovementCost()) {
+                moves.add(p);
             }
         }
 
-        return list.toArray(new Point[list.size()]);
+        return moves.toArray(new Point[moves.size()]);
     }
 
     @Override
@@ -67,5 +68,3 @@ public abstract class NavalUnit extends MilitaryUnit {
         return attackable.toArray(new Point[attackable.size()]);
     }
 }
-
-

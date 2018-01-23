@@ -6,7 +6,7 @@ import civilizationclone.City;
 public class ScoutUnit extends MilitaryUnit {
 
     public ScoutUnit(City c) {
-        super(5, c, 50, 15, 0);
+        super(4, c, 10, 0);
     }
 
     @Override

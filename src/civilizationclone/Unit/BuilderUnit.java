@@ -9,7 +9,7 @@ public class BuilderUnit extends Unit {
     private int actions;
 
     public BuilderUnit(City c) {
-        super(50, c);
+        super(2, c);
         actions = 3;
     }
 

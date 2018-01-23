@@ -8,32 +8,29 @@ import java.util.ArrayList;
 public abstract class MilitaryUnit extends Unit {
 
     private int combat;
-    private final int MAX_HEALTH;
+    private static int MAX_HEALTH = 100;
     private int health;
     private int maintainence;
 
     //constructor from city
-    public MilitaryUnit(int MAX_MOVEMENT, City c, int MAX_HEALTH, int combat, int maintainence) {
+    public MilitaryUnit(int MAX_MOVEMENT, City c, int combat, int maintainence) {
         super(MAX_MOVEMENT, c);
-        this.MAX_HEALTH = MAX_HEALTH;
         health = MAX_HEALTH;
         this.combat = combat;
         this.maintainence = maintainence;
     }
 
     //overloaded constructor from OG spawn
-    public MilitaryUnit(Player player, Point p, int MAX_MOVEMENT, int MAX_HEALTH, int combat, int maintainence) {
+    public MilitaryUnit(Player player, Point p, int MAX_MOVEMENT, int combat, int maintainence) {
         super(MAX_MOVEMENT, player, p);
-        this.MAX_HEALTH = MAX_HEALTH;
         health = MAX_HEALTH;
         this.combat = combat;
         this.maintainence = maintainence;
     }
 
     //overloaded constructor from another unit upgrading
-    public MilitaryUnit(MilitaryUnit u, int MAX_MOVEMENT, int MAX_HEALTH, int combat, int maintainence) {
+    public MilitaryUnit(MilitaryUnit u, int MAX_MOVEMENT, int combat, int maintainence) {
         super(MAX_MOVEMENT, u.getPlayer(), new Point(u.getX(), u.getY()));
-        this.MAX_HEALTH = MAX_HEALTH;
         health = MAX_HEALTH;
         this.combat = combat;
         this.maintainence = maintainence;
@@ -46,7 +43,7 @@ public abstract class MilitaryUnit extends Unit {
         if (health > MAX_HEALTH) {
             health = MAX_HEALTH;
         }
-        
+
         setMovement(0);
     }
 
@@ -186,12 +183,14 @@ public abstract class MilitaryUnit extends Unit {
     public void setCombat(int combat) {
         this.combat = combat;
     }
-    
-    
-
-    //</editor-fold>
 
     public int getMAX_HEALTH() {
         return MAX_HEALTH;
     }
+
+    public void setMaintainence(int maintainence) {
+        this.maintainence = maintainence;
+    }
+
+    //</editor-fold>
 }

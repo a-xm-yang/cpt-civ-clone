@@ -6,7 +6,7 @@ public class SlingerUnit extends RangeUnit {
 
 
     public SlingerUnit(City c) {
-        super(3, c, 80, 25, 10, 0);
+        super(3, c, 15, 5, 0);
     }
 
     public UnitType getUpgrade() {

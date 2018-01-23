@@ -66,7 +66,6 @@ public abstract class Unit implements IMovement {
         
         for (Point p: list){
             Tile t = mapRef.getTile(p.x, p.y);
-            System.out.println(movement);
             if (!t.hasUnit() && !t.isWater() && !t.hasCity() && movement >= t.getMovementCost()){
                 moves.add(p);
             }
