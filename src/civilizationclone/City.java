@@ -79,8 +79,20 @@ public class City {
         calcFakePopulation();
 
         //if population reaches a certain threshold, you can expand a new tile
-        if (population > (ownedTiles.size() + 5) && ownedTiles.size() < 36) {
+        if (population > (ownedTiles.size() - 5) && ownedTiles.size() < 36) {
             canExpand = true;
+        }
+        
+        //if pupulation has been lost, disable one of the worked tiles
+        if (workedTiles.size() > population){
+            //remove one from worked tiles
+            Tile temp = null;
+            for (Tile t: workedTiles){
+                temp = t;
+                break;
+            }
+            
+            workedTiles.remove(temp);
         }
 
         currentProduction += productionIncome;
@@ -122,8 +134,6 @@ public class City {
         } else {
             this.realPopulation += (this.foodIncome - this.population) * 300;
         }
-        
-        System.out.println(realPopulation);
     }
 
     public boolean canEndTurn() {

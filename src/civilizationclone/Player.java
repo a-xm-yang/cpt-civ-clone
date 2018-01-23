@@ -55,6 +55,7 @@ public class Player {
         unitList = new ArrayList<Unit>();
         cityList = new ArrayList<City>();
 
+        startTurn();
     }
 
     public void startTurn() {
