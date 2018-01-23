@@ -31,12 +31,11 @@ public class GUIMain extends Application {
         GameMap gameMap = new GameMap(MapSize.SMALL, 400);
         ArrayList<Player> p = new ArrayList<Player>();
         p.add(new Player("Joseph Stalin"));
+        p.add(new Player("Adolf Hitler"));
+
+        //For testing purposes
         p.get(0).setTechIncome(10);
         p.get(0).setCurrentGold(100);
-        p.add(new Player("Adolf Hitler"));
-        // p.get(1).setCurrentGold(100);
-        //  p.add(new Player("毛泽东"));
-        //  p.add(new Player("Teddy Roosevelt"));
 
         root = new GamePane(gameMap, p, resX, resY, true);
 
@@ -48,7 +47,7 @@ public class GUIMain extends Application {
 
         Media media = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString());
         MediaPlayer player = new MediaPlayer(media);
-        // player.play();
+        player.play();
     }
 
 }

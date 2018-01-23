@@ -134,7 +134,7 @@ public class ZoomMap extends Group {
 
         //testing for only movement highlight
         if (highlightType == HighlightType.NONE) {
-            if (clickedTile.hasUnit() && clickedTile.getUnit().getPlayer().equals(currentPlayer)) {
+            if (clickedTile.hasUnit()) {
 
                 UnitMenu u = new UnitMenu(clickedTile.getUnit(), this);
                 u.setTranslateX(((DisplayTile) e.getTarget()).getTranslateX());
@@ -218,7 +218,7 @@ public class ZoomMap extends Group {
     }
 
     private void updateFogOfWar() {
-
+        
         visibleTiles = Unit.getMapRef().getVisibleTiles(currentPlayer.getAllPositions());
         currentPlayer.addExploredTiles(visibleTiles);
         exploredTiles = currentPlayer.getExploredTiles();
@@ -236,6 +236,7 @@ public class ZoomMap extends Group {
 
         ((GamePane) getParent()).updateMinimap();
         repaint();
+        
     }
 
     public void activateAttack() {

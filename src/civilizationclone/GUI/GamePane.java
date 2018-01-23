@@ -3,7 +3,6 @@ package civilizationclone.GUI;
 import civilizationclone.*;
 import civilizationclone.Tile.*;
 import civilizationclone.Unit.SettlerUnit;
-import civilizationclone.Unit.UnitType;
 import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -51,7 +50,6 @@ public class GamePane extends Pane {
                 } while (true);
             }
         }
-        playerList.get(0).startTurn();
 
         zoomMap = createFalseZoomMap(gameMap.getMap());
         minimap = new Minimap(zoomMap, resX, resY);
