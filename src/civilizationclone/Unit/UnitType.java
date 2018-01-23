@@ -18,7 +18,10 @@ public enum UnitType {
     //Calvary
     HORSEMAN(80, 140, HorsemanUnit.class),
     KNIGHT(180, 315, KnightUnit.class),
-    MOUNTEDFORCE(330, 580, MountedForceUnit.class);
+    MOUNTEDFORCE(330, 580, MountedForceUnit.class),
+    //Siege
+    CATAPULT(120, 210, CatapultUnit.class),
+    BOMBARD(280, 490, BombardUnit.class);
 
     private int productionCost;
     private int purchaseCost;

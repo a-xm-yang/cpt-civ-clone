@@ -154,7 +154,7 @@ public class City {
 
     private void calcTechIncome() {
         //calculate tech income
-        int tech = 2;
+        int tech = 1 + population;
 
         //add from buildings
         for (CityProject c : builtProjects) {
@@ -284,9 +284,21 @@ public class City {
 
         }
     }
+    
+    public boolean isCostal(){
+        for (Tile t: mapRef.getTiles(mapRef.getRange(POSITION, 1))){
+            if (t.isWater()){
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     //GETTER
     //<editor-fold>
+    
+    
     public Tile getCityTile() {
         return mapRef.getTile(POSITION);
     }

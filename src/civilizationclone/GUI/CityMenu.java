@@ -50,7 +50,7 @@ public class CityMenu extends Pane {
         this.resX = resX;
         this.resY = resY;
 
-        boolean hasOptionOpen = false;
+        hasOptionOpen = false;
 
         border = new Rectangle(0, 0, 460, resY + 10);
         setTranslateX(resX - 450);
@@ -424,7 +424,13 @@ public class CityMenu extends Pane {
             options.add("----- UNITS -----");
 
             for (UnitType t : city.getPlayer().getBuildableUnit()) {
-                options.add(t.name());
+                if (NavalUnit.class.isAssignableFrom(t.getClass())) {
+                    if (city.isCostal()){
+                        options.add(t.name());
+                    }
+                } else {
+                    options.add(t.name());
+                }
             }
 
             options.add("----- PROJECTS -----");
