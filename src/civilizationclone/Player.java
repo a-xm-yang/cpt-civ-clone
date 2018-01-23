@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
+import javafx.scene.paint.Color;
 
 public class Player {
 
@@ -40,6 +41,7 @@ public class Player {
     private ArrayList<City> cityList;
 
     Leader leader;
+    Color color;
     //</editor-fold>
 
     public enum Leader {
@@ -227,6 +229,28 @@ public class Player {
             if (this.getName().substring(this.getName().indexOf(" ") + 1, this.getName().length()).equalsIgnoreCase(l.name())) {
                 this.leader = l;
                 System.out.println(l);
+                
+                switch(l){
+                    case CHURCHILL:
+                        this.color = Color.MAROON;
+                        break;
+                    case HITLER:
+                        this.color = Color.GAINSBORO;
+                        break;
+                    case MUSSOLINI:
+                        this.color = Color.YELLOW;
+                        break;
+                    case ROOSEVELT:
+                        this.color = Color.BLUE;
+                        break;
+                    case STALIN:
+                        this.color = Color.RED;
+                        break;
+                    case ZEDONG:
+                        this.color = Color.FORESTGREEN;
+                        break;
+                }
+                
                 return;
             }
         }
@@ -364,8 +388,14 @@ public class Player {
     public int getTurnNumber() {
         return turnNumber;
     }
+    
+    public Color getColor() {
+        return color;
+    }
 
     //</editor-fold>
+
+    
 
     
 }

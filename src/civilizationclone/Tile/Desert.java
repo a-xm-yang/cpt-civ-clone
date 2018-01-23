@@ -16,9 +16,9 @@ public class Desert extends Tile {
 
     @Override
     public void calcOutput() {
-        setFoodOutput(2 + getImprovement().getFoodBonus() + getResource().getFoodBonus());
+        setFoodOutput(getImprovement().getFoodBonus() + getResource().getFoodBonus());
         setGoldOutput(getImprovement().getGoldBonus() + getResource().getGoldBonus());
-        setProductionOutput(getImprovement().getProductionBonus() + getResource().getProductionBonus());
+        setProductionOutput(1 + getImprovement().getProductionBonus() + getResource().getProductionBonus());
         setScienceOutput(getImprovement().getScienceBonus() + getResource().getTechBonus());
     }
 

@@ -74,11 +74,7 @@ public class UnitMenu extends Pane{
         statusText.setTranslateX(-180);
         
         gc = infoDisplay.getGraphicsContext2D();
-        if(unit.getPlayer()==zmapRef.getCurrentPlayer()){
-            gc.setFill(Color.AQUA);
-        }else{
-            gc.setFill(Color.RED);
-        }
+        gc.setFill(unit.getPlayer().getColor());
         gc.fillPolygon(new double[]{0, 230, 230, 175, 175, 230, 230, 0}, new double[]{0, 0, 40, 75, 155, 180, 220, 220}, 8);
         gc.setFill(Color.DARKSLATEGREY);
         gc.fillPolygon(new double[]{5, 225, 225, 170, 170, 225, 225, 5}, new double[]{5, 5, 35, 70, 160, 185, 215, 215}, 8);
