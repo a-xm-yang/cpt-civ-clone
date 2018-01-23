@@ -102,7 +102,7 @@ public class DisplayTile extends Polygon {
                 if (tile.isControlled()) {
                     if (canvas.getParent() instanceof ZoomMap) {
                         if (((ZoomMap) canvas.getParent()).getCurrentPlayer() == tile.getControllingCity().getPlayer()) {
-                            setStroke(Color.AQUA);
+                            setStroke(((ZoomMap) canvas.getParent()).getCurrentPlayer().getColor());
                         } else{
                             setStroke(Color.ORANGERED);
                         }
