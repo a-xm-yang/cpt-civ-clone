@@ -2,6 +2,7 @@ package civilizationclone.Unit;
 
 public enum UnitType {
 
+    //CIVILIAN/RECON
     SETTLER(80, 140, SettlerUnit.class),
     BUILDER(50, 90, BuilderUnit.class),
     SCOUT(30, 55, ScoutUnit.class),
@@ -9,7 +10,7 @@ public enum UnitType {
     WARRIOR(40, 70, WarriorUnit.class),
     SWORDSMAN(90, 190, SwordsmanUnit.class),
     MUSKETMAN(240, 420, MusketmanUnit.class),
-    INFANTRY(400, 650, InfantryUnit.class),
+    INFANTRY(360, 640, InfantryUnit.class),
     //Range
     SLINGER(35, 60, SlingerUnit.class),
     ARCHER(60, 110, ArcherUnit.class),
@@ -21,7 +22,12 @@ public enum UnitType {
     MOUNTEDFORCE(330, 580, MountedForceUnit.class),
     //Siege
     CATAPULT(120, 210, CatapultUnit.class),
-    BOMBARD(280, 490, BombardUnit.class);
+    BOMBARD(280, 490, BombardUnit.class),
+    //NAVAL
+    GALLEY(65, 115, GalleyUnit.class),
+    QUADRIREME(120, 210, QuadriremeUnit.class),
+    CARAVEL(240, 420, CaravelUnit.class),
+    IRONCLAD(380, 660, IroncladUnit.class);
 
     private int productionCost;
     private int purchaseCost;

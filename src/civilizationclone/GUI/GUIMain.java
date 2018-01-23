@@ -8,6 +8,8 @@ package civilizationclone.GUI;
 import civilizationclone.GameMap;
 import civilizationclone.GameMap.MapSize;
 import civilizationclone.Player;
+import civilizationclone.TechType;
+import civilizationclone.Unit.UnitType;
 import java.io.File;
 import java.util.ArrayList;
 import javafx.application.Application;
@@ -51,7 +53,7 @@ public class GUIMain extends Application {
 
         Media media = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString());
         MediaPlayer player = new MediaPlayer(media);
-        player.play();
+       // player.play();
     }
 
 }

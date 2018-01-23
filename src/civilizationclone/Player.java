@@ -25,7 +25,7 @@ public class Player {
     private int goldIncome;
     private int currentGold;
     private int happiness;
-    
+
     private int turnNumber;
 
     private Set<TechType> ownedTech;
@@ -64,9 +64,9 @@ public class Player {
 
         unitList = new ArrayList<Unit>();
         cityList = new ArrayList<City>();
-        
+
         turnNumber = 0;
-        
+
         setLeader();
     }
 
@@ -78,10 +78,10 @@ public class Player {
             city.startTurn();
         }
 
-        calculateHappiness();
         calcGoldIncome();
         calcTechIncome();
 
+        calculateHappiness();
 
         techProgress += techIncome;
 
@@ -165,7 +165,7 @@ public class Player {
         for (City c : cityList) {
             for (Tile t : c.getOwnedTiles()) {
                 if (t.getResource().isLuxury()) {
-                    total += 4;
+                    total += 2;
                 }
             }
             for (CityProject p : c.getBuiltProjects()) {
@@ -181,6 +181,12 @@ public class Player {
                 total -= 2;
             }
         }
+        
+        //if the country is going broke
+        if (getGoldIncome() < 0 || getCurrentGold() < 0){
+            total -= 2;
+        }
+        
         happiness = total;
     }
 
@@ -189,7 +195,15 @@ public class Player {
     public void addTech(TechType t) {
         ownedTech.add(t);
         if (t.getUnlockUnit() != null) {
-            buildableUnit.addAll(t.getUnlockUnit());
+            for (UnitType u : t.getUnlockUnit()) {
+                for (UnitType ut : buildableUnit) {
+                    if (ut.getCorrespondingClass().getSuperclass().equals(u.getCorrespondingClass().getSuperclass())) {
+                        buildableUnit.remove(ut);
+                        break;
+                    }
+                }
+                buildableUnit.add(u);
+            }
         }
         if (t.getUnlockImprovement() != null) {
             ownedImprovement.addAll(t.getUnlockImprovement());
@@ -229,8 +243,8 @@ public class Player {
             if (this.getName().substring(this.getName().indexOf(" ") + 1, this.getName().length()).equalsIgnoreCase(l.name())) {
                 this.leader = l;
                 System.out.println(l);
-                
-                switch(l){
+
+                switch (l) {
                     case CHURCHILL:
                         this.color = Color.MAROON;
                         break;
@@ -250,7 +264,7 @@ public class Player {
                         this.color = Color.FORESTGREEN;
                         break;
                 }
-                
+
                 return;
             }
         }
@@ -384,18 +398,14 @@ public class Player {
     public void setOwnedCityProject(Set<CityProject> ownedCityProject) {
         this.ownedCityProject = ownedCityProject;
     }
-    
+
     public int getTurnNumber() {
         return turnNumber;
     }
-    
+
     public Color getColor() {
         return color;
     }
 
     //</editor-fold>
-
-    
-
-    
 }

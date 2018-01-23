@@ -26,16 +26,16 @@ public class ImageBuffer {
     private static Image city;
 
     //UNITS
-    private static Image archer;
     private static Image builder;
+    private static Image settler;
+    private static Image scout;
+    private static Image slinger;
+    private static Image archer;
     private static Image catapult;
     private static Image destroyer;
     private static Image galley;
-    private static Image scout;
-    private static Image settler;
-    private static Image swordsman;
-    private static Image slinger;
     private static Image warrior;
+    private static Image swordsman;
 
     //MISC
     private static Image closeIcon;
@@ -75,7 +75,7 @@ public class ImageBuffer {
     private static Image fish;
     private static Image crab;
     private static Image whale;
-    
+
     private static Image teddy;
     private static Image hitler;
     private static Image stalin;
@@ -142,7 +142,7 @@ public class ImageBuffer {
 
             defaultTech = new Image(new FileInputStream("src/Assets/Tech/default.png"), 100, 100, false, false);
             pottery = new Image(new FileInputStream("src/Assets/Tech/pottery.png"), 100, 100, false, false);
-            
+
             stalin = new Image(new FileInputStream("src/Assets/Players/stalin.png"), 60, 60, false, false);
             hitler = new Image(new FileInputStream("src/Assets/Players/hitler.png"), 60, 60, false, false);
             mao = new Image(new FileInputStream("src/Assets/Players/mao.png"), 60, 60, false, false);
@@ -197,7 +197,7 @@ public class ImageBuffer {
 
     public static Image getImage(TechType t) {
 
-        switch (t){
+        switch (t) {
             case POTTERY:
                 return pottery;
             default:
@@ -310,9 +310,9 @@ public class ImageBuffer {
 
         return destroyer;
     }
-    
-    public static Image getImage(Leader l){
-        switch (l){
+
+    public static Image getImage(Leader l) {
+        switch (l) {
             case ZEDONG:
                 return mao;
             case HITLER:

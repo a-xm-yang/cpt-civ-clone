@@ -67,8 +67,8 @@ public class City {
 
         builtProjects = EnumSet.noneOf(CityProject.class);
 
-        calcIncome();
         calcFakePopulation();
+        calcIncome();
     }
 
     public void startTurn() {
@@ -82,16 +82,16 @@ public class City {
         if (population > (ownedTiles.size() - 5) && ownedTiles.size() < 36) {
             canExpand = true;
         }
-        
+
         //if pupulation has been lost, disable one of the worked tiles
-        if (workedTiles.size() > population){
+        if (workedTiles.size() > population) {
             //remove one from worked tiles
             Tile temp = null;
-            for (Tile t: workedTiles){
+            for (Tile t : workedTiles) {
                 temp = t;
                 break;
             }
-            
+
             workedTiles.remove(temp);
         }
 
@@ -123,7 +123,7 @@ public class City {
     }
 
     private void calcFakePopulation() {
-        this.population = (int) (Math.pow((realPopulation/1000), 1 / 2.9));
+        this.population = (int) (Math.pow((realPopulation / 1000), 1 / 2.9));
     }
 
     private void inceaseRealPopulation() {
@@ -155,6 +155,7 @@ public class City {
     private void calcTechIncome() {
         //calculate tech income
         int tech = 1 + population;
+        System.out.println(tech);
 
         //add from buildings
         for (CityProject c : builtProjects) {
@@ -171,7 +172,7 @@ public class City {
 
     private void calcGoldIncome() {
         //calc gold income
-        int gold = 2;
+        int gold = 1 + population;
 
         //add from tiles
         for (Tile t : workedTiles) {
@@ -284,21 +285,19 @@ public class City {
 
         }
     }
-    
-    public boolean isCostal(){
-        for (Tile t: mapRef.getTiles(mapRef.getRange(POSITION, 1))){
-            if (t.isWater()){
+
+    public boolean isCostal() {
+        for (Tile t : mapRef.getTiles(mapRef.getRange(POSITION, 1))) {
+            if (t.isWater()) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
     //GETTER
     //<editor-fold>
-    
-    
     public Tile getCityTile() {
         return mapRef.getTile(POSITION);
     }

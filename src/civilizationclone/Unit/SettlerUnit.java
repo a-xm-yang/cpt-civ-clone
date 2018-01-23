@@ -24,6 +24,7 @@ public class SettlerUnit extends Unit{
         getPlayer().addCity(c);
         getPlayer().calcGoldIncome();
         getPlayer().calcTechIncome();
+        getPlayer().calculateHappiness();
         delete();
     }
     

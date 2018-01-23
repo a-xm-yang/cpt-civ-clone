@@ -12,7 +12,7 @@ public class BombardUnit extends SiegeUnit{
 
     @Override
     public UnitType getUpgrade() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return null;
     }
     
 }

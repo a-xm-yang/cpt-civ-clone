@@ -1,6 +1,5 @@
 package civilizationclone.Tile;
 
-import static civilizationclone.Tile.Plains.possibleImprovement;
 import static civilizationclone.Tile.Resource.NONE;
 import java.util.EnumSet;
 import java.util.Set;

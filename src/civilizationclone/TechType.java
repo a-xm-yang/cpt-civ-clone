@@ -12,7 +12,7 @@ public enum TechType {
 
     //COST,PREREQUISITE,UNIT,IMPROVEMENT,PROJECT
     NONE(0, null, null, null, null),
-    AGRICULTURE(20, setOf(NONE), null, EnumSet.of(Improvement.FARM), EnumSet.of(CityProject.GRANARY)),
+    AGRICULTURE(20, setOf(NONE),EnumSet.of(UnitType.SETTLER), EnumSet.of(Improvement.FARM), EnumSet.of(CityProject.GRANARY)),
     POTTERY(25, setOf(AGRICULTURE), null, null, null),
     CALENDER(30, setOf(POTTERY), null, null, null),
     WRITING(35, setOf(CALENDER), null, null, EnumSet.of(CityProject.LIBRARY)),
