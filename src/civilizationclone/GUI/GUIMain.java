@@ -38,10 +38,12 @@ public class GUIMain extends Application {
         p.add(new Player("Franklin Roosevelt"));
         p.add(new Player("Mao Zedong"));
         p.add(new Player("Bennito Mussolini"));
-        
+
         //For testing purposes
         p.get(0).setTechIncome(10);
         p.get(0).setCurrentGold(1000);
+
+        testingStats(p.get(0));
 
         root = new GamePane(gameMap, p, resX, resY, true);
 
@@ -53,7 +55,17 @@ public class GUIMain extends Application {
 
         Media media = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString());
         MediaPlayer player = new MediaPlayer(media);
-       // player.play();
+        // player.play();
+    }
+
+    public void testingStats(Player p) {
+        p.setTechIncome(10);
+        p.setCurrentGold(1000);
+
+        for (UnitType u : UnitType.values()) {
+            p.addBuildableUnit(u);
+        }
+
     }
 
 }

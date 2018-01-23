@@ -350,15 +350,15 @@ public class CityMenu extends Pane {
                 if (BuilderUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
                     s = s + "\nCivilian unit that can build improvements on tiles to increase resource outputs.";
                 } else if (MeleeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nMelee fighting unit that attacks at a close range and has decent health.";
+                    s = s + "\nMelee fighting unit that attacks at a close range.";
                 } else if (RangeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nRanged unit that attack can from afar without taking any damage. Relatively weak in health and close-ranged combats.";
+                    s = s + "\nRanged unit that attack can from afar without taking any damage. Relatively weak in  close-ranged combats. Weak to mounted units.";
                 } else if (CalvaryUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nFast-moving melee units that can roam around the battlefield with incredible speed. Strong against ranged units yet weak against melee. Weak in sieging.";
+                    s = s + "\nFast-moving melee units that can roam around the battlefield with incredible speed. Strong against ranged units, weak against melee. Weak in sieging.";
                 } else if (SiegeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
                     s = s + "\nA slow-moving unit that specializes in taking down enemy cities.";
                 } else if (ScoutUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nVery fast-moving civilian unit that scouts the map.";
+                    s = s + "\nVery fast-moving unit that scouts the map. Weak in combat.";
                 } else if (SettlerUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
                     s = s + "\nA civilian unit that allows you to settle another city elsewhere.";
                 }

@@ -85,8 +85,8 @@ public abstract class MilitaryUnit extends Unit {
                 enemyCombat = ((RangeUnit) enemy).closeCombat;
             }
 
-            int thisDmg = (int) (combat * 0.6 * (getHealthPercentage() + (1 - getHealthPercentage() / 2)) * (combat / enemyCombat));
-            int enemyDmg = (int) (enemyCombat * 0.6 * (enemy.getHealthPercentage() + (1 - enemy.getHealthPercentage() / 2)) * (enemyCombat / combat));
+            int thisDmg = (int) (30 * Math.pow(1.041, (combat - enemyCombat)));
+            int enemyDmg = (int) (30 * Math.pow(1.041, (enemyCombat - combat)));
 
             if (this instanceof MeleeUnit && enemy instanceof CalvaryUnit) {
                 thisDmg = (int) (thisDmg * 1.2);
@@ -94,6 +94,9 @@ public abstract class MilitaryUnit extends Unit {
             } else if (this instanceof CalvaryUnit && enemy instanceof MeleeUnit) {
                 thisDmg = (int) (thisDmg * 0.8);
                 enemyDmg = (int) (enemyDmg * 1.2);
+            } else if (this instanceof CalvaryUnit && enemy instanceof RangeUnit) {
+                thisDmg = (int) (thisDmg * 1.15);
+                enemyDmg = (int) (enemyDmg * 0.8);
             }
 
             health -= enemyDmg;

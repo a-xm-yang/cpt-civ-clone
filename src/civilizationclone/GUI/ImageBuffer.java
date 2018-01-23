@@ -6,6 +6,7 @@ import civilizationclone.TechType;
 import civilizationclone.Tile.*;
 import civilizationclone.Unit.*;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.scene.image.Image;
 
@@ -176,9 +177,9 @@ public class ImageBuffer {
 
             destroyer = new Image(new FileInputStream("src/Assets/Units/Destroyer.png"), 70, 70, false, false);
 
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("Image loading failed");
-            System.out.println(e.getStackTrace());
+            System.out.println(e.getMessage());
         }
     }
 

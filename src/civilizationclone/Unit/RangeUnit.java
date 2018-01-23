@@ -49,7 +49,7 @@ public abstract class RangeUnit extends MilitaryUnit {
 
             MilitaryUnit enemy = (MilitaryUnit) x;
 
-            int thisDmg = (int) (getCombat() * 0.6 * (getHealthPercentage() / +(1 - getHealthPercentage() / 2)) * (getCombat() / enemy.getCombat()));
+             int thisDmg = (int) (30 * Math.pow(1.041, (this.getCombat() - enemy.getCombat())));
 
             enemy.setHealth(enemy.getHealth() - thisDmg);
             System.out.println("Unit dealt " + thisDmg);
