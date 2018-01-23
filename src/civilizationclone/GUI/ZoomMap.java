@@ -3,7 +3,6 @@ package civilizationclone.GUI;
 import civilizationclone.Player;
 import civilizationclone.Tile.Tile;
 import civilizationclone.Unit.MilitaryUnit;
-import civilizationclone.Unit.ReconUnit;
 import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.Unit;
 import java.awt.Point;
@@ -279,9 +278,8 @@ public class ZoomMap extends Group {
     public void activateHeal() {
         if(selectedTile.getUnit() instanceof MilitaryUnit){
             ((MilitaryUnit) selectedTile.getUnit()).heal();
-        }else{
-            ((ReconUnit)selectedTile.getUnit()).setMovement(0);
         }
+        
         repaint();
     }
 
