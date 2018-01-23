@@ -6,6 +6,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -21,16 +22,23 @@ public class NextTurnPane extends Group {
 
     public NextTurnPane(Player player, int resX, int resY, GamePane gamePaneRef) {
         this.text = new Text();
+        text.setFont(Font.font("Oswald"));
         this.resX = resX;
         this.resY = resY;
         this.player = player;
-        this.rect = new Rectangle(0, 0, 280, 40);
+        this.rect = new Rectangle(0, 0, 300, 40);
         this.gamePaneRef = gamePaneRef;
         this.zMapRef = gamePaneRef.getZoomMap();
-        this.setTranslateX(resX - 310);
-        this.setTranslateY(resY - 240);
-        rect.setFill(Color.BLACK);
+        this.setTranslateX(resX - 300);
+        this.setTranslateY(resY - 305 - rect.getHeight());
+        
+        text.setFill(Color.BEIGE);
         updateText();
+        
+        rect.setStrokeWidth(5);
+        rect.setStroke(Color.BEIGE);
+        rect.setStrokeLineJoin(StrokeLineJoin.ROUND);
+        rect.setFill(Color.DARKSLATEBLUE);
 
         getChildren().add(rect);
         getChildren().add(text);

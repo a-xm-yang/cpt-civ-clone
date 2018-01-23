@@ -236,6 +236,7 @@ public class ZoomMap extends Group {
             }
         }
 
+        ((GamePane) getParent()).updateMinimap();
         repaint();
     }
 
@@ -408,6 +409,18 @@ public class ZoomMap extends Group {
 
     //GETTERS AND SETTERS
     //<editor-fold>
+    public ArrayList<DisplayTile> getTileList() {
+        return tileList;
+    }
+
+    public int getMapSize() {
+        return mapSize;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
     public HighlightType getHighlightType() {
         return highlightType;
     }
@@ -575,6 +588,7 @@ public class ZoomMap extends Group {
         }
 
     }
+
 }
 
 enum HighlightType {

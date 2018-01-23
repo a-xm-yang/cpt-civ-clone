@@ -88,7 +88,15 @@ public class DisplayTile extends Polygon {
                 }
 
                 if (tile.isControlled()) {
-                    setStroke(Color.AQUA);
+                    if (canvas.getParent() instanceof ZoomMap) {
+                        if (((ZoomMap) canvas.getParent()).getCurrentPlayer() == tile.getControllingCity().getPlayer()) {
+                            setStroke(Color.AQUA);
+                        } else{
+                            setStroke(Color.ORANGERED);
+                        }
+                    } else{
+                        setStroke(Color.AQUA);
+                    }
                 }
 
                 setEffect(null);
@@ -154,6 +162,8 @@ public class DisplayTile extends Polygon {
         return false;
 
     }
+    
+    //Override hashcode for a unique set
     //</editor-fold>
 
     public static void referenceCanvas(Canvas ref) {

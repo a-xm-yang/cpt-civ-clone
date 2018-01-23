@@ -441,7 +441,7 @@ public class CityMenu extends Pane {
             comboBox.setTranslateX(70);
             comboBox.setTranslateY(80);
             comboBox.setPromptText("--- Please Select ---");
-            comboBox.setVisibleRowCount(8);
+            comboBox.setVisibleRowCount(12);
 
         }
     }
@@ -687,7 +687,7 @@ public class CityMenu extends Pane {
             comboBox.setTranslateX(70);
             comboBox.setTranslateY(80);
             comboBox.setPromptText("--- Please Select ---");
-            comboBox.setVisibleRowCount(8);
+            comboBox.setVisibleRowCount(12);
 
         }
     }

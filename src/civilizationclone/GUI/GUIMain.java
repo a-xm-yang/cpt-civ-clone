@@ -8,7 +8,6 @@ package civilizationclone.GUI;
 import civilizationclone.GameMap;
 import civilizationclone.GameMap.MapSize;
 import civilizationclone.Player;
-import civilizationclone.TechType;
 import java.io.File;
 import java.util.ArrayList;
 import javafx.application.Application;
@@ -23,36 +22,33 @@ public class GUIMain extends Application {
     GamePane root;
 
     @Override
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage) {
 
         int resX = 1200;
         int resY = 1000;
 
         //Create the zoompane called "root" in the scene
-        GameMap gameMap = new GameMap(MapSize.SMALL,400);
+        GameMap gameMap = new GameMap(MapSize.SMALL, 400);
         ArrayList<Player> p = new ArrayList<Player>();
         p.add(new Player("Joseph Stalin"));
         p.get(0).setTechIncome(10);
         p.get(0).setCurrentGold(100);
         p.add(new Player("Adolf Hitler"));
-        p.add(new Player("Mao Zedong"));
-        p.add(new Player("Franklin Roosevelt"));
-        p.get(1).setCurrentGold(100);
-      //  p.add(new Player("毛泽东"));
-      //  p.add(new Player("Teddy Roosevelt"));
-        
-        root = new GamePane(gameMap, p, resX, resY);
+        // p.get(1).setCurrentGold(100);
+        //  p.add(new Player("毛泽东"));
+        //  p.add(new Player("Teddy Roosevelt"));
+
+        root = new GamePane(gameMap, p, resX, resY, true);
 
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, resX, resY, Color.BLACK));
 
         primaryStage.setTitle("Alex Yang's Colonization II");
         primaryStage.show();
-        
-        Media media = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString()); 
-        MediaPlayer player = new MediaPlayer(media); 
-       // player.play();
+
+        Media media = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString());
+        MediaPlayer player = new MediaPlayer(media);
+        // player.play();
     }
 
-    
 }

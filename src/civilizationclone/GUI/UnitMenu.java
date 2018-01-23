@@ -79,8 +79,6 @@ public class UnitMenu extends Pane{
         gc.setFill(Color.DARKSLATEGREY);
         gc.fillPolygon(new double[]{5, 225, 225, 170, 170, 225, 225, 5}, new double[]{5, 5, 35, 70, 160, 185, 215, 215}, 8);
         
-        System.out.println(unit.getClass().getSimpleName());
-        
         for(UnitOption o:opts){
             o.setFill(Color.DARKSLATEGREY);
         }
@@ -147,9 +145,8 @@ public class UnitMenu extends Pane{
     
     
     private void clickEventHandling(MouseEvent e) {
-        //System.out.println(e.getTarget());
+
         if(e.getTarget() instanceof UnitOption){
-            System.out.println(((UnitOption)e.getTarget()).getOptionType());
             
             if(((UnitOption)e.getTarget()).getOptionType().equals("Move") && ((UnitOption)e.getTarget()).getText().getFill() == Color.WHITE){
                 if(unit.getMovement() > 0){
@@ -313,8 +310,6 @@ public class UnitMenu extends Pane{
 
         private void updateInfo() {
 
-            String selection = (String) comboBox.getValue();
-            System.out.println(selection);
             canConfirm = true;
             confirmButton.setOpacity(1);
 

@@ -19,13 +19,14 @@ public class GamePane extends Pane {
     private NextTurnPane nextButton;
     private StatusBarPane statusBar;
     private SciencePane sciencePane;
+    private Minimap minimap;
 
     //game data
     private GameMap gameMap;
     private ArrayList<Player> playerList;
     private Player currentPlayer;
 
-    public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY) {
+    public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY, boolean isNewGame) {
 
         this.gameMap = gameMap;
         this.playerList = playerList;
@@ -35,27 +36,25 @@ public class GamePane extends Pane {
         this.setPrefWidth(resX);
 
         currentPlayer = playerList.get(0);
-        
 
         //Reset these later to just settler and warrior
-        for (Player player : playerList) {
-            do {
-                Point p = new Point((int) (Math.random() * gameMap.getSize()), (int) (Math.random() * gameMap.getSize() - 1));
-                if ((gameMap.getTile(p) instanceof Plains || gameMap.getTile(p) instanceof Hills || gameMap.getTile(p) instanceof Desert) && (gameMap.getTile(p.x, p.y + 1) instanceof Plains
-                        || gameMap.getTile(p.x, p.y + 1) instanceof Hills || gameMap.getTile(p.x, p.y + 1) instanceof Desert) && !gameMap.getTile(p).hasUnit() && !gameMap.getTile(p.x, p.y + 1).hasUnit()) {
-                    player.addUnit(new SettlerUnit(player, p));
-                    player.addUnit(new WarriorUnit(player, new Point(p.x, p.y + 1)));
-                    break;
-                }
-            } while (true);
+        if (isNewGame) {
+            for (Player player : playerList) {
+                do {
+                    Point p = new Point((int) (Math.random() * gameMap.getSize()), (int) (Math.random() * gameMap.getSize() - 1));
+                    if ((gameMap.getTile(p) instanceof Plains || gameMap.getTile(p) instanceof Hills || gameMap.getTile(p) instanceof Desert) && (gameMap.getTile(p.x, p.y + 1) instanceof Plains
+                            || gameMap.getTile(p.x, p.y + 1) instanceof Hills || gameMap.getTile(p.x, p.y + 1) instanceof Desert) && !gameMap.getTile(p).hasUnit() && !gameMap.getTile(p.x, p.y + 1).hasUnit()) {
+                        player.addUnit(new SettlerUnit(player, p));
+                        player.addUnit(new WarriorUnit(player, new Point(p.x, p.y + 1)));
+                        break;
+                    }
+                } while (true);
+            }
         }
-
         playerList.get(0).startTurn();
-        
 
-        zoomMap = createFalseMap(gameMap.getMap());
-        zoomMap.setCurrentPlayer(currentPlayer);
-
+        zoomMap = createFalseZoomMap(gameMap.getMap());
+        minimap = new Minimap(zoomMap, resX, resY);
         nextButton = new NextTurnPane(currentPlayer, resX, resY, this);
         statusBar = new StatusBarPane(currentPlayer, resX, resY, this);
         sciencePane = new SciencePane(currentPlayer, resX, resY, this);
@@ -64,6 +63,9 @@ public class GamePane extends Pane {
         getChildren().add(nextButton);
         getChildren().add(statusBar);
         getChildren().add(sciencePane);
+        getChildren().add(minimap);
+
+        zoomMap.setCurrentPlayer(currentPlayer);
 
         setOnMouseClicked((MouseEvent e) -> {
             updateInfo();
@@ -100,14 +102,18 @@ public class GamePane extends Pane {
 
         zoomMap.enableDragging(true);
     }
-    
-    public void updateInfo(){
+
+    public void updateInfo() {
         nextButton.updateText();
-            statusBar.updateTexts();
-            sciencePane.updateInfo();
+        statusBar.updateTexts();
+        sciencePane.updateInfo();
     }
 
-    private ZoomMap createFalseMap(Tile[][] original) {
+    public void updateMinimap() {
+        minimap.update();
+    }
+
+    private ZoomMap createFalseZoomMap(Tile[][] original) {
 
         //creates a copy of the actual tile map, with the sides adjusted according to X-resolution to a copied version for scrolling effect
         //first calculate how much spare is needed on both sides, should be according to scene size
@@ -136,7 +142,8 @@ public class GamePane extends Pane {
             }
         }
 
-        ZoomMap pane = new ZoomMap(40, resX, resY, spareSize, copy);
+
+        ZoomMap pane = new ZoomMap(original.length, resX, resY, spareSize, copy);
 
         return pane;
 

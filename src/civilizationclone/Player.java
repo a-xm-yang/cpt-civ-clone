@@ -64,6 +64,7 @@ public class Player {
         
         setLeader();
 
+        startTurn();
     }
 
     public void startTurn() {
