@@ -88,14 +88,14 @@ public class DisplayTile extends Polygon {
                     if(tile.getUnit() instanceof MilitaryUnit && ((MilitaryUnit)tile.getUnit()).getHealth() != ((MilitaryUnit)tile.getUnit()).getMAX_HEALTH()){
                         gc.setFill(Color.BLACK);
                         gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50, 5);
-                        if((double)((MilitaryUnit)tile.getUnit()).getHealth() / ((MilitaryUnit)tile.getUnit()).getMAX_HEALTH() >= .6){
+                        if((double)((MilitaryUnit)tile.getUnit()).getHealthPercentage() >= .6){
                             gc.setFill(Color.LAWNGREEN);
-                        }else if((double)((MilitaryUnit)tile.getUnit()).getHealth() / ((MilitaryUnit)tile.getUnit()).getMAX_HEALTH() >= .3){
+                        }else if((double)((MilitaryUnit)tile.getUnit()).getHealthPercentage() >= .3){
                             gc.setFill(Color.YELLOW);
                         }else{
                             gc.setFill(Color.RED);
                         }
-                        gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50*((double)((MilitaryUnit)tile.getUnit()).getHealth() / ((MilitaryUnit)tile.getUnit()).getMAX_HEALTH()), 5);
+                        gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50*((double)((MilitaryUnit)tile.getUnit()).getHealthPercentage()), 5);
                     }
                 }
 
