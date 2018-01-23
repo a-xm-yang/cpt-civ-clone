@@ -66,8 +66,6 @@ public class Player {
         turnNumber = 0;
         
         setLeader();
-
-        startTurn();
     }
 
     public void startTurn() {

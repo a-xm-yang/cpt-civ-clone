@@ -28,7 +28,7 @@ public class GUIMain extends Application {
         int resY = 1000;
 
         //Create the zoompane called "root" in the scene
-        GameMap gameMap = new GameMap(MapSize.SMALL, 400);
+        GameMap gameMap = new GameMap(MapSize.MEDIUM, 400);
         ArrayList<Player> p = new ArrayList<Player>();
         p.add(new Player("Joseph Stalin"));
         p.add(new Player("Adolf Hitler"));

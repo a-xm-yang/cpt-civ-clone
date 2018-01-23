@@ -45,6 +45,7 @@ public class GamePane extends Pane {
                             || gameMap.getTile(p.x, p.y + 1) instanceof Hills || gameMap.getTile(p.x, p.y + 1) instanceof Desert) && !gameMap.getTile(p).hasUnit() && !gameMap.getTile(p.x, p.y + 1).hasUnit()) {
                         player.addUnit(new SettlerUnit(player, p));
                         player.addUnit(new WarriorUnit(player, new Point(p.x, p.y + 1)));
+                        player.startTurn();
                         break;
                     }
                 } while (true);
