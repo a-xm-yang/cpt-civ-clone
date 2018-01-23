@@ -36,7 +36,7 @@ public class Player {
     //lists of things owned
     private ArrayList<Unit> unitList;
     private ArrayList<City> cityList;
-    
+
     Leader leader;
     //</editor-fold>
 
@@ -55,13 +55,12 @@ public class Player {
         ownedImprovement = EnumSet.noneOf(Improvement.class);
         ownedCityProject = EnumSet.noneOf(CityProject.class);
         exploredTiles = new HashSet<Tile>();
-        
 
         research = TechType.NONE;
 
         unitList = new ArrayList<Unit>();
         cityList = new ArrayList<City>();
-        
+
         setLeader();
 
         startTurn();
@@ -126,24 +125,6 @@ public class Player {
                 researchableTech.add(t);
             }
         }
-    }
-
-    private void setLeader() {
-        for (Leader l : Leader.values()) {
-            if (this.getName().substring(this.getName().indexOf(" ")+1, this.getName().length()).equalsIgnoreCase(l.name())){
-                this.leader = l;
-                System.out.println(l);
-                return;
-            }
-        }
-        
-        //default
-        this.leader = Leader.STALIN;
-        System.out.println("BAC");
-    }
-    
-    public Leader getLeader(){
-        return this.leader;
     }
 
     public void calcGoldIncome() {
@@ -240,6 +221,24 @@ public class Player {
 
     //Getter && Setter
     //<editor-fold> 
+    private void setLeader() {
+        for (Leader l : Leader.values()) {
+            if (this.getName().substring(this.getName().indexOf(" ") + 1, this.getName().length()).equalsIgnoreCase(l.name())) {
+                this.leader = l;
+                System.out.println(l);
+                return;
+            }
+        }
+
+        //default
+        this.leader = Leader.STALIN;
+        System.out.println("BAC");
+    }
+
+    public Leader getLeader() {
+        return this.leader;
+    }
+
     public Point[] getAllPositions() {
 
         //return a collection of ALL the positions (such as units and cities) that the player has

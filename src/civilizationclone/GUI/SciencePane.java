@@ -82,7 +82,7 @@ public class SciencePane extends Pane {
         textBackground.setStrokeWidth(5);
 
         infoText = new Text();
-        infoText.setFont(Font.font("Oswald", 18));
+        infoText.setFont(Font.font("Oswald", 16));
         infoText.setFill(Color.BEIGE);
         infoText.setTranslateY(34);
         infoText.setTranslateX(145);

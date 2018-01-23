@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JPanel;
 
-public class GameLoop extends JPanel {
+public class TextGame extends JPanel {
 
     GameMap map;
     ArrayList<Player> playerList;
@@ -29,7 +29,7 @@ public class GameLoop extends JPanel {
     Random rand = new Random();
     Point p;
 
-    public GameLoop() {
+    public TextGame() {
 
         scan = new Scanner(System.in);
         map = new GameMap(MapSize.SMALL, 400);
@@ -440,9 +440,9 @@ public class GameLoop extends JPanel {
                 }
 
                 if (i % 2 == 0) {
-                    g.fillPolygon(new int[]{k * 12 + 5 + k, k * 12 + 12 + k, k * 12 + 12 + k, k * 12 + 5 + k, k * 12 + k, k * 12 + k}, new int[]{i * 12 - i, i * 12 + 3 - i, i * 12 + 9 - i, i * 12 + 12 - i, i * 12 + 9 - i, i * 12 + 3 - i}, 6);
+                    g.fillPolygon(new int[]{k * 13 + 5, k * 13 + 12, k * 13 + 12, k * 13 + 5, k * 13, k * 13}, new int[]{i * 11, i * 11 + 3, i * 11 + 9, i * 11 + 12, i * 11 + 9, i * 11 + 3}, 6);
                 } else {
-                    g.fillPolygon(new int[]{k * 12 + 5 + 5 + k + 2, k * 12 + 12 + 5 + k + 2, k * 12 + 12 + 5 + k + 2, k * 12 + 5 + 5 + k + 2, k * 12 + 5 + k + 2, k * 12 + 5 + k + 2}, new int[]{i * 12 - i, i * 12 + 3 - i, i * 12 + 9 - i, i * 12 + 12 - i, i * 12 + 9 - i, i * 12 + 3 - i}, 6);
+                    g.fillPolygon(new int[]{k * 13 + 12, k * 13 + 19, k * 13 + 19, k * 13 + 12, k * 13 + 7, k * 13 + 7}, new int[]{i * 11, i * 11 + 3, i * 11 + 9, i * 11 + 12, i * 11 + 9, i * 11 + 3}, 6);
                 }
             }
         }

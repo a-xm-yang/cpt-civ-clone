@@ -26,11 +26,11 @@ public class NextTurnPane extends Group {
         this.resX = resX;
         this.resY = resY;
         this.player = player;
-        this.rect = new Rectangle(0, 0, 300, 40);
+        this.rect = new Rectangle(0, 0, 311, 40);
         this.gamePaneRef = gamePaneRef;
         this.zMapRef = gamePaneRef.getZoomMap();
-        this.setTranslateX(resX - 300);
-        this.setTranslateY(resY - 305 - rect.getHeight());
+        this.setTranslateX(resX - 311);
+        this.setTranslateY(resY - 316.5 - rect.getHeight());
         
         text.setFill(Color.BEIGE);
         updateText();
@@ -78,8 +78,8 @@ public class NextTurnPane extends Group {
 
         text.setFill(Color.WHITE);
         text.setFont(Font.font("Oswald", 20));
-        text.setTranslateX((280 - text.getLayoutBounds().getWidth()) / 2);
-        text.setTranslateY(text.getLayoutBounds().getHeight());
+        text.setTranslateX((rect.getWidth() - text.getLayoutBounds().getWidth()) / 2);
+        text.setTranslateY(text.getLayoutBounds().getHeight() + 2);
         zMapRef.repaint();
     }
     
