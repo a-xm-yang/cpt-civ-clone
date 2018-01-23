@@ -1,6 +1,7 @@
 package civilizationclone.GUI;
 
 import civilizationclone.CityProject;
+import civilizationclone.Player.Leader;
 import civilizationclone.TechType;
 import civilizationclone.Tile.*;
 import civilizationclone.Unit.*;
@@ -74,6 +75,13 @@ public class ImageBuffer {
     private static Image fish;
     private static Image crab;
     private static Image whale;
+    
+    private static Image teddy;
+    private static Image hitler;
+    private static Image stalin;
+    private static Image musolini;
+    private static Image mao;
+    private static Image churchill;
 
     //TECHTYPES
     private static Image defaultTech;
@@ -134,6 +142,13 @@ public class ImageBuffer {
 
             defaultTech = new Image(new FileInputStream("src/Assets/Tech/default.png"), 100, 100, false, false);
             pottery = new Image(new FileInputStream("src/Assets/Tech/pottery.png"), 100, 100, false, false);
+            
+            stalin = new Image(new FileInputStream("src/Assets/Players/stalin.png"), 60, 60, false, false);
+            hitler = new Image(new FileInputStream("src/Assets/Players/hitler.png"), 60, 60, false, false);
+            mao = new Image(new FileInputStream("src/Assets/Players/mao.png"), 60, 60, false, false);
+            teddy = new Image(new FileInputStream("src/Assets/Players/teddy.png"), 60, 60, false, false);
+            musolini = new Image(new FileInputStream("src/Assets/Players/musolini.png"), 60, 60, false, false);
+            churchill = new Image(new FileInputStream("src/Assets/Players/churchill.png"), 60, 60, false, false);
 
         } catch (IOException e) {
             System.out.println("Image loading failed");
@@ -293,6 +308,24 @@ public class ImageBuffer {
                 return wine;
         }
 
+        return destroyer;
+    }
+    
+    public static Image getImage(Leader l){
+        switch (l){
+            case ZEDONG:
+                return mao;
+            case HITLER:
+                return hitler;
+            case ROOSEVELT:
+                return teddy;
+            case MUSSOLINI:
+                return musolini;
+            case CHURCHILL:
+                return churchill;
+            case STALIN:
+                return stalin;
+        }
         return destroyer;
     }
 

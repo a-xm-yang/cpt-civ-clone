@@ -12,5 +12,5 @@ public abstract class ReconUnit extends Unit {
     public ReconUnit(int movement, ReconUnit u) {
         super(movement, u.getPlayer(),new Point(u.getX(),u.getY()));
     }
-
+    
 }

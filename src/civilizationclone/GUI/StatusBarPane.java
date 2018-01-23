@@ -25,17 +25,24 @@ public class StatusBarPane extends Group{
     private ImageView goldI;
     private ImageView sciI;
     private ImageView happyI;
+    private ImageView[] playerI;
     
     private int resX;
     private int resY;
     private Player player;
-    private static ZoomMap zMapRef;
+    private static GamePane gamePaneRef;
     
-    public StatusBarPane(Player player, int resX, int resY, ZoomMap zMapRef){
+    public StatusBarPane(Player player, int resX, int resY, GamePane gamePaneRef){
         goldT = new Text();
         sciT = new Text();
         happyT = new Text();
         turnT = new Text();
+        playerI = new ImageView[gamePaneRef.getPlayerList().size()];
+        
+        for(int i=0;i<playerI.length;i++){
+            playerI[i] = new ImageView(ImageBuffer.getImage(gamePaneRef.getPlayerList().get(i).getLeader()));
+            
+        }
         
         goldI = new ImageView(ImageBuffer.getImage(GOLD));
         sciI = new ImageView(ImageBuffer.getImage(SCIENCE));
@@ -44,7 +51,7 @@ public class StatusBarPane extends Group{
         this.player = player;
         this.resX = resX;
         this.resY = resY;
-        this.zMapRef = zMapRef;
+        this.gamePaneRef = gamePaneRef;
         this.rect = new Rectangle(0, 0, resX + 50, 40);
         rect.setFill(Color.BLACK);
         
@@ -76,12 +83,27 @@ public class StatusBarPane extends Group{
         happyT.setTranslateY(happyT.getLayoutBounds().getHeight());
         turnT.setTranslateY(turnT.getLayoutBounds().getHeight());
         
+        for(ImageView i: playerI){
+            i.setTranslateY(60);
+        }
+        
+        for(int i=playerI.length-1;i>=0;i--){
+            playerI[i].setTranslateX(resX - (playerI.length - i) * 70);
+        }
+        
         getChildren().addAll(rect, sciT, goldT, happyT, turnT, sciI, goldI, happyI);
+        for(ImageView i: playerI){
+            getChildren().add(i);
+        }
+        
+        updateCurrentHeads();
     }
     
     public void setCurrentPlayer(Player p){
         player = p;
         updateTexts();
+        
+        updateCurrentHeads();
     }
     
     public void updateTexts(){
@@ -96,5 +118,18 @@ public class StatusBarPane extends Group{
             happyT.setFill(Color.RED);
         }
         
+        updateCurrentHeads();
+        
+    }
+    
+    public void updateCurrentHeads(){
+        for(int i=0;i<playerI.length;i++){
+            if(player.equals(gamePaneRef.getPlayerList().get(i))){
+                playerI[i].setTranslateY(90);
+            }else{
+                playerI[i].setTranslateY(50);
+            }
+                
+        }
     }
 }

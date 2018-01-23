@@ -31,10 +31,12 @@ public class GUIMain extends Application {
         //Create the zoompane called "root" in the scene
         GameMap gameMap = new GameMap(MapSize.SMALL,400);
         ArrayList<Player> p = new ArrayList<Player>();
-        p.add(new Player("Иосиф Сталин"));
+        p.add(new Player("Joseph Stalin"));
         p.get(0).setTechIncome(10);
         p.get(0).setCurrentGold(100);
         p.add(new Player("Adolf Hitler"));
+        p.add(new Player("Mao Zedong"));
+        p.add(new Player("Franklin Roosevelt"));
         p.get(1).setCurrentGold(100);
       //  p.add(new Player("毛泽东"));
       //  p.add(new Player("Teddy Roosevelt"));

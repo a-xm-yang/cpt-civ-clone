@@ -57,7 +57,7 @@ public class GamePane extends Pane {
         zoomMap.setCurrentPlayer(currentPlayer);
 
         nextButton = new NextTurnPane(currentPlayer, resX, resY, this);
-        statusBar = new StatusBarPane(currentPlayer, resX, resY, zoomMap);
+        statusBar = new StatusBarPane(currentPlayer, resX, resY, this);
         sciencePane = new SciencePane(currentPlayer, resX, resY, this);
 
         getChildren().add(zoomMap);
@@ -145,4 +145,10 @@ public class GamePane extends Pane {
     public ZoomMap getZoomMap() {
         return zoomMap;
     }
+
+    public ArrayList<Player> getPlayerList() {
+        return playerList;
+    }
+    
+    
 }

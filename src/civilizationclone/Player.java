@@ -36,7 +36,13 @@ public class Player {
     //lists of things owned
     private ArrayList<Unit> unitList;
     private ArrayList<City> cityList;
+    
+    Leader leader;
     //</editor-fold>
+
+    public enum Leader {
+        ZEDONG, HITLER, MUSSOLINI, STALIN, CHURCHILL, ROOSEVELT;
+    }
 
     //constructor
     public Player(String name) {
@@ -49,11 +55,14 @@ public class Player {
         ownedImprovement = EnumSet.noneOf(Improvement.class);
         ownedCityProject = EnumSet.noneOf(CityProject.class);
         exploredTiles = new HashSet<Tile>();
+        
 
         research = TechType.NONE;
 
         unitList = new ArrayList<Unit>();
         cityList = new ArrayList<City>();
+        
+        setLeader();
 
     }
 
@@ -67,11 +76,10 @@ public class Player {
         calculateHappiness();
         calcGoldIncome();
         calcTechIncome();
-        
+
         //for(Improvement i: ownedImprovement){
         //    System.out.println(i);
         //}
-
         techProgress += techIncome;
 
         if (techProgress >= research.getTechCost()) {
@@ -117,6 +125,24 @@ public class Player {
                 researchableTech.add(t);
             }
         }
+    }
+
+    private void setLeader() {
+        for (Leader l : Leader.values()) {
+            if (this.getName().substring(this.getName().indexOf(" ")+1, this.getName().length()).equalsIgnoreCase(l.name())){
+                this.leader = l;
+                System.out.println(l);
+                return;
+            }
+        }
+        
+        //default
+        this.leader = Leader.STALIN;
+        System.out.println("BAC");
+    }
+    
+    public Leader getLeader(){
+        return this.leader;
     }
 
     public void calcGoldIncome() {
