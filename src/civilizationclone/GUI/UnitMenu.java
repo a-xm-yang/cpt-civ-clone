@@ -74,7 +74,11 @@ public class UnitMenu extends Pane{
         statusText.setTranslateX(-180);
         
         gc = infoDisplay.getGraphicsContext2D();
-        gc.setFill(Color.AQUA);
+        if(unit.getPlayer()==zmapRef.getCurrentPlayer()){
+            gc.setFill(Color.AQUA);
+        }else{
+            gc.setFill(Color.RED);
+        }
         gc.fillPolygon(new double[]{0, 230, 230, 175, 175, 230, 230, 0}, new double[]{0, 0, 40, 75, 155, 180, 220, 220}, 8);
         gc.setFill(Color.DARKSLATEGREY);
         gc.fillPolygon(new double[]{5, 225, 225, 170, 170, 225, 225, 5}, new double[]{5, 5, 35, 70, 160, 185, 215, 215}, 8);
@@ -132,9 +136,12 @@ public class UnitMenu extends Pane{
         
         this.getChildren().add(infoDisplay);
         this.getChildren().add(statusText);
-        for(UnitOption o:opts){
-            getChildren().add(o);
-            getChildren().add(o.getText());
+        
+        if(unit.getPlayer().equals(zmapRef.getCurrentPlayer())) {  
+            for(UnitOption o:opts){
+                getChildren().add(o);
+                getChildren().add(o.getText());
+            }
         }
         this.setVisible(true);
         

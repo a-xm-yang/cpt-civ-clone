@@ -110,13 +110,27 @@ public class StatusBarPane extends Group{
         goldT.setText(Integer.toString(player.getCurrentGold()) + "(" + Integer.toString(player.getGoldIncome()) + ")");
         sciT.setText(Integer.toString(player.getTechIncome()));
         happyT.setText(Integer.toString(player.getHappiness()));
-        turnT.setText("Turn: 0 | 4000 BC");
+        turnT.setText("Turn: " + player.getTurnNumber() + " | " + Integer.toString(Math.abs(getYear())));
+        if (getYear() < 0){
+            turnT.setText(turnT.getText() + "BC");
+        }else{
+            turnT.setText(turnT.getText() + "AD");
+        }
         
         if(player.getHappiness()>=0){
             happyT.setFill(Color.LAWNGREEN);
         }else{
             happyT.setFill(Color.RED);
         }
+        
+        sciT.setTranslateX(45);
+        goldT.setTranslateX(sciT.getTranslateX()+sciT.getLayoutBounds().getWidth() + 75);
+        happyT.setTranslateX(goldT.getTranslateX()+goldT.getLayoutBounds().getWidth() + 75);
+        turnT.setTranslateX(resX - turnT.getLayoutBounds().getWidth());
+        
+        sciI.setTranslateX(5);
+        goldI.setTranslateX(sciT.getTranslateX() + sciT.getLayoutBounds().getWidth() + 40);
+        happyI.setTranslateX(goldT.getTranslateX() + goldT.getLayoutBounds().getWidth() + 40);
         
         updateCurrentHeads();
         
@@ -131,5 +145,30 @@ public class StatusBarPane extends Group{
             }
                 
         }
+    }
+    
+    private int getYear(){
+        int turns = player.getTurnNumber();
+        int year = -4040;
+        
+        if (turns > 225){
+            year += (1 * (turns - 225));
+            turns = 225;
+        }
+        if (turns > 175){
+            year += (5 * (turns - 175));
+            turns = 175;
+        }
+        if (turns > 150){
+            year += (10 * (turns - 150));
+            turns = 150;
+        }
+        if (turns > 125){
+            year += (20 * (turns - 125));
+            turns = 125;
+        }
+        year += 40 * turns;
+        return year;
+        
     }
 }

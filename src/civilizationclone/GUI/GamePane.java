@@ -2,6 +2,7 @@ package civilizationclone.GUI;
 
 import civilizationclone.*;
 import civilizationclone.Tile.*;
+import civilizationclone.Unit.MilitaryUnit;
 import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.UnitType;
 import civilizationclone.Unit.WarriorUnit;

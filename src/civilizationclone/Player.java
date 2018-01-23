@@ -24,6 +24,8 @@ public class Player {
     private int goldIncome;
     private int currentGold;
     private int happiness;
+    
+    private int turnNumber;
 
     private Set<TechType> ownedTech;
     private Set<TechType> researchableTech;
@@ -62,13 +64,16 @@ public class Player {
         unitList = new ArrayList<Unit>();
         cityList = new ArrayList<City>();
         
+        turnNumber = 0;
+        
         setLeader();
 
-        startTurn();
+        //startTurn();
     }
 
     public void startTurn() {
 
+        turnNumber++;
         //start turn action for all cities
         for (City city : cityList) {
             city.startTurn();
@@ -360,6 +365,12 @@ public class Player {
     public void setOwnedCityProject(Set<CityProject> ownedCityProject) {
         this.ownedCityProject = ownedCityProject;
     }
+    
+    public int getTurnNumber() {
+        return turnNumber;
+    }
 
     //</editor-fold>
+
+    
 }

@@ -2,6 +2,7 @@ package civilizationclone.GUI;
 
 import civilizationclone.Tile.*;
 import static civilizationclone.Tile.Improvement.NONE;
+import civilizationclone.Unit.MilitaryUnit;
 import java.awt.Point;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -85,6 +86,18 @@ public class DisplayTile extends Polygon {
                 }
                 if (tile.hasUnit()) {
                     gc.drawImage(ImageBuffer.getImage(tile.getUnit()), 15 + getTranslateX(), 20 + getTranslateY());
+                    if(tile.getUnit() instanceof MilitaryUnit && ((MilitaryUnit)tile.getUnit()).getHealth() != ((MilitaryUnit)tile.getUnit()).getMAX_HEALTH()){
+                        gc.setFill(Color.BLACK);
+                        gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50, 5);
+                        if((double)((MilitaryUnit)tile.getUnit()).getHealth() / ((MilitaryUnit)tile.getUnit()).getMAX_HEALTH() >= .6){
+                            gc.setFill(Color.LAWNGREEN);
+                        }else if((double)((MilitaryUnit)tile.getUnit()).getHealth() / ((MilitaryUnit)tile.getUnit()).getMAX_HEALTH() >= .3){
+                            gc.setFill(Color.YELLOW);
+                        }else{
+                            gc.setFill(Color.RED);
+                        }
+                        gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50*((double)((MilitaryUnit)tile.getUnit()).getHealth() / ((MilitaryUnit)tile.getUnit()).getMAX_HEALTH()), 5);
+                    }
                 }
 
                 if (tile.isControlled()) {
