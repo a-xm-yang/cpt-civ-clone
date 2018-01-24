@@ -84,7 +84,15 @@ public class DisplayTile extends Polygon {
                     gc.drawImage(ImageBuffer.getImage(tile.getImprovement()), 5 + getTranslateX(), 20 + getTranslateY());
                 }
                 if (tile.hasUnit()) {
+                    
+                    //Draw Circle to display whos unit it is
+                    gc.setFill(new Color(tile.getUnit().getPlayer().getColor().getRed(), tile.getUnit().getPlayer().getColor().getGreen(), tile.getUnit().getPlayer().getColor().getBlue(), .4));
+                    gc.fillOval(15+getTranslateX(), 20+getTranslateY(), 70, 70);
+                    
+                    //Draw Unit
                     gc.drawImage(ImageBuffer.getImage(tile.getUnit()), 15 + getTranslateX(), 20 + getTranslateY());
+                    
+                    //Draw health bar if required
                     if(tile.getUnit() instanceof MilitaryUnit && ((MilitaryUnit)tile.getUnit()).getHealth() != ((MilitaryUnit)tile.getUnit()).getMAX_HEALTH()){
                         gc.setFill(Color.BLACK);
                         gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50, 5);

@@ -252,13 +252,13 @@ public class Player {
                         this.color = Color.GAINSBORO;
                         break;
                     case MUSSOLINI:
-                        this.color = Color.YELLOW;
+                        this.color = Color.PURPLE;
                         break;
                     case ROOSEVELT:
                         this.color = Color.BLUE;
                         break;
                     case STALIN:
-                        this.color = Color.RED;
+                        this.color = Color.YELLOW;
                         break;
                     case ZEDONG:
                         this.color = Color.FORESTGREEN;
