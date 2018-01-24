@@ -1,5 +1,6 @@
 package civilizationclone.GUI;
 
+import civilizationclone.City;
 import civilizationclone.Player;
 import civilizationclone.Tile.Tile;
 import civilizationclone.Unit.MilitaryUnit;
@@ -197,6 +198,20 @@ public class ZoomMap extends Group {
 
         //e.consume();
         repaint();
+    }
+    
+    public void jumpTo(Unit u){
+        
+        setTranslateX(leftCap - (u.getY() * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
+        setTranslateY((u.getX() * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY());
+        
+    }
+    
+    public void jumpTo(City c){
+        
+        setTranslateX(leftCap - (c.getPosition().y * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
+        setTranslateY((c.getPosition().x * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY());
+        
     }
 
     public void setCurrentPlayer(Player currentPlayer) {

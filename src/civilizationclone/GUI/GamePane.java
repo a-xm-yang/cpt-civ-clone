@@ -3,6 +3,7 @@ package civilizationclone.GUI;
 import civilizationclone.*;
 import civilizationclone.Tile.*;
 import civilizationclone.Unit.SettlerUnit;
+import civilizationclone.Unit.Unit;
 import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -84,6 +85,25 @@ public class GamePane extends Pane {
         statusBar.setCurrentPlayer(currentPlayer);
         sciencePane.setCurrentPlayer(currentPlayer);
         zoomMap.setCurrentPlayer(currentPlayer);
+    }
+    
+    public void jumpToNextAction(){
+        if(currentPlayer.canEndTurn()==1){
+            for (Unit u : currentPlayer.getUnitList()) {
+                if (u.canMove()) {
+                    zoomMap.jumpTo(u);
+                    return;
+                }
+            }
+        }else if(currentPlayer.canEndTurn()==2){
+            for (City c : currentPlayer.getCityList()) {
+                if (!c.canEndTurn()) {
+                    zoomMap.jumpTo(c);
+                    return;
+                }
+            }
+        }
+            
     }
 
     public void addCityMenu(City c) {
