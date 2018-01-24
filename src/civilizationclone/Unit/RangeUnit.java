@@ -91,4 +91,10 @@ public abstract class RangeUnit extends MilitaryUnit {
         }
     }
 
+    public int getCloseCombat() {
+        return closeCombat;
+    }
+    
+    
+
 }

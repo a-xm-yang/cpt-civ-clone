@@ -221,11 +221,9 @@ public class ZoomMap extends Group {
 
         //reset scaling for new player
         if (currentPlayer.getCityList().size() > 0) {
-            setTranslateX(leftCap - (currentPlayer.getCityList().get(0).getPosition().y * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
-            setTranslateY((currentPlayer.getCityList().get(0).getPosition().x * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY());
+            jumpTo(currentPlayer.getCityList().get(0));
         } else if (currentPlayer.getUnitList().size() > 0) {
-            setTranslateX(leftCap - (currentPlayer.getUnitList().get(0).getY() * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
-            setTranslateY((currentPlayer.getUnitList().get(0).getX() * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY());
+            jumpTo(currentPlayer.getUnitList().get(0));
         }
 
         adjustPosition();

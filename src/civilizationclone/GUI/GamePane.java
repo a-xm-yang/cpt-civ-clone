@@ -138,7 +138,6 @@ public class GamePane extends Pane {
         //first calculate how much spare is needed on both sides, should be according to scene size
         int spareSize = resX / 100 + 1;
 
-        //original = new GameMap(GameMap.MapSize.SMALL, 1).getMap();
         Tile[][] copy = new Tile[original.length][original[0].length + spareSize * 2];
 
         //copy the back of the original to the front spare, then front of the original to the back spare
