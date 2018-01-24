@@ -4,19 +4,19 @@ public enum Resource {
 
     //GOLD, PRODUCTION, FOOD, TECH, LUXURY, IMPROVEMENT
     NONE(0, 0, 0, 0, false, null),
-    WHEAT(0, 0, 3, 0, false, Improvement.FARM), // FARM RELATED
-    RICE(0, 1, 2, 0, false, Improvement.FARM),
-    COTTON(2, 1, 0, 0, false, Improvement.PLANTATION), // PLANTATION RELATED
-    BANANA(2, 0, 1, 0, false, Improvement.PLANTATION),
+    WHEAT(0, 0, 2, 0, false, Improvement.FARM), // FARM RELATED
+    RICE(0, 0, 2, 0, false, Improvement.FARM),
+    COTTON(2, 0, 0, 0, false, Improvement.PLANTATION), // PLANTATION RELATED
+    BANANA(1, 0, 1, 0, false, Improvement.PLANTATION),
     WINE(3, 0, 0, 1, true, Improvement.PLANTATION),
-    IRON(1, 2, 0, 0, false, Improvement.MINE), //MINE RELATED
-    STONE(0, 3, 0, 0, false, Improvement.MINE),
-    MERCURY(1, 2, 0, 2, true, Improvement.MINE),
-    CATTLE(0, 1, 2, 0, false, Improvement.RANCH), //RANCH RELATED
-    SHEEP(1, 0, 2, 0, false, Improvement.RANCH),
+    IRON(0, 2, 0, 0, false, Improvement.MINE), //MINE RELATED
+    STONE(0, 2, 0, 0, false, Improvement.MINE),
+    MERCURY(0, 2, 0, 2, true, Improvement.MINE),
+    CATTLE(0, 1, 1, 0, false, Improvement.RANCH), //RANCH RELATED
+    SHEEP(1, 0, 1, 0, false, Improvement.RANCH),
     TRUFFLE(3, 0, 1, 0, true, Improvement.RANCH),
-    FISH(1, 0, 2, 0, false, Improvement.FISHING), // FISHING RELATED
-    CRAB(2, 0, 1, 0, false, Improvement.FISHING),
+    FISH(0, 0, 2, 0, false, Improvement.FISHING), // FISHING RELATED
+    CRAB(1, 0, 1, 0, false, Improvement.FISHING),
     WHALE(3, 0, 1, 0, true, Improvement.FISHING);
 
     private int goldBonus;
