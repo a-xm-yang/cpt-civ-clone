@@ -22,7 +22,7 @@ public class GameMap {
 
         switch (m) {
             case SMALL:
-                size = 40;
+                size = 20;
                 break;
             case MEDIUM:
                 size = 80;

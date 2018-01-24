@@ -250,7 +250,10 @@ public class City {
 
     public void conquer(Player p) {
         System.out.println("City conquered by " + p.getName());
+        this.player.getCityList().remove(this);
         this.player = p;
+        this.player.getCityList().add(this);
+        
     }
 
     public void addTile(Tile t) {

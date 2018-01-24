@@ -34,7 +34,7 @@ public class GUIMain extends Application {
         ArrayList<Player> p = new ArrayList<Player>();
         p.add(new Player("Joseph Stalin"));
         //p.add(new Player("Winston Churchill"));
-        //p.add(new Player("Adolf Hitler"));
+        p.add(new Player("Adolf Hitler"));
         //p.add(new Player("Franklin Roosevelt"));
         //p.add(new Player("Mao Zedong"));
         //p.add(new Player("Bennito Mussolini"));
@@ -44,6 +44,7 @@ public class GUIMain extends Application {
         p.get(0).setCurrentGold(1000);
 
         testingStats(p.get(0));
+        testingStats(p.get(1));
 
         root = new GamePane(gameMap, p, resX, resY, true);
 
@@ -60,11 +61,12 @@ public class GUIMain extends Application {
 
     public void testingStats(Player p) {
         p.setTechIncome(10);
-        p.setCurrentGold(1000);
+        p.setCurrentGold(100000000);
 
         for (UnitType u : UnitType.values()) {
             p.addBuildableUnit(u);
         }
+        
 
     }
 

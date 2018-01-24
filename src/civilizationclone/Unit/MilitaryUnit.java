@@ -158,6 +158,8 @@ public abstract class MilitaryUnit extends Unit {
         if (health <= 0) {
             this.delete();
         }
+        
+        this.setMovement(0);
 
     }
 
@@ -168,7 +170,7 @@ public abstract class MilitaryUnit extends Unit {
     }
 
     public double getHealthPercentage() {
-        return health / MAX_HEALTH;
+        return (health * 1.0) / MAX_HEALTH;
     }
 
     public int getCombat() {
