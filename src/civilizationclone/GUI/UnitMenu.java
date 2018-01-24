@@ -178,10 +178,10 @@ public class UnitMenu extends Pane {
             msg = msg + "Health: " + ((MilitaryUnit) unit).getHealth() + " / " + ((MilitaryUnit) unit).getMAX_HEALTH() + "\n";
             if (unit instanceof RangeUnit) {
                 msg = msg + "Range Combat: " + ((MilitaryUnit) unit).getCombat();
-                msg = msg + "\nMelee Combat:" + ((RangeUnit) unit).getCloseCombat();
+                msg = msg + "\nMelee Combat: " + ((RangeUnit) unit).getCloseCombat();
             } else if (unit instanceof SiegeUnit) {
                 msg = msg + "Combat: " + ((MilitaryUnit) unit).getCombat();
-                msg = msg + "\nSiege:" + ((SiegeUnit) unit).getSiegeCombat();
+                msg = msg + "\nSiege: " + ((SiegeUnit) unit).getSiegeCombat();
             } else{
                 msg = msg + "Combat: " + ((MilitaryUnit)unit).getCombat();
             }

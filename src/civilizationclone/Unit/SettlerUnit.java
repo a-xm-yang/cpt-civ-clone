@@ -3,6 +3,7 @@ package civilizationclone.Unit;
 
 import civilizationclone.City;
 import civilizationclone.Player;
+import civilizationclone.Tile.Resource;
 import java.awt.Point;
 
 public class SettlerUnit extends Unit{
@@ -21,6 +22,7 @@ public class SettlerUnit extends Unit{
         City c = new City(name,this);
         
         getMapRef().getTile(getX(), getY()).setCity(c);
+        getMapRef().getTile(getX(), getY()).setResource(Resource.NONE);
         getPlayer().addCity(c);
         getPlayer().calcGoldIncome();
         getPlayer().calcTechIncome();

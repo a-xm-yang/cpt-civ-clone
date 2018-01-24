@@ -158,7 +158,7 @@ public abstract class MilitaryUnit extends Unit {
         if (health <= 0) {
             this.delete();
         }
-        
+
         this.setMovement(0);
 
     }

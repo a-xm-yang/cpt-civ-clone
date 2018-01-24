@@ -123,9 +123,18 @@ public class ZoomMap extends Group {
 
     private void clickEventHandling(MouseEvent e) {
 
-        Tile clickedTile;
+        if (e.getTarget() instanceof DisplayTile) {
+            if (((DisplayTile) e.getTarget()).getAccessLevel() != 2) {
+                e.consume();
+                return;
+            }
+        } else {
+            e.consume();
+            return;
+        }
 
         //in case it doesn't exactly hit on a tile (which indeed happens)
+        Tile clickedTile;
         try {
             clickedTile = ((DisplayTile) e.getTarget()).getTile();
         } catch (Exception exception) {
@@ -199,19 +208,19 @@ public class ZoomMap extends Group {
         //e.consume();
         repaint();
     }
-    
-    public void jumpTo(Unit u){
-        
+
+    public void jumpTo(Unit u) {
+
         setTranslateX(leftCap - (u.getY() * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
         setTranslateY((u.getX() * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY());
-        
+
     }
-    
-    public void jumpTo(City c){
-        
+
+    public void jumpTo(City c) {
+
         setTranslateX(leftCap - (c.getPosition().y * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
         setTranslateY((c.getPosition().x * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY());
-        
+
     }
 
     public void setCurrentPlayer(Player currentPlayer) {
@@ -230,7 +239,7 @@ public class ZoomMap extends Group {
     }
 
     private void updateFogOfWar() {
-        
+
         visibleTiles = Unit.getMapRef().getVisibleTiles(currentPlayer.getAllPositions());
         currentPlayer.addExploredTiles(visibleTiles);
         exploredTiles = currentPlayer.getExploredTiles();
@@ -248,7 +257,7 @@ public class ZoomMap extends Group {
 
         ((GamePane) getParent()).updateMinimap();
         repaint();
-        
+
     }
 
     public void activateAttack() {
@@ -289,10 +298,10 @@ public class ZoomMap extends Group {
     }
 
     public void activateHeal() {
-        if(selectedTile.getUnit() instanceof MilitaryUnit){
+        if (selectedTile.getUnit() instanceof MilitaryUnit) {
             ((MilitaryUnit) selectedTile.getUnit()).heal();
         }
-        
+
         repaint();
     }
 

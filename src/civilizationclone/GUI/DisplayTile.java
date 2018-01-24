@@ -99,15 +99,10 @@ public class DisplayTile extends Polygon {
                     }
                 }
 
+                //shows the color of the player that controls it
                 if (tile.isControlled()) {
                     if (canvas.getParent() instanceof ZoomMap) {
-                        if (((ZoomMap) canvas.getParent()).getCurrentPlayer() == tile.getControllingCity().getPlayer()) {
-                            setStroke(((ZoomMap) canvas.getParent()).getCurrentPlayer().getColor());
-                        } else{
-                            setStroke(Color.ORANGERED);
-                        }
-                    } else{
-                        setStroke(Color.AQUA);
+                        setStroke(tile.getControllingCity().getPlayer().getColor());
                     }
                 }
 

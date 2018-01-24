@@ -26,7 +26,7 @@ public abstract class SiegeUnit extends MilitaryUnit {
         System.out.println("Unit dealt " + siegeDmg);
 
         if (c.getHealth() <= 0) {
-            c.conquer(this.getPlayer());
+            c.setHealth(1);
         }
     }
 

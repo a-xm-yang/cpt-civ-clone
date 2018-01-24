@@ -424,8 +424,8 @@ public class CityMenu extends Pane {
             options.add("----- UNITS -----");
 
             for (UnitType t : city.getPlayer().getBuildableUnit()) {
-                if (NavalUnit.class.isAssignableFrom(t.getClass())) {
-                    if (city.isCostal()){
+                if (NavalUnit.class.isAssignableFrom(t.getCorrespondingClass())) {
+                    if (city.isCostal()) {
                         options.add(t.name());
                     }
                 } else {
@@ -676,7 +676,13 @@ public class CityMenu extends Pane {
             options.add("----- UNITS -----");
 
             for (UnitType t : city.getPlayer().getBuildableUnit()) {
-                options.add(t.name());
+                if (NavalUnit.class.isAssignableFrom(t.getCorrespondingClass())) {
+                    if (city.isCostal()) {
+                        options.add(t.name());
+                    }
+                } else {
+                    options.add(t.name());
+                }
             }
 
             options.add("----- PROJECTS -----");

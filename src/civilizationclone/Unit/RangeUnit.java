@@ -8,13 +8,13 @@ public abstract class RangeUnit extends MilitaryUnit {
 
     int closeCombat;
 
-    public RangeUnit(int MAX_MOVEMENT, City c,   int combat, int closeCombat, int maintainence) {
-        super(MAX_MOVEMENT, c,   combat, maintainence);
+    public RangeUnit(int MAX_MOVEMENT, City c, int combat, int closeCombat, int maintainence) {
+        super(MAX_MOVEMENT, c, combat, maintainence);
         this.closeCombat = closeCombat;
     }
 
-    public RangeUnit(int MAX_MOVEMENT, MilitaryUnit u,   int combat, int closeCombat, int maintainence) {
-        super(u, MAX_MOVEMENT,   combat, maintainence);
+    public RangeUnit(int MAX_MOVEMENT, MilitaryUnit u, int combat, int closeCombat, int maintainence) {
+        super(u, MAX_MOVEMENT, combat, maintainence);
         this.closeCombat = closeCombat;
     }
 
@@ -49,7 +49,7 @@ public abstract class RangeUnit extends MilitaryUnit {
 
             MilitaryUnit enemy = (MilitaryUnit) x;
 
-             int thisDmg = (int) (30 * Math.pow(1.041, (this.getCombat() - enemy.getCombat())));
+            int thisDmg = (int) (30 * Math.pow(1.041, (this.getCombat() - enemy.getCombat())));
 
             enemy.setHealth(enemy.getHealth() - thisDmg);
             System.out.println("Unit dealt " + thisDmg);
@@ -81,20 +81,20 @@ public abstract class RangeUnit extends MilitaryUnit {
     @Override
     public void siegeAttack(City c) {
 
+        setMovement(0);
+
         int siegeDmg = (int) (getCombat() * 0.3);
 
         c.setHealth(c.getHealth() - siegeDmg);
         System.out.println("Unit dealt " + siegeDmg);
 
         if (c.getHealth() <= 0) {
-            c.conquer(this.getPlayer());
+            c.setHealth(1);
         }
     }
 
     public int getCloseCombat() {
         return closeCombat;
     }
-    
-    
 
 }
