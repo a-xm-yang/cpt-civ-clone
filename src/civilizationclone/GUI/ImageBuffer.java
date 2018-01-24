@@ -110,7 +110,7 @@ public class ImageBuffer {
             plains = new Image(new FileInputStream("src/Assets/Tiles/Plains.png"), 100, 110, false, false);
             city = new Image(new FileInputStream("src/Assets/Tiles/City.png"), 90, 90, false, false);
 
-            builder = new Image(new FileInputStream("src/Assets/Units/Builder.png"), 70, 70, false, false);
+            builder = new Image(new FileInputStream("src/Assets/Units/Builder(new).png"), 70, 70, false, false);
             settler = new Image(new FileInputStream("src/Assets/Units/Settler.png"), 70, 70, false, false);
             scout = new Image(new FileInputStream("src/Assets/Units/Scout.png"), 70, 70, false, false);
             warrior = new Image(new FileInputStream("src/Assets/Units/Warrior.png"), 70, 70, false, false);
