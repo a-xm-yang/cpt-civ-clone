@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class Plains extends Tile {
 
-    static Set<Improvement> possibleImprovement = EnumSet.of(Improvement.FARM, Improvement.ROAD, Improvement.ACADEMY);
+    static Set<Improvement> possibleImprovement = EnumSet.of(Improvement.FARM, Improvement.ACADEMY);
 
     public Plains() {
         super(false, 1);

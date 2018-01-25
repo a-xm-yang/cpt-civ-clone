@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class Desert extends Tile {
 
-    static Set<Improvement> possibleImprovement = EnumSet.of(Improvement.FARM, Improvement.RANCH, Improvement.ROAD);
+    static Set<Improvement> possibleImprovement = EnumSet.of(Improvement.FARM, Improvement.RANCH);
 
     public Desert() {
         super(false, 1);
