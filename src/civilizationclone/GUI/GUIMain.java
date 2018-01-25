@@ -11,7 +11,10 @@ import civilizationclone.Player;
 import civilizationclone.TechType;
 import civilizationclone.Unit.UnitType;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.media.Media;
@@ -27,7 +30,7 @@ public class GUIMain extends Application {
     public void start(Stage primaryStage) {
 
         int resX = 1200;
-        int resY = 1000;
+        int resY = 800;
 
         //Create the zoompane called "root" in the scene
         GameMap gameMap = new GameMap(MapSize.MEDIUM, 400);
@@ -45,7 +48,12 @@ public class GUIMain extends Application {
         root = new GamePane(gameMap, p, resX, resY, true);
 
         primaryStage.setResizable(false);
-        primaryStage.setScene(new Scene(root, resX, resY, Color.BLACK));
+
+        try {
+            primaryStage.setScene(new Scene(new TitleMenu()));
+        } catch (FileNotFoundException ex) {
+           
+        }
 
         primaryStage.setTitle("Alex Yang's Colonization II");
         primaryStage.show();

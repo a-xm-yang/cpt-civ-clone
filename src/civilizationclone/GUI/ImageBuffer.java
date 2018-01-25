@@ -11,7 +11,7 @@ import java.io.IOException;
 import javafx.scene.image.Image;
 
 enum MiscAsset {
-    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, GOLD, SCIENCE, HAPPY, EXPANSION_ICON, GOLD_ICON, CITY;
+    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, GOLD, SCIENCE, HAPPY, EXPANSION_ICON, GOLD_ICON, CITY, TITLE_BACKGROUND;
 }
 
 public class ImageBuffer {
@@ -62,6 +62,7 @@ public class ImageBuffer {
     private static Image foodIcon;
     private static Image techIcon;
     private static Image cloud;
+    private static Image titleBackground;
 
     //IMPROVEMENT
     private static Image farm;
@@ -134,7 +135,6 @@ public class ImageBuffer {
             quadrireme = new Image(new FileInputStream("src/Assets/Units/Quadrireme.png"), 70, 70, false, false);
             caravel = new Image(new FileInputStream("src/Assets/Units/Caravel.png"), 70, 70, false, false);
             ironclad = new Image(new FileInputStream("src/Assets/Units/Ironclad.png"), 70, 70, false, false);
-
             galley = new Image(new FileInputStream("src/Assets/Units/Galley.png"), 70, 70, false, false);
 
             closeIcon = new Image(new FileInputStream("src/Assets/Misc/close_button.png"), 60, 60, false, false);
@@ -147,6 +147,7 @@ public class ImageBuffer {
             goldIcon = new Image(new FileInputStream("src/Assets/Misc/gold_icon.png"), 120, 120, false, false);
             cloud = new Image(new FileInputStream("src/Assets/Misc/Cloud.jpg"), 225, 225, false, false);
             expansionIcon = new Image(new FileInputStream("src/Assets/Misc/expand_icon.png"), 75, 75, false, false);
+            titleBackground = new Image(new FileInputStream("src/Assets/Misc/title_background.png"), 2560, 1440, false, false);
 
             farm = new Image(new FileInputStream("src/Assets/Improvement/farm.png"), 70, 70, false, false);
             mine = new Image(new FileInputStream("src/Assets/Improvement/mine.png"), 70, 70, false, false);
@@ -349,6 +350,8 @@ public class ImageBuffer {
                 return happy;
             case CITY:
                 return city;
+            case TITLE_BACKGROUND:
+                return titleBackground;
         }
 
         return destroyer;
