@@ -36,7 +36,7 @@ public class UnitMenu extends Pane {
         if (unit instanceof SettlerUnit) {
             opts.add(new UnitOption(65, -60, 250, 40, "Move"));
             opts.add(new UnitOption(120, 0, 250, 40, "Settle"));
-            opts.add(new UnitOption(65, 60, 250, 40, "Kill"));
+            opts.add(new UnitOption(120, 60, 250, 40, "Kill"));
         } else if (unit instanceof BuilderUnit) {
             opts.add(new UnitOption(65, -60, 250, 40, "Move"));
             opts.add(new UnitOption(120, 0, 250, 40, "Improve"));

@@ -59,7 +59,6 @@ public class NextTurnPane extends Group {
         }
 
         updateText();
-
         e.consume();
     }
 

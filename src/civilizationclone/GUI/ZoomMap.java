@@ -104,9 +104,9 @@ public class ZoomMap extends Group {
 
         getChildren().add(canvas);
 
-        //handler for resizing the map
+        //handler for resizing the map (Disabled for now)
         setOnScroll((ScrollEvent event) -> {
-            resize(event);
+            //(event);
         });
 
         //handler for actions (incomplete)
@@ -288,7 +288,7 @@ public class ZoomMap extends Group {
         repaint();
     }
 
-    public void removeSettlePrompt(SettlePrompt sp) {
+    private void removeSettlePrompt(SettlePrompt sp) {
         getChildren().remove(sp);
         enableDragging(true);
         updateFogOfWar();
@@ -307,6 +307,10 @@ public class ZoomMap extends Group {
         selectedTile.getUnit().delete();
         updateFogOfWar();
         repaint();
+        
+        if (getParent() instanceof GamePane){
+            ((GamePane)getParent()).updateInfo();
+        }
     }
 
     public void activateDestroy() {
@@ -372,7 +376,8 @@ public class ZoomMap extends Group {
 
     //handlers for scrolling ---------------
     //<editor-fold>
-    private void resize(ScrollEvent event) {
+    private void resize(ScrollEvent event){
+        
         if (event.getDeltaY() == 0) {
             return;
         }
@@ -426,6 +431,11 @@ public class ZoomMap extends Group {
 
     //GETTERS AND SETTERS
     //<editor-fold>
+    
+    public void setSelectedTile(Tile selectedTile) {
+        this.selectedTile = selectedTile;
+    }
+
     public ArrayList<DisplayTile> getTileList() {
         return tileList;
     }

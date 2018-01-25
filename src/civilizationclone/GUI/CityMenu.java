@@ -215,6 +215,8 @@ public class CityMenu extends Pane {
         city.getPlayer().calculateHappiness();
         city.getPlayer().calcGoldIncome();
         city.getPlayer().calcTechIncome();
+        
+        System.out.println(this.getParent());
 
         //remove this pane
         if (this.getParent() instanceof GamePane) {

@@ -7,6 +7,7 @@ import civilizationclone.Unit.Unit;
 import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
 import java.util.ArrayList;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
@@ -86,36 +87,47 @@ public class GamePane extends Pane {
         sciencePane.setCurrentPlayer(currentPlayer);
         zoomMap.setCurrentPlayer(currentPlayer);
     }
-    
-    public void jumpToNextAction(){
-        if(currentPlayer.canEndTurn()==1){
+
+    public void jumpToNextAction() {
+        
+        if (currentPlayer.canEndTurn() == 1) {
             for (Unit u : currentPlayer.getUnitList()) {
                 if (u.canMove()) {
+
+                    //Jump the player to the units that they haven't move yet and force them to make an action
                     zoomMap.jumpTo(u);
+                    //deletes all the prevoius menus open
+                    for (Node n : zoomMap.getChildren()) {
+                        if (n instanceof UnitMenu) {
+                            ((UnitMenu) n).delete();
+                            break;
+                        }
+                    }
+                    //add the new map and have tiles ready to move
                     UnitMenu uM = new UnitMenu(u, zoomMap);
-                    System.out.println("X: " + Double.toString(zoomMap.getLeftCap() - (u.getY() * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX()));
-                    System.out.println("Y: " + Double.toString((u.getX() * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY()));
-                    uM.setTranslateX(resX/2);
-                    uM.setTranslateY(resY/2);
-                    getChildren().add(uM);
-                    
-                    
+                    zoomMap.setSelectedTile(gameMap.getTile(u.getX(), u.getY()));
+                    uM.setTranslateX(((zoomMap.getLeftCap() - (u.getY() * DisplayTile.WIDTH * getScaleX())) * -1) + (u.getX() % 2 == 0 ? (DisplayTile.getWIDTH() / 2 * getScaleX()) * -1 : 0));
+                    uM.setTranslateY(u.getX() * DisplayTile.HEIGHT * getScaleY());
+                    zoomMap.getChildren().add(uM);
                     return;
                 }
             }
-        }else if(currentPlayer.canEndTurn()==2){
+        } else if (currentPlayer.canEndTurn() == 2) {
             for (City c : currentPlayer.getCityList()) {
                 if (!c.canEndTurn()) {
+                    //Jump to the city position, disable dragging
                     zoomMap.jumpTo(c);
-                    CityMenu cM = new CityMenu(c, resX, resY, zoomMap);
-                    
-                    getChildren().add(cM);
-                    cM.toFront();
+                    zoomMap.enableDragging(false);
+                    //set the selected tile for later usage
+                    zoomMap.setSelectedTile(gameMap.getTile(c.getPosition()));
+                    //add a new city map
+                    cityMenu = new CityMenu(c, resX, resY, zoomMap);
+                    getChildren().add(cityMenu);
                     return;
                 }
             }
         }
-            
+
     }
 
     public void addCityMenu(City c) {
@@ -172,7 +184,6 @@ public class GamePane extends Pane {
             }
         }
 
-
         ZoomMap pane = new ZoomMap(original.length, resX, resY, spareSize, copy);
 
         return pane;
@@ -186,6 +197,5 @@ public class GamePane extends Pane {
     public ArrayList<Player> getPlayerList() {
         return playerList;
     }
-    
-    
+
 }
