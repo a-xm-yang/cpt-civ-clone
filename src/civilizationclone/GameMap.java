@@ -13,7 +13,7 @@ public class GameMap {
     private int size;
 
     public enum MapSize {
-        BIG, MEDIUM, SMALL;
+        LARGE, MEDIUM, SMALL;
     }
 
     public GameMap(MapSize m, int seed) {
@@ -25,10 +25,10 @@ public class GameMap {
                 size = 20;
                 break;
             case MEDIUM:
-                size = 80;
+                size = 40;
                 break;
-            case BIG:
-                size = 120;
+            case LARGE:
+                size = 80;
                 break;
         }
 

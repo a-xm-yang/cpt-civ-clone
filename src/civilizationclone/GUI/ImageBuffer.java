@@ -66,6 +66,10 @@ public class ImageBuffer {
     //IMPROVEMENT
     private static Image farm;
     private static Image mine;
+    private static Image fishing;
+    private static Image ranch;
+    private static Image plantation;
+    private static Image academy;
 
     //ICONS
     private static Image gold;
@@ -146,6 +150,10 @@ public class ImageBuffer {
 
             farm = new Image(new FileInputStream("src/Assets/Improvement/farm.png"), 70, 70, false, false);
             mine = new Image(new FileInputStream("src/Assets/Improvement/mine.png"), 70, 70, false, false);
+            plantation = new Image(new FileInputStream("src/Assets/Improvement/plantation.png"), 70, 70, false, false);
+            fishing = new Image(new FileInputStream("src/Assets/Improvement/fishing.png"), 70, 70, false, false);
+            ranch = new Image(new FileInputStream("src/Assets/Improvement/ranch.png"), 70, 70, false, false);
+            academy = new Image(new FileInputStream("src/Assets/Improvement/academy.png"), 70, 70, false, false);
 
             gold = new Image(new FileInputStream("src/Assets/Misc/gold.png"), 25, 25, false, false);
             science = new Image(new FileInputStream("src/Assets/Misc/science.png"), 25, 25, false, false);
@@ -294,6 +302,14 @@ public class ImageBuffer {
                 return farm;
             case MINE:
                 return mine;
+            case RANCH:
+                return ranch;
+            case ACADEMY:
+                return academy;
+            case FISHING:
+                return fishing;
+            case PLANTATION:
+                return plantation;
         }
 
         return destroyer;

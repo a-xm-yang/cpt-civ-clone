@@ -144,19 +144,15 @@ public class ZoomMap extends Group {
         //testing for only movement highlight
         if (highlightType == HighlightType.NONE) {
             if (clickedTile.hasUnit()) {
-
                 UnitMenu u = new UnitMenu(clickedTile.getUnit(), this);
                 u.setTranslateX(((DisplayTile) e.getTarget()).getTranslateX());
                 u.setTranslateY(((DisplayTile) e.getTarget()).getTranslateY());
                 this.getChildren().add(u);
                 selectedTile = clickedTile;
-
             } else if (clickedTile.hasCity() && clickedTile.getCity().getPlayer() == currentPlayer && !clickedTile.hasUnit()) {
-
                 ((GamePane) getParent()).addCityMenu(clickedTile.getCity());
                 enableDragging(false);
                 selectedTile = clickedTile;
-
             }
         } else {
 
