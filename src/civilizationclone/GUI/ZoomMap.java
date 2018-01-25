@@ -213,6 +213,7 @@ public class ZoomMap extends Group {
 
         setTranslateX(leftCap - (u.getY() * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
         setTranslateY((u.getX() * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY());
+        adjustPosition();
 
     }
 
@@ -220,6 +221,7 @@ public class ZoomMap extends Group {
 
         setTranslateX(leftCap - (c.getPosition().y * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
         setTranslateY((c.getPosition().x * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY());
+        adjustPosition();
 
     }
 
@@ -482,6 +484,22 @@ public class ZoomMap extends Group {
 
     public Canvas getCanvas() {
         return canvas;
+    }
+    
+    public double getTopCap() {
+        return topCap;
+    }
+
+    public double getBottomCap() {
+        return bottomCap;
+    }
+
+    public double getLeftCap() {
+        return leftCap;
+    }
+
+    public double getRightCap() {
+        return rightCap;
     }
     //</editor-fold>
 

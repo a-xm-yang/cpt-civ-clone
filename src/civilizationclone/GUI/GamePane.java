@@ -92,6 +92,14 @@ public class GamePane extends Pane {
             for (Unit u : currentPlayer.getUnitList()) {
                 if (u.canMove()) {
                     zoomMap.jumpTo(u);
+                    UnitMenu uM = new UnitMenu(u, zoomMap);
+                    System.out.println("X: " + Double.toString(zoomMap.getLeftCap() - (u.getY() * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX()));
+                    System.out.println("Y: " + Double.toString((u.getX() * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY()));
+                    uM.setTranslateX(resX/2);
+                    uM.setTranslateY(resY/2);
+                    getChildren().add(uM);
+                    
+                    
                     return;
                 }
             }
@@ -99,6 +107,10 @@ public class GamePane extends Pane {
             for (City c : currentPlayer.getCityList()) {
                 if (!c.canEndTurn()) {
                     zoomMap.jumpTo(c);
+                    CityMenu cM = new CityMenu(c, resX, resY, zoomMap);
+                    
+                    getChildren().add(cM);
+                    cM.toFront();
                     return;
                 }
             }
