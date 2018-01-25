@@ -4,8 +4,12 @@ import civilizationclone.Tile.*;
 import java.util.ArrayList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineJoin;
 
@@ -16,11 +20,16 @@ public class Minimap extends Pane {
     private int mapSize;
     private Canvas canvas;
     private GraphicsContext g;
+    private ToggleButton colorButton;
+    private ToggleButton resourceButton;
+    private ToggleButton outputButton;
+    private ZoomMap zoomMap;
 
     public Minimap(ZoomMap zoomMap, int resX, int resY) {
 
         //requires a reference to initialize tiles
         mapSize = zoomMap.getMapSize();
+        this.zoomMap = zoomMap;
 
         border = new Rectangle(310, 310);
         border.setFill(Color.BEIGE);
@@ -39,6 +48,20 @@ public class Minimap extends Pane {
         //initialize tiles list
         ArrayList<DisplayTile> temp = zoomMap.getTileList();
         tiles = new ArrayList<>();
+        
+        colorButton = new ToggleButton(Type.COLOR);
+        resourceButton = new ToggleButton(Type.RESOURCE);
+        outputButton = new ToggleButton(Type.OUTPUT);
+        
+        colorButton.setTranslateX(-30);
+        colorButton.setTranslateY(160);
+        
+        resourceButton.setTranslateX(-30);
+        resourceButton.setTranslateY(220);
+        
+        outputButton.setTranslateX(-30);
+        outputButton.setTranslateY(280);
+        
 
         for (DisplayTile t : temp) {
             if (!tiles.contains(t)) {
@@ -46,7 +69,7 @@ public class Minimap extends Pane {
             }
         }
 
-        getChildren().addAll(border, canvas);
+        getChildren().addAll(border, canvas, colorButton, resourceButton, outputButton);
     }
 
     public void update() {
@@ -96,6 +119,65 @@ public class Minimap extends Pane {
             }
         }
 
+    }
+    
+    private enum Type {
+        RESOURCE, COLOR, OUTPUT;  
+    }
+    
+    
+    private class ToggleButton extends Circle{
+        Type t;
+        Image image;
+                
+        
+        ToggleButton(Type t){
+            super(25);
+            
+            this.t = t;
+            
+            switch(t){
+                case COLOR:
+                    image = ImageBuffer.getImage(MiscAsset.GOLD_ICON);
+                    break;
+                case OUTPUT:
+                    image = ImageBuffer.getImage(MiscAsset.PRODUCTION_ICON);
+                    break;
+                case RESOURCE:
+                    image = ImageBuffer.getImage(MiscAsset.GOLD_ICON);
+                    break;
+            }
+            
+            this.setFill(new ImagePattern(image));
+            
+            setOnMouseClicked((MouseEvent event) -> {
+                clickEventHandling(event);
+            });
+        }
+
+        private void clickEventHandling(MouseEvent event) {
+            switch (t) {
+                case COLOR:
+                    DisplayTile.setDisplayColor(!DisplayTile.isDisplayColor());
+                    break;
+                case OUTPUT:
+                    DisplayTile.setDisplayOutput(!DisplayTile.isDisplayOutput());
+                    break;
+                case RESOURCE:
+                    DisplayTile.setDisplayResourse(!DisplayTile.isDisplayResourse());
+                    break;
+                default:
+                    break;
+            }
+            zoomMap.repaint();
+            
+            
+        }
+        
+        
+    
+    
+    
     }
 
 }

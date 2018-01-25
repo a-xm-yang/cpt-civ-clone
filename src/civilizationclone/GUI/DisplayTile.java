@@ -23,6 +23,9 @@ public class DisplayTile extends Polygon {
     private ImagePattern tileFill;
     private Image resourceImage;
     private boolean highlighted = false;
+    private static boolean displayColor = false;
+    private static boolean displayOutput = false;
+    private static boolean displayResourse = true;
     //Data-related members
     private int x;
     private int y;
@@ -71,7 +74,7 @@ public class DisplayTile extends Polygon {
                 gc.drawImage(ImageBuffer.getCityImage(), 5 + getTranslateX(), 10 + getTranslateY());
             }
 
-            if (resourceImage != null) {
+            if (resourceImage != null && displayResourse) {
                 gc.drawImage(resourceImage, getTranslateX() + 55, getTranslateY() + 35);
             }
 
@@ -86,9 +89,10 @@ public class DisplayTile extends Polygon {
                 if (tile.hasUnit()) {
                     
                     //Draw Circle to display whos unit it is
-                    gc.setFill(new Color(tile.getUnit().getPlayer().getColor().getRed(), tile.getUnit().getPlayer().getColor().getGreen(), tile.getUnit().getPlayer().getColor().getBlue(), .4));
-                    gc.fillOval(15+getTranslateX(), 20+getTranslateY(), 70, 70);
-                    
+                    if(displayColor){
+                        gc.setFill(new Color(tile.getUnit().getPlayer().getColor().getRed(), tile.getUnit().getPlayer().getColor().getGreen(), tile.getUnit().getPlayer().getColor().getBlue(), .4));
+                        gc.fillOval(15+getTranslateX(), 20+getTranslateY(), 70, 70);
+                    }
                     //Draw Unit
                     gc.drawImage(ImageBuffer.getImage(tile.getUnit()), 15 + getTranslateX(), 20 + getTranslateY());
                     
@@ -130,6 +134,7 @@ public class DisplayTile extends Polygon {
 
     //GETTERS & EQUAL METHODS
     //<editor-fold>
+    
     public int getAccessLevel() {
         return accessLevel;
     }
@@ -157,6 +162,34 @@ public class DisplayTile extends Polygon {
     public Tile getTile() {
         return tile;
     }
+
+    public static boolean isDisplayColor() {
+        return displayColor;
+    }
+
+    public static boolean isDisplayOutput() {
+        return displayOutput;
+    }
+
+    public static boolean isDisplayResourse() {
+        return displayResourse;
+    }
+
+    public static void setDisplayColor(boolean displayColor) {
+        DisplayTile.displayColor = displayColor;
+    }
+
+    public static void setDisplayOutput(boolean displayOutput) {
+        DisplayTile.displayOutput = displayOutput;
+    }
+
+    public static void setDisplayResourse(boolean displayResourse) {
+        DisplayTile.displayResourse = displayResourse;
+    }
+    
+    
+    
+    
 
     @Override
     public boolean equals(Object o) {
@@ -197,5 +230,7 @@ public class DisplayTile extends Polygon {
 
         cloudFill = new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOUD));
     }
+    
+    
 
 }
