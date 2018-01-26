@@ -85,7 +85,7 @@ public class UnitMenu extends Pane {
                     o.getText().setFill(Color.DARKGREY);
                 }
             } else if (o.getOptionType().equals("Settle")) {
-                if (unit.getMovement() > 0) {
+                if (unit.getMovement() > 0 && ((SettlerUnit) unit).canSettle()) {
                     o.getText().setFill(Color.WHITE);
                 } else {
                     o.getText().setFill(Color.DARKGREY);
@@ -182,8 +182,8 @@ public class UnitMenu extends Pane {
             } else if (unit instanceof SiegeUnit) {
                 msg = msg + "Combat: " + ((MilitaryUnit) unit).getCombat();
                 msg = msg + "\nSiege: " + ((SiegeUnit) unit).getSiegeCombat();
-            } else{
-                msg = msg + "Combat: " + ((MilitaryUnit)unit).getCombat();
+            } else {
+                msg = msg + "Combat: " + ((MilitaryUnit) unit).getCombat();
             }
         } else {
             msg = msg + "Health: 1/1 \n";

@@ -6,10 +6,13 @@ import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.Unit;
 import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
+import java.io.File;
 import java.util.ArrayList;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class GamePane extends Pane {
 
@@ -21,6 +24,7 @@ public class GamePane extends Pane {
     private StatusBarPane statusBar;
     private SciencePane sciencePane;
     private Minimap minimap;
+    private MediaPlayer mp;
 
     //game data
     private GameMap gameMap;
@@ -28,6 +32,10 @@ public class GamePane extends Pane {
     private Player currentPlayer;
 
     public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY, boolean isNewGame) {
+
+        Media media = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString());
+        mp = new MediaPlayer(media);
+        mp.play();
 
         this.gameMap = gameMap;
         this.playerList = playerList;
@@ -89,7 +97,7 @@ public class GamePane extends Pane {
     }
 
     public void jumpToNextAction() {
-        
+
         if (currentPlayer.canEndTurn() == 1) {
             for (Unit u : currentPlayer.getUnitList()) {
                 if (u.canMove()) {
@@ -140,9 +148,7 @@ public class GamePane extends Pane {
             getChildren().remove(cityMenu);
         }
 
-        cityMenu = null;
         updateInfo();
-
         zoomMap.enableDragging(true);
     }
 

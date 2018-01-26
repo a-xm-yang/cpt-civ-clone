@@ -147,7 +147,7 @@ public class ImageBuffer {
             goldIcon = new Image(new FileInputStream("src/Assets/Misc/gold_icon.png"), 120, 120, false, false);
             cloud = new Image(new FileInputStream("src/Assets/Misc/Cloud.jpg"), 225, 225, false, false);
             expansionIcon = new Image(new FileInputStream("src/Assets/Misc/expand_icon.png"), 75, 75, false, false);
-            titleBackground = new Image(new FileInputStream("src/Assets/Misc/title_background.png"), 2560, 1440, false, false);
+            titleBackground = new Image(new FileInputStream("src/Assets/Misc/title_background.png"), 2560, 1440, true, false);
 
             farm = new Image(new FileInputStream("src/Assets/Improvement/farm.png"), 70, 70, false, false);
             mine = new Image(new FileInputStream("src/Assets/Improvement/mine.png"), 70, 70, false, false);

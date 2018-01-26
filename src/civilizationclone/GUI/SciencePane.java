@@ -41,8 +41,6 @@ public class SciencePane extends Pane {
         this.resX = resX;
         this.resY = resY;
         this.gamePaneRef = gamePaneRef;
-        
-        System.out.println("Current Player Science: " + player.getName());
 
         hasMenuOpen = false;
 
