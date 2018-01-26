@@ -183,7 +183,7 @@ public class TitleMenu extends Group {
 
         startButton = new Button("Start");
         startButton.setFont(Font.font("Penumbra HalfSerif Std", 18));
-        startButton.setTranslateX(632 + fixX);
+        startButton.setTranslateX(625 + fixX);
         startButton.setTranslateY(622 + fixY);
         startButton.setDisable(true);
         startButton.setOnMouseClicked(e -> {
@@ -192,7 +192,7 @@ public class TitleMenu extends Group {
 
         addLeader = new Button("Add");
         addLeader.setFont(Font.font("Penumbra HalfSerif Std", 15));
-        addLeader.setTranslateX(575 + fixX);
+        addLeader.setTranslateX(580 + fixX);
         addLeader.setTranslateY(207 + fixY);
         addLeader.setOnMouseClicked(e -> {
             addLeader();
@@ -202,7 +202,7 @@ public class TitleMenu extends Group {
         for (Leader l : Leader.values()) {
             leaderOption.getItems().add(l.name());
         }
-        leaderOption.setTranslateX(430 + fixX);
+        leaderOption.setTranslateX(435 + fixX);
         leaderOption.setTranslateY(210 + fixY);
 
         root.getChildren().addAll(rect3, rect4, rect1, rect2, line1, line2, heading, subheading, text1, map, startButton, mapOption, leaderOption, addLeader);
@@ -311,7 +311,7 @@ public class TitleMenu extends Group {
         GameMap gameMap = new GameMap(ms, seed);
 
         //change later
-        primaryStage.setScene(new Scene(new GamePane(gameMap, list, resX, resY, true)));
+        primaryStage.setScene(new Scene(new GamePane(gameMap, list, 1400, 1000, true)));
         mp.pause();
     }
 
