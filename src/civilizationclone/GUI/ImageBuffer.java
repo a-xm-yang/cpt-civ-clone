@@ -8,10 +8,11 @@ import civilizationclone.Unit.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import javafx.scene.image.Image;
 
 enum MiscAsset {
-    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, GOLD, SCIENCE, HAPPY, EXPANSION_ICON, GOLD_ICON, CITY, TITLE_BACKGROUND;
+    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, GOLD, SCIENCE, HAPPY, EXPANSION_ICON, GOLD_ICON, CITY, TITLE_BACKGROUND, HIGHLIGHT_TOGGLE, RESOURCE_TOGGLE, YIELDS_TOGGLE;
 }
 
 public class ImageBuffer {
@@ -103,6 +104,36 @@ public class ImageBuffer {
     //TECHTYPES
     private static Image defaultTech;
     private static Image pottery;
+    
+    //YIELD ICONS
+    private static Image gold1;
+    private static Image gold2;
+    private static Image gold3;
+    private static Image gold4;
+    private static Image gold5;
+    private static Image food1;
+    private static Image food2;
+    private static Image food3;
+    private static Image food4;
+    private static Image food5;
+    private static Image production1;
+    private static Image production2;
+    private static Image production3;
+    private static Image production4;
+    private static Image production5;
+    private static Image science1;
+    private static Image science2;
+    private static Image science3;
+    private static Image science4;
+    private static Image science5;
+    
+    //TOGGLES
+    private static Image highlightToggle;
+    private static Image resourceToggle;
+    private static Image yieldsToggle;
+    
+    
+    
     //</editor-fold>
 
     //Image loading
@@ -185,6 +216,31 @@ public class ImageBuffer {
             churchill = new Image(new FileInputStream("src/Assets/Players/churchill.png"), 60, 60, false, false);
 
             destroyer = new Image(new FileInputStream("src/Assets/Units/Destroyer.png"), 70, 70, false, false);
+            
+            gold1 = new Image(new FileInputStream("src/Assets/Yields/gold_1.png"), 45, 45, false, false);
+            gold2 = new Image(new FileInputStream("src/Assets/Yields/gold_2.png"), 45, 45, false, false);
+            gold3 = new Image(new FileInputStream("src/Assets/Yields/gold_3.png"), 45, 45, false, false);
+            gold4 = new Image(new FileInputStream("src/Assets/Yields/gold_4.png"), 45, 45, false, false);
+            gold5 = new Image(new FileInputStream("src/Assets/Yields/gold_5.png"), 45, 45, false, false);
+            food1 = new Image(new FileInputStream("src/Assets/Yields/food_1.png"), 45, 45, false, false);
+            food2 = new Image(new FileInputStream("src/Assets/Yields/food_2.png"), 45, 45, false, false);
+            food3 = new Image(new FileInputStream("src/Assets/Yields/food_3.png"), 45, 45, false, false);
+            food4 = new Image(new FileInputStream("src/Assets/Yields/food_4.png"), 45, 45, false, false);
+            food5 = new Image(new FileInputStream("src/Assets/Yields/food_5.png"), 45, 45, false, false);
+            production1 = new Image(new FileInputStream("src/Assets/Yields/production_1.png"), 45, 45, false, false);
+            production2 = new Image(new FileInputStream("src/Assets/Yields/production_2.png"), 45, 45, false, false);
+            production3 = new Image(new FileInputStream("src/Assets/Yields/production_3.png"), 45, 45, false, false);
+            production4 = new Image(new FileInputStream("src/Assets/Yields/production_4.png"), 45, 45, false, false);
+            production5 = new Image(new FileInputStream("src/Assets/Yields/production_5.png"), 45, 45, false, false);
+            science1 = new Image(new FileInputStream("src/Assets/Yields/science_1.png"), 45, 45, false, false);
+            science2 = new Image(new FileInputStream("src/Assets/Yields/science_2.png"), 45, 45, false, false);
+            science3 = new Image(new FileInputStream("src/Assets/Yields/science_3.png"), 45, 45, false, false);
+            science4 = new Image(new FileInputStream("src/Assets/Yields/science_4.png"), 45, 45, false, false);
+            science5 = new Image(new FileInputStream("src/Assets/Yields/science_5.png"), 45, 45, false, false);
+            
+            highlightToggle = new Image(new FileInputStream("src/Assets/Misc/highlightToggle.png"), 120, 120, false, false);
+            resourceToggle = new Image(new FileInputStream("src/Assets/Misc/resourceToggle.png"), 120, 120, false, false);
+            yieldsToggle = new Image(new FileInputStream("src/Assets/Misc/yieldsToggle.png"), 120, 120, false, false);
 
         } catch (FileNotFoundException e) {
             System.out.println("Image loading failed");
@@ -352,6 +408,12 @@ public class ImageBuffer {
                 return city;
             case TITLE_BACKGROUND:
                 return titleBackground;
+            case HIGHLIGHT_TOGGLE:
+                return highlightToggle;
+            case RESOURCE_TOGGLE:
+                return resourceToggle;
+            case YIELDS_TOGGLE:
+                return yieldsToggle;
         }
 
         return destroyer;
@@ -429,5 +491,62 @@ public class ImageBuffer {
         }
         return destroyer;
     }
+    
+    public static ArrayList<Image> getYieldIcons(Tile t){
+        ArrayList<Image> images = new ArrayList<Image>();
+        
+        if (t.getFoodOutput() == 1){
+            images.add(food1);
+        }else if (t.getFoodOutput() == 2){
+            images.add(food2);
+        }else if (t.getFoodOutput() == 3){
+            images.add(food3);
+        }else if (t.getFoodOutput() == 4){
+            images.add(food4);
+        }else if (t.getFoodOutput() >= 5){
+            images.add(food5);
+        }
+        
+        if (t.getGoldOutput() == 1){
+            images.add(gold1);
+        }else if (t.getGoldOutput() == 2){
+            images.add(gold2);
+        }else if (t.getGoldOutput() == 3){
+            images.add(gold3);
+        }else if (t.getGoldOutput() == 4){
+            images.add(gold4);
+        }else if (t.getGoldOutput() >= 5){
+            images.add(gold5);
+        }
+        
+        if (t.getScienceOutput() == 1){
+            images.add(science1);
+        }else if (t.getScienceOutput() == 2){
+            images.add(science2);
+        }else if (t.getScienceOutput() == 3){
+            images.add(science3);
+        }else if (t.getScienceOutput() == 4){
+            images.add(science4);
+        }else if (t.getScienceOutput() >= 5){
+            images.add(science5);
+        }
+        
+        if (t.getProductionOutput() == 1){
+            images.add(production1);
+        }else if (t.getProductionOutput() == 2){
+            images.add(production2);
+        }else if (t.getProductionOutput() == 3){
+            images.add(production3);
+        }else if (t.getProductionOutput() == 4){
+            images.add(production4);
+        }else if (t.getProductionOutput() >= 5){
+            images.add(production5);
+        }
+        
+        
+        return images;
+    }
+    
+    
 
 }

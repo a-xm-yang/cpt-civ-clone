@@ -138,13 +138,13 @@ public class Minimap extends Pane {
             
             switch(t){
                 case COLOR:
-                    image = ImageBuffer.getImage(MiscAsset.GOLD_ICON);
+                    image = ImageBuffer.getImage(MiscAsset.HIGHLIGHT_TOGGLE);
                     break;
                 case OUTPUT:
-                    image = ImageBuffer.getImage(MiscAsset.PRODUCTION_ICON);
+                    image = ImageBuffer.getImage(MiscAsset.YIELDS_TOGGLE);
                     break;
                 case RESOURCE:
-                    image = ImageBuffer.getImage(MiscAsset.GOLD_ICON);
+                    image = ImageBuffer.getImage(MiscAsset.RESOURCE_TOGGLE);
                     break;
             }
             

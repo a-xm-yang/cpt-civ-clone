@@ -3,6 +3,7 @@ package civilizationclone.GUI;
 import civilizationclone.Tile.*;
 import civilizationclone.Unit.MilitaryUnit;
 import java.awt.Point;
+import java.util.ArrayList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
@@ -77,6 +78,11 @@ public class DisplayTile extends Polygon {
             if (resourceImage != null && displayResourse) {
                 gc.drawImage(resourceImage, getTranslateX() + 55, getTranslateY() + 35);
             }
+            
+            if (displayOutput){
+                dispayYields(gc);
+            }
+                
 
             if (accessLevel == 1) {
                 //ADD RESOURCE PRINTING
@@ -126,6 +132,15 @@ public class DisplayTile extends Polygon {
         if (highlighted) {
             setStroke(Color.RED);
         }
+    }
+    
+    public void dispayYields(GraphicsContext gc){
+        ArrayList<Image> images = ImageBuffer.getYieldIcons(tile);
+                
+        for(int i=0;i<images.size();i++){
+            gc.drawImage(images.get(i), getTranslateX() + i*25, getTranslateY()+5);
+        }
+        
     }
 
     public void setAccessLevel(int accessLevel) {
