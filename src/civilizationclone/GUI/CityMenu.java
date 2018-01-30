@@ -215,11 +215,70 @@ public class CityMenu extends Pane {
         city.getPlayer().calculateHappiness();
         city.getPlayer().calcGoldIncome();
         city.getPlayer().calcTechIncome();
-        
+
         //remove this pane
         if (this.getParent() instanceof GamePane) {
             ((GamePane) this.getParent()).removeCityMenu();
         }
+    }
+
+    //convert enum production into string info
+    public String getInfo(Enum e) {
+        String s = "";
+
+        if (e instanceof UnitType) {
+            s = s + "Produciton Cost: " + ((UnitType) e).getProductionCost() + "\n";
+
+            if (BuilderUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                s = s + "\nCivilian unit that can build improvements on tiles to increase resource outputs.";
+            } else if (MeleeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                s = s + "\nMelee fighting unit that attacks at a close range.";
+            } else if (RangeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                s = s + "\nRanged unit that attack can from afar without taking any damage. Relatively weak in  close-ranged combats. Weak to mounted units.";
+            } else if (CalvaryUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                s = s + "\nFast-moving melee units that can roam around the battlefield with incredible speed. Strong against ranged units, weak against melee. Weak in sieging.";
+            } else if (SiegeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                s = s + "\nA slow-moving unit that specializes in taking down enemy cities.";
+            } else if (ScoutUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                s = s + "\nVery fast-moving unit that scouts the map. Weak in combat.";
+            } else if (SettlerUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
+                s = s + "\nA civilian unit that allows you to settle another city elsewhere.";
+            }
+
+        } else if (e instanceof CityProject) {
+
+            //add descriptions later
+            s = s + "Production Cost: " + ((CityProject) e).getProductionCost();
+
+            if (((CityProject) e).getFoodBonus() > 0) {
+                s = s + "\n\nFood Bonus: " + ((CityProject) e).getFoodBonus();
+            }
+
+            if (((CityProject) e).getTechBonus() > 0) {
+                s = s + "\nTech Bonus: " + ((CityProject) e).getTechBonus();
+            }
+
+            if (((CityProject) e).getProductionBonus() > 0) {
+                s = s + "\nProduction Bonus: " + ((CityProject) e).getProductionBonus();
+            }
+
+            if (((CityProject) e).getGoldBonus() > 0) {
+                s = s + "\nGold Bonus: " + ((CityProject) e).getGoldBonus();
+            }
+
+            if (e.name().endsWith("WALL")) {
+                s = s + "\n\nIncreases city defense by 50";
+            }
+
+            if (e == CityProject.BARRACKS) {
+                s = s + "\n\nCannot co-exist with stable";
+            } else if (e == CityProject.STABLE) {
+                s = s + "\n\nCannot co-exist with barracks";
+            }
+
+        }
+
+        return s;
     }
 
     //MENU OPTION PRIVATE CLASSES -------------------------------------------------------------------
@@ -337,56 +396,6 @@ public class CityMenu extends Pane {
                     return;
                 }
             }
-
-        }
-
-        private String getInfo(Enum e) {
-
-            String s = "";
-
-            if (e instanceof UnitType) {
-                s = s + "Produciton Cost: " + ((UnitType) e).getProductionCost() + "\n";
-
-                if (BuilderUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nCivilian unit that can build improvements on tiles to increase resource outputs.";
-                } else if (MeleeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nMelee fighting unit that attacks at a close range.";
-                } else if (RangeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nRanged unit that attack can from afar without taking any damage. Relatively weak in  close-ranged combats. Weak to mounted units.";
-                } else if (CalvaryUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nFast-moving melee units that can roam around the battlefield with incredible speed. Strong against ranged units, weak against melee. Weak in sieging.";
-                } else if (SiegeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nA slow-moving unit that specializes in taking down enemy cities.";
-                } else if (ScoutUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nVery fast-moving unit that scouts the map. Weak in combat.";
-                } else if (SettlerUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nA civilian unit that allows you to settle another city elsewhere.";
-                }
-
-            } else if (e instanceof CityProject) {
-
-                //add descriptions later
-                s = s + "Production Cost: " + ((CityProject) e).getProductionCost();
-
-                if (((CityProject) e).getFoodBonus() > 0) {
-                    s = s + "\n\nFood Bonus: " + ((CityProject) e).getFoodBonus();
-                }
-
-                if (((CityProject) e).getTechBonus() > 0) {
-                    s = s + "\nTech Bonus: " + ((CityProject) e).getTechBonus();
-                }
-
-                if (((CityProject) e).getProductionBonus() > 0) {
-                    s = s + "\nProduction Bonus: " + ((CityProject) e).getProductionBonus();
-                }
-
-                if (((CityProject) e).getGoldBonus() > 0) {
-                    s = s + "\nGold Bonus: " + ((CityProject) e).getGoldBonus();
-                }
-
-            }
-
-            return s;
 
         }
 
@@ -574,56 +583,6 @@ public class CityMenu extends Pane {
                     return;
                 }
             }
-
-        }
-
-        private String getInfo(Enum e) {
-
-            String s = "";
-
-            if (e instanceof UnitType) {
-                s = s + "Purchase Cost: " + ((UnitType) e).getPurchaseCost() + "\n";
-
-                if (BuilderUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nCivilian unit that can build improvements on tiles to increase resource outputs.";
-                } else if (MeleeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nMelee fighting unit that attacks at a close range and has decent health.";
-                } else if (RangeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nRanged unit that attack can from afar without taking any damage. Relatively weak in health and close-ranged combats.";
-                } else if (CalvaryUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nFast-moving melee units that can roam around the battlefield with incredible speed. Strong against ranged units yet weak against melee. Weak in sieging.";
-                } else if (SiegeUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nA slow-moving unit that specializes in taking down enemy cities.";
-                } else if (ScoutUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nVery fast-moving civilian unit that scouts the map.";
-                } else if (SettlerUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
-                    s = s + "\nA civilian unit that allows you to settle another city elsewhere.";
-                }
-
-            } else if (e instanceof CityProject) {
-
-                //add descriptions later
-                s = s + "Purchase Cost: " + ((CityProject) e).getPurchaseCost();
-
-                if (((CityProject) e).getFoodBonus() > 0) {
-                    s = s + "\n\nFood Bonus: " + ((CityProject) e).getFoodBonus();
-                }
-
-                if (((CityProject) e).getTechBonus() > 0) {
-                    s = s + "\nTech Bonus: " + ((CityProject) e).getTechBonus();
-                }
-
-                if (((CityProject) e).getProductionBonus() > 0) {
-                    s = s + "\nProduction Bonus: " + ((CityProject) e).getProductionBonus();
-                }
-
-                if (((CityProject) e).getGoldBonus() > 0) {
-                    s = s + "\nGold Bonus: " + ((CityProject) e).getGoldBonus();
-                }
-
-            }
-
-            return s;
 
         }
 

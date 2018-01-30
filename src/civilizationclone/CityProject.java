@@ -3,10 +3,16 @@ package civilizationclone;
 public enum CityProject {
 
     //producitonCost, purchaseCost, techBonus, productionBonus, foodBonus, goldBonus
-    GRANARY(80, 120, 0, 1, 5, 0),
-    LIBRARY(100, 200, 8, 0, 0, 0),
-    WORKSHOP(100, 200, 0, 8, 0, 0),
-    MARKET(100, 200, 0, 0, 0, 8);
+    GRANARY(65, 115, 0, 0, 2, 0),
+    LIBRARY(80, 140, 3, 0, 0, 0),
+    LIGHTHOUSE(105, 180, 0, 0, 2, 2),
+    STABLE(105, 180, 0, 4, 0, 0),
+    BARRACKS(105, 180, 0, 4, 0, 0),
+    MARKET(105, 180, 0, 0, 0, 4),
+    WORKSHOP(175, 305, 0, 6, 0, 0),
+    UNIVERSITY(200, 350, 6, 0, 0, 0),
+    ANCIENTWALL(80, 0, 0, 0, 0, 0),
+    MEDIEVALWALL(150, 0, 0, 0, 0, 0);
 
     //basic bonuses
     private int productionCost;

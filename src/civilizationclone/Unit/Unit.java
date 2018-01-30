@@ -3,6 +3,7 @@ package civilizationclone.Unit;
 import civilizationclone.City;
 import civilizationclone.GameMap;
 import civilizationclone.Player;
+import civilizationclone.TechType;
 import civilizationclone.Tile.Mountain;
 import civilizationclone.Tile.Tile;
 import java.awt.Point;
@@ -15,12 +16,14 @@ public abstract class Unit implements IMovement {
     private Player player;
     private int movement;
     private Point position;
+    private boolean embarked;
 
     public Unit(int movement, City c) {
         MAX_MOVEMENT = movement;
         position = new Point(c.getPosition().x, c.getPosition().y);
         this.player = c.getPlayer();
         mapRef.getTile(position.x, position.y).setUnit(this);
+        this.embarked = false;
     }
 
     public Unit(int movement, Player player, Point p) {
@@ -54,26 +57,28 @@ public abstract class Unit implements IMovement {
     public ArrayList<Point> getAdjacent() {
         return mapRef.getRange(position, 1);
     }
-    
-    public ArrayList<Point> getAdjacent(int range){
+
+    public ArrayList<Point> getAdjacent(int range) {
         return mapRef.getRange(position, range);
     }
-    
-    public Point[] getMoves(){
-        
+
+    public Point[] getMoves() {
+
         ArrayList<Point> list = getAdjacent();
         ArrayList<Point> moves = new ArrayList<>();
-        
-        for (Point p: list){
+
+        for (Point p : list) {
             Tile t = mapRef.getTile(p.x, p.y);
-            if (!t.hasUnit() && !t.isWater() && !t.hasCity() && movement >= t.getMovementCost()){
-                moves.add(p);
+            if (!t.hasUnit() && !t.hasCity() && movement >= t.getMovementCost()) {
+                if (!t.isWater() || getPlayer().getOwnedTech().contains(TechType.SAILING)) {
+                    moves.add(p);
+                }
             }
         }
-        
+
         return moves.toArray(new Point[moves.size()]);
     }
-    
+
     @Override
     public void setMovement(int movement) {
         this.movement = movement;
@@ -88,7 +93,19 @@ public abstract class Unit implements IMovement {
         mapRef.getTile(position.x, position.y).removeUnit();
         position = p;
         mapRef.getTile(position.x, position.y).setUnit(this);
-        movement-=mapRef.getTile(position.x, position.y).getMovementCost();
+        movement -= mapRef.getTile(position.x, position.y).getMovementCost();
+
+        if (!(this instanceof NavalUnit)) {
+            if (!embarked) {
+                if (mapRef.getTile(p).isWater()) {
+                    embarked = true;
+                }
+            } else {
+                if (!(mapRef.getTile(p).isWater())) {
+                    embarked = false;
+                }
+            }
+        }
     }
 
     public void delete() {
@@ -97,6 +114,10 @@ public abstract class Unit implements IMovement {
         System.out.println("This unit is dead");
 
         player.calcGoldIncome();
+    }
+
+    public boolean hasEmbarked() {
+        return embarked;
     }
 
     @Override
@@ -114,7 +135,5 @@ public abstract class Unit implements IMovement {
     public int getMAX_MOVEMENT() {
         return MAX_MOVEMENT;
     }
-    
-    
 
 }

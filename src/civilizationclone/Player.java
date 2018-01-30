@@ -211,6 +211,10 @@ public class Player {
         if (t.getUnlockProject() != null) {
             ownedCityProject.addAll(t.getUnlockProject());
         }
+        
+        for (City c: cityList){
+            c.updateTiles();
+        }
     }
 
     public void addBuildableUnit(UnitType u) {

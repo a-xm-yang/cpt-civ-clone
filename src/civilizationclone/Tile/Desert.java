@@ -20,13 +20,14 @@ public class Desert extends Tile {
         setGoldOutput(getImprovement().getGoldBonus() + getResource().getGoldBonus());
         setProductionOutput(1 + getImprovement().getProductionBonus() + getResource().getProductionBonus());
         setScienceOutput(getImprovement().getScienceBonus() + getResource().getTechBonus());
-    }
 
+        calcTechBonus();
+    }
 
     @Override
     public Set<Improvement> getPossibleImprovements() {
         Set<Improvement> improve = possibleImprovement;
-        if(this.getResource() != NONE){
+        if (this.getResource() != NONE) {
             improve.add(this.getResource().getImprovementType());
         }
         return improve;

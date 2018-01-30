@@ -94,13 +94,13 @@ public class SciencePane extends Pane {
         getChildren()
                 .addAll(textBackground, progressBackground, progress, techImage, infoText);
     }
-    
-    public void clickEvent(MouseEvent e){
+
+    public void clickEvent(MouseEvent e) {
         if (!hasMenuOpen) {
-                getChildren().add(new ScienceMenu(player, resX, resY));
-                hasMenuOpen = true;
-                e.consume();
-            }
+            getChildren().add(new ScienceMenu(player, resX, resY));
+            hasMenuOpen = true;
+            e.consume();
+        }
     }
 
     public void setCurrentPlayer(Player player) {
@@ -231,6 +231,10 @@ public class SciencePane extends Pane {
                 TechType t = (TechType) e;
 
                 s = s + "Research Cost: " + t.getTechCost();
+
+                if (t.getMessage() != null) {
+                    s = s + "\n\n" + t.getMessage();
+                }
 
                 if (t.getUnlockUnit() != null) {
                     s = s + "\n\nUnlock Unit: ";

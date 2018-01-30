@@ -224,6 +224,9 @@ public class City {
         System.out.println(currentProject + " built!");
         builtProjects.add(currentProject);
         currentProduction = 0;
+        if (currentProject.name().endsWith("WALL")) {
+            maxHealth += 50;
+        }
         currentProject = null;
     }
 
@@ -253,12 +256,13 @@ public class City {
         this.player.getCityList().remove(this);
         this.player = p;
         this.player.getCityList().add(this);
-        
+
     }
 
     public void addTile(Tile t) {
         this.ownedTiles.add(t);
         t.setControllingCity(this);
+        t.calcOutput();
         canExpand = false;
     }
 
@@ -297,6 +301,12 @@ public class City {
         }
 
         return false;
+    }
+
+    public void updateTiles() {
+        for (Tile t : ownedTiles) {
+            t.calcOutput();
+        }
     }
 
     //GETTER

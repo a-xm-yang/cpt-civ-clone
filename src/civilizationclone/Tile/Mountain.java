@@ -7,7 +7,6 @@ public class Mountain extends Tile {
 
     static Set<Improvement> possibleImprovement = EnumSet.noneOf(Improvement.class);
 
-    
     public Mountain() {
         super(false, 999);
     }
@@ -18,6 +17,8 @@ public class Mountain extends Tile {
         setGoldOutput(0);
         setProductionOutput(0);
         setScienceOutput(0);
+
+        calcTechBonus();
     }
 
     @Override

@@ -53,12 +53,14 @@ public abstract class MilitaryUnit extends Unit {
         ArrayList<Point> list = this.getAdjacent();
         ArrayList<Point> attackable = new ArrayList<Point>();
 
-        //get a list of all the adjacent tiles, check to see ones that has a unit, is not water, and belongs to opposing players, removing everything else that's not
-        for (Point p : list) {
-            if (getMapRef().getTile(p.x, p.y).hasUnit()) {
-                if (getMapRef().getTile(p.x, p.y).getUnit().getPlayer() != this.getPlayer()) {
-                    if (!getMapRef().getTile(p.x, p.y).isWater()) {
-                        attackable.add(p);
+        if (!hasEmbarked()) {
+            //get a list of all the adjacent tiles, check to see ones that has a unit, is not water, and belongs to opposing players, removing everything else that's not
+            for (Point p : list) {
+                if (getMapRef().getTile(p.x, p.y).hasUnit()) {
+                    if (getMapRef().getTile(p.x, p.y).getUnit().getPlayer() != this.getPlayer()) {
+                        if (!getMapRef().getTile(p.x, p.y).isWater()) {
+                            attackable.add(p);
+                        }
                     }
                 }
             }
@@ -87,6 +89,10 @@ public abstract class MilitaryUnit extends Unit {
 
             int thisDmg = (int) (30 * Math.pow(1.041, (combat - enemyCombat)));
             int enemyDmg = (int) (30 * Math.pow(1.041, (enemyCombat - combat)));
+
+            if (enemy.hasEmbarked()) {
+                enemyDmg = 0;
+            }
 
             if (this instanceof MeleeUnit && enemy instanceof CalvaryUnit) {
                 thisDmg = (int) (thisDmg * 1.2);

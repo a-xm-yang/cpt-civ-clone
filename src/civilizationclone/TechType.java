@@ -10,27 +10,44 @@ import java.util.Set;
 
 public enum TechType {
 
-    //COST,PREREQUISITE,UNIT,IMPROVEMENT,PROJECT
-    NONE(0, null, null, null, null),
-    AGRICULTURE(20, setOf(NONE),EnumSet.of(UnitType.SETTLER), EnumSet.of(Improvement.FARM), EnumSet.of(CityProject.GRANARY)),
-    POTTERY(25, setOf(AGRICULTURE), null, null, null),
-    CALENDER(30, setOf(POTTERY), null, null, null),
-    WRITING(35, setOf(CALENDER), null, null, EnumSet.of(CityProject.LIBRARY)),
-    ANIMAL(25, setOf(AGRICULTURE), null, EnumSet.of(Improvement.RANCH), null),
-    HORSERIDING(35, setOf(ANIMAL), EnumSet.of(UnitType.HORSEMAN), null, null);
-
+    //COST,PREREQUISITE,UNIT,IMPROVEMENT,PROJECT, SPECIAL
+    NONE(0, null, null, null, null, null),
+    AGRICULTURE(20, setOf(NONE), EnumSet.of(UnitType.SETTLER), EnumSet.of(Improvement.FARM), null, null),
+    POTTERY(25, setOf(AGRICULTURE), null, null, EnumSet.of(CityProject.GRANARY), null),
+    IRRIGATION(45, setOf(POTTERY), null, EnumSet.of(Improvement.PLANTATION), null, null),
+    WRITING(45, setOf(POTTERY), null, null, EnumSet.of(CityProject.LIBRARY), null),
+    CURRENCY(120, setOf(WRITING), null, null, EnumSet.of(CityProject.MARKET), null),
+    APPRENTICESHIP(250, setOf(CURRENCY), null, null, EnumSet.of(CityProject.WORKSHOP), "Increase production of all mine sites."),
+    EDUCATION(350, setOf(APPRENTICESHIP), null, EnumSet.of(Improvement.ACADEMY), EnumSet.of(CityProject.UNIVERSITY), null),
+    //MASSPRODUCTION(445, setOf(EDUCATION, SHIPBUILDING), ),
+    ANIMAL(25, setOf(AGRICULTURE), null, EnumSet.of(Improvement.RANCH), null, null),
+    ARCHERY(45, setOf(ANIMAL), EnumSet.of(UnitType.ARCHER), null, null, null),
+    HORSERIDING(120, setOf(ARCHERY), EnumSet.of(UnitType.HORSEMAN), null, EnumSet.of(CityProject.STABLE), null),
+    STIRRUPS(350, setOf(HORSERIDING), EnumSet.of(UnitType.KNIGHT), null, null, null),
+    SAILING(25, setOf(AGRICULTURE), EnumSet.of(UnitType.GALLEY), null, null, "Allows land units to embark."),
+    NAVIGATION(120, setOf(SAILING), null, EnumSet.of(Improvement.FISHING), EnumSet.of(CityProject.LIGHTHOUSE), null),
+    SHIPBUILDING(180, setOf(NAVIGATION), EnumSet.of(UnitType.QUADRIREME), null, null, null),
+    CARTOGRAPHY(445, setOf(SHIPBUILDING), EnumSet.of(UnitType.CARAVEL), null, null, "All fishing sites receive bonus food and gold"),
+    MINING(25, setOf(AGRICULTURE), null, EnumSet.of(Improvement.MINE), null, null),
+    MASONRY(80, setOf(MINING), null, null, EnumSet.of(CityProject.ANCIENTWALL), null),
+    IRONWORKING(120, setOf(MINING), EnumSet.of(UnitType.SWORDSMAN), null, EnumSet.of(CityProject.BARRACKS), null),
+    CONSTRUCTION(120, setOf(MASONRY, HORSERIDING), null, null, EnumSet.of(CityProject.MEDIEVALWALL), null),
+    ENGINEERING(200, setOf(MASONRY, IRONWORKING), EnumSet.of(UnitType.CATAPULT, UnitType.CROSSBOWMAN), null, null, null);
+    
     private int techCost;
     private Set<TechType> prerequisites;
     private Set<UnitType> unlockUnit;
     private Set<Improvement> unlockImprovement;
     private Set<CityProject> unlockProject;
-
-    private TechType(int techCost, Set<TechType> prerequisites, Set<UnitType> unlockUnit, Set<Improvement> unlockImprovement, Set<CityProject> unlockProject) {
+    private String message;
+    
+    private TechType(int techCost, Set<TechType> prerequisites, Set<UnitType> unlockUnit, Set<Improvement> unlockImprovement, Set<CityProject> unlockProject, String message) {
         this.techCost = techCost;
         this.prerequisites = prerequisites;
         this.unlockUnit = unlockUnit;
         this.unlockImprovement = unlockImprovement;
         this.unlockProject = unlockProject;
+        this.message = message;
     }
 
     //GETTER & HELPER
@@ -38,23 +55,27 @@ public enum TechType {
     public Set<TechType> getPrerequisites() {
         return prerequisites;
     }
-
+    
     public Set<UnitType> getUnlockUnit() {
         return unlockUnit;
     }
-
+    
     public Set<Improvement> getUnlockImprovement() {
         return unlockImprovement;
     }
-
+    
     public Set<CityProject> getUnlockProject() {
         return unlockProject;
     }
-
+    
     public int getTechCost() {
         return techCost;
     }
-
+    
+    public String getMessage() {
+        return message;
+    }
+    
     private static Set<TechType> setOf(TechType... values) {
         return new HashSet<>(Arrays.asList(values));
     }

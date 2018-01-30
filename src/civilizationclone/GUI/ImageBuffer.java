@@ -49,6 +49,7 @@ public class ImageBuffer {
     private static Image caravel;
     private static Image ironclad;
     private static Image destroyer;
+    private static Image embark;
 
     //MISC
     private static Image closeIcon;
@@ -104,7 +105,7 @@ public class ImageBuffer {
     //TECHTYPES
     private static Image defaultTech;
     private static Image pottery;
-    
+
     //YIELD ICONS
     private static Image gold1;
     private static Image gold2;
@@ -126,16 +127,13 @@ public class ImageBuffer {
     private static Image science3;
     private static Image science4;
     private static Image science5;
-    
+
     //TOGGLES
     private static Image highlightToggle;
     private static Image resourceToggle;
     private static Image yieldsToggle;
-    
-    
-    
-    //</editor-fold>
 
+    //</editor-fold>
     //Image loading
     static {
         try {
@@ -167,6 +165,7 @@ public class ImageBuffer {
             caravel = new Image(new FileInputStream("src/Assets/Units/Caravel.png"), 70, 70, false, false);
             ironclad = new Image(new FileInputStream("src/Assets/Units/Ironclad.png"), 70, 70, false, false);
             galley = new Image(new FileInputStream("src/Assets/Units/Galley.png"), 70, 70, false, false);
+            embark = new Image(new FileInputStream("src/Assets/Units/embark.png"), 70, 70, false, false);
 
             closeIcon = new Image(new FileInputStream("src/Assets/Misc/close_button.png"), 60, 60, false, false);
             confirmIcon = new Image(new FileInputStream("src/Assets/Misc/confirm_icon.png"), 60, 60, true, false);
@@ -216,7 +215,7 @@ public class ImageBuffer {
             churchill = new Image(new FileInputStream("src/Assets/Players/churchill.png"), 60, 60, false, false);
 
             destroyer = new Image(new FileInputStream("src/Assets/Units/Destroyer.png"), 70, 70, false, false);
-            
+
             gold1 = new Image(new FileInputStream("src/Assets/Yields/gold_1.png"), 45, 45, false, false);
             gold2 = new Image(new FileInputStream("src/Assets/Yields/gold_2.png"), 45, 45, false, false);
             gold3 = new Image(new FileInputStream("src/Assets/Yields/gold_3.png"), 45, 45, false, false);
@@ -237,7 +236,7 @@ public class ImageBuffer {
             science3 = new Image(new FileInputStream("src/Assets/Yields/science_3.png"), 45, 45, false, false);
             science4 = new Image(new FileInputStream("src/Assets/Yields/science_4.png"), 45, 45, false, false);
             science5 = new Image(new FileInputStream("src/Assets/Yields/science_5.png"), 45, 45, false, false);
-            
+
             highlightToggle = new Image(new FileInputStream("src/Assets/Misc/highlightToggle.png"), 120, 120, false, false);
             resourceToggle = new Image(new FileInputStream("src/Assets/Misc/resourceToggle.png"), 120, 120, false, false);
             yieldsToggle = new Image(new FileInputStream("src/Assets/Misc/yieldsToggle.png"), 120, 120, false, false);
@@ -249,7 +248,11 @@ public class ImageBuffer {
     }
 
     public static Image getImage(Unit unit) {
-        //Must be added more
+
+        if (unit.hasEmbarked()) {
+            return embark;
+        }
+
         if (unit instanceof BuilderUnit) {
             return builder;
         } else if (unit instanceof ScoutUnit) {
@@ -491,62 +494,59 @@ public class ImageBuffer {
         }
         return destroyer;
     }
-    
-    public static ArrayList<Image> getYieldIcons(Tile t){
+
+    public static ArrayList<Image> getYieldIcons(Tile t) {
         ArrayList<Image> images = new ArrayList<Image>();
-        
-        if (t.getFoodOutput() == 1){
+
+        if (t.getFoodOutput() == 1) {
             images.add(food1);
-        }else if (t.getFoodOutput() == 2){
+        } else if (t.getFoodOutput() == 2) {
             images.add(food2);
-        }else if (t.getFoodOutput() == 3){
+        } else if (t.getFoodOutput() == 3) {
             images.add(food3);
-        }else if (t.getFoodOutput() == 4){
+        } else if (t.getFoodOutput() == 4) {
             images.add(food4);
-        }else if (t.getFoodOutput() >= 5){
+        } else if (t.getFoodOutput() >= 5) {
             images.add(food5);
         }
-        
-        if (t.getGoldOutput() == 1){
+
+        if (t.getGoldOutput() == 1) {
             images.add(gold1);
-        }else if (t.getGoldOutput() == 2){
+        } else if (t.getGoldOutput() == 2) {
             images.add(gold2);
-        }else if (t.getGoldOutput() == 3){
+        } else if (t.getGoldOutput() == 3) {
             images.add(gold3);
-        }else if (t.getGoldOutput() == 4){
+        } else if (t.getGoldOutput() == 4) {
             images.add(gold4);
-        }else if (t.getGoldOutput() >= 5){
+        } else if (t.getGoldOutput() >= 5) {
             images.add(gold5);
         }
-        
-        if (t.getScienceOutput() == 1){
+
+        if (t.getScienceOutput() == 1) {
             images.add(science1);
-        }else if (t.getScienceOutput() == 2){
+        } else if (t.getScienceOutput() == 2) {
             images.add(science2);
-        }else if (t.getScienceOutput() == 3){
+        } else if (t.getScienceOutput() == 3) {
             images.add(science3);
-        }else if (t.getScienceOutput() == 4){
+        } else if (t.getScienceOutput() == 4) {
             images.add(science4);
-        }else if (t.getScienceOutput() >= 5){
+        } else if (t.getScienceOutput() >= 5) {
             images.add(science5);
         }
-        
-        if (t.getProductionOutput() == 1){
+
+        if (t.getProductionOutput() == 1) {
             images.add(production1);
-        }else if (t.getProductionOutput() == 2){
+        } else if (t.getProductionOutput() == 2) {
             images.add(production2);
-        }else if (t.getProductionOutput() == 3){
+        } else if (t.getProductionOutput() == 3) {
             images.add(production3);
-        }else if (t.getProductionOutput() == 4){
+        } else if (t.getProductionOutput() == 4) {
             images.add(production4);
-        }else if (t.getProductionOutput() >= 5){
+        } else if (t.getProductionOutput() >= 5) {
             images.add(production5);
         }
-        
-        
+
         return images;
     }
-    
-    
 
 }

@@ -7,7 +7,7 @@ import java.util.Set;
 public class Ocean extends Tile {
 
     static Set<Improvement> possibleImprovement = EnumSet.of(Improvement.FISHING);
-    
+
     public Ocean() {
         super(true, 1);
     }
@@ -18,12 +18,14 @@ public class Ocean extends Tile {
         setGoldOutput(1 + getImprovement().getGoldBonus() + getResource().getGoldBonus());
         setProductionOutput(getImprovement().getProductionBonus() + getResource().getProductionBonus());
         setScienceOutput(getImprovement().getScienceBonus() + getResource().getTechBonus());
+
+        calcTechBonus();
     }
 
-       @Override
+    @Override
     public Set<Improvement> getPossibleImprovements() {
         Set<Improvement> improve = possibleImprovement;
-        if(this.getResource() != NONE){
+        if (this.getResource() != NONE) {
             improve.add(this.getResource().getImprovementType());
         }
         return improve;

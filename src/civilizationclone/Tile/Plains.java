@@ -14,10 +14,12 @@ public class Plains extends Tile {
 
     @Override
     public void calcOutput() {
-        setFoodOutput(2 + getImprovement().getFoodBonus() + getResource().getFoodBonus());
+        setFoodOutput(1 + getImprovement().getFoodBonus() + getResource().getFoodBonus());
         setGoldOutput(getImprovement().getGoldBonus() + getResource().getGoldBonus());
-        setProductionOutput(1 + getImprovement().getProductionBonus() + getResource().getProductionBonus());
+        setProductionOutput(0 + getImprovement().getProductionBonus() + getResource().getProductionBonus());
         setScienceOutput(getImprovement().getScienceBonus() + getResource().getTechBonus());
+        
+        calcTechBonus();
     }
 
     @Override

@@ -85,7 +85,6 @@ public class DisplayTile extends Polygon {
                 
 
             if (accessLevel == 1) {
-                //ADD RESOURCE PRINTING
                 setEffect(shade);
             } else {
                 //FULL ACCESS

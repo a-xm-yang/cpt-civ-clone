@@ -1,6 +1,7 @@
 package civilizationclone.Tile;
 
 import civilizationclone.City;
+import civilizationclone.TechType;
 import civilizationclone.Unit.Unit;
 import java.util.Set;
 
@@ -23,13 +24,36 @@ public abstract class Tile {
     public Tile(boolean isWater, int movementCost) {
         this.isWater = isWater;
         this.movementCost = movementCost;
-        
+
         this.resource = Resource.NONE;
         this.improvement = Improvement.NONE;
     }
 
     public abstract void calcOutput();
-    
+
+    public void calcTechBonus() {
+        if (controllingCity == null) {
+            return;
+        }
+
+        int foodOutput = this.foodOutput;
+        int productionOutput = this.productionOutput;
+        int scienceOutput = this.scienceOutput;
+        int goldOutput = this.goldOutput;
+
+        if (getImprovement() == Improvement.FISHING && controllingCity.getPlayer().getOwnedTech().contains(TechType.CARTOGRAPHY)) {
+            foodOutput++;
+            goldOutput++;
+        } else if (getImprovement() == Improvement.MINE && controllingCity.getPlayer().getOwnedTech().contains(TechType.APPRENTICESHIP)) {
+            productionOutput++;
+        }
+
+        this.foodOutput = foodOutput;
+        this.productionOutput = productionOutput;
+        this.scienceOutput = scienceOutput;
+        this.goldOutput = goldOutput;
+    }
+
     public abstract Set<Improvement> getPossibleImprovements();
 
     public boolean isWater() {
@@ -119,11 +143,11 @@ public abstract class Tile {
     public int getFoodOutput() {
         return foodOutput;
     }
-    
+
     public void setFoodOutput(int foodOutput) {
         this.foodOutput = foodOutput;
     }
-    
+
     public City getControllingCity() {
         return controllingCity;
     }
@@ -131,13 +155,10 @@ public abstract class Tile {
     public void setControllingCity(City controllingCity) {
         this.controllingCity = controllingCity;
     }
-    
-    public boolean isControlled(){
+
+    public boolean isControlled() {
         return !(this.controllingCity == null);
     }
-    
+
     //</editor-fold>
-
-    
-
 }
