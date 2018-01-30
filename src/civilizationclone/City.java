@@ -256,7 +256,7 @@ public class City {
         this.player.getCityList().remove(this);
         this.player = p;
         this.player.getCityList().add(this);
-
+        updateTiles();
     }
 
     public void addTile(Tile t) {

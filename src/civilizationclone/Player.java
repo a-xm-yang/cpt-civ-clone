@@ -114,7 +114,7 @@ public class Player {
             }
         }
 
-        if (research == TechType.NONE) {
+        if (research == TechType.NONE && !researchableTech.isEmpty()) {
             return 3;
         }
 
@@ -181,12 +181,12 @@ public class Player {
                 total -= 2;
             }
         }
-        
+
         //if the country is going broke
-        if (getGoldIncome() < 0 || getCurrentGold() < 0){
+        if (getGoldIncome() < 0 || getCurrentGold() < 0) {
             total -= 2;
         }
-        
+
         happiness = total;
     }
 
@@ -211,8 +211,8 @@ public class Player {
         if (t.getUnlockProject() != null) {
             ownedCityProject.addAll(t.getUnlockProject());
         }
-        
-        for (City c: cityList){
+
+        for (City c : cityList) {
             c.updateTiles();
         }
     }

@@ -9,8 +9,13 @@ public enum CityProject {
     STABLE(105, 180, 0, 4, 0, 0),
     BARRACKS(105, 180, 0, 4, 0, 0),
     MARKET(105, 180, 0, 0, 0, 4),
-    WORKSHOP(175, 305, 0, 6, 0, 0),
+    WORKSHOP(175, 305, 0, 5, 0, 0),
     UNIVERSITY(200, 350, 6, 0, 0, 0),
+    BANK(275, 480, 0, 0, 0, 7),
+    SHIPYARD(265, 460, 0, 0, 3, 3),
+    FACTORY(380, 660, 0, 7, 0, 0),
+    HOSPITAL(400, 700, 0, 0, 5, 0),
+    STOCKEXCHANGE(380, 660, 0, 0, 0, 10),
     ANCIENTWALL(80, 0, 0, 0, 0, 0),
     MEDIEVALWALL(150, 0, 0, 0, 0, 0);
 

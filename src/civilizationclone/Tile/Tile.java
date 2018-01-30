@@ -42,10 +42,31 @@ public abstract class Tile {
         int goldOutput = this.goldOutput;
 
         if (getImprovement() == Improvement.FISHING && controllingCity.getPlayer().getOwnedTech().contains(TechType.CARTOGRAPHY)) {
-            foodOutput++;
             goldOutput++;
-        } else if (getImprovement() == Improvement.MINE && controllingCity.getPlayer().getOwnedTech().contains(TechType.APPRENTICESHIP)) {
-            productionOutput++;
+        } else if (getImprovement() == Improvement.MINE) {
+            if (controllingCity.getPlayer().getOwnedTech().contains(TechType.APPRENTICESHIP)) {
+                productionOutput++;
+            }
+            if (controllingCity.getPlayer().getOwnedTech().contains(TechType.INDUSTRIALIZATION)) {
+                productionOutput++;
+            }
+        } else if (getImprovement() == Improvement.PLANTATION) {
+            if (controllingCity.getPlayer().getOwnedTech().contains(TechType.BANKING)) {
+                goldOutput++;
+            }
+            if (controllingCity.getPlayer().getOwnedTech().contains(TechType.SCIENTIFIC_THEORY)) {
+
+            }
+        } else if (getImprovement() == Improvement.ACADEMY && controllingCity.getPlayer().getOwnedTech().contains(TechType.ASTRONOMY)) {
+            scienceOutput++;
+        } else if (getImprovement() == Improvement.RANCH) {
+            if (controllingCity.getPlayer().getOwnedTech().contains(TechType.STIRRUPS)) {
+                foodOutput++;
+            }
+        } else if (getImprovement() == Improvement.FARM) {
+            if (controllingCity.getPlayer().getOwnedTech().contains(TechType.REPLACEABLE_PARTS)) {
+                foodOutput += 2;
+            }
         }
 
         this.foodOutput = foodOutput;
