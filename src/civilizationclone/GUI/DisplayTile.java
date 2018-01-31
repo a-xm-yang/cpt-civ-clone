@@ -87,6 +87,22 @@ public class DisplayTile extends Polygon {
             if (accessLevel == 1) {
                 setEffect(shade);
             } else {
+                if (tile.hasCity() && tile.getCity().getHealth() != tile.getCity().getMaxHealth()){
+                    gc.setFill(Color.BLACK);
+                    
+                    System.out.println("C " + tile.getCity().getHealth());
+                    System.out.println("M " + tile.getCity().getMaxHealth());
+                        gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50, 5);
+                        if((double)(tile.getCity().getHealthPercentage()) >= .6){
+                            gc.setFill(Color.LAWNGREEN);
+                        }else if((double)(tile.getCity().getHealthPercentage()) >= .3){
+                            gc.setFill(Color.YELLOW);
+                        }else{
+                            gc.setFill(Color.RED);
+                        }
+                        gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50*((double)tile.getCity().getHealthPercentage()), 5);
+                }
+                
                 //FULL ACCESS
                 if (tile.getImprovement() != Improvement.NONE) {
                     gc.drawImage(ImageBuffer.getImage(tile.getImprovement()), 5 + getTranslateX(), 20 + getTranslateY());

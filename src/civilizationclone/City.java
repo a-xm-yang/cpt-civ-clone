@@ -50,6 +50,7 @@ public class City {
 
         realPopulation = 1000;
         maxHealth = 300;
+        health = maxHealth;
         currentProduction = 0;
 
         ownedTiles = new HashSet<>();
@@ -385,6 +386,10 @@ public class City {
         }
 
         return list;
+    }
+    
+    public double getHealthPercentage() {
+        return (health * 1.0) / maxHealth;
     }
 
     public Player getOriginalOwner() {
