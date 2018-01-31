@@ -205,7 +205,6 @@ public class SciencePane extends Group {
         private void updateInfo() {
 
             String selection = (String) comboBox.getValue();
-            System.out.println(selection);
 
             for (TechType t : player.getResearchableTech()) {
                 if (selection.equals(t.name())) {

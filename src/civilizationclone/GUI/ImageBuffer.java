@@ -369,12 +369,12 @@ public class ImageBuffer {
 
     public static Image getImage(TechType t) {
 
-        switch (t) {
-            case POTTERY:
-                return pottery;
-            default:
-                return defaultTech;
+        //Loading tech is not often hence this is fine
+        if (t != TechType.NONE) {
+            return (new Image(ImageBuffer.class.getResourceAsStream("/Assets/Tech/" + t.name().toLowerCase() + ".png"), 100, 100, false, false));
         }
+        
+        return defaultTech;
 
     }
 

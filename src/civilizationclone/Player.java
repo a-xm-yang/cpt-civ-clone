@@ -17,7 +17,7 @@ public class Player {
     //Variables that a player has
     //<editor-fold>
     private String name;
-    
+
     private boolean defeated;
 
     private TechType research;
@@ -100,8 +100,8 @@ public class Player {
         for (Unit unit : unitList) {
             unit.resetMovement();
         }
-        
-        if(cityList.size()==0 && unitList.isEmpty()){
+
+        if (cityList.size() == 0 && unitList.isEmpty()) {
             defeated = true;
         }
 
@@ -199,8 +199,6 @@ public class Player {
     public boolean isDefeated() {
         return defeated;
     }
-    
-    
 
     //ADDING FUNCTIONS FOR PLAYER
     //<editor-fold>
@@ -209,7 +207,7 @@ public class Player {
         if (t.getUnlockUnit() != null) {
             for (UnitType u : t.getUnlockUnit()) {
                 for (UnitType ut : buildableUnit) {
-                    if (ut.getCorrespondingClass().getSuperclass().equals(u.getCorrespondingClass().getSuperclass()) && ut!=UnitType.BUILDER) {
+                    if (ut.getCorrespondingClass().getSuperclass().equals(u.getCorrespondingClass().getSuperclass()) && ut != UnitType.BUILDER) {
                         buildableUnit.remove(ut);
                         break;
                     }
@@ -249,6 +247,11 @@ public class Player {
                 exploredTiles.add(t);
             }
         }
+    }
+
+    //strictly for testing, not invoked in game
+    public void addResearchableTech(TechType t) {
+        researchableTech.add(t);
     }
     //</editor-fold>
 

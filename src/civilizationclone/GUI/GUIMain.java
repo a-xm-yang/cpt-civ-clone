@@ -31,8 +31,8 @@ public class GUIMain extends Application {
 
         primaryStage.setResizable(false);
 
-       // primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage), resX, resY));
-        primaryStage.setScene(new Scene(startWithoutMenu(), 1200, 1000));
+        primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage), resX, resY));
+        //primaryStage.setScene(new Scene(startWithoutMenu(), 1200, 1000));
 
         primaryStage.setTitle("Alex Yang's Colonization II");
         primaryStage.show();
@@ -51,7 +51,7 @@ public class GUIMain extends Application {
         //   p.add(new Player("Franklin Roosevelt"));
         //   p.add(new Player("Mao Zedong"));
         //   p.add(new Player("Bennito Mussolini"));
-         testingStats(p.get(0));
+        testingStats(p.get(0));
         //testingStats(p.get(1));
 
         gamePane = new GamePane(gameMap, p, 1200, 1000, true);
@@ -62,7 +62,7 @@ public class GUIMain extends Application {
         p.setTechIncome(10);
         p.setCurrentGold(100000000);
 
-        for (TechType t: TechType.values()){
+        for (TechType t : TechType.values()) {
             p.addTech(t);
         }
     }

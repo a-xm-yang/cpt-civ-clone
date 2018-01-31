@@ -24,11 +24,13 @@ public abstract class RangeUnit extends MilitaryUnit {
         ArrayList<Point> list = getAdjacent(2);
         ArrayList<Point> attackable = new ArrayList<Point>();
 
-        //get a list of all the adjacent tiles, check to see ones that has a unit, is not water, and belongs to opposing players, removing everything else that's not
-        for (Point p : list) {
-            if (getMapRef().getTile(p.x, p.y).hasUnit()) {
-                if (getMapRef().getTile(p.x, p.y).getUnit().getPlayer() != this.getPlayer()) {
-                    attackable.add(p);
+        //if you're not on water, get a list of all the adjacent tiles, check to see ones that has a unit, and belongs to opposing players, removing everything else that's not
+        if (!hasEmbarked()) {
+            for (Point p : list) {
+                if (getMapRef().getTile(p.x, p.y).hasUnit()) {
+                    if (getMapRef().getTile(p.x, p.y).getUnit().getPlayer() != this.getPlayer()) {
+                        attackable.add(p);
+                    }
                 }
             }
         }

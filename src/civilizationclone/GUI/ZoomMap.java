@@ -140,6 +140,10 @@ public class ZoomMap extends Group {
             return;
         }
 
+        //Remove previous unit menu
+        getChildren().remove(unitMenu);
+        unitMenu = null;
+
         //in case it doesn't exactly hit on a tile (which indeed happens)
         Tile clickedTile;
         try {
@@ -164,8 +168,7 @@ public class ZoomMap extends Group {
         } else {
 
             Point clickPoint = ((DisplayTile) e.getTarget()).getPoint();
-
-            //if movement is desired
+            
             if (highlightType == highlightType.MOVEMENT) {
                 for (Point p : highlightedTiles) {
                     if (clickPoint.equals(p)) {
@@ -186,7 +189,6 @@ public class ZoomMap extends Group {
                         } else {
                             m.siegeAttack(Unit.getMapRef().getTile(p).getCity());
                         }
-
                         updateFogOfWar();
                     }
                 }
@@ -205,8 +207,6 @@ public class ZoomMap extends Group {
             selectedTile = null;
             highlightType = HighlightType.NONE;
             cleanHighlight();
-            getChildren().remove(unitMenu);
-            unitMenu = null;
         }
 
         //e.consume();
