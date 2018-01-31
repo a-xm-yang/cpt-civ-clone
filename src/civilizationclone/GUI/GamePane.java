@@ -8,6 +8,7 @@ import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -35,6 +36,7 @@ public class GamePane extends Pane {
 
     public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY, boolean isNewGame) {
 
+        //Loading music 
         background = new Media(getClass().getClassLoader().getResource("Assets/Misc/babayetu.mp3").toExternalForm());
         win = new Media(getClass().getClassLoader().getResource("Assets/Misc/ConquestVictory.mp3").toExternalForm());
         loss = new Media(getClass().getClassLoader().getResource("Assets/Misc/loss.mp3").toExternalForm());
@@ -53,8 +55,8 @@ public class GamePane extends Pane {
         this.setPrefWidth(resX);
 
         currentPlayer = playerList.get(0);
-
-        //Reset these later to just settler and warrior
+        
+        //Grant each player initial units if it's a new game
         if (isNewGame) {
             for (Player player : playerList) {
                 do {
@@ -69,7 +71,6 @@ public class GamePane extends Pane {
                 } while (true);
             }
             currentPlayer.startTurn();
-
         }
 
         zoomMap = createFalseZoomMap(gameMap.getMap());

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TextField;
@@ -116,6 +117,10 @@ public class ZoomMap extends Group {
 
         setOnMousePressed(onMousePressedEventHandler);
         setOnMouseDragged(onMouseDraggedEventHandler);
+        setOnMouseReleased(e -> {
+            //reset cursor
+            setCursor(Cursor.DEFAULT);
+        });
 
         calculateBounds();
         repaint();
@@ -307,9 +312,9 @@ public class ZoomMap extends Group {
         selectedTile.getUnit().delete();
         updateFogOfWar();
         repaint();
-        
-        if (getParent() instanceof GamePane){
-            ((GamePane)getParent()).updateInfo();
+
+        if (getParent() instanceof GamePane) {
+            ((GamePane) getParent()).updateInfo();
         }
     }
 
@@ -376,8 +381,8 @@ public class ZoomMap extends Group {
 
     //handlers for scrolling ---------------
     //<editor-fold>
-    private void resize(ScrollEvent event){
-        
+    private void resize(ScrollEvent event) {
+
         if (event.getDeltaY() == 0) {
             return;
         }
@@ -431,7 +436,6 @@ public class ZoomMap extends Group {
 
     //GETTERS AND SETTERS
     //<editor-fold>
-    
     public void setSelectedTile(Tile selectedTile) {
         this.selectedTile = selectedTile;
     }
@@ -491,7 +495,7 @@ public class ZoomMap extends Group {
     public Canvas getCanvas() {
         return canvas;
     }
-    
+
     public double getTopCap() {
         return topCap;
     }
@@ -519,7 +523,6 @@ public class ZoomMap extends Group {
 
             orgTranslateX = getTranslateX();
             orgTranslateY = getTranslateY();
-
         }
     };
 
@@ -545,6 +548,8 @@ public class ZoomMap extends Group {
             } else {
                 setTranslateX(newTranslateX);
             }
+
+            setCursor(Cursor.MOVE);
         }
 
     };
