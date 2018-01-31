@@ -6,6 +6,8 @@ public enum Improvement{
     NONE(0,0,0,0),
     FARM(0,0,2,0), 
     MINE(0,2,0,0), 
+    QUARRY(0,2,0,0),
+    OILWELL(1,2,0,0),
     FISHING(1,0,1,0), 
     RANCH(0,1,1,0), 
     PLANTATION(2,0,0,0), 
