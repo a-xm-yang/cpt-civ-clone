@@ -5,6 +5,7 @@ import static civilizationclone.GUI.MiscAsset.GOLD;
 import static civilizationclone.GUI.MiscAsset.HAPPY;
 import static civilizationclone.GUI.MiscAsset.SCIENCE;
 import civilizationclone.Player;
+import java.util.ArrayList;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,7 +26,7 @@ public class StatusBarPane extends Group{
     private ImageView goldI;
     private ImageView sciI;
     private ImageView happyI;
-    private ImageView[] playerI;
+    private ArrayList<ImageView> playerI;
     
     private int resX;
     private int resY;
@@ -37,12 +38,6 @@ public class StatusBarPane extends Group{
         sciT = new Text();
         happyT = new Text();
         turnT = new Text();
-        playerI = new ImageView[gamePaneRef.getPlayerList().size()];
-        
-        for(int i=0;i<playerI.length;i++){
-            playerI[i] = new ImageView(ImageBuffer.getImage(gamePaneRef.getPlayerList().get(i).getLeader()));
-            
-        }
         
         goldI = new ImageView(ImageBuffer.getImage(GOLD));
         sciI = new ImageView(ImageBuffer.getImage(SCIENCE));
@@ -54,6 +49,8 @@ public class StatusBarPane extends Group{
         this.gamePaneRef = gamePaneRef;
         this.rect = new Rectangle(0, 0, resX + 50, 40);
         rect.setFill(Color.BLACK);
+        
+        initHeads();
         
         updateTexts();
         goldT.setFill(Color.YELLOW);
@@ -87,16 +84,43 @@ public class StatusBarPane extends Group{
             i.setTranslateY(60);
         }
         
-        for(int i=playerI.length-1;i>=0;i--){
-            playerI[i].setTranslateX(resX - (playerI.length - i) * 70);
+        getChildren().addAll(rect, sciT, goldT, happyT, turnT, sciI, goldI, happyI);
+        
+        
+        updateCurrentHeads();
+    }
+    
+    public void initHeads(){
+        
+        playerI = new ArrayList<ImageView>();
+        
+        for(int i=0;i<gamePaneRef.getPlayerList().size();i++){
+            playerI.add(new ImageView(ImageBuffer.getImage(gamePaneRef.getPlayerList().get(i).getLeader())));
+            
         }
         
-        getChildren().addAll(rect, sciT, goldT, happyT, turnT, sciI, goldI, happyI);
+        arrangeHeads();
+        
         for(ImageView i: playerI){
             getChildren().add(i);
         }
-        
-        updateCurrentHeads();
+    }
+    
+    public void arrangeHeads(){
+        for(int i=playerI.size()-1;i>=0;i--){
+            playerI.get(i).setTranslateX(resX - (playerI.size() - i) * 70);
+        }
+    }
+    
+    public void removeHead(Player p){
+        for(ImageView i: playerI){
+            if(i.getImage().equals(ImageBuffer.getImage(p.getLeader()))){
+                getChildren().remove(i);
+                playerI.remove(i);
+                break;
+            }
+        }
+        arrangeHeads();
     }
     
     public void setCurrentPlayer(Player p){
@@ -137,11 +161,13 @@ public class StatusBarPane extends Group{
     }
     
     public void updateCurrentHeads(){
-        for(int i=0;i<playerI.length;i++){
+        
+        
+        for(int i=0;i<playerI.size();i++){
             if(player.equals(gamePaneRef.getPlayerList().get(i))){
-                playerI[i].setTranslateY(90);
+                playerI.get(i).setTranslateY(90);
             }else{
-                playerI[i].setTranslateY(50);
+                playerI.get(i).setTranslateY(50);
             }
                 
         }

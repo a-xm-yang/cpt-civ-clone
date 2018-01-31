@@ -8,11 +8,19 @@ import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class GamePane extends Pane {
 
@@ -24,7 +32,7 @@ public class GamePane extends Pane {
     private StatusBarPane statusBar;
     private SciencePane sciencePane;
     private Minimap minimap;
-    private MediaPlayer mp;
+    private MediaPlayer mp, dmp, wmp;
     private Media win, loss, background;
 
     //game data
@@ -39,10 +47,8 @@ public class GamePane extends Pane {
         win = new Media(new File("src/Assets/Misc/ConquestVictory.mp3").toURI().toString());
         loss = new Media(new File("src/Assets/Misc/Loss.mp3").toURI().toString());
         mp = new MediaPlayer(background);
+        mp.play();
         
-        
-        new MediaPlayer(win).play();
-
         this.gameMap = gameMap;
         this.playerList = playerList;
         this.resX = resX;
@@ -104,6 +110,21 @@ public class GamePane extends Pane {
         statusBar.setCurrentPlayer(currentPlayer);
         sciencePane.setCurrentPlayer(currentPlayer);
         zoomMap.setCurrentPlayer(currentPlayer);
+        
+        if (currentPlayer.isDefeated()){            
+            dmp = new MediaPlayer(loss);
+            dmp.play();
+            
+            this.getChildren().add(new DefeatedPrompt(resX, resY, true));
+            
+        }
+        
+        if (playerList.size()==1){
+            wmp = new MediaPlayer(win);
+            wmp.play();
+            
+            this.getChildren().add(new DefeatedPrompt(resX, resY, false));
+        }
     }
 
     public void jumpToNextAction() {
@@ -213,5 +234,76 @@ public class GamePane extends Pane {
     public ArrayList<Player> getPlayerList() {
         return playerList;
     }
+    
+    private void removeDefeatedPrompt(GamePane.DefeatedPrompt dp) {
+        getChildren().remove(dp);
+        
+    }
+    
+    private class DefeatedPrompt extends Pane {
+
+        private Rectangle border;
+        private Circle confirmButton;
+        private TextField textField;
+        private Text title;
+
+        private boolean canConfirm;
+        private boolean defeated;
+
+        public DefeatedPrompt(int resX, int resY, boolean defeated) {
+            canConfirm = true;
+            this.defeated = defeated;
+
+            border = new Rectangle(400, 100);
+            border.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CITY_OPTION_BACKGROUND), 0, 0, 1, 1, true));
+            border.setStrokeWidth(5);
+            border.setStroke(Color.BLACK);
+
+            setTranslateX(resX / 2 - border.getWidth()/2);
+            setTranslateY(resY / 2 - border.getHeight()/2);
+            
+            if(defeated){
+                title = new Text("YOU HAVE BEEN DEFEATED");
+            }else{
+                title = new Text("YOU ARE VICTORIOUS");
+            }
+
+            title.setFont(Font.font("OSWALD", 25));
+            title.setFill(Color.WHITESMOKE);
+            title.setTranslateY(border.getWidth() / 2 - title.getLayoutBounds().getWidth() / 2);
+            title.setTranslateX(15);
+
+            confirmButton = new Circle(border.getWidth() - 20, border.getHeight()-20, 14.5);
+            confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
+            confirmButton.setOnMouseClicked((e) -> {
+                e.consume();
+                close();
+                
+            });
+
+            getChildren().addAll(border, title, confirmButton);
+
+        }
+
+        private void close() {
+            removeDefeatedPrompt(this);
+            if(defeated){   
+                Player pP = currentPlayer;
+                
+
+                playerList.remove(pP);
+                statusBar.removeHead(pP);
+                nextTurn();
+                dmp.pause();
+            }else{
+                System.out.println("DEWIT");
+                wmp.pause();
+            }
+            
+            
+        }
+
+    }
+    
 
 }

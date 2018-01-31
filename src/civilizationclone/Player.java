@@ -196,6 +196,12 @@ public class Player {
         happiness = total;
     }
 
+    public boolean isDefeated() {
+        return defeated;
+    }
+    
+    
+
     //ADDING FUNCTIONS FOR PLAYER
     //<editor-fold>
     public void addTech(TechType t) {
