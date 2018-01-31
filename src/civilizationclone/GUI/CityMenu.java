@@ -6,6 +6,7 @@ import civilizationclone.Tile.Improvement;
 import civilizationclone.Tile.Resource;
 import civilizationclone.Tile.Tile;
 import civilizationclone.Unit.*;
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +18,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -42,6 +45,9 @@ public class CityMenu extends Pane {
     private Circle closeButton, expansionIcon;
     private ImageView productionIcon, purchaseIcon, citizenIcon, productionDisplay;
     private boolean hasOptionOpen;
+
+    private static Effect shadowBig = new DropShadow(45, Color.BLACK);
+    private static Effect noneEffect = null;
 
     public CityMenu(City city, int resX, int resY, ZoomMap zoomMapRef) {
 
@@ -91,6 +97,9 @@ public class CityMenu extends Pane {
             openProductionMenu();
             e.consume();
         });
+        productionIcon.effectProperty().bind(
+                Bindings.when(productionIcon.hoverProperty()).then(shadowBig).otherwise(noneEffect)
+        );
 
         purchaseIcon = new ImageView(ImageBuffer.getImage(MiscAsset.GOLD_ICON));
         purchaseIcon.setTranslateX(175);
@@ -99,6 +108,9 @@ public class CityMenu extends Pane {
             openPurchaseMenu();
             e.consume();
         });
+        purchaseIcon.effectProperty().bind(
+                Bindings.when(purchaseIcon.hoverProperty()).then(shadowBig).otherwise(noneEffect)
+        );
 
         citizenIcon = new ImageView(ImageBuffer.getImage(MiscAsset.CITIZEN_ICON));
         citizenIcon.setTranslateX(175);
@@ -107,6 +119,9 @@ public class CityMenu extends Pane {
             openExpansionMenu();
             e.consume();
         });
+        citizenIcon.effectProperty().bind(
+                Bindings.when(citizenIcon.hoverProperty()).then(shadowBig).otherwise(noneEffect)
+        );
 
         expansionIcon = new Circle(32);
         expansionIcon.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.EXPANSION_ICON)));
@@ -249,9 +264,10 @@ public class CityMenu extends Pane {
 
             //add descriptions later
             s = s + "Production Cost: " + ((CityProject) e).getProductionCost();
+            s = s + "\n";
 
             if (((CityProject) e).getFoodBonus() > 0) {
-                s = s + "\n\nFood Bonus: " + ((CityProject) e).getFoodBonus();
+                s = s + "\nFood Bonus: " + ((CityProject) e).getFoodBonus();
             }
 
             if (((CityProject) e).getTechBonus() > 0) {
@@ -323,11 +339,10 @@ public class CityMenu extends Pane {
                 if (canConfirm) {
                     confirm();
                 }
-
             });
 
             title = new Text("SELECT CITY PRODUCTION");
-            title.setFont(Font.font("Times New Roman", 25));
+            title.setFont(Font.font("Oswald", 25));
             title.setFill(Color.WHITESMOKE);
             title.setTranslateY(25);
             title.setTranslateX(5);
@@ -446,6 +461,15 @@ public class CityMenu extends Pane {
 
             for (CityProject c : city.getPlayer().getOwnedCityProject()) {
                 if (!city.getBuiltProjects().contains(c)) {
+                    if (c == CityProject.BARRACKS) {
+                        if (city.getBuiltProjects().contains(CityProject.STABLE)) {
+                            continue;
+                        }
+                    } else if (c == CityProject.STABLE) {
+                        if (city.getBuiltProjects().contains(CityProject.BARRACKS)) {
+                            continue;
+                        }
+                    }
                     options.add(c.name());
                 } else {
                     options.add(c.name() + " (Owned)");
@@ -505,7 +529,7 @@ public class CityMenu extends Pane {
             });
 
             title = new Text("PURCHASE WITH GOLD");
-            title.setFont(Font.font("Times New Roman", 25));
+            title.setFont(Font.font("Oswald", 25));
             title.setFill(Color.WHITESMOKE);
             title.setTranslateY(25);
             title.setTranslateX(5);
@@ -598,7 +622,6 @@ public class CityMenu extends Pane {
                         city.getPlayer().setCurrentGold(city.getPlayer().getCurrentGold() - t.getPurchaseCost());
                         try {
                             city.getPlayer().addUnit((Unit) t.getCorrespondingClass().getConstructor(City.class).newInstance(city));
-                            city.getPlayer().getUnitList().get(city.getPlayer().getUnitList().size() - 1).setMovement(5);
                         } catch (Exception e) {
                             System.out.println("Construcing unit from purchase failed!");
                         }
@@ -648,6 +671,15 @@ public class CityMenu extends Pane {
 
             for (CityProject c : city.getPlayer().getOwnedCityProject()) {
                 if (!city.getBuiltProjects().contains(c)) {
+                    if (c == CityProject.BARRACKS) {
+                        if (city.getBuiltProjects().contains(CityProject.STABLE)) {
+                            continue;
+                        }
+                    } else if (c == CityProject.STABLE) {
+                        if (city.getBuiltProjects().contains(CityProject.BARRACKS)) {
+                            continue;
+                        }
+                    }
                     options.add(c.name());
                 } else {
                     options.add(c.name() + " (Owned)");

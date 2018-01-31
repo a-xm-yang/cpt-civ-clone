@@ -7,6 +7,7 @@ import civilizationclone.Tile.Improvement;
 import civilizationclone.Unit.UnitType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Group;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -22,7 +23,7 @@ import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class SciencePane extends Pane {
+public class SciencePane extends Group {
 
     private int resX, resY;
     private Arc progress;
@@ -176,7 +177,7 @@ public class SciencePane extends Pane {
             });
 
             title = new Text("SELECT RESEARCH PROJECT");
-            title.setFont(Font.font("Times New Roman", 25));
+            title.setFont(Font.font("Oswald", 25));
             title.setFill(Color.WHITESMOKE);
             title.setTranslateY(25);
             title.setTranslateX(5);

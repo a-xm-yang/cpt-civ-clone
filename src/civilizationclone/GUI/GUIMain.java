@@ -8,9 +8,9 @@ package civilizationclone.GUI;
 import civilizationclone.GameMap;
 import civilizationclone.GameMap.MapSize;
 import civilizationclone.Player;
+import civilizationclone.TechType;
 import civilizationclone.Unit.UnitType;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -22,8 +22,6 @@ import javafx.stage.Stage;
 public class GUIMain extends Application {
 
     private GamePane gamePane;
-    private Scene titleScene;
-    private Scene gameScene;
 
     @Override
     public void start(Stage primaryStage) {
@@ -33,8 +31,8 @@ public class GUIMain extends Application {
 
         primaryStage.setResizable(false);
 
-        primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage), resX, resY));
-        //primaryStage.setScene(new Scene(startWithoutMenu(), resX, resY));
+       // primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage), resX, resY));
+        primaryStage.setScene(new Scene(startWithoutMenu(), 1200, 1000));
 
         primaryStage.setTitle("Alex Yang's Colonization II");
         primaryStage.show();
@@ -53,16 +51,10 @@ public class GUIMain extends Application {
         //   p.add(new Player("Franklin Roosevelt"));
         //   p.add(new Player("Mao Zedong"));
         //   p.add(new Player("Bennito Mussolini"));
-        p.get(0).setCurrentGold(1000);
-        //testingStats(p.get(0));
+         testingStats(p.get(0));
         //testingStats(p.get(1));
 
-        gamePane = new GamePane(gameMap, p, 1200, 800, true);
-
-        Media media = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString());
-        MediaPlayer player = new MediaPlayer(media);
-        // player.play();
-
+        gamePane = new GamePane(gameMap, p, 1200, 1000, true);
         return gamePane;
     }
 
@@ -70,8 +62,8 @@ public class GUIMain extends Application {
         p.setTechIncome(10);
         p.setCurrentGold(100000000);
 
-        for (UnitType u : UnitType.values()) {
-            p.addBuildableUnit(u);
+        for (TechType t: TechType.values()){
+            p.addTech(t);
         }
     }
 

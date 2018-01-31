@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -21,6 +22,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class GamePane extends Pane {
 
@@ -39,16 +41,20 @@ public class GamePane extends Pane {
     private GameMap gameMap;
     private ArrayList<Player> playerList;
     private Player currentPlayer;
-    
 
     public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY, boolean isNewGame) {
 
-        background = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString());
-        win = new Media(new File("src/Assets/Misc/ConquestVictory.mp3").toURI().toString());
-        loss = new Media(new File("src/Assets/Misc/Loss.mp3").toURI().toString());
+        //Loading music 
+        background = new Media(getClass().getClassLoader().getResource("Assets/Misc/babayetu.mp3").toExternalForm());
+        win = new Media(getClass().getClassLoader().getResource("Assets/Misc/ConquestVictory.mp3").toExternalForm());
+        loss = new Media(getClass().getClassLoader().getResource("Assets/Misc/loss.mp3").toExternalForm());
+
         mp = new MediaPlayer(background);
         mp.play();
-        
+        mp.setOnEndOfMedia(() -> {
+            mp.seek(Duration.ZERO);
+        });
+
         this.gameMap = gameMap;
         this.playerList = playerList;
         this.resX = resX;
@@ -58,8 +64,7 @@ public class GamePane extends Pane {
 
         currentPlayer = playerList.get(0);
         
-
-        //Reset these later to just settler and warrior
+        //Grant each player initial units if it's a new game
         if (isNewGame) {
             for (Player player : playerList) {
                 do {
@@ -74,10 +79,8 @@ public class GamePane extends Pane {
                 } while (true);
             }
             currentPlayer.startTurn();
-
         }
-        
-        
+
         zoomMap = createFalseZoomMap(gameMap.getMap());
         minimap = new Minimap(zoomMap, resX, resY);
         nextButton = new NextTurnPane(currentPlayer, resX, resY, this);
@@ -111,19 +114,19 @@ public class GamePane extends Pane {
         sciencePane.setCurrentPlayer(currentPlayer);
         zoomMap.setCurrentPlayer(currentPlayer);
         
-        if (currentPlayer.isDefeated()){            
-            dmp = new MediaPlayer(loss);
-            dmp.play();
-            
-            this.getChildren().add(new DefeatedPrompt(resX, resY, true));
-            
-        }
+        
         
         if (playerList.size()==1){
             wmp = new MediaPlayer(win);
             wmp.play();
             
             this.getChildren().add(new DefeatedPrompt(resX, resY, false));
+        }else if (currentPlayer.isDefeated()){            
+            dmp = new MediaPlayer(loss);
+            dmp.play();
+            
+            this.getChildren().add(new DefeatedPrompt(resX, resY, true));
+            
         }
     }
 

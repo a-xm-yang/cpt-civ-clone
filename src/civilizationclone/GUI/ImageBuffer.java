@@ -51,6 +51,24 @@ public class ImageBuffer {
     private static Image destroyer;
     private static Image embark;
 
+    //CITY PROJECTS
+    private static Image granary;
+    private static Image library;
+    private static Image lighthouse;
+    private static Image stable;
+    private static Image barracks;
+    private static Image market;
+    private static Image workshop;
+    private static Image university;
+    private static Image bank;
+    private static Image shipyard;
+    private static Image factory;
+    private static Image hospital;
+    private static Image stockexchange;
+    private static Image ancientwall;
+    private static Image medievalwall;
+    private static Image renaissancewall;
+
     //MISC
     private static Image closeIcon;
     private static Image confirmIcon;
@@ -61,8 +79,6 @@ public class ImageBuffer {
     private static Image productionIcon;
     private static Image goldIcon;
     private static Image expansionIcon;
-    private static Image foodIcon;
-    private static Image techIcon;
     private static Image cloud;
     private static Image titleBackground;
 
@@ -96,6 +112,7 @@ public class ImageBuffer {
     private static Image fish;
     private static Image crab;
     private static Image whale;
+    private static Image oil;
 
     private static Image teddy;
     private static Image hitler;
@@ -138,117 +155,118 @@ public class ImageBuffer {
     //</editor-fold>
     //Image loading
     static {
-        try {
-            desert = new Image(new FileInputStream("src/Assets/Tiles/Desert.png"), 100, 110, false, false);
-            hills = new Image(new FileInputStream("src/Assets/Tiles/Hills.png"), 100, 110, false, false);
-            mountain = new Image(new FileInputStream("src/Assets/Tiles/Mountain.png"), 100, 110, false, false);
-            ocean = new Image(new FileInputStream("src/Assets/Tiles/Ocean.png"), 100, 110, false, false);
-            plains = new Image(new FileInputStream("src/Assets/Tiles/Plains.png"), 100, 110, false, false);
-            city = new Image(new FileInputStream("src/Assets/Tiles/City.png"), 90, 90, false, false);
-
-            builder = new Image(new FileInputStream("src/Assets/Units/Builder(new).png"), 70, 70, false, false);
-            settler = new Image(new FileInputStream("src/Assets/Units/Settler.png"), 70, 70, false, false);
-            scout = new Image(new FileInputStream("src/Assets/Units/Scout.png"), 70, 70, false, false);
-            warrior = new Image(new FileInputStream("src/Assets/Units/Warrior.png"), 70, 70, false, false);
-            swordsman = new Image(new FileInputStream("src/Assets/Units/Swordsman.png"), 70, 70, false, false);
-            musketman = new Image(new FileInputStream("src/Assets/Units/Musketman.png"), 70, 70, false, false);
-            infantry = new Image(new FileInputStream("src/Assets/Units/Infantry.png"), 70, 70, false, false);
-            slinger = new Image(new FileInputStream("src/Assets/Units/Slinger.png"), 70, 70, false, false);
-            archer = new Image(new FileInputStream("src/Assets/Units/Archer.png"), 70, 70, false, false);
-            crossbowman = new Image(new FileInputStream("src/Assets/Units/Crossbowman.png"), 70, 70, false, false);
-            fieldCannon = new Image(new FileInputStream("src/Assets/Units/Fieldcannon.png"), 70, 70, false, false);
-            horseman = new Image(new FileInputStream("src/Assets/Units/horseman.png"), 70, 70, false, false);
-            knight = new Image(new FileInputStream("src/Assets/Units/knight.png"), 70, 70, false, false);
-            mountedForce = new Image(new FileInputStream("src/Assets/Units/mountedForce.png"), 70, 70, false, false);
-            catapult = new Image(new FileInputStream("src/Assets/Units/Catapult.png"), 70, 70, false, false);
-            bombard = new Image(new FileInputStream("src/Assets/Units/Bombard.png"), 70, 70, false, false);
-            galley = new Image(new FileInputStream("src/Assets/Units/Galley.png"), 70, 70, false, false);
-            quadrireme = new Image(new FileInputStream("src/Assets/Units/Quadrireme.png"), 70, 70, false, false);
-            caravel = new Image(new FileInputStream("src/Assets/Units/Caravel.png"), 70, 70, false, false);
-            ironclad = new Image(new FileInputStream("src/Assets/Units/Ironclad.png"), 70, 70, false, false);
-            galley = new Image(new FileInputStream("src/Assets/Units/Galley.png"), 70, 70, false, false);
-            embark = new Image(new FileInputStream("src/Assets/Units/embark.png"), 70, 70, false, false);
-
-            closeIcon = new Image(new FileInputStream("src/Assets/Misc/close_button.png"), 60, 60, false, false);
-            confirmIcon = new Image(new FileInputStream("src/Assets/Misc/confirm_icon.png"), 60, 60, true, false);
-            cityBackground = new Image(new FileInputStream("src/Assets/Misc/city_background.jpg"), 1080, 1920, false, false);
-            cityOptionBackground = new Image(new FileInputStream("src/Assets/Misc/city_option_background.jpg"), 1280, 800, false, false);
-            warning = new Image(new FileInputStream("src/Assets/Misc/warning.png"), 70, 70, false, false);
-            citizenIcon = new Image(new FileInputStream("src/Assets/Misc/citizen_icon.png"), 120, 120, false, false);
-            productionIcon = new Image(new FileInputStream("src/Assets/Misc/production_icon.png"), 120, 120, false, false);
-            goldIcon = new Image(new FileInputStream("src/Assets/Misc/gold_icon.png"), 120, 120, false, false);
-            cloud = new Image(new FileInputStream("src/Assets/Misc/Cloud.jpg"), 225, 225, false, false);
-            expansionIcon = new Image(new FileInputStream("src/Assets/Misc/expand_icon.png"), 75, 75, false, false);
-            titleBackground = new Image(new FileInputStream("src/Assets/Misc/title_background.png"), 2560, 1440, true, false);
-
-            farm = new Image(new FileInputStream("src/Assets/Improvement/farm.png"), 70, 70, false, false);
-            mine = new Image(new FileInputStream("src/Assets/Improvement/mine.png"), 70, 70, false, false);
-            plantation = new Image(new FileInputStream("src/Assets/Improvement/plantation.png"), 70, 70, false, false);
-            fishing = new Image(new FileInputStream("src/Assets/Improvement/fishing.png"), 70, 70, false, false);
-            ranch = new Image(new FileInputStream("src/Assets/Improvement/ranch.png"), 70, 70, false, false);
-            academy = new Image(new FileInputStream("src/Assets/Improvement/academy.png"), 70, 70, false, false);
-            oilwell = new Image(new FileInputStream("src/Assets/Improvement/oilwell.png"), 70, 70, false, false);
-            quarry = new Image(new FileInputStream("src/Assets/Improvement/quarry.png"), 70, 70, false, false);
-
-            gold = new Image(new FileInputStream("src/Assets/Misc/gold.png"), 25, 25, false, false);
-            science = new Image(new FileInputStream("src/Assets/Misc/science.png"), 25, 25, false, false);
-            happy = new Image(new FileInputStream("src/Assets/Misc/happy.png"), 25, 25, false, false);
-
-            wheat = new Image(new FileInputStream("src/Assets/Resource/wheat.png"), 45, 45, false, false);
-            banana = new Image(new FileInputStream("src/Assets/Resource/banana.png"), 45, 45, false, false);
-            cattle = new Image(new FileInputStream("src/Assets/Resource/cattle.png"), 45, 45, false, false);
-            crab = new Image(new FileInputStream("src/Assets/Resource/crab.png"), 45, 45, false, false);
-            fish = new Image(new FileInputStream("src/Assets/Resource/fish.png"), 45, 45, false, false);
-            iron = new Image(new FileInputStream("src/Assets/Resource/iron.png"), 45, 45, false, false);
-            mercury = new Image(new FileInputStream("src/Assets/Resource/mercury.png"), 45, 45, false, false);
-            rice = new Image(new FileInputStream("src/Assets/Resource/rice.png"), 45, 45, false, false);
-            sheep = new Image(new FileInputStream("src/Assets/Resource/sheep.png"), 45, 45, false, false);
-            stone = new Image(new FileInputStream("src/Assets/Resource/stone.png"), 45, 45, false, false);
-            truffle = new Image(new FileInputStream("src/Assets/Resource/truffle.png"), 45, 45, false, false);
-            whale = new Image(new FileInputStream("src/Assets/Resource/whale.png"), 45, 45, false, false);
-            wine = new Image(new FileInputStream("src/Assets/Resource/wine.png"), 45, 45, false, false);
-
-            defaultTech = new Image(new FileInputStream("src/Assets/Tech/default.png"), 100, 100, false, false);
-            pottery = new Image(new FileInputStream("src/Assets/Tech/pottery.png"), 100, 100, false, false);
-
-            stalin = new Image(new FileInputStream("src/Assets/Players/stalin.png"), 60, 60, false, false);
-            hitler = new Image(new FileInputStream("src/Assets/Players/hitler.png"), 60, 60, false, false);
-            mao = new Image(new FileInputStream("src/Assets/Players/mao.png"), 60, 60, false, false);
-            teddy = new Image(new FileInputStream("src/Assets/Players/teddy.png"), 60, 60, false, false);
-            musolini = new Image(new FileInputStream("src/Assets/Players/musolini.png"), 60, 60, false, false);
-            churchill = new Image(new FileInputStream("src/Assets/Players/churchill.png"), 60, 60, false, false);
-
-            destroyer = new Image(new FileInputStream("src/Assets/Units/Destroyer.png"), 70, 70, false, false);
-
-            gold1 = new Image(new FileInputStream("src/Assets/Yields/gold_1.png"), 45, 45, false, false);
-            gold2 = new Image(new FileInputStream("src/Assets/Yields/gold_2.png"), 45, 45, false, false);
-            gold3 = new Image(new FileInputStream("src/Assets/Yields/gold_3.png"), 45, 45, false, false);
-            gold4 = new Image(new FileInputStream("src/Assets/Yields/gold_4.png"), 45, 45, false, false);
-            gold5 = new Image(new FileInputStream("src/Assets/Yields/gold_5.png"), 45, 45, false, false);
-            food1 = new Image(new FileInputStream("src/Assets/Yields/food_1.png"), 45, 45, false, false);
-            food2 = new Image(new FileInputStream("src/Assets/Yields/food_2.png"), 45, 45, false, false);
-            food3 = new Image(new FileInputStream("src/Assets/Yields/food_3.png"), 45, 45, false, false);
-            food4 = new Image(new FileInputStream("src/Assets/Yields/food_4.png"), 45, 45, false, false);
-            food5 = new Image(new FileInputStream("src/Assets/Yields/food_5.png"), 45, 45, false, false);
-            production1 = new Image(new FileInputStream("src/Assets/Yields/production_1.png"), 45, 45, false, false);
-            production2 = new Image(new FileInputStream("src/Assets/Yields/production_2.png"), 45, 45, false, false);
-            production3 = new Image(new FileInputStream("src/Assets/Yields/production_3.png"), 45, 45, false, false);
-            production4 = new Image(new FileInputStream("src/Assets/Yields/production_4.png"), 45, 45, false, false);
-            production5 = new Image(new FileInputStream("src/Assets/Yields/production_5.png"), 45, 45, false, false);
-            science1 = new Image(new FileInputStream("src/Assets/Yields/science_1.png"), 45, 45, false, false);
-            science2 = new Image(new FileInputStream("src/Assets/Yields/science_2.png"), 45, 45, false, false);
-            science3 = new Image(new FileInputStream("src/Assets/Yields/science_3.png"), 45, 45, false, false);
-            science4 = new Image(new FileInputStream("src/Assets/Yields/science_4.png"), 45, 45, false, false);
-            science5 = new Image(new FileInputStream("src/Assets/Yields/science_5.png"), 45, 45, false, false);
-
-            highlightToggle = new Image(new FileInputStream("src/Assets/Misc/highlightToggle.png"), 120, 120, false, false);
-            resourceToggle = new Image(new FileInputStream("src/Assets/Misc/resourceToggle.png"), 120, 120, false, false);
-            yieldsToggle = new Image(new FileInputStream("src/Assets/Misc/yieldsToggle.png"), 120, 120, false, false);
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Image loading failed");
-            System.out.println(e.getMessage());
-        }
+        desert = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Tiles/Desert.png"), 100, 110, false, false);
+        hills = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Tiles/Hills.png"), 100, 110, false, false);
+        mountain = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Tiles/Mountain.png"), 100, 110, false, false);
+        ocean = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Tiles/Ocean.png"), 100, 110, false, false);
+        plains = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Tiles/Plains.png"), 100, 110, false, false);
+        city = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Tiles/City.png"), 90, 90, false, false);
+        builder = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Builder(new).png"), 70, 70, false, false);
+        settler = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Settler.png"), 70, 70, false, false);
+        scout = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Scout.png"), 70, 70, false, false);
+        warrior = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Warrior.png"), 70, 70, false, false);
+        swordsman = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Swordsman.png"), 70, 70, false, false);
+        musketman = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Musketman.png"), 70, 70, false, false);
+        infantry = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Infantry.png"), 70, 70, false, false);
+        slinger = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Slinger.png"), 70, 70, false, false);
+        archer = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Archer.png"), 70, 70, false, false);
+        crossbowman = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Crossbowman.png"), 70, 70, false, false);
+        fieldCannon = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Fieldcannon.png"), 70, 70, false, false);
+        horseman = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/horseman.png"), 70, 70, false, false);
+        knight = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/knight.png"), 70, 70, false, false);
+        mountedForce = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/mountedForce.png"), 70, 70, false, false);
+        catapult = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Catapult.png"), 70, 70, false, false);
+        bombard = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Bombard.png"), 70, 70, false, false);
+        galley = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Galley.png"), 70, 70, false, false);
+        quadrireme = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Quadrireme.png"), 70, 70, false, false);
+        caravel = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Caravel.png"), 70, 70, false, false);
+        ironclad = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Ironclad.png"), 70, 70, false, false);
+        galley = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Galley.png"), 70, 70, false, false);
+        embark = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/embark.png"), 70, 70, false, false);
+        closeIcon = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/close_button.png"), 60, 60, false, false);
+        confirmIcon = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/confirm_icon.png"), 60, 60, true, false);
+        cityBackground = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/city_background.jpg"), 1080, 1920, false, false);
+        cityOptionBackground = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/city_option_background.jpg"), 1280, 800, false, false);
+        warning = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/warning.png"), 70, 70, false, false);
+        citizenIcon = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/citizen_icon.png"), 120, 120, false, false);
+        productionIcon = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/production_icon.png"), 120, 120, false, false);
+        goldIcon = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/gold_icon.png"), 120, 120, false, false);
+        cloud = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/Cloud.jpg"), 225, 225, false, false);
+        expansionIcon = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/expand_icon.png"), 75, 75, false, false);
+        titleBackground = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/title_background.png"), 2560, 1440, true, false);
+        farm = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Improvement/farm.png"), 70, 70, false, false);
+        mine = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Improvement/mine.png"), 70, 70, false, false);
+        plantation = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Improvement/plantation.png"), 70, 70, false, false);
+        fishing = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Improvement/fishing.png"), 70, 70, false, false);
+        ranch = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Improvement/ranch.png"), 70, 70, false, false);
+        academy = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Improvement/academy.png"), 70, 70, false, false);
+        oilwell = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Improvement/oilwell.png"), 70, 70, false, false);
+        quarry = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Improvement/quarry.png"), 70, 70, false, false);
+        granary = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/granary.png"), 70, 70, false, false);
+        library = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/library.png"), 70, 70, false, false);
+        lighthouse = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/lighthouse.png"), 70, 70, false, false);
+        stable = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/stable.png"), 70, 70, false, false);
+        barracks = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/barracks.png"), 70, 70, false, false);
+        market = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/market.png"), 70, 70, false, false);
+        workshop = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/workshop.png"), 70, 70, false, false);
+        university = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/university.png"), 70, 70, false, false);
+        bank = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/bank.png"), 70, 70, false, false);
+        shipyard = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/shipyard.png"), 70, 70, false, false);
+        factory = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/factory.png"), 70, 70, false, false);
+        hospital = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/hospital.png"), 70, 70, false, false);
+        stockexchange = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/stockexchange.png"), 70, 70, false, false);
+        ancientwall = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/ancient_wall.png"), 70, 70, false, false);
+        medievalwall = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/medieval_wall.png"), 70, 70, false, false);
+        renaissancewall = new Image(ImageBuffer.class.getResourceAsStream("/Assets/CityProject/renaissance_wall.png"), 70, 70, false, false);
+        gold = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/gold.png"), 25, 25, false, false);
+        science = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/science.png"), 25, 25, false, false);
+        happy = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/happy.png"), 25, 25, false, false);
+        wheat = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/wheat.png"), 45, 45, false, false);
+        banana = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/banana.png"), 45, 45, false, false);
+        cattle = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/cattle.png"), 45, 45, false, false);
+        crab = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/crab.png"), 45, 45, false, false);
+        fish = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/fish.png"), 45, 45, false, false);
+        iron = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/iron.png"), 45, 45, false, false);
+        mercury = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/mercury.png"), 45, 45, false, false);
+        rice = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/rice.png"), 45, 45, false, false);
+        sheep = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/sheep.png"), 45, 45, false, false);
+        stone = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/stone.png"), 45, 45, false, false);
+        truffle = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/truffle.png"), 45, 45, false, false);
+        whale = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/whale.png"), 45, 45, false, false);
+        wine = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/wine.png"), 45, 45, false, false);
+        oil = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Resource/oil.png"), 45, 45, false, false);
+        defaultTech = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Tech/default.png"), 100, 100, false, false);
+        pottery = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Tech/pottery.png"), 100, 100, false, false);
+        stalin = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Players/stalin.png"), 60, 60, false, false);
+        hitler = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Players/hitler.png"), 60, 60, false, false);
+        mao = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Players/mao.png"), 60, 60, false, false);
+        teddy = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Players/teddy.png"), 60, 60, false, false);
+        musolini = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Players/musolini.png"), 60, 60, false, false);
+        churchill = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Players/churchill.png"), 60, 60, false, false);
+        destroyer = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Units/Destroyer.png"), 70, 70, false, false);
+        gold1 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/gold_1.png"), 45, 45, false, false);
+        gold2 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/gold_2.png"), 45, 45, false, false);
+        gold3 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/gold_3.png"), 45, 45, false, false);
+        gold4 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/gold_4.png"), 45, 45, false, false);
+        gold5 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/gold_5.png"), 45, 45, false, false);
+        food1 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/food_1.png"), 45, 45, false, false);
+        food2 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/food_2.png"), 45, 45, false, false);
+        food3 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/food_3.png"), 45, 45, false, false);
+        food4 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/food_4.png"), 45, 45, false, false);
+        food5 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/food_5.png"), 45, 45, false, false);
+        production1 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/production_1.png"), 45, 45, false, false);
+        production2 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/production_2.png"), 45, 45, false, false);
+        production3 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/production_3.png"), 45, 45, false, false);
+        production4 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/production_4.png"), 45, 45, false, false);
+        production5 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/production_5.png"), 45, 45, false, false);
+        science1 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/science_1.png"), 45, 45, false, false);
+        science2 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/science_2.png"), 45, 45, false, false);
+        science3 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/science_3.png"), 45, 45, false, false);
+        science4 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/science_4.png"), 45, 45, false, false);
+        science5 = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Yields/science_5.png"), 45, 45, false, false);
+        highlightToggle = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/highlightToggle.png"), 120, 120, false, false);
+        resourceToggle = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/resourceToggle.png"), 120, 120, false, false);
+        yieldsToggle = new Image(ImageBuffer.class.getResourceAsStream("/Assets/Misc/yieldsToggle.png"), 120, 120, false, false);
     }
 
     public static Image getImage(Unit unit) {
@@ -384,9 +402,43 @@ public class ImageBuffer {
     }
 
     public static Image getImage(CityProject c) {
-        //need to add more
-        return destroyer;
 
+        switch (c) {
+            case GRANARY:
+                return granary;
+            case LIBRARY:
+                return library;
+            case LIGHTHOUSE:
+                return lighthouse;
+            case STABLE:
+                return stable;
+            case BARRACKS:
+                return barracks;
+            case MARKET:
+                return market;
+            case WORKSHOP:
+                return workshop;
+            case UNIVERSITY:
+                return university;
+            case BANK:
+                return bank;
+            case SHIPYARD:
+                return shipyard;
+            case FACTORY:
+                return factory;
+            case HOSPITAL:
+                return hospital;
+            case STOCKEXCHANGE:
+                return stockexchange;
+            case ANCIENTWALL:
+                return ancientwall;
+            case MEDIEVALWALL:
+                return medievalwall;
+            case RENAISSANCEWALL:
+                return renaissancewall;
+        }
+
+        return destroyer;
     }
 
     public static Image getImage(MiscAsset m) {
@@ -425,6 +477,8 @@ public class ImageBuffer {
                 return resourceToggle;
             case YIELDS_TOGGLE:
                 return yieldsToggle;
+            case EXPANSION_ICON:
+                return expansionIcon;
         }
 
         return destroyer;
@@ -480,6 +534,8 @@ public class ImageBuffer {
                 return whale;
             case WINE:
                 return wine;
+            case OIL:
+                return oil;
         }
 
         return destroyer;
