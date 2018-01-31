@@ -150,6 +150,7 @@ public class GamePane extends Pane {
                     zoomMap.setSelectedTile(gameMap.getTile(u.getX(), u.getY()));
                     uM.setTranslateX(((zoomMap.getLeftCap() - (u.getY() * DisplayTile.WIDTH * getScaleX())) * -1) + (u.getX() % 2 == 0 ? (DisplayTile.getWIDTH() / 2 * getScaleX()) * -1 : 0));
                     uM.setTranslateY(u.getX() * DisplayTile.HEIGHT * getScaleY());
+                    zoomMap.setUnitMenu(uM);
                     zoomMap.getChildren().add(uM);
                     return;
                 }
@@ -193,7 +194,7 @@ public class GamePane extends Pane {
     }
 
     public void updateMinimap() {
-        minimap.update();
+        minimap.update(); 
     }
 
     private ZoomMap createFalseZoomMap(Tile[][] original) {
@@ -247,7 +248,6 @@ public class GamePane extends Pane {
 
         private Rectangle border;
         private Circle confirmButton;
-        private TextField textField;
         private Text title;
 
         private boolean canConfirm;

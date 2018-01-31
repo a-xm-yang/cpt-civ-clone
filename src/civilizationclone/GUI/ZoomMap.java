@@ -45,6 +45,7 @@ public class ZoomMap extends Group {
     private ArrayList<DisplayTile> tileList;
     private Point[] highlightedTiles;
     private HighlightType highlightType;
+    private UnitMenu unitMenu;
 
     private Player currentPlayer;
     private Tile selectedTile;
@@ -128,6 +129,7 @@ public class ZoomMap extends Group {
 
     private void clickEventHandling(MouseEvent e) {
 
+        //failsafe mechanism so that you don't end up triggering this click event untentionally or when you're not suposed to
         if (e.getTarget() instanceof DisplayTile) {
             if (((DisplayTile) e.getTarget()).getAccessLevel() != 2) {
                 e.consume();
@@ -149,10 +151,10 @@ public class ZoomMap extends Group {
         //testing for only movement highlight
         if (highlightType == HighlightType.NONE) {
             if (clickedTile.hasUnit()) {
-                UnitMenu u = new UnitMenu(clickedTile.getUnit(), this);
-                u.setTranslateX(((DisplayTile) e.getTarget()).getTranslateX());
-                u.setTranslateY(((DisplayTile) e.getTarget()).getTranslateY());
-                this.getChildren().add(u);
+                unitMenu = new UnitMenu(clickedTile.getUnit(), this);
+                unitMenu.setTranslateX(((DisplayTile) e.getTarget()).getTranslateX());
+                unitMenu.setTranslateY(((DisplayTile) e.getTarget()).getTranslateY());
+                this.getChildren().add(unitMenu);
                 selectedTile = clickedTile;
             } else if (clickedTile.hasCity() && clickedTile.getCity().getPlayer() == currentPlayer && !clickedTile.hasUnit()) {
                 ((GamePane) getParent()).addCityMenu(clickedTile.getCity());
@@ -203,7 +205,8 @@ public class ZoomMap extends Group {
             selectedTile = null;
             highlightType = HighlightType.NONE;
             cleanHighlight();
-
+            getChildren().remove(unitMenu);
+            unitMenu = null;
         }
 
         //e.consume();
@@ -231,7 +234,7 @@ public class ZoomMap extends Group {
         this.currentPlayer = currentPlayer;
         updateFogOfWar();
 
-        //reset scaling for new player
+        //Jump new player to their location on map
         if (currentPlayer.getCityList().size() > 0) {
             jumpTo(currentPlayer.getCityList().get(0));
         } else if (currentPlayer.getUnitList().size() > 0) {
@@ -239,6 +242,10 @@ public class ZoomMap extends Group {
         }
 
         adjustPosition();
+
+        //clean unit menus opened by the last player
+        getChildren().remove(unitMenu);
+        unitMenu = null;
     }
 
     private void updateFogOfWar() {
@@ -436,6 +443,14 @@ public class ZoomMap extends Group {
 
     //GETTERS AND SETTERS
     //<editor-fold>
+    public void setUnitMenu(UnitMenu unitMenu) {
+        this.unitMenu = unitMenu;
+    }
+
+    public UnitMenu getUnitMenu() {
+        return unitMenu;
+    }
+
     public void setSelectedTile(Tile selectedTile) {
         this.selectedTile = selectedTile;
     }

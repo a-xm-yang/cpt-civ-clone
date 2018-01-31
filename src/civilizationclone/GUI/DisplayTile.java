@@ -61,7 +61,7 @@ public class DisplayTile extends Polygon {
         hoverProperty().addListener((observable) -> {
             if (accessLevel > 0) {
                 if (isHover()) {
-                    setStroke(Color.BEIGE);
+                    setStroke(Color.BISQUE);
                 } else {
                     update();
                 }
