@@ -33,6 +33,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class TitleMenu extends Group {
 
@@ -76,8 +77,10 @@ public class TitleMenu extends Group {
         getChildren().add(titlePane);
 
         Media media = new Media(getClass().getClassLoader().getResource("Assets/Misc/Sogno_di_Volare.mp3").toExternalForm());
-
         mp = new MediaPlayer(media);
+        mp.setOnEndOfMedia(() -> {
+            mp.seek(Duration.ZERO);
+        });
         mp.play();
     }
 

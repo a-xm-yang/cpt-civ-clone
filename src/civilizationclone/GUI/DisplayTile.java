@@ -48,6 +48,7 @@ public class DisplayTile extends Polygon {
         accessLevel = 2;
 
         setStroke(Color.BLACK);
+
         getPoints().addAll(new Double[]{50.0, 0.0, 100.0, 30.0, 100.0, 80.0, 50.0, 110.0, 0.0, 80.0, 0.0, 30.0});
         tileFill = new ImagePattern(ImageBuffer.getImage(tile));
 
@@ -56,6 +57,16 @@ public class DisplayTile extends Polygon {
         }
 
         setStrokeWidth(3);
+
+        hoverProperty().addListener((observable) -> {
+            if (accessLevel > 0) {
+                if (isHover()) {
+                    setStroke(Color.BEIGE);
+                } else {
+                    update();
+                }
+            }
+        });
     }
 
     public void update() {

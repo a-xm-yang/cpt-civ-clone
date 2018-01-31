@@ -7,6 +7,7 @@ import civilizationclone.Tile.Improvement;
 import civilizationclone.Unit.UnitType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Group;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -22,7 +23,7 @@ import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class SciencePane extends Pane {
+public class SciencePane extends Group {
 
     private int resX, resY;
     private Arc progress;
