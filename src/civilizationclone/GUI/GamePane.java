@@ -25,17 +25,23 @@ public class GamePane extends Pane {
     private SciencePane sciencePane;
     private Minimap minimap;
     private MediaPlayer mp;
+    private Media win, loss, background;
 
     //game data
     private GameMap gameMap;
     private ArrayList<Player> playerList;
     private Player currentPlayer;
+    
 
     public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY, boolean isNewGame) {
 
-        Media media = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString());
-        mp = new MediaPlayer(media);
-        mp.play();
+        background = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString());
+        win = new Media(new File("src/Assets/Misc/ConquestVictory.mp3").toURI().toString());
+        loss = new Media(new File("src/Assets/Misc/Loss.mp3").toURI().toString());
+        mp = new MediaPlayer(background);
+        
+        
+        new MediaPlayer(win).play();
 
         this.gameMap = gameMap;
         this.playerList = playerList;
@@ -45,6 +51,7 @@ public class GamePane extends Pane {
         this.setPrefWidth(resX);
 
         currentPlayer = playerList.get(0);
+        
 
         //Reset these later to just settler and warrior
         if (isNewGame) {
@@ -55,13 +62,16 @@ public class GamePane extends Pane {
                             || gameMap.getTile(p.x, p.y + 1) instanceof Hills || gameMap.getTile(p.x, p.y + 1) instanceof Desert) && !gameMap.getTile(p).hasUnit() && !gameMap.getTile(p.x, p.y + 1).hasUnit()) {
                         player.addUnit(new SettlerUnit(player, p));
                         player.addUnit(new WarriorUnit(player, new Point(p.x, p.y + 1)));
-                        player.startTurn();
+                        //player.startTurn();
                         break;
                     }
                 } while (true);
             }
-        }
+            currentPlayer.startTurn();
 
+        }
+        
+        
         zoomMap = createFalseZoomMap(gameMap.getMap());
         minimap = new Minimap(zoomMap, resX, resY);
         nextButton = new NextTurnPane(currentPlayer, resX, resY, this);

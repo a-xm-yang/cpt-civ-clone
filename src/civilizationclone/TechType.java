@@ -41,7 +41,7 @@ public enum TechType {
     GUNPOWDER(445, setOf(STIRRUPS, APPRENTICESHIP), EnumSet.of(UnitType.MUSKETMAN), null, null, null),
     METALCASTING(550, setOf(GUNPOWDER), EnumSet.of(UnitType.BOMBARD), null, null, null),
     BALLISTICS(680, setOf(METALCASTING), EnumSet.of(UnitType.FIELDCANNON), null, null, null),
-    INDUSTRIALIZATION(680, setOf(MASS_PRODUCTION), null, null, EnumSet.of(CityProject.FACTORY), "Increase production of all mine sites"),
+    INDUSTRIALIZATION(680, setOf(MASS_PRODUCTION), null, EnumSet.of(Improvement.OILWELL), EnumSet.of(CityProject.FACTORY), "Increase production of all mine sites"),
     STEAM_ENGINE(750, setOf(INDUSTRIALIZATION), EnumSet.of(UnitType.IRONCLAD), null, null, null),
     MILITARY_SCIENCE(680, setOf(METALCASTING), EnumSet.of(UnitType.MOUNTEDFORCE), null, null, null);
 

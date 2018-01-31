@@ -34,7 +34,7 @@ public class GUIMain extends Application {
         primaryStage.setResizable(false);
 
         primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage), resX, resY));
-        //  primaryStage.setScene(new Scene(startWithoutMenu(), resX, resY));
+        //primaryStage.setScene(new Scene(startWithoutMenu(), resX, resY));
 
         primaryStage.setTitle("Alex Yang's Colonization II");
         primaryStage.show();
@@ -47,14 +47,15 @@ public class GUIMain extends Application {
         GameMap gameMap = new GameMap(MapSize.MEDIUM, 400);
         ArrayList<Player> p = new ArrayList<Player>();
         p.add(new Player("Joseph Stalin"));
-        p.add(new Player("Winston Churchill"));
+        //p.add(new Player("Winston Churchill"));
 
         //   p.add(new Player("Adolf Hitler"));
         //   p.add(new Player("Franklin Roosevelt"));
         //   p.add(new Player("Mao Zedong"));
         //   p.add(new Player("Bennito Mussolini"));
-        testingStats(p.get(0));
-        testingStats(p.get(1));
+        p.get(0).setCurrentGold(1000);
+        //testingStats(p.get(0));
+        //testingStats(p.get(1));
 
         gamePane = new GamePane(gameMap, p, 1200, 800, true);
 

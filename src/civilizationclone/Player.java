@@ -17,6 +17,8 @@ public class Player {
     //Variables that a player has
     //<editor-fold>
     private String name;
+    
+    private boolean defeated;
 
     private TechType research;
     private int techProgress;
@@ -97,6 +99,10 @@ public class Player {
         //reset movements for all units
         for (Unit unit : unitList) {
             unit.resetMovement();
+        }
+        
+        if(cityList.size()==0 && unitList.isEmpty()){
+            defeated = true;
         }
 
     }
@@ -197,7 +203,7 @@ public class Player {
         if (t.getUnlockUnit() != null) {
             for (UnitType u : t.getUnlockUnit()) {
                 for (UnitType ut : buildableUnit) {
-                    if (ut.getCorrespondingClass().getSuperclass().equals(u.getCorrespondingClass().getSuperclass())) {
+                    if (ut.getCorrespondingClass().getSuperclass().equals(u.getCorrespondingClass().getSuperclass()) && ut!=UnitType.BUILDER) {
                         buildableUnit.remove(ut);
                         break;
                     }

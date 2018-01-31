@@ -148,7 +148,9 @@ public class GameMap {
                         tile.setResource(Resource.SHEEP);
                     } else if (pseudoRandom < 3) {
                         tile.setResource(Resource.TRUFFLE);
-                    } else if (pseudoRandom < 5) {
+                    }else if (pseudoRandom < 4){
+                        tile.setResource(Resource.OIL);
+                    } else if (pseudoRandom < 7) {
                         tile.setResource(Resource.STONE);
                     } else if (pseudoRandom < 9) {
                         tile.setResource(Resource.IRON);
