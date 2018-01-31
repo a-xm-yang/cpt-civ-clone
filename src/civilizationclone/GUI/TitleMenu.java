@@ -7,13 +7,9 @@ import civilizationclone.Player.Leader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -25,7 +21,6 @@ import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
@@ -71,10 +66,7 @@ public class TitleMenu extends Group {
         canvas = new Canvas(resX + 50, resY + 50);
         canvas.getGraphicsContext2D().drawImage(ImageBuffer.getImage(MiscAsset.TITLE_BACKGROUND), 0, 0, resX + 50, resY + 50);
 
-        try {
-            Font.loadFont(new FileInputStream("src/Assets/Misc/menuFont.ttf"), 50);
-        } catch (FileNotFoundException ex) {
-        }
+        Font.loadFont(TitleMenu.class.getResourceAsStream("/Assets/Misc/menuFont.ttf"), 50);
 
         titlePane = initTitle();
         startPane = initPlay();
@@ -83,7 +75,8 @@ public class TitleMenu extends Group {
         getChildren().add(canvas);
         getChildren().add(titlePane);
 
-        Media media = new Media(new File("src/Assets/Misc/Sogno_di_Volare.mp3").toURI().toString());
+        Media media = new Media(getClass().getClassLoader().getResource("Assets/Misc/Sogno_di_Volare.mp3").toExternalForm());
+
         mp = new MediaPlayer(media);
         mp.play();
     }

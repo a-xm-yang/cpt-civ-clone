@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 public class GamePane extends Pane {
 
@@ -31,17 +32,18 @@ public class GamePane extends Pane {
     private GameMap gameMap;
     private ArrayList<Player> playerList;
     private Player currentPlayer;
-    
 
     public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY, boolean isNewGame) {
 
-        background = new Media(new File("src/Assets/Misc/babayetu.mp3").toURI().toString());
-        win = new Media(new File("src/Assets/Misc/ConquestVictory.mp3").toURI().toString());
-        loss = new Media(new File("src/Assets/Misc/Loss.mp3").toURI().toString());
+        background = new Media(getClass().getClassLoader().getResource("Assets/Misc/babayetu.mp3").toExternalForm());
+        win = new Media(getClass().getClassLoader().getResource("Assets/Misc/ConquestVictory.mp3").toExternalForm());
+        loss = new Media(getClass().getClassLoader().getResource("Assets/Misc/loss.mp3").toExternalForm());
+
         mp = new MediaPlayer(background);
-        
-        
-        new MediaPlayer(win).play();
+        mp.play();
+        mp.setOnEndOfMedia(() -> {
+            mp.seek(Duration.ZERO);
+        });
 
         this.gameMap = gameMap;
         this.playerList = playerList;
@@ -51,7 +53,6 @@ public class GamePane extends Pane {
         this.setPrefWidth(resX);
 
         currentPlayer = playerList.get(0);
-        
 
         //Reset these later to just settler and warrior
         if (isNewGame) {
@@ -70,8 +71,7 @@ public class GamePane extends Pane {
             currentPlayer.startTurn();
 
         }
-        
-        
+
         zoomMap = createFalseZoomMap(gameMap.getMap());
         minimap = new Minimap(zoomMap, resX, resY);
         nextButton = new NextTurnPane(currentPlayer, resX, resY, this);

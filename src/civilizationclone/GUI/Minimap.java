@@ -2,8 +2,12 @@ package civilizationclone.GUI;
 
 import civilizationclone.Tile.*;
 import java.util.ArrayList;
+import javafx.beans.binding.Bindings;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -24,8 +28,12 @@ public class Minimap extends Pane {
     private ToggleButton resourceButton;
     private ToggleButton outputButton;
     private ZoomMap zoomMap;
+    private static Effect shadow;
+    private static Effect noneEffect;
 
     public Minimap(ZoomMap zoomMap, int resX, int resY) {
+
+        shadow = new DropShadow(5, Color.BLACK);
 
         //requires a reference to initialize tiles
         mapSize = zoomMap.getMapSize();
@@ -48,20 +56,19 @@ public class Minimap extends Pane {
         //initialize tiles list
         ArrayList<DisplayTile> temp = zoomMap.getTileList();
         tiles = new ArrayList<>();
-        
+
         colorButton = new ToggleButton(Type.COLOR);
         resourceButton = new ToggleButton(Type.RESOURCE);
         outputButton = new ToggleButton(Type.OUTPUT);
-        
+
         colorButton.setTranslateX(-30);
         colorButton.setTranslateY(160);
-        
+
         resourceButton.setTranslateX(-30);
         resourceButton.setTranslateY(220);
-        
+
         outputButton.setTranslateX(-30);
         outputButton.setTranslateY(280);
-        
 
         for (DisplayTile t : temp) {
             if (!tiles.contains(t)) {
@@ -100,7 +107,7 @@ public class Minimap extends Pane {
                 } else {
                     g.setFill(Color.BLACK);
                 }
-                
+
                 if (t.hasCity()) {
                     g.setFill(Color.CORAL);
                 }
@@ -108,7 +115,7 @@ public class Minimap extends Pane {
                 if (dt.getAccessLevel() == 2) {
                     if (t.hasUnit()) {
                         g.setFill(Color.RED);
-                    } 
+                    }
                 }
             }
 
@@ -120,36 +127,42 @@ public class Minimap extends Pane {
         }
 
     }
-    
+
     private enum Type {
-        RESOURCE, COLOR, OUTPUT;  
+        RESOURCE, COLOR, OUTPUT;
     }
-    
-    
-    private class ToggleButton extends Circle{
-        Type t;
-        Image image;
-                
-        
-        ToggleButton(Type t){
+
+    private class ToggleButton extends Circle {
+
+        private Type t;
+        private Image image;
+
+        public ToggleButton(Type t) {
             super(25);
-            
+
             this.t = t;
-            
-            switch(t){
+
+            switch (t) {
                 case COLOR:
                     image = ImageBuffer.getImage(MiscAsset.HIGHLIGHT_TOGGLE);
+                    setOpacity(0.5);
                     break;
                 case OUTPUT:
                     image = ImageBuffer.getImage(MiscAsset.YIELDS_TOGGLE);
+                    setOpacity(0.5);
                     break;
                 case RESOURCE:
                     image = ImageBuffer.getImage(MiscAsset.RESOURCE_TOGGLE);
+                    setOpacity(1);
                     break;
             }
-            
+
             this.setFill(new ImagePattern(image));
-            
+
+            effectProperty().bind(
+                    Bindings.when(hoverProperty()).then(shadow).otherwise(noneEffect)
+            );
+
             setOnMouseClicked((MouseEvent event) -> {
                 clickEventHandling(event);
             });
@@ -159,25 +172,30 @@ public class Minimap extends Pane {
             switch (t) {
                 case COLOR:
                     DisplayTile.setDisplayColor(!DisplayTile.isDisplayColor());
+                    updateOpacity(DisplayTile.isDisplayColor());
                     break;
                 case OUTPUT:
                     DisplayTile.setDisplayOutput(!DisplayTile.isDisplayOutput());
+                    updateOpacity(DisplayTile.isDisplayOutput());
                     break;
                 case RESOURCE:
                     DisplayTile.setDisplayResourse(!DisplayTile.isDisplayResourse());
+                    updateOpacity(DisplayTile.isDisplayResourse());
                     break;
                 default:
                     break;
             }
             zoomMap.repaint();
-            
-            
         }
-        
-        
-    
-    
-    
+
+        private void updateOpacity(boolean hasActivated) {
+            if (hasActivated) {
+                setOpacity(1);
+            } else {
+                setOpacity(0.35);
+            }
+
+        }
     }
 
 }

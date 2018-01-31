@@ -176,7 +176,7 @@ public class SciencePane extends Pane {
             });
 
             title = new Text("SELECT RESEARCH PROJECT");
-            title.setFont(Font.font("Times New Roman", 25));
+            title.setFont(Font.font("Oswald", 25));
             title.setFill(Color.WHITESMOKE);
             title.setTranslateY(25);
             title.setTranslateX(5);

@@ -37,7 +37,7 @@ public enum TechType {
     IRONWORKING(120, setOf(MINING), EnumSet.of(UnitType.SWORDSMAN), null, EnumSet.of(CityProject.BARRACKS), null),
     CONSTRUCTION(120, setOf(MASONRY, HORSERIDING), null, null, EnumSet.of(CityProject.MEDIEVALWALL), null),
     ENGINEERING(200, setOf(MASONRY, IRONWORKING), EnumSet.of(UnitType.CATAPULT, UnitType.CROSSBOWMAN), null, null, null),
-    MASS_PRODUCTION(445, setOf(EDUCATION, SHIPBUILDING), null, null, EnumSet.of(CityProject.SHIPYARD), null),
+    MASS_PRODUCTION(445, setOf(EDUCATION, SHIPBUILDING), null, null, EnumSet.of(CityProject.SHIPYARD, CityProject.RENAISSANCEWALL), null),
     GUNPOWDER(445, setOf(STIRRUPS, APPRENTICESHIP), EnumSet.of(UnitType.MUSKETMAN), null, null, null),
     METALCASTING(550, setOf(GUNPOWDER), EnumSet.of(UnitType.BOMBARD), null, null, null),
     BALLISTICS(680, setOf(METALCASTING), EnumSet.of(UnitType.FIELDCANNON), null, null, null),

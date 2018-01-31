@@ -17,7 +17,8 @@ public enum CityProject {
     HOSPITAL(400, 700, 0, 0, 5, 0),
     STOCKEXCHANGE(380, 660, 0, 0, 0, 10),
     ANCIENTWALL(80, 0, 0, 0, 0, 0),
-    MEDIEVALWALL(150, 0, 0, 0, 0, 0);
+    MEDIEVALWALL(150, 0, 0, 0, 0, 0),
+    RENAISSANCEWALL(250, 0, 0, 0, 0, 0);
 
     //basic bonuses
     private int productionCost;

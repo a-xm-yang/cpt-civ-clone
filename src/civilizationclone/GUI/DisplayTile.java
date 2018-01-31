@@ -4,6 +4,7 @@ import civilizationclone.Tile.*;
 import civilizationclone.Unit.MilitaryUnit;
 import java.awt.Point;
 import java.util.ArrayList;
+import javafx.beans.binding.Bindings;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
@@ -78,57 +79,56 @@ public class DisplayTile extends Polygon {
             if (resourceImage != null && displayResourse) {
                 gc.drawImage(resourceImage, getTranslateX() + 55, getTranslateY() + 35);
             }
-            
-            if (displayOutput){
+
+            if (displayOutput) {
                 dispayYields(gc);
             }
-                
 
             if (accessLevel == 1) {
                 setEffect(shade);
             } else {
-                if (tile.hasCity() && tile.getCity().getHealth() != tile.getCity().getMaxHealth()){
+                if (tile.hasCity() && tile.getCity().getHealth() != tile.getCity().getMaxHealth()) {
                     gc.setFill(Color.BLACK);
-                    
+
                     System.out.println("C " + tile.getCity().getHealth());
                     System.out.println("M " + tile.getCity().getMaxHealth());
-                        gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50, 5);
-                        if((double)(tile.getCity().getHealthPercentage()) >= .6){
-                            gc.setFill(Color.LAWNGREEN);
-                        }else if((double)(tile.getCity().getHealthPercentage()) >= .3){
-                            gc.setFill(Color.YELLOW);
-                        }else{
-                            gc.setFill(Color.RED);
-                        }
-                        gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50*((double)tile.getCity().getHealthPercentage()), 5);
+                    gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50, 5);
+                    if ((double) (tile.getCity().getHealthPercentage()) >= .6) {
+                        gc.setFill(Color.LAWNGREEN);
+                    } else if ((double) (tile.getCity().getHealthPercentage()) >= .3) {
+                        gc.setFill(Color.YELLOW);
+                    } else {
+                        gc.setFill(Color.RED);
+                    }
+                    gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50 * ((double) tile.getCity().getHealthPercentage()), 5);
                 }
-                
+
                 //FULL ACCESS
                 if (tile.getImprovement() != Improvement.NONE) {
                     gc.drawImage(ImageBuffer.getImage(tile.getImprovement()), 5 + getTranslateX(), 20 + getTranslateY());
                 }
                 if (tile.hasUnit()) {
-                    
+
                     //Draw Circle to display whos unit it is
-                    if(displayColor){
+                    if (displayColor) {
                         gc.setFill(new Color(tile.getUnit().getPlayer().getColor().getRed(), tile.getUnit().getPlayer().getColor().getGreen(), tile.getUnit().getPlayer().getColor().getBlue(), .4));
-                        gc.fillOval(15+getTranslateX(), 20+getTranslateY(), 70, 70);
+                        gc.fillOval(15 + getTranslateX(), 20 + getTranslateY(), 70, 70);
                     }
                     //Draw Unit
                     gc.drawImage(ImageBuffer.getImage(tile.getUnit()), 15 + getTranslateX(), 20 + getTranslateY());
-                    
+
                     //Draw health bar if required
-                    if(tile.getUnit() instanceof MilitaryUnit && ((MilitaryUnit)tile.getUnit()).getHealth() != ((MilitaryUnit)tile.getUnit()).getMAX_HEALTH()){
+                    if (tile.getUnit() instanceof MilitaryUnit && ((MilitaryUnit) tile.getUnit()).getHealth() != ((MilitaryUnit) tile.getUnit()).getMAX_HEALTH()) {
                         gc.setFill(Color.BLACK);
                         gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50, 5);
-                        if((double)((MilitaryUnit)tile.getUnit()).getHealthPercentage() >= .6){
+                        if ((double) ((MilitaryUnit) tile.getUnit()).getHealthPercentage() >= .6) {
                             gc.setFill(Color.LAWNGREEN);
-                        }else if((double)((MilitaryUnit)tile.getUnit()).getHealthPercentage() >= .3){
+                        } else if ((double) ((MilitaryUnit) tile.getUnit()).getHealthPercentage() >= .3) {
                             gc.setFill(Color.YELLOW);
-                        }else{
+                        } else {
                             gc.setFill(Color.RED);
                         }
-                        gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50*((double)((MilitaryUnit)tile.getUnit()).getHealthPercentage()), 5);
+                        gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50 * ((double) ((MilitaryUnit) tile.getUnit()).getHealthPercentage()), 5);
                     }
                 }
 
@@ -148,14 +148,14 @@ public class DisplayTile extends Polygon {
             setStroke(Color.RED);
         }
     }
-    
-    public void dispayYields(GraphicsContext gc){
+
+    public void dispayYields(GraphicsContext gc) {
         ArrayList<Image> images = ImageBuffer.getYieldIcons(tile);
-                
-        for(int i=0;i<images.size();i++){
-            gc.drawImage(images.get(i), getTranslateX() + i*25, getTranslateY()+5);
+
+        for (int i = 0; i < images.size(); i++) {
+            gc.drawImage(images.get(i), getTranslateX() + i * 25, getTranslateY() + 5);
         }
-        
+
     }
 
     public void setAccessLevel(int accessLevel) {
@@ -164,7 +164,6 @@ public class DisplayTile extends Polygon {
 
     //GETTERS & EQUAL METHODS
     //<editor-fold>
-    
     public int getAccessLevel() {
         return accessLevel;
     }
@@ -216,10 +215,6 @@ public class DisplayTile extends Polygon {
     public static void setDisplayResourse(boolean displayResourse) {
         DisplayTile.displayResourse = displayResourse;
     }
-    
-    
-    
-    
 
     @Override
     public boolean equals(Object o) {
@@ -240,10 +235,9 @@ public class DisplayTile extends Polygon {
         return false;
 
     }
-    
+
     //Override hashcode for a unique set
     //</editor-fold>
-
     public static void referenceCanvas(Canvas ref) {
         canvas = ref;
         gc = canvas.getGraphicsContext2D();
@@ -260,7 +254,4 @@ public class DisplayTile extends Polygon {
 
         cloudFill = new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOUD));
     }
-    
-    
-
 }
