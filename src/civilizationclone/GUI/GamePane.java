@@ -117,16 +117,20 @@ public class GamePane extends Pane {
         
         
         if (playerList.size()==1){
+            //Play victory audio and show victory screen
+            mp.setVolume(0.5);
             wmp = new MediaPlayer(win);
             wmp.play();
             
+            
             this.getChildren().add(new DefeatedPrompt(resX, resY, false));
-        }else if (currentPlayer.isDefeated()){            
+        }else if (currentPlayer.isDefeated()){     
+            //Play defeat audio and show victory screens
+            mp.setVolume(0.5);
             dmp = new MediaPlayer(loss);
             dmp.play();
             
             this.getChildren().add(new DefeatedPrompt(resX, resY, true));
-            
         }
     }
 
@@ -281,7 +285,6 @@ public class GamePane extends Pane {
             confirmButton.setOnMouseClicked((e) -> {
                 e.consume();
                 close();
-                
             });
 
             getChildren().addAll(border, title, confirmButton);
@@ -290,6 +293,7 @@ public class GamePane extends Pane {
 
         private void close() {
             removeDefeatedPrompt(this);
+            mp.setVolume(1);
             if(defeated){   
                 Player pP = currentPlayer;
                 

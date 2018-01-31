@@ -371,7 +371,7 @@ public class CityMenu extends Pane {
         private void updateInfo() {
 
             String selection = (String) comboBox.getValue();
-            System.out.println(selection);
+        
 
             //If the value is one of the fillers
             if (comboBox.getValue().equals("----- UNITS -----") || comboBox.getValue().equals("----- PROJECTS -----")) {
@@ -558,7 +558,6 @@ public class CityMenu extends Pane {
         private void updateInfo() {
 
             String selection = (String) comboBox.getValue();
-            System.out.println(selection);
 
             //If the value is one of the fillers
             if (comboBox.getValue().equals("----- UNITS -----") || comboBox.getValue().equals("----- PROJECTS -----")) {

@@ -111,7 +111,6 @@ public abstract class Unit implements IMovement {
     public void delete() {
         getPlayer().getUnitList().remove(this);
         mapRef.getTile(getX(), getY()).removeUnit();
-        System.out.println("This unit is dead");
 
         player.calcGoldIncome();
     }
