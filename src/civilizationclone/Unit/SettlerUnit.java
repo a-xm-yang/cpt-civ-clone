@@ -37,7 +37,6 @@ public class SettlerUnit extends Unit{
         City c = new City(name,this);
         
         getMapRef().getTile(getX(), getY()).setCity(c);
-        getMapRef().getTile(getX(), getY()).setResource(Resource.NONE);
         getPlayer().addCity(c);
         getPlayer().calcGoldIncome();
         getPlayer().calcTechIncome();

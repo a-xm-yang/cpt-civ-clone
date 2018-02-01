@@ -87,7 +87,7 @@ public class DisplayTile extends Polygon {
                 gc.drawImage(ImageBuffer.getCityImage(), 5 + getTranslateX(), 10 + getTranslateY());
             }
 
-            if (resourceImage != null && displayResourse) {
+            if (resourceImage != null && !tile.hasCity() && displayResourse) {
                 gc.drawImage(resourceImage, getTranslateX() + 55, getTranslateY() + 35);
             }
 
@@ -164,7 +164,7 @@ public class DisplayTile extends Polygon {
         ArrayList<Image> images = ImageBuffer.getYieldIcons(tile);
 
         for (int i = 0; i < images.size(); i++) {
-            gc.drawImage(images.get(i), getTranslateX() + i * 25, getTranslateY() + 5);
+            gc.drawImage(images.get(i), getTranslateX() + i * 25, getTranslateY() + 8);
         }
 
     }
@@ -175,6 +175,10 @@ public class DisplayTile extends Polygon {
 
     //GETTERS & EQUAL METHODS
     //<editor-fold>
+    public void setResourceImage(Image resourceImage) {
+        this.resourceImage = resourceImage;
+    }
+    
     public int getAccessLevel() {
         return accessLevel;
     }

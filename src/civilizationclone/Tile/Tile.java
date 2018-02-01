@@ -105,7 +105,14 @@ public abstract class Tile {
     }
 
     public void setCity(City c) {
+        //when a city is established, all the resource and improvements should be removed and output is set to 0
         this.c = c;
+        setResource(Resource.NONE);
+        setImprovement(Improvement.NONE);
+        setFoodOutput(0);
+        setProductionOutput(0);
+        setGoldOutput(0);
+        setScienceOutput(0);
     }
 
     public Resource getResource() {
@@ -118,7 +125,6 @@ public abstract class Tile {
 
     public void setResource(Resource resource) {
         this.resource = resource;
-        // calcOutput();
     }
 
     public int getMovementCost() {
