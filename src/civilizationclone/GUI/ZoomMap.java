@@ -168,7 +168,7 @@ public class ZoomMap extends Group {
         } else {
 
             Point clickPoint = ((DisplayTile) e.getTarget()).getPoint();
-            
+
             if (highlightType == highlightType.MOVEMENT) {
                 for (Point p : highlightedTiles) {
                     if (clickPoint.equals(p)) {
@@ -307,12 +307,16 @@ public class ZoomMap extends Group {
         repaint();
     }
 
-    public void activateHeal() {
+    public void activateFortify() {
         if (selectedTile.getUnit() instanceof MilitaryUnit) {
-            ((MilitaryUnit) selectedTile.getUnit()).heal();
+            ((MilitaryUnit) selectedTile.getUnit()).setFortified(true);
+            ((MilitaryUnit) selectedTile.getUnit()).setMovement(0);
         }
-
         repaint();
+
+        if (getParent() instanceof GamePane) {
+            ((GamePane) getParent()).updateInfo();
+        }
     }
 
     public void activateKill() {

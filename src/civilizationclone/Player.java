@@ -99,7 +99,14 @@ public class Player {
         //reset movements for all units
         for (Unit unit : unitList) {
             unit.resetMovement();
+            if (unit instanceof MilitaryUnit){
+                if (((MilitaryUnit) unit).isFortified()){
+                    ((MilitaryUnit) unit).heal();
+                }
+            }
         }
+        
+       
 
         if (cityList.size() == 0 && unitList.isEmpty()) {
             defeated = true;
@@ -108,8 +115,16 @@ public class Player {
     }
 
     public int canEndTurn() {
+        
+        //return different integer representing each situation
         for (Unit u : unitList) {
-            if (u.canMove()) {
+            if (u instanceof MilitaryUnit){
+                if (((MilitaryUnit) u).isFortified()){
+                    continue;
+                }
+            }
+            
+            if (u.canMove()){
                 return 1;
             }
         }

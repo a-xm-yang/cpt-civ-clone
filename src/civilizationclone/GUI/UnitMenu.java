@@ -45,7 +45,7 @@ public class UnitMenu extends Pane {
         } else if (unit instanceof MilitaryUnit) {
             opts.add(new UnitOption(65, -60, 250, 40, "Move"));
             opts.add(new UnitOption(120, 0, 250, 40, "Attack"));
-            opts.add(new UnitOption(120, 60, 250, 40, "Heal"));
+            opts.add(new UnitOption(120, 60, 250, 40, "Fortify"));
             opts.add(new UnitOption(65, 120, 250, 40, "Kill"));
         }
 
@@ -90,7 +90,7 @@ public class UnitMenu extends Pane {
                 } else {
                     o.getText().setFill(Color.DARKGREY);
                 }
-            } else if (o.getOptionType().equals("Heal")) {
+            } else if (o.getOptionType().equals("Fortify")) {
                 if (unit.getMovement() > 0) {
                     o.getText().setFill(Color.WHITE);
                 } else {
@@ -149,9 +149,9 @@ public class UnitMenu extends Pane {
                 if (unit.getMovement() > 0) {
                     zmapRef.activateSettle();
                 }
-            } else if (((UnitOption) e.getTarget()).getOptionType().equals("Heal") && ((UnitOption) e.getTarget()).getText().getFill() == Color.WHITE) {
+            } else if (((UnitOption) e.getTarget()).getOptionType().equals("Fortify") && ((UnitOption) e.getTarget()).getText().getFill() == Color.WHITE) {
                 if (unit.getMovement() > 0) {
-                    zmapRef.activateHeal();
+                    zmapRef.activateFortify();
                 }
             } else if (((UnitOption) e.getTarget()).getOptionType().equals("Kill") && ((UnitOption) e.getTarget()).getText().getFill() == Color.WHITE) {
                 zmapRef.activateKill();
@@ -184,6 +184,9 @@ public class UnitMenu extends Pane {
                 msg = msg + "\nSiege: " + ((SiegeUnit) unit).getSiegeCombat();
             } else {
                 msg = msg + "Combat: " + ((MilitaryUnit) unit).getCombat();
+            }
+            if (((MilitaryUnit) unit).isFortified()){
+                msg = msg + "\n\nFortified";
             }
         } else {
             msg = msg + "Health: 1/1 \n";

@@ -18,7 +18,7 @@ public abstract class SiegeUnit extends MilitaryUnit {
 
     @Override
     public void siegeAttack(City c) {
-
+        setFortified(false);
         setMovement(0);
         int siegeDmg = (int) (siegeCombat * 0.75);
 

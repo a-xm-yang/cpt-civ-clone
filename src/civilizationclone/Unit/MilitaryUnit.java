@@ -11,6 +11,7 @@ public abstract class MilitaryUnit extends Unit {
     private static int MAX_HEALTH = 100;
     private int health;
     private int maintainence;
+    private boolean fortified;
 
     //constructor from city
     public MilitaryUnit(int MAX_MOVEMENT, City c, int combat, int maintainence) {
@@ -39,13 +40,25 @@ public abstract class MilitaryUnit extends Unit {
     public abstract UnitType getUpgrade();
 
     public void heal() {
-        health += 15;
+        
+        //heals more on friendly territory
+        if (getMapRef().getTile(getX(), getY()).isControlled() && getMapRef().getTile(getX(), getY()).getControllingCity().getPlayer() == getPlayer()) {
+            health += 15;
+        } else{
+            health += 10;
+        }
+
         if (health > MAX_HEALTH) {
             health = MAX_HEALTH;
         }
-
-        setMovement(0);
     }
+
+    @Override
+    public void move(Point p) {
+        super.move(p);
+        fortified = false;
+    }
+    
 
     //filters out a list of attackables
     public Point[] getAttackable() {
@@ -73,6 +86,7 @@ public abstract class MilitaryUnit extends Unit {
     public void attack(Unit x) {
 
         setMovement(0);
+        fortified = false;
 
         if (!(x instanceof MilitaryUnit)) {
             x.delete();
@@ -141,6 +155,8 @@ public abstract class MilitaryUnit extends Unit {
     // seiges atack 
     public void siegeAttack(City c) {
 
+        fortified = false;
+        
         int siegeDmg = (int) (combat * 0.4);
         int cityDmg = (int) (c.getCombat() * 0.6);
 
@@ -171,6 +187,14 @@ public abstract class MilitaryUnit extends Unit {
 
     // SIMPLE SETTER AND GETTERS
     //<editor-fold>
+    public void setFortified(boolean fortified) {
+        this.fortified = fortified;
+    }
+    
+    public boolean isFortified() {
+        return fortified;
+    }
+    
     public int getHealth() {
         return health;
     }

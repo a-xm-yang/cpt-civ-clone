@@ -42,6 +42,7 @@ public abstract class RangeUnit extends MilitaryUnit {
     public void attack(Unit x) {
 
         setMovement(0);
+        setFortified(false);
 
         if (!(x instanceof MilitaryUnit)) {
             x.delete();
@@ -84,6 +85,7 @@ public abstract class RangeUnit extends MilitaryUnit {
     public void siegeAttack(City c) {
 
         setMovement(0);
+        setFortified(false);
 
         int siegeDmg = (int) (getCombat() * 0.3);
 
