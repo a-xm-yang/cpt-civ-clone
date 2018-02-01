@@ -9,14 +9,10 @@ import civilizationclone.GameMap;
 import civilizationclone.GameMap.MapSize;
 import civilizationclone.Player;
 import civilizationclone.TechType;
-import civilizationclone.Unit.UnitType;
-import java.io.File;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 public class GUIMain extends Application {

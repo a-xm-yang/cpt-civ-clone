@@ -131,12 +131,12 @@ public class GameMap {
                 //possibility for Ocean
                 //<editor-fold>
                 else if (tile instanceof Ocean) {
-                    if (pseudoRandom < 8) {
-                        tile.setResource(Resource.WHALE);
-                    } else if (pseudoRandom < 5) {
-                        tile.setResource(Resource.CRAB);
-                    } else if (pseudoRandom < 1) {
+                    if (pseudoRandom < 5) {
                         tile.setResource(Resource.FISH);
+                    } else if (pseudoRandom < 8) {
+                        tile.setResource(Resource.CRAB);
+                    } else {
+                        tile.setResource(Resource.WHALE);
                     }
                 } //</editor-fold>
                 //possibility for Hills

@@ -47,7 +47,7 @@ public class GamePane extends Pane {
         //Loading music 
         background = new Media(getClass().getClassLoader().getResource("Assets/Misc/babayetu.mp3").toExternalForm());
         win = new Media(getClass().getClassLoader().getResource("Assets/Misc/ConquestVictory.mp3").toExternalForm());
-        loss = new Media(getClass().getClassLoader().getResource("Assets/Misc/loss.mp3").toExternalForm());
+        loss = new Media(getClass().getClassLoader().getResource("Assets/Misc/Loss.mp3").toExternalForm());
 
         mp = new MediaPlayer(background);
         mp.play();

@@ -16,8 +16,8 @@ ALPHA
 public class CivilizationClone{
 
     public static void main(String[] args) {
-      // new TextGame();
-       Application.launch(GUIMain.class,args);
+     // new TextGame();
+      Application.launch(GUIMain.class,args);
       
     }
 

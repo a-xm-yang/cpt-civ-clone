@@ -67,7 +67,7 @@ public class TitleMenu extends Group {
         canvas = new Canvas(resX + 50, resY + 50);
         canvas.getGraphicsContext2D().drawImage(ImageBuffer.getImage(MiscAsset.TITLE_BACKGROUND), 0, 0, resX + 50, resY + 50);
 
-        Font.loadFont(TitleMenu.class.getResourceAsStream("/Assets/Misc/menuFont.ttf"), 50);
+        Font.loadFont(TitleMenu.class.getClassLoader().getResourceAsStream("Assets/Misc/menuFont.ttf"), 50);
 
         titlePane = initTitle();
         startPane = initPlay();
