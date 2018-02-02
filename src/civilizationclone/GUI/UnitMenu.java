@@ -42,11 +42,12 @@ public class UnitMenu extends Pane {
         if (unit instanceof SettlerUnit) {
             opts.add(new UnitOption(65, -60, 250, 40, "Move"));
             opts.add(new UnitOption(120, 0, 250, 40, "Settle"));
-            opts.add(new UnitOption(120, 60, 250, 40, "Kill"));
+            opts.add(new UnitOption(120, 60, 250, 40, "End Turn"));
+            opts.add(new UnitOption(65, 120, 250, 40, "Kill"));
         } else if (unit instanceof BuilderUnit) {
             opts.add(new UnitOption(65, -60, 250, 40, "Move"));
             opts.add(new UnitOption(120, 0, 250, 40, "Improve"));
-            opts.add(new UnitOption(120, 60, 250, 40, "Destroy"));
+            opts.add(new UnitOption(120, 60, 250, 40, "End Turn"));
             opts.add(new UnitOption(65, 120, 250, 40, "Kill"));
         } else if (unit instanceof MilitaryUnit) {
             opts.add(new UnitOption(65, -60, 250, 40, "Move"));
@@ -119,8 +120,8 @@ public class UnitMenu extends Pane {
                     o.getText().setFill(Color.DARKGREY);
                 }
 
-            } else if (o.getOptionType().equals("Destroy")) {
-                o.getText().setFill(Color.DARKGRAY);
+            } else if (o.getOptionType().equals("End Turn")) {
+                o.getText().setFill(Color.WHITE);
             }
         }
 
@@ -171,8 +172,8 @@ public class UnitMenu extends Pane {
                     getChildren().add(new BuildMenu(unit));
                     return;
                 }
-            } else if (((UnitOption) e.getTarget()).getOptionType().equals("Destroy") && ((UnitOption) e.getTarget()).getText().getFill() == Color.WHITE) {
-                //zmapRef.activateDestroy();
+            } else if (((UnitOption) e.getTarget()).getOptionType().equals("End Turn") && ((UnitOption) e.getTarget()).getText().getFill() == Color.WHITE) {
+                unit.setMovement(0);
             }
         }
         delete();
