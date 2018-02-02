@@ -11,6 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Separator;
@@ -45,12 +46,16 @@ public class TitleMenu extends Group {
     private MediaPlayer mp;
     //MAP LAUNCHING NODES
     private ChoiceBox mapOption;
+    private ChoiceBox resolutionChoice;
     private ArrayList<PlayerBox> playerList;
     private Button startButton;
     private Button addLeader;
     private ComboBox leaderOption;
+    private CheckBox cheat;
+    private CheckBox music;
+    private boolean cheatOn;
     //EFFFECTS
-    private Effect shadow = new DropShadow(5, Color.BLACK);
+    private Effect shadow = new DropShadow(5, Color.WHITE);
     private Effect blur = new BoxBlur(1, 1, 5);
 
     public TitleMenu(int resX, int resY, Stage primaryStage) {
@@ -59,12 +64,39 @@ public class TitleMenu extends Group {
         this.resX = resX;
         this.resY = resY;
 
+        Media media = new Media(getClass().getClassLoader().getResource("Assets/Misc/Sogno_di_Volare.mp3").toExternalForm());
+        mp = new MediaPlayer(media);
+        mp.setOnEndOfMedia(() -> {
+            mp.seek(Duration.ZERO);
+        });
+        mp.play();
+
+        cheatOn = false;
         playerList = new ArrayList<>();
+
+        Font.loadFont(TitleMenu.class.getClassLoader().getResourceAsStream("Assets/Misc/menuFont.ttf"), 50);
+        initialize();
+    }
+
+    public TitleMenu(int resX, int resY, Stage primaryStage, MediaPlayer mp) {
+        this.primaryStage = primaryStage;
+        this.resX = resX;
+        this.resY = resY;
+
+        this.mp = mp;
+
+        cheatOn = false;
+        playerList = new ArrayList<>();
+
+        Font.loadFont(TitleMenu.class.getClassLoader().getResourceAsStream("Assets/Misc/menuFont.ttf"), 50);
+        initialize();
+    }
+
+    public void initialize() {
+        getChildren().clear();
 
         canvas = new Canvas(resX + 50, resY + 50);
         canvas.getGraphicsContext2D().drawImage(ImageBuffer.getImage(MiscAsset.TITLE_BACKGROUND), 0, 0, resX + 50, resY + 50);
-
-        Font.loadFont(TitleMenu.class.getClassLoader().getResourceAsStream("Assets/Misc/menuFont.ttf"), 50);
 
         titlePane = initTitle();
         startPane = initPlay();
@@ -72,13 +104,6 @@ public class TitleMenu extends Group {
 
         getChildren().add(canvas);
         getChildren().add(titlePane);
-
-        Media media = new Media(getClass().getClassLoader().getResource("Assets/Misc/Sogno_di_Volare.mp3").toExternalForm());
-        mp = new MediaPlayer(media);
-        mp.setOnEndOfMedia(() -> {
-            mp.seek(Duration.ZERO);
-        });
-        mp.play();
     }
 
     private Pane initTitle() {
@@ -86,8 +111,8 @@ public class TitleMenu extends Group {
         //shift the whole thing by using fixX and fixY
         Pane root = new Pane();
 
-        int fixX = 10 + (resX - 1200);
-        int fixY = 110 + (resY - 800);
+        int fixX = 10 + (resX - 1200)/2;
+        int fixY = 125 + (resY - 800)/2;
 
         CivTitle title = new CivTitle("C O L O N I Z A T I O N  I I", 48);
         title.setTranslateX(300 + fixX);
@@ -107,6 +132,9 @@ public class TitleMenu extends Group {
         CivMenuItems word2 = new CivMenuItems("OPTIONS");
         word2.setTranslateX(535 + fixX);
         word2.setTranslateY(375 + fixY);
+        word2.setOnMouseClicked(e -> {
+            openOption();
+        });
 
         Line line = new Line(525 + fixX, 300 + fixY, 525 + fixX, 380 + fixY);
         line.setStrokeWidth(3);
@@ -122,8 +150,8 @@ public class TitleMenu extends Group {
 
         Pane root = new Pane();
 
-        int fixX = 62 + (resX - 1200);
-        int fixY = 50 + (resY - 800);
+        int fixX = 62 + (resX - 1200)/2;
+        int fixY = 50 + (resY - 800)/2;
 
         Rectangle rect1 = new Rectangle(270 + fixX, 30 + fixY, 550, 680);
         rect1.setFill(Color.BLACK);
@@ -148,6 +176,16 @@ public class TitleMenu extends Group {
         Line line2 = new Line(271 + fixX, 160 + fixY, 818 + fixX, 160 + fixY);
         line2.setStrokeWidth(3);
         line2.setStroke(Color.TAN);
+
+        CivTitle back = new CivTitle("RETURN", 14);
+        back.setTranslateX(290 + fixX);
+        back.setTranslateY(188 + fixY);
+        back.effectProperty().bind(
+                Bindings.when(back.hoverProperty()).then(shadow).otherwise(line1.getEffect())
+        );
+        back.setOnMouseClicked(e -> {
+            openTitle();
+        });
 
         CivTitle heading = new CivTitle("COLONIZATION II", 45);
         heading.setTranslateX(345 + fixX);
@@ -198,14 +236,104 @@ public class TitleMenu extends Group {
         leaderOption.setTranslateX(435 + fixX);
         leaderOption.setTranslateY(210 + fixY);
 
-        root.getChildren().addAll(rect3, rect4, rect1, rect2, line1, line2, heading, subheading, text1, map, startButton, mapOption, leaderOption, addLeader);
+        root.getChildren().addAll(rect3, rect4, rect1, rect2, line1, line2, heading, subheading, text1, map, startButton, mapOption, leaderOption, addLeader, back);
 
         return root;
     }
 
     private Pane initOption() {
+        
+        Pane root = new Pane();
 
-        return null;
+        int fixX = 62 + (resX - 1200)/2;
+        int fixY = 50 + (resY - 800)/2;
+
+        Rectangle rect1 = new Rectangle(270 + fixX, 30 + fixY, 550, 680);
+        rect1.setFill(Color.BLACK);
+        rect1.setOpacity(0.45);
+
+        Rectangle rect2 = new Rectangle(280 + fixX, 42 + fixY, 530, 80);
+        rect2.setFill(Color.BLACK);
+        rect2.setOpacity(0.5);
+
+        Rectangle rect3 = new Rectangle(280 + fixX, 165 + fixY, 530, 532);
+        rect3.setFill(Color.BLACK);
+        rect3.setOpacity(0.5);
+
+        Rectangle rect4 = new Rectangle(345 + fixX, 195 + fixY, 400, 470);
+        rect4.setFill(Color.BLACK);
+        rect4.setOpacity(0.55);
+
+        Line line1 = new Line(271 + fixX, 128 + fixY, 818 + fixX, 128 + fixY);
+        line1.setStrokeWidth(3);
+        line1.setStroke(Color.ROSYBROWN);
+
+        Line line2 = new Line(271 + fixX, 160 + fixY, 818 + fixX, 160 + fixY);
+        line2.setStrokeWidth(3);
+        line2.setStroke(Color.TAN);
+
+        CivTitle heading = new CivTitle("COLONIZATION II", 45);
+        heading.setTranslateX(345 + fixX);
+        heading.setTranslateY(113 + fixY);
+
+        CivTitle subheading = new CivTitle("ALEXANDER YANG'S", 11);
+        subheading.setTranslateX(490 + fixX);
+        subheading.setTranslateY(65 + fixY);
+
+        CivTitle text1 = new CivTitle("OPTIONS", 17);
+        text1.setTranslateX(500 + fixX);
+        text1.setTranslateY(150 + fixY);
+
+        CivTitle back = new CivTitle("RETURN", 14);
+        back.setTranslateX(290 + fixX);
+        back.setTranslateY(188 + fixY);
+        back.effectProperty().bind(
+                Bindings.when(back.hoverProperty()).then(shadow).otherwise(subheading.getEffect())
+        );
+        back.setOnMouseClicked(e -> {
+            openTitle();
+        });
+
+        CivTitle text2 = new CivTitle("Cheats : ", 15);
+        text2.setTranslateX(493 + fixX);
+        text2.setTranslateY(303 + fixY);
+
+        CivTitle text3 = new CivTitle("Mute :  ", 15);
+        text3.setTranslateX(502 + fixX);
+        text3.setTranslateY(383 + fixY);
+
+        CivTitle resolution = new CivTitle("Resolution : ", 15);
+        resolution.setTranslateX(455 + fixX);
+        resolution.setTranslateY(470 + fixY);
+
+        resolutionChoice = new ChoiceBox();
+        resolutionChoice.getItems().addAll("1200x800", "1500x1000");
+        resolutionChoice.setValue("1200x800");
+
+        cheat = new CheckBox();
+        music = new CheckBox();
+        cheat.setSelected(cheatOn);
+        music.setSelected(mp.isMute());
+
+        resolutionChoice.setTranslateX(570 + fixX);
+        cheat.setTranslateX(570 + fixX);
+        music.setTranslateX(570 + fixX);
+        resolutionChoice.setTranslateY(455 + fixY);
+        cheat.setTranslateY(290 + fixY);
+        music.setTranslateY(370 + fixY);
+
+        CivMenuItems save = new CivMenuItems("     SAVE");
+        save.setTranslateX(485 + fixX);
+        save.setTranslateY(560 + fixY);
+        save.setOnMouseClicked(e -> {
+            saveOption();
+        });
+
+        // save.setTranslateX(420+ fixX); 
+        //save.setTranslateY(500 + fixY);
+        root.getChildren().addAll(canvas, rect1, rect2, rect3, rect4, line1, line2, heading, subheading, resolution, text1, text2, text3, resolutionChoice, cheat, music, save, back);
+
+        return root;
     }
 
     private void addLeader() {
@@ -249,8 +377,8 @@ public class TitleMenu extends Group {
     }
 
     private void formatPlayerBoxes() {
-        int fixX = 62 + (resX - 1200);
-        int fixY = 50 + (resY - 800);
+        int fixX = 62 + (resX - 1200)/2;
+        int fixY = 50 + (resY - 800)/2;
 
         // Rectangle rect4 = new Rectangle(345 + fixX, 195 + fixY, 400, 470);
         for (int i = 0; i < playerList.size(); i++) {
@@ -292,6 +420,12 @@ public class TitleMenu extends Group {
                     break;
             }
         }
+        
+        if (cheatOn){
+            for (Player p: list){
+                p.setgMode(true);
+            }
+        }
 
         MapSize ms = MapSize.MEDIUM;
         for (MapSize m : MapSize.values()) {
@@ -304,7 +438,7 @@ public class TitleMenu extends Group {
         GameMap gameMap = new GameMap(ms, seed);
 
         //change later
-        primaryStage.setScene(new Scene(new GamePane(gameMap, list, 1400, 1000, true)));
+        primaryStage.setScene(new Scene(new GamePane(gameMap, list, resX, resY, true, mp.isMute())));
         mp.pause();
     }
 
@@ -312,6 +446,38 @@ public class TitleMenu extends Group {
         getChildren().clear();
         getChildren().add(canvas);
         getChildren().add(startPane);
+    }
+
+    private void openOption() {
+        getChildren().clear();
+        getChildren().add(canvas);
+        getChildren().add(optionPane);
+
+        resolutionChoice.setValue(resX + ":" + resY);
+    }
+
+    private void openTitle() {
+        getChildren().clear();
+        getChildren().add(canvas);
+        getChildren().add(titlePane);
+    }
+
+    private void saveOption() {
+        String chosen = (String) resolutionChoice.getValue();
+
+        mp.setMute(music.isSelected());
+        cheatOn = cheat.isSelected();
+
+        if (!chosen.startsWith(Integer.toString(resX))) {
+            int width = Integer.parseInt(chosen.substring(0, chosen.indexOf("x")));
+            int height = Integer.parseInt(chosen.substring(chosen.indexOf("x") + 1));
+
+            resX = width;
+            resY = height;
+            
+            primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage, mp), resX, resY));
+        }
+
     }
 
     private class PlayerBox extends Group {
@@ -384,15 +550,17 @@ public class TitleMenu extends Group {
     private class CivMenuItems extends Group {
 
         private Text text;
+        private Effect shadow = new DropShadow(5, Color.WHITE);
+        private Effect blur = new BoxBlur(1, 1, 5);
 
         public CivMenuItems(String words) {
 
             Rectangle rect = new Rectangle(-8, -30, 150, 40);
-            rect.setStroke(Color.color(1, 1, 1, 0.8));
+            rect.setStroke(Color.color(0, 0, 0, 0.5));
             rect.setEffect(new GaussianBlur());
 
             rect.fillProperty().bind(
-                    Bindings.when(pressedProperty()).then(Color.color(0, 0, 0, 0.75)).otherwise(Color.color(0, 0, 0, 0.25))
+                    Bindings.when(pressedProperty()).then(Color.color(0.5, 0.5, 0.5, 1)).otherwise(Color.color(0, 0, 0, 0.25))
             );
 
             text = new Text(words);
@@ -409,4 +577,5 @@ public class TitleMenu extends Group {
         }
 
     }
+
 }

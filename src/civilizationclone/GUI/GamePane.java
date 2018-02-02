@@ -37,14 +37,23 @@ public class GamePane extends Pane {
     private Minimap minimap;
     private MediaPlayer mp, dmp, wmp;
     private Media win, loss, background;
+    private boolean isMuted;
 
     //game data
     private GameMap gameMap;
     private ArrayList<Player> playerList;
     private Player currentPlayer;
 
-    public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY, boolean isNewGame) {
-
+    public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY, boolean isNewGame, boolean isMuted) {
+        
+        this.gameMap = gameMap;
+        this.playerList = playerList;
+        this.resX = resX;
+        this.resY = resY;
+        this.setPrefHeight(resY);
+        this.setPrefWidth(resX);
+        this.isMuted = isMuted;
+        
         //Loading music 
         background = new Media(getClass().getClassLoader().getResource("Assets/Misc/babayetu.mp3").toExternalForm());
         win = new Media(getClass().getClassLoader().getResource("Assets/Misc/ConquestVictory.mp3").toExternalForm());
@@ -55,13 +64,12 @@ public class GamePane extends Pane {
         mp.setOnEndOfMedia(() -> {
             mp.seek(Duration.ZERO);
         });
-
-        this.gameMap = gameMap;
-        this.playerList = playerList;
-        this.resX = resX;
-        this.resY = resY;
-        this.setPrefHeight(resY);
-        this.setPrefWidth(resX);
+        
+        if (isMuted){
+            mp.setMute(true);
+            dmp.setMute(true);
+            wmp.setMute(true);
+        }
 
         currentPlayer = playerList.get(0);
 
@@ -69,7 +77,7 @@ public class GamePane extends Pane {
         if (isNewGame) {
             for (Player player : playerList) {
                 do {
-                    Point p = new Point((int) (Math.random() * gameMap.getSize()), (int) (Math.random() * (gameMap.getSize() - 4)) + 2);
+                    Point p = new Point((int) (Math.random() * (gameMap.getSize() - 3)) + 2, (int) (Math.random() * (gameMap.getSize())));
                     if (gameMap.canSpawn(p)) {
                         player.addUnit(new SettlerUnit(player, p));
                         player.addUnit(new WarriorUnit(player, new Point(p.x, p.y + 1)));

@@ -19,6 +19,7 @@ public class Player {
     private String name;
 
     private boolean defeated;
+    private boolean gMode;
 
     private TechType research;
     private int techProgress;
@@ -53,6 +54,7 @@ public class Player {
     //constructor
     public Player(String name) {
         this.name = name;
+        gMode = false;
 
         //initializing enumsets
         ownedTech = EnumSet.of(TechType.NONE);
@@ -99,14 +101,12 @@ public class Player {
         //reset movements for all units
         for (Unit unit : unitList) {
             unit.resetMovement();
-            if (unit instanceof MilitaryUnit){
-                if (((MilitaryUnit) unit).isFortified()){
+            if (unit instanceof MilitaryUnit) {
+                if (((MilitaryUnit) unit).isFortified()) {
                     ((MilitaryUnit) unit).heal();
                 }
             }
         }
-        
-       
 
         if (cityList.size() == 0 && unitList.isEmpty()) {
             defeated = true;
@@ -115,16 +115,16 @@ public class Player {
     }
 
     public int canEndTurn() {
-        
+
         //return different integer representing each situation
         for (Unit u : unitList) {
-            if (u instanceof MilitaryUnit){
-                if (((MilitaryUnit) u).isFortified()){
+            if (u instanceof MilitaryUnit) {
+                if (((MilitaryUnit) u).isFortified()) {
                     continue;
                 }
             }
-            
-            if (u.canMove()){
+
+            if (u.canMove()) {
                 return 1;
             }
         }
@@ -164,6 +164,10 @@ public class Player {
             x += c.getGoldIncome();
         }
 
+        if (gMode) {
+            x += 350;
+        }
+
         goldIncome = x;
     }
 
@@ -173,6 +177,10 @@ public class Player {
 
         for (City c : cityList) {
             x += c.getTechIncome();
+        }
+
+        if (gMode) {
+            x += 350;
         }
 
         techIncome = x;
@@ -272,6 +280,14 @@ public class Player {
 
     //Getter && Setter
     //<editor-fold> 
+    public void setgMode(boolean gMode) {
+        this.gMode = gMode;
+    }
+
+    public boolean isgMode() {
+        return gMode;
+    }
+
     private void setLeader() {
         for (Leader l : Leader.values()) {
             if (this.getName().substring(this.getName().indexOf(" ") + 1, this.getName().length()).equalsIgnoreCase(l.name())) {

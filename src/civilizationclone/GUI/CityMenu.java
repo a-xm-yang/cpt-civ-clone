@@ -46,7 +46,7 @@ public class CityMenu extends Pane {
     private ImageView productionIcon, purchaseIcon, citizenIcon, productionDisplay;
     private boolean hasOptionOpen;
 
-    private static Effect shadowBig = new DropShadow(45, Color.BLACK);
+    private static Effect shadowBig = new DropShadow(45, Color.WHITE);
     private static Effect noneEffect = null;
 
     public CityMenu(City city, int resX, int resY, ZoomMap zoomMapRef) {
@@ -84,15 +84,21 @@ public class CityMenu extends Pane {
         closeButton.setOnMouseClicked((e) -> {
             close();
         });
+        closeButton.effectProperty().bind(
+                Bindings.when(closeButton.hoverProperty()).then(shadowBig).otherwise(noneEffect)
+        );
 
         productionDisplay = new ImageView();
         productionDisplay.setTranslateX(300);
         productionDisplay.setTranslateY(160);
         updateProductionDisplay();
+        
+        //used to scale different icons along the map according to resolution 
+        double sixthPortion = (resY - 285) / 6 -8;
 
         productionIcon = new ImageView(ImageBuffer.getImage(MiscAsset.PRODUCTION_ICON));
         productionIcon.setTranslateX(175);
-        productionIcon.setTranslateY(340);
+        productionIcon.setTranslateY(sixthPortion + 240);
         productionIcon.setOnMouseClicked((MouseEvent e) -> {
             openProductionMenu();
             e.consume();
@@ -103,7 +109,7 @@ public class CityMenu extends Pane {
 
         purchaseIcon = new ImageView(ImageBuffer.getImage(MiscAsset.GOLD_ICON));
         purchaseIcon.setTranslateX(175);
-        purchaseIcon.setTranslateY(540);
+        purchaseIcon.setTranslateY(sixthPortion * 3 + 240);
         purchaseIcon.setOnMouseClicked((MouseEvent e) -> {
             openPurchaseMenu();
             e.consume();
@@ -114,7 +120,7 @@ public class CityMenu extends Pane {
 
         citizenIcon = new ImageView(ImageBuffer.getImage(MiscAsset.CITIZEN_ICON));
         citizenIcon.setTranslateX(175);
-        citizenIcon.setTranslateY(740);
+        citizenIcon.setTranslateY(sixthPortion * 5 + 240);
         citizenIcon.setOnMouseClicked((MouseEvent e) -> {
             openExpansionMenu();
             e.consume();
@@ -330,6 +336,9 @@ public class CityMenu extends Pane {
                 e.consume();
                 close();
             });
+            closeButton.effectProperty().bind(
+                    Bindings.when(closeButton.hoverProperty()).then(shadowBig).otherwise(noneEffect)
+            );
 
             confirmButton = new Circle(450, 385, 22);
             confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
@@ -340,6 +349,9 @@ public class CityMenu extends Pane {
                     confirm();
                 }
             });
+            confirmButton.effectProperty().bind(
+                    Bindings.when(confirmButton.hoverProperty()).then(shadowBig).otherwise(noneEffect)
+            );
 
             title = new Text("SELECT CITY PRODUCTION");
             title.setFont(Font.font("Oswald", 25));
@@ -371,7 +383,6 @@ public class CityMenu extends Pane {
         private void updateInfo() {
 
             String selection = (String) comboBox.getValue();
-        
 
             //If the value is one of the fillers
             if (comboBox.getValue().equals("----- UNITS -----") || comboBox.getValue().equals("----- PROJECTS -----")) {
@@ -516,6 +527,9 @@ public class CityMenu extends Pane {
                 e.consume();
                 close();
             });
+            closeButton.effectProperty().bind(
+                    Bindings.when(closeButton.hoverProperty()).then(shadowBig).otherwise(noneEffect)
+            );
 
             confirmButton = new Circle(450, 385, 22);
             confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
@@ -525,8 +539,10 @@ public class CityMenu extends Pane {
                 if (canConfirm) {
                     confirm();
                 }
-
             });
+            confirmButton.effectProperty().bind(
+                    Bindings.when(confirmButton.hoverProperty()).then(shadowBig).otherwise(noneEffect)
+            );
 
             title = new Text("PURCHASE WITH GOLD");
             title.setFont(Font.font("Oswald", 25));
@@ -733,6 +749,9 @@ public class CityMenu extends Pane {
                 e.consume();
                 close();
             });
+            closeButton.effectProperty().bind(
+                    Bindings.when(closeButton.hoverProperty()).then(shadowBig).otherwise(noneEffect)
+            );
 
             scrollSelection = new ScrollPane();
             scrollSelection.setPrefWidth(500);
