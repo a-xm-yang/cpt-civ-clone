@@ -94,6 +94,7 @@ public abstract class MilitaryUnit extends Unit {
 
         if (x instanceof MilitaryUnit) {
 
+            //Calculate damages
             MilitaryUnit enemy = (MilitaryUnit) x;
             int enemyCombat = enemy.combat;
 

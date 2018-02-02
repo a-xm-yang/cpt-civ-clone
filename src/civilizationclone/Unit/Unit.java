@@ -4,7 +4,6 @@ import civilizationclone.City;
 import civilizationclone.GameMap;
 import civilizationclone.Player;
 import civilizationclone.TechType;
-import civilizationclone.Tile.Mountain;
 import civilizationclone.Tile.Tile;
 import java.awt.Point;
 import java.util.ArrayList;
