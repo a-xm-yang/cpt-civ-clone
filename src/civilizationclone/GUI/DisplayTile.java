@@ -4,7 +4,6 @@ import civilizationclone.Tile.*;
 import civilizationclone.Unit.MilitaryUnit;
 import java.awt.Point;
 import java.util.ArrayList;
-import javafx.beans.binding.Bindings;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
@@ -39,6 +38,7 @@ public class DisplayTile extends Polygon {
     static final double HEIGHT = 82;
 
     public DisplayTile(Tile tile, int x, int y) {
+        //each display tile of hexagon is an object
 
         //tile reference
         this.tile = tile;
@@ -71,6 +71,7 @@ public class DisplayTile extends Polygon {
 
     public void update() {
 
+        //UPDATE ACCORDING TO FOG OF WAR ACCESS
         //Access level 0: Complete Coverage
         //Access level 1: Show terrain, city, and resource
         //Access level 2: Show everything

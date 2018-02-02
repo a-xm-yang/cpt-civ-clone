@@ -49,7 +49,8 @@ public class City {
         this.originalOwner = u.getPlayer();
 
         realPopulation = 1000;
-        maxHealth = 300;
+        maxHealth = 55;
+        combat = 30;
         health = maxHealth;
         currentProduction = 0;
 
@@ -124,21 +125,24 @@ public class City {
     }
 
     private void calcFakePopulation() {
-        this.population = (int) (Math.pow((realPopulation / 1000), 1 / 2.9));
+        //fake population is the population that the player sees, while real population is what is behind the calculation
+        this.population = (int) (Math.pow((realPopulation / 1000), 1 / 2.85));
     }
 
     private void inceaseRealPopulation() {
+        //Increase population according to how much happiness you have
         if (player.getHappiness() > 2) {
             this.realPopulation += (this.foodIncome - this.population) * 500; //Fiddle around with this number to make it good
         } else if (player.getHappiness() >= 0) {
             this.realPopulation += (this.foodIncome - this.population) * 400; //Fiddle around with this number to make it good
         } else {
-            this.realPopulation += (this.foodIncome - this.population) * 300;
+            this.realPopulation += (this.foodIncome - this.population) * 250;
         }
     }
 
     public boolean canEndTurn() {
 
+        //whether this city can end turn (which means it has a project)
         if (currentUnit != null || currentProject != null) {
             return true;
         }
@@ -222,11 +226,15 @@ public class City {
     }
 
     private void buildProject() {
+        //Build project according to how
         System.out.println(currentProject + " built!");
         builtProjects.add(currentProject);
         currentProduction = 0;
         if (currentProject.name().endsWith("WALL")) {
-            maxHealth += 50;
+            //If you get a wall, the city increase in defense and in strength
+            maxHealth += 55;
+            health = maxHealth;
+            combat += 10;
         }
         currentProject = null;
     }
@@ -246,7 +254,7 @@ public class City {
     }
 
     private void heal() {
-        health = health + 15;
+        health = health + 5;
         if (health > maxHealth) {
             health = maxHealth;
         }
@@ -387,7 +395,7 @@ public class City {
 
         return list;
     }
-    
+
     public double getHealthPercentage() {
         return (health * 1.0) / maxHealth;
     }

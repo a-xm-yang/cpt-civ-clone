@@ -92,9 +92,9 @@ public class CityMenu extends Pane {
         productionDisplay.setTranslateX(300);
         productionDisplay.setTranslateY(160);
         updateProductionDisplay();
-        
+
         //used to scale different icons along the map according to resolution 
-        double sixthPortion = (resY - 285) / 6 -8;
+        double sixthPortion = (resY - 285) / 6 - 8;
 
         productionIcon = new ImageView(ImageBuffer.getImage(MiscAsset.PRODUCTION_ICON));
         productionIcon.setTranslateX(175);
@@ -149,11 +149,13 @@ public class CityMenu extends Pane {
     }
 
     private void activateExpansion() {
+        //activate expansion option for the zoom map to expand city
         zoomMapRef.activateExpansion();
         close();
     }
 
     private void openProductionMenu() {
+        //open the menu for production if a menu is not open so far
         if (!hasOptionOpen()) {
             getChildren().add(new ProductionMenu(city, resX, resY));
             setHasOptionOpen(true);
@@ -161,6 +163,7 @@ public class CityMenu extends Pane {
     }
 
     private void openPurchaseMenu() {
+        //open the menu for purchase if a menu is not open so far
         if (!hasOptionOpen()) {
             getChildren().add(new PurchaseMenu(city, resX, resY));
             setHasOptionOpen(true);
@@ -168,6 +171,7 @@ public class CityMenu extends Pane {
     }
 
     private void openExpansionMenu() {
+        //open the menu for expansion if a menu is not open so far
         if (!hasOptionOpen()) {
             getChildren().add(new CitizenMenu(city, resX, resY));
             setHasOptionOpen(true);
@@ -179,6 +183,7 @@ public class CityMenu extends Pane {
     }
 
     private void updateProductionDisplay() {
+        //update the display of the current production when you change it, including sprite, info, etc.
         Image productionImage;
 
         if (city.getCurrentUnit() != null) {
@@ -195,6 +200,7 @@ public class CityMenu extends Pane {
 
     private String displayCityInfo() {
 
+        //returns a string that shows all the current information
         String msg = "";
 
         if (city.canExpand()) {
@@ -233,6 +239,7 @@ public class CityMenu extends Pane {
 
     private void close() {
 
+        //when you close the city, calculate all related stats, and remove the city pane
         city.getPlayer().calculateHappiness();
         city.getPlayer().calcGoldIncome();
         city.getPlayer().calcTechIncome();
@@ -243,7 +250,7 @@ public class CityMenu extends Pane {
         }
     }
 
-    //convert enum production into string info
+    //convert enum production into string info to display
     public String getInfo(Enum e) {
         String s = "";
 
@@ -509,6 +516,7 @@ public class CityMenu extends Pane {
 
         public PurchaseMenu(City city, int resX, int resY) {
 
+            //a menu for all the purchases one can make
             this.city = city;
 
             canConfirm = false;

@@ -7,12 +7,11 @@ import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.Unit;
 import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
-import java.io.File;
 import java.util.ArrayList;
-import javafx.geometry.Pos;
-import javafx.scene.Cursor;
+import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
-import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
@@ -38,6 +37,8 @@ public class GamePane extends Pane {
     private MediaPlayer mp, dmp, wmp;
     private Media win, loss, background;
     private boolean isMuted;
+    private static Effect shadow = new DropShadow(30, Color.WHITE);
+    private static Effect noneEffect = null;
 
     //game data
     private GameMap gameMap;
@@ -45,7 +46,7 @@ public class GamePane extends Pane {
     private Player currentPlayer;
 
     public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY, boolean isNewGame, boolean isMuted) {
-        
+
         this.gameMap = gameMap;
         this.playerList = playerList;
         this.resX = resX;
@@ -53,7 +54,7 @@ public class GamePane extends Pane {
         this.setPrefHeight(resY);
         this.setPrefWidth(resX);
         this.isMuted = isMuted;
-        
+
         //Loading music 
         background = new Media(getClass().getClassLoader().getResource("Assets/Misc/babayetu.mp3").toExternalForm());
         win = new Media(getClass().getClassLoader().getResource("Assets/Misc/ConquestVictory.mp3").toExternalForm());
@@ -64,11 +65,9 @@ public class GamePane extends Pane {
         mp.setOnEndOfMedia(() -> {
             mp.seek(Duration.ZERO);
         });
-        
-        if (isMuted){
+
+        if (isMuted) {
             mp.setMute(true);
-            dmp.setMute(true);
-            wmp.setMute(true);
         }
 
         currentPlayer = playerList.get(0);
@@ -88,6 +87,7 @@ public class GamePane extends Pane {
             currentPlayer.startTurn();
         }
 
+        //initialize all the elements of the game pane, and add them into the pane
         zoomMap = createFalseZoomMap(gameMap.getMap());
         minimap = new Minimap(zoomMap, resX, resY);
         nextButton = new NextTurnPane(currentPlayer, resX, resY, this);
@@ -108,38 +108,42 @@ public class GamePane extends Pane {
     }
 
     public void nextTurn() {
+        //jump to the player next in line
         if (playerList.indexOf(currentPlayer) == playerList.size() - 1) {
             currentPlayer = playerList.get(0);
         } else {
             currentPlayer = playerList.get(playerList.indexOf(currentPlayer) + 1);
         }
 
+        //start the player's turn and set all the element's current info display to this player
         currentPlayer.startTurn();
-
         nextButton.setCurrentPlayer(currentPlayer);
         statusBar.setCurrentPlayer(currentPlayer);
         sciencePane.setCurrentPlayer(currentPlayer);
         zoomMap.setCurrentPlayer(currentPlayer);
 
+        //VICTORY & DEFEAT CHECK
         if (playerList.size() == 1) {
             //Play victory audio and show victory screen
             mp.setVolume(0.5);
             wmp = new MediaPlayer(win);
             wmp.play();
-
+            wmp.setMute(isMuted);
             this.getChildren().add(new DefeatedPrompt(resX, resY, false));
         } else if (currentPlayer.isDefeated()) {
             //Play defeat audio and show victory screens
             mp.setVolume(0.5);
             dmp = new MediaPlayer(loss);
-            dmp.play();
-
+            dmp.play(); 
+            dmp.setMute(isMuted);
             this.getChildren().add(new DefeatedPrompt(resX, resY, true));
         }
     }
 
     public void jumpToNextAction() {
 
+        //this method is invoked when a player cannot finish turn, yet clicked next turn
+        //this opens up the corresponding action that the player has to take in order to force him/her to take it
         if (currentPlayer.canEndTurn() == 1) {
             for (Unit u : currentPlayer.getUnitList()) {
                 if (u.canMove()) {
@@ -188,6 +192,7 @@ public class GamePane extends Pane {
 
     }
 
+    //two methods used to add/remove city menus from the game pane
     public void addCityMenu(City c) {
         cityMenu = new CityMenu(c, resX, resY, zoomMap);
         getChildren().add(cityMenu);
@@ -203,6 +208,8 @@ public class GamePane extends Pane {
     }
 
     public void updateInfo() {
+
+        //update all information in all displays
         nextButton.updateText();
         statusBar.updateTexts();
         sciencePane.updateInfo();
@@ -261,15 +268,14 @@ public class GamePane extends Pane {
 
     private class DefeatedPrompt extends Pane {
 
+        //a prompt that shows up when the player has either won or lost the game
         private Rectangle border;
         private Circle confirmButton;
         private Text title;
 
-        private boolean canConfirm;
         private boolean defeated;
 
         public DefeatedPrompt(int resX, int resY, boolean defeated) {
-            canConfirm = true;
             this.defeated = defeated;
 
             border = new Rectangle(400, 100);
@@ -288,7 +294,7 @@ public class GamePane extends Pane {
 
             title.setFont(Font.font("OSWALD", 25));
             title.setFill(Color.WHITESMOKE);
-            title.setTranslateY(border.getWidth() / 2 - title.getLayoutBounds().getWidth() / 2);
+            title.setTranslateY(border.getHeight() / 2 - title.getLayoutBounds().getHeight() / 2);
             title.setTranslateX(15);
 
             confirmButton = new Circle(border.getWidth() - 20, border.getHeight() - 20, 14.5);
@@ -297,6 +303,9 @@ public class GamePane extends Pane {
                 e.consume();
                 close();
             });
+            confirmButton.effectProperty().bind(
+                    Bindings.when(confirmButton.hoverProperty()).then(shadow).otherwise(noneEffect)
+            );
 
             getChildren().addAll(border, title, confirmButton);
 

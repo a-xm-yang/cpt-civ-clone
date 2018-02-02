@@ -9,6 +9,7 @@ public class MapGenerator {
 
         randomize(seed);
 
+        //Generate a random simplex distrubution map according to a seed, and filter it via a radial gradient to create an island
         float[][] simplexNoise = generateSimplexNoise(width, height, 0.055f);
         float[][] radialGradient = generateRadialGradient(width, height);
 

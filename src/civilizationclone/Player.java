@@ -88,7 +88,8 @@ public class Player {
         calculateHappiness();
 
         techProgress += techIncome;
-
+        
+        //if technology progress has surpassed currente requirement
         if (techProgress >= research.getTechCost()) {
             addTech(research);
             calcResearchableTech();
@@ -143,6 +144,7 @@ public class Player {
     }
 
     private void calcResearchableTech() {
+        //Loop through the list of techs to see which ones we can research right now
         researchableTech = EnumSet.noneOf(TechType.class);
         for (TechType t : TechType.values()) {
             if (ownedTech.containsAll(t.getPrerequisites()) && !ownedTech.contains(t)) {
@@ -154,6 +156,7 @@ public class Player {
     public void calcGoldIncome() {
         int x = 0;
 
+        //calculate gold income of all cities
         for (Unit unit : unitList) {
             if (unit instanceof MilitaryUnit) {
                 x -= ((MilitaryUnit) unit).getMaintainence();
@@ -226,6 +229,7 @@ public class Player {
     //ADDING FUNCTIONS FOR PLAYER
     //<editor-fold>
     public void addTech(TechType t) {
+        //add a new tech, and add all the things that this tech brings, e.g. new unit, new improvement, new project, etc.
         ownedTech.add(t);
         if (t.getUnlockUnit() != null) {
             for (UnitType u : t.getUnlockUnit()) {
@@ -321,7 +325,6 @@ public class Player {
 
         //default
         this.leader = Leader.STALIN;
-        System.out.println("BAC");
     }
 
     public Leader getLeader() {

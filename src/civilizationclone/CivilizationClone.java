@@ -8,10 +8,10 @@ Alexander Yang
 Nick Seniow
 Justin Tang
 
-ALPHA 
+ALPHA RELEASE VERSION
  */
 
-//Jan 31 2017
+//Feb 1 2017
 
 public class CivilizationClone{
 

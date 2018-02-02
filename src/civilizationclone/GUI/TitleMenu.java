@@ -64,6 +64,7 @@ public class TitleMenu extends Group {
         this.resX = resX;
         this.resY = resY;
 
+        //background music
         Media media = new Media(getClass().getClassLoader().getResource("Assets/Misc/Sogno_di_Volare.mp3").toExternalForm());
         mp = new MediaPlayer(media);
         mp.setOnEndOfMedia(() -> {
@@ -79,6 +80,8 @@ public class TitleMenu extends Group {
     }
 
     public TitleMenu(int resX, int resY, Stage primaryStage, MediaPlayer mp) {
+
+        //A overloaded constructor for when player changes the resolution of the screen (music will keep playing although a new title object is constructed, because a reference is passed)
         this.primaryStage = primaryStage;
         this.resX = resX;
         this.resY = resY;
@@ -93,6 +96,8 @@ public class TitleMenu extends Group {
     }
 
     public void initialize() {
+
+        //Initialize the title by creating three differnt panes needed, and add the background
         getChildren().clear();
 
         canvas = new Canvas(resX + 50, resY + 50);
@@ -108,11 +113,11 @@ public class TitleMenu extends Group {
 
     private Pane initTitle() {
 
-        //shift the whole thing by using fixX and fixY
         Pane root = new Pane();
 
-        int fixX = 10 + (resX - 1200)/2;
-        int fixY = 125 + (resY - 800)/2;
+        //shift the whole pane by using fixX and fixY, thus making it stil in the same positon even after resolution change
+        int fixX = 10 + (resX - 1200) / 2;
+        int fixY = 125 + (resY - 800) / 2;
 
         CivTitle title = new CivTitle("C O L O N I Z A T I O N  I I", 48);
         title.setTranslateX(300 + fixX);
@@ -150,8 +155,9 @@ public class TitleMenu extends Group {
 
         Pane root = new Pane();
 
-        int fixX = 62 + (resX - 1200)/2;
-        int fixY = 50 + (resY - 800)/2;
+        //shift the whole pane by using fixX and fixY, thus making it stil in the same positon even after resolution change
+        int fixX = 62 + (resX - 1200) / 2;
+        int fixY = 50 + (resY - 800) / 2;
 
         Rectangle rect1 = new Rectangle(270 + fixX, 30 + fixY, 550, 680);
         rect1.setFill(Color.BLACK);
@@ -242,11 +248,12 @@ public class TitleMenu extends Group {
     }
 
     private Pane initOption() {
-        
+
         Pane root = new Pane();
 
-        int fixX = 62 + (resX - 1200)/2;
-        int fixY = 50 + (resY - 800)/2;
+        //shift the whole pane by using fixX and fixY, thus making it stil in the same positon even after resolution change
+        int fixX = 62 + (resX - 1200) / 2;
+        int fixY = 50 + (resY - 800) / 2;
 
         Rectangle rect1 = new Rectangle(270 + fixX, 30 + fixY, 550, 680);
         rect1.setFill(Color.BLACK);
@@ -308,12 +315,11 @@ public class TitleMenu extends Group {
 
         resolutionChoice = new ChoiceBox();
         resolutionChoice.getItems().addAll("1200x800", "1500x1000");
-        resolutionChoice.setValue("1200x800");
+        String resolutionMessage = Integer.toString(resX) + "x" + Integer.toString(resY);
+        resolutionChoice.setValue(resolutionMessage);
 
         cheat = new CheckBox();
         music = new CheckBox();
-        cheat.setSelected(cheatOn);
-        music.setSelected(mp.isMute());
 
         resolutionChoice.setTranslateX(570 + fixX);
         cheat.setTranslateX(570 + fixX);
@@ -338,22 +344,27 @@ public class TitleMenu extends Group {
 
     private void addLeader() {
 
+        //check if the current number of leaders is legal and that it is not an invalid input
         if (playerList.size() > 6 || leaderOption.getValue() == null) {
             return;
         }
 
+        //fetch the selected leader
         String selection = (String) leaderOption.getValue();
         leaderOption.getItems().remove(leaderOption.getValue());
         leaderOption.setVisibleRowCount(leaderOption.getItems().size());
 
+        //add the selected leader into the list of leaders selected, and reformat their positions accordingly
         PlayerBox pb = new PlayerBox(selection);
         playerList.add(pb);
         startPane.getChildren().add(pb);
         formatPlayerBoxes();
 
+        //if leader number is greater than 2, a game can be created
         if (playerList.size() >= 2) {
             startButton.setDisable(false);
             if (playerList.size() == 6) {
+                //disallow the player to add more leaders once the number is 6
                 addLeader.setVisible(false);
                 leaderOption.setVisible(false);
             }
@@ -361,26 +372,29 @@ public class TitleMenu extends Group {
     }
 
     private void removeLeader(PlayerBox pb) {
+
+        //remove leader from the list and reformat leader positions accordingly
         leaderOption.getItems().add(pb.leader.name());
         leaderOption.setVisibleRowCount(leaderOption.getItems().size());
         playerList.remove(pb);
         startPane.getChildren().remove(pb);
-
         formatPlayerBoxes();
 
+        //if leader number falls below 2, one cannot create a game
         if (playerList.size() < 2) {
             startButton.setDisable(true);
         }
 
+        //allow the player to add more leader
         addLeader.setVisible(true);
         leaderOption.setVisible(true);
     }
 
     private void formatPlayerBoxes() {
-        int fixX = 62 + (resX - 1200)/2;
-        int fixY = 50 + (resY - 800)/2;
+        int fixX = 62 + (resX - 1200) / 2;
+        int fixY = 50 + (resY - 800) / 2;
 
-        // Rectangle rect4 = new Rectangle(345 + fixX, 195 + fixY, 400, 470);
+        //format all the leaders according to their seleciton order in the pane
         for (int i = 0; i < playerList.size(); i++) {
             playerList.get(i).setTranslateX(345 + fixX);
             playerList.get(i).setTranslateY(195 + fixY + i * 62);
@@ -393,10 +407,12 @@ public class TitleMenu extends Group {
     }
 
     private void startGame() {
+        //prevent a game from beginnign if there is no leader
         if (playerList.isEmpty()) {
             return;
         }
 
+        //convert the selected leader boxes to actual Player objects
         ArrayList<Player> list = new ArrayList<>();
         for (PlayerBox pb : playerList) {
             switch (pb.getLeader()) {
@@ -420,13 +436,15 @@ public class TitleMenu extends Group {
                     break;
             }
         }
-        
-        if (cheatOn){
-            for (Player p: list){
+
+        //turn on G-MODE
+        if (cheatOn) {
+            for (Player p : list) {
                 p.setgMode(true);
             }
         }
 
+        //create a random procedurally-generated game map using a random seed
         MapSize ms = MapSize.MEDIUM;
         for (MapSize m : MapSize.values()) {
             if (m.name().equalsIgnoreCase((String) mapOption.getValue())) {
@@ -437,25 +455,32 @@ public class TitleMenu extends Group {
         int seed = (int) (Math.random() * 1000 + 1);
         GameMap gameMap = new GameMap(ms, seed);
 
-        //change later
+        //start the game by changing scenes
         primaryStage.setScene(new Scene(new GamePane(gameMap, list, resX, resY, true, mp.isMute())));
         mp.pause();
     }
 
+    //open play pane
     private void openPlay() {
         getChildren().clear();
         getChildren().add(canvas);
         getChildren().add(startPane);
     }
 
+    //open option pane
     private void openOption() {
         getChildren().clear();
         getChildren().add(canvas);
         getChildren().add(optionPane);
 
-        resolutionChoice.setValue(resX + ":" + resY);
+        //change the option to how things are
+        cheat.setSelected(cheatOn);
+        music.setSelected(mp.isMute());
+        String resolutionMessage = Integer.toString(resX) + "x" + Integer.toString(resY);
+        resolutionChoice.setValue(resolutionMessage);
     }
 
+    //open title pane
     private void openTitle() {
         getChildren().clear();
         getChildren().add(canvas);
@@ -463,18 +488,21 @@ public class TitleMenu extends Group {
     }
 
     private void saveOption() {
+
+        //change the variables such as mute and G-Mode according to option selection
         String chosen = (String) resolutionChoice.getValue();
 
         mp.setMute(music.isSelected());
         cheatOn = cheat.isSelected();
 
+        //if the resolution option chosen is not the one it has right now, get the resolution by dissecting string, and then create a new Scene with a new TitleMenu
         if (!chosen.startsWith(Integer.toString(resX))) {
             int width = Integer.parseInt(chosen.substring(0, chosen.indexOf("x")));
             int height = Integer.parseInt(chosen.substring(chosen.indexOf("x") + 1));
 
             resX = width;
             resY = height;
-            
+
             primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage, mp), resX, resY));
         }
 
@@ -486,6 +514,7 @@ public class TitleMenu extends Group {
         private Leader leader;
         private Circle removeIcon;
 
+        //An object used for the display of each leader, with leader name and image set accordingly
         public PlayerBox(String name) {
 
             ImageView leaderHead = new ImageView();
@@ -534,6 +563,7 @@ public class TitleMenu extends Group {
 
         private Text text = new Text();
 
+        //Object for artistic title
         public CivTitle(String title, int size) {
 
             text.setText(title);
@@ -553,6 +583,7 @@ public class TitleMenu extends Group {
         private Effect shadow = new DropShadow(5, Color.WHITE);
         private Effect blur = new BoxBlur(1, 1, 5);
 
+        //Object for artistic item name
         public CivMenuItems(String words) {
 
             Rectangle rect = new Rectangle(-8, -30, 150, 40);

@@ -93,6 +93,7 @@ public enum TechType {
     //</editor-fold>
 
     static {
+        //convert the set to a enum set so that it is consistent
         for (TechType v : values()) {
             if (v.prerequisites == null) {
                 v.prerequisites = EnumSet.noneOf(TechType.class);

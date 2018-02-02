@@ -16,6 +16,8 @@ enum MiscAsset {
 }
 
 public class ImageBuffer {
+    
+    //A class the loads all the resources that the game needs so that it can be saved in memory and called efficiently
 
     //IMAGE VARS ----------------------------
     //<editor-fold>
@@ -153,6 +155,7 @@ public class ImageBuffer {
     private static Image yieldsToggle;
 
     //</editor-fold>
+    
     //Image loading
     static {
         desert = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Tiles/Desert.png"), 100, 110, false, false);

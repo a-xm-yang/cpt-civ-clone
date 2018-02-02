@@ -37,7 +37,8 @@ public class GUIMain extends Application {
 
     public Pane startWithoutMenu() {
 
-        //Create the zoompane called "root" in the scene
+        //intialize a game without going into title menu, strictly for testing
+        
         GameMap gameMap = new GameMap(MapSize.MEDIUM, 400);
         ArrayList<Player> p = new ArrayList<Player>();
         p.add(new Player("Joseph Stalin"));

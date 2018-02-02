@@ -47,6 +47,7 @@ public class GameMap {
 
         float value = 0f;
 
+        //Initialize the map with a pseudo random number taken randomly from the 5th digit, and use that to determine terrain
         for (int i = 0; i < simplexNoise.length; i++) {
             for (int k = 0; k < simplexNoise[i].length; k++) {
                 value = simplexNoise[i][k];
@@ -167,6 +168,8 @@ public class GameMap {
     //GETTER & SETTER
     //<editor-fold>
     public Set<Tile> getVisibleTiles(Point[] allPositions) {
+        
+        //Get all the visible tiles that the current player can see, according to all the tiles it has things on
         Set<Point> allVisibleRange = new HashSet<>();
 
         for (Point p : allPositions) {
@@ -200,6 +203,7 @@ public class GameMap {
 
     public Tile[] getTiles(ArrayList<Point> list) {
 
+        //get an array of tiles according to an array of points
         ArrayList<Tile> tileList = new ArrayList<>();
 
         for (Point p : list) {
@@ -268,6 +272,8 @@ public class GameMap {
     }
 
     public boolean canSpawn(Point p) {
+        
+        //see if a unit can spawn in this locatoin in the beginning of the game according to tile, unit, and adjacency situations
         if (getTile(p) instanceof Ocean || getTile(p) instanceof Mountain || getTile(p.x, p.y + 1) instanceof Ocean || getTile(p.x, p.y + 1) instanceof Mountain 
                 && !getTile(p).hasUnit() && !getTile(p.x, p.y + 1).hasUnit()) {
             return false;
