@@ -5,10 +5,13 @@ import civilizationclone.Player;
 import civilizationclone.TechType;
 import civilizationclone.Tile.Improvement;
 import civilizationclone.Unit.UnitType;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.control.ComboBox;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -31,6 +34,8 @@ public class SciencePane extends Group {
     private Circle techImage;
     private Rectangle textBackground;
     private Text infoText;
+    private static Effect shadow = new DropShadow(30, Color.WHITE);
+    private static Effect noneEffect = null;
 
     private GamePane gamePaneRef;
     private Player player;
@@ -164,6 +169,9 @@ public class SciencePane extends Group {
                 e.consume();
                 close();
             });
+            closeButton.effectProperty().bind(
+                    Bindings.when(closeButton.hoverProperty()).then(shadow).otherwise(noneEffect)
+            );
 
             confirmButton = new Circle(450, 385, 22);
             confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
@@ -175,6 +183,9 @@ public class SciencePane extends Group {
                     close();
                 }
             });
+            confirmButton.effectProperty().bind(
+                    Bindings.when(confirmButton.hoverProperty()).then(shadow).otherwise(noneEffect)
+            );
 
             title = new Text("SELECT RESEARCH PROJECT");
             title.setFont(Font.font("Oswald", 25));

@@ -4,11 +4,15 @@ import civilizationclone.Tile.Improvement;
 import static civilizationclone.Tile.Improvement.NONE;
 import civilizationclone.Unit.*;
 import java.util.ArrayList;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -21,12 +25,15 @@ import javafx.scene.text.Text;
 
 public class UnitMenu extends Pane {
 
-    Unit unit;
-    ArrayList<UnitOption> opts;
-    ZoomMap zmapRef;
-    Canvas infoDisplay;
-    GraphicsContext gc;
-    Text statusText;
+    private Unit unit;
+    private ArrayList<UnitOption> opts;
+    private ZoomMap zmapRef;
+    private Canvas infoDisplay;
+    private GraphicsContext gc;
+    private Text statusText;
+
+    private Effect shadow = new DropShadow(25, Color.BLACK);
+    private Effect noneEffect = null;
 
     //TODO fix the menu options, right now the code is sloppy
     public UnitMenu(Unit unit, ZoomMap zmapRef) {
@@ -185,7 +192,7 @@ public class UnitMenu extends Pane {
             } else {
                 msg = msg + "Combat: " + ((MilitaryUnit) unit).getCombat();
             }
-            if (((MilitaryUnit) unit).isFortified()){
+            if (((MilitaryUnit) unit).isFortified()) {
                 msg = msg + "\n\nFortified";
             }
         } else {
@@ -204,10 +211,10 @@ public class UnitMenu extends Pane {
 
     private class UnitOption extends Rectangle {
 
-        int x, y, w, h;
+        private int x, y, w, h;
         //Rectangle rect;
-        String optionType;
-        Text text;
+        private String optionType;
+        private Text text;
 
         public UnitOption(int x, int y, int w, int h, String optionType) {
             super(x, y, w, h);
@@ -226,6 +233,10 @@ public class UnitMenu extends Pane {
             this.text.setMouseTransparent(true);
 
             this.setFill(Color.BLACK);
+            
+            effectProperty().bind(
+                    Bindings.when(hoverProperty()).then(shadow).otherwise(noneEffect)
+            );
         }
 
         public Rectangle getRect() {

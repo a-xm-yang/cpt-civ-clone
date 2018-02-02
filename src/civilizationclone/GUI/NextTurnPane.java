@@ -1,7 +1,10 @@
 package civilizationclone.GUI;
 
 import civilizationclone.Player;
+import javafx.beans.binding.Bindings;
 import javafx.scene.Group;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -19,6 +22,8 @@ public class NextTurnPane extends Group {
     private Player player;
     private GamePane gamePaneRef;
     private ZoomMap zMapRef;
+    private static Effect shadow = new DropShadow(40, Color.WHITE);
+    private static Effect noneEffect = null;
 
     public NextTurnPane(Player player, int resX, int resY, GamePane gamePaneRef) {
         this.text = new Text();
@@ -31,17 +36,24 @@ public class NextTurnPane extends Group {
         this.zMapRef = gamePaneRef.getZoomMap();
         this.setTranslateX(resX - 311);
         this.setTranslateY(resY - 316.5 - rect.getHeight());
-        
+
         text.setFill(Color.BEIGE);
+        text.effectProperty().bind(
+                Bindings.when(text.hoverProperty()).then(shadow).otherwise(noneEffect)
+        );
+
         updateText();
-        
+
         rect.setStrokeWidth(5);
         rect.setStroke(Color.BEIGE);
         rect.setStrokeLineJoin(StrokeLineJoin.ROUND);
-        rect.setFill(Color.DARKSLATEBLUE);
 
         getChildren().add(rect);
         getChildren().add(text);
+
+        rect.fillProperty().bind(
+                Bindings.when(pressedProperty()).then(Color.color(0.5, 0.5, 0.5, 1)).otherwise(Color.DARKSLATEBLUE)
+        );
 
         setOnMouseClicked((MouseEvent e) -> {
 
@@ -49,12 +61,12 @@ public class NextTurnPane extends Group {
         });
 
     }
-    
-    public void clickEvent(MouseEvent e){
-        
+
+    public void clickEvent(MouseEvent e) {
+
         if (this.player.canEndTurn() == 0) {
             gamePaneRef.nextTurn();
-        }else{
+        } else {
             gamePaneRef.jumpToNextAction();
         }
 
@@ -83,8 +95,8 @@ public class NextTurnPane extends Group {
         text.setTranslateY(text.getLayoutBounds().getHeight() + 2);
         zMapRef.repaint();
     }
-    
-    void delete(){
+
+    void delete() {
         gamePaneRef.getChildren().remove(this);
     }
 
