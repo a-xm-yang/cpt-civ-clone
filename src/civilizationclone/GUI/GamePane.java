@@ -76,7 +76,7 @@ public class GamePane extends Pane {
         if (isNewGame) {
             for (Player player : playerList) {
                 do {
-                    Point p = new Point((int) (Math.random() * (gameMap.getSize() - 3)) + 2, (int) (Math.random() * (gameMap.getSize())));
+                    Point p = new Point((int) (Math.random() * (gameMap.getSize() - 4)) + 2, (int) (Math.random() * (gameMap.getSize())));
                     if (gameMap.canSpawn(p)) {
                         player.addUnit(new SettlerUnit(player, p));
                         player.addUnit(new WarriorUnit(player, new Point(p.x, p.y + 1)));

@@ -31,7 +31,7 @@ public class SciencePane extends Group {
     private int resX, resY;
     private Arc progress;
     private Circle progressBackground;
-    private Circle techImage;
+    private Circle techImage, techBackground;
     private Rectangle textBackground;
     private Text infoText;
     private static Effect shadow = new DropShadow(30, Color.WHITE);
@@ -68,6 +68,12 @@ public class SciencePane extends Group {
         techImage.setStrokeWidth(4);
         techImage.setStroke(Color.BEIGE);
 
+        techBackground = new Circle();
+        techBackground.setRadius(40);
+        techBackground.setTranslateX(70);
+        techBackground.setTranslateY(70);
+        techBackground.setFill(Color.BLACK);
+
         progress = new Arc();
         progress.setType(ArcType.ROUND);
         progress.setTranslateX(70);
@@ -99,7 +105,7 @@ public class SciencePane extends Group {
         updateInfo();
 
         getChildren()
-                .addAll(textBackground, progressBackground, progress, techImage, infoText);
+                .addAll(textBackground, progressBackground, progress,techBackground, techImage, infoText);
     }
 
     public void clickEvent(MouseEvent e) {
@@ -116,7 +122,7 @@ public class SciencePane extends Group {
     }
 
     public void updateInfo() {
-        
+
         //Updates the info on the science pane 
         techImage.setFill(new ImagePattern(ImageBuffer.getImage(player.getResearch())));
         progress.setLength(-360 * ((player.getTechProgress() * 1.0) / player.getResearch().getTechCost()));
@@ -135,7 +141,7 @@ public class SciencePane extends Group {
     }
 
     public void removeMenu(ScienceMenu sm) {
-        
+
         //Removes the menu when your done using it
         getChildren().remove(sm);
         hasMenuOpen = false;
@@ -156,9 +162,8 @@ public class SciencePane extends Group {
         private Player player;
 
         public ScienceMenu(Player player, int resX, int resY) {
-            
-            //The menu that is opened when the science pane is opened
 
+            //The menu that is opened when the science pane is opened
             this.player = player;
 
             border = new Rectangle(600, 450);
@@ -221,7 +226,7 @@ public class SciencePane extends Group {
         }
 
         private void updateInfo() {
-            
+
             //Refresh the info
             String selection = (String) comboBox.getValue();
 

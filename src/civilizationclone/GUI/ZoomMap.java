@@ -168,7 +168,7 @@ public class ZoomMap extends Group {
         } else {
 
             Point clickPoint = ((DisplayTile) e.getTarget()).getPoint();
-            
+
             //Different types of highlights
             if (highlightType == highlightType.MOVEMENT) {
                 for (Point p : highlightedTiles) {
@@ -605,13 +605,6 @@ public class ZoomMap extends Group {
             setTranslateX(zoomMapX * -1 + resX / 2 - border.getX() / 2 - border.getX() / 2);
             setTranslateY(zoomMapY * -1 + resY / 2 - border.getY() / 2 - border.getY() / 2);
 
-            closeButton = new Circle(280, 120, 20);
-            closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
-            closeButton.setOnMouseClicked((e) -> {
-                e.consume();
-                close();
-            });
-
             title = new Text("INPUT CITY NAME");
             title.setFont(Font.font("Times New Roman", 20));
             title.setFill(Color.WHITESMOKE);
@@ -629,7 +622,7 @@ public class ZoomMap extends Group {
                 textCheck();
             });
 
-            confirmButton = new Circle(230, 120, 14.5);
+            confirmButton = new Circle(30, 120, 14.5);
             confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
             confirmButton.setOnMouseClicked((e) -> {
                 e.consume();
@@ -637,6 +630,13 @@ public class ZoomMap extends Group {
                     confirm();
                     close();
                 }
+            });
+
+            closeButton = new Circle(80, 120, 20);
+            closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
+            closeButton.setOnMouseClicked((e) -> {
+                e.consume();
+                close();
             });
 
             getChildren().addAll(border, closeButton, title, confirmButton, textField);
