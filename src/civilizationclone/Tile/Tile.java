@@ -40,6 +40,8 @@ public abstract class Tile {
         int productionOutput = this.productionOutput;
         int scienceOutput = this.scienceOutput;
         int goldOutput = this.goldOutput;
+        
+        //Calculates the Tech Bonuses based on the tiles techs and improvements
 
         if (getImprovement() == Improvement.FISHING && controllingCity.getPlayer().getOwnedTech().contains(TechType.CARTOGRAPHY)) {
             goldOutput++;

@@ -168,7 +168,8 @@ public class ZoomMap extends Group {
         } else {
 
             Point clickPoint = ((DisplayTile) e.getTarget()).getPoint();
-
+            
+            //Different types of highlights
             if (highlightType == highlightType.MOVEMENT) {
                 for (Point p : highlightedTiles) {
                     if (clickPoint.equals(p)) {
@@ -177,7 +178,7 @@ public class ZoomMap extends Group {
                     }
                 }
             }
-
+            //Attack Highlight
             if (highlightType == highlightType.ATTACK) {
                 for (Point p : highlightedTiles) {
                     if (clickPoint.equals(p)) {
@@ -193,7 +194,7 @@ public class ZoomMap extends Group {
                     }
                 }
             }
-
+            //Expansion Highlight
             if (highlightType == highlightType.EXPANSION) {
                 for (Point p : highlightedTiles) {
                     if (clickPoint.equals(p)) {
@@ -214,7 +215,7 @@ public class ZoomMap extends Group {
     }
 
     public void jumpTo(Unit u) {
-
+        //Snaps the screen to the position of the unit
         setTranslateX(leftCap - (u.getY() * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
         setTranslateY((u.getX() * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY());
         adjustPosition();
@@ -222,7 +223,7 @@ public class ZoomMap extends Group {
     }
 
     public void jumpTo(City c) {
-
+        //Snaps the screen to the position of the city
         setTranslateX(leftCap - (c.getPosition().y * DisplayTile.WIDTH * getScaleX()) + resX / 2 * getScaleX());
         setTranslateY((c.getPosition().x * DisplayTile.HEIGHT * getScaleY()) * -1 + resY / 2 * getScaleY());
         adjustPosition();
@@ -249,7 +250,7 @@ public class ZoomMap extends Group {
     }
 
     private void updateFogOfWar() {
-
+        //Refreshed the fog of war, to be called at end of turns
         visibleTiles = Unit.getMapRef().getVisibleTiles(currentPlayer.getAllPositions());
         currentPlayer.addExploredTiles(visibleTiles);
         exploredTiles = currentPlayer.getExploredTiles();
@@ -271,6 +272,7 @@ public class ZoomMap extends Group {
     }
 
     public void activateAttack() {
+        //Highlights attackable tiles and makes the clickable for an attack
         highlightType = HighlightType.ATTACK;
 
         MilitaryUnit m = (MilitaryUnit) selectedTile.getUnit();
@@ -289,12 +291,14 @@ public class ZoomMap extends Group {
     }
 
     public void activateMove() {
+        //Highlights tiles than can be moved to
         highlightType = HighlightType.MOVEMENT;
         addHighlightedTiles(selectedTile.getUnit().getMoves());
         repaint();
     }
 
     public void activateSettle() {
+        //Settle
         enableDragging(false);
         getChildren().add(new SettlePrompt((SettlerUnit) selectedTile.getUnit(), resX, resY, getTranslateX(), getTranslateY()));
         repaint();
@@ -308,6 +312,7 @@ public class ZoomMap extends Group {
     }
 
     public void activateFortify() {
+        //Removes all movement and fortifies unit
         if (selectedTile.getUnit() instanceof MilitaryUnit) {
             ((MilitaryUnit) selectedTile.getUnit()).setFortified(true);
             ((MilitaryUnit) selectedTile.getUnit()).setMovement(0);
@@ -320,6 +325,7 @@ public class ZoomMap extends Group {
     }
 
     public void activateKill() {
+        //Kills the unit
         selectedTile.getUnit().delete();
         updateFogOfWar();
         repaint();
@@ -331,6 +337,7 @@ public class ZoomMap extends Group {
 
     public void activateDestroy() {
         //fucked up, fix later
+        //not necessary for the game mechanics
         repaint();
     }
 
@@ -355,6 +362,7 @@ public class ZoomMap extends Group {
     }
 
     public void addHighlightedTiles(Point[] possibleOptions) {
+        //Adds the highlight for the tiles
         highlightedTiles = possibleOptions;
 
         for (Point p : possibleOptions) {
@@ -367,6 +375,7 @@ public class ZoomMap extends Group {
     }
 
     public void cleanHighlight() {
+        //Removes the highlights from the tiles
         highlightType = HighlightType.NONE;
         for (DisplayTile t : tileList) {
             t.setHighlighted(false);
@@ -391,6 +400,7 @@ public class ZoomMap extends Group {
     }
 
     //handlers for scrolling ---------------
+    //Removed from final game, to be readded eventually
     //<editor-fold>
     private void resize(ScrollEvent event) {
 

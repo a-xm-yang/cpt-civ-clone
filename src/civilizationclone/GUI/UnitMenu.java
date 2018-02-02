@@ -10,7 +10,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
@@ -35,11 +34,11 @@ public class UnitMenu extends Pane {
     private Effect shadow = new DropShadow(25, Color.BLACK);
     private Effect noneEffect = null;
 
-    //TODO fix the menu options, right now the code is sloppy
+    
     public UnitMenu(Unit unit, ZoomMap zmapRef) {
         this.unit = unit;
         opts = new ArrayList<>();
-
+        //Adds the different options for each type of unit
         if (unit instanceof SettlerUnit) {
             opts.add(new UnitOption(65, -60, 250, 40, "Move"));
             opts.add(new UnitOption(120, 0, 250, 40, "Settle"));
@@ -55,7 +54,8 @@ public class UnitMenu extends Pane {
             opts.add(new UnitOption(120, 60, 250, 40, "Fortify"));
             opts.add(new UnitOption(65, 120, 250, 40, "Kill"));
         }
-
+        
+        //Initilize the information display (left of unit)
         infoDisplay = new Canvas(230, 250);
         infoDisplay.setTranslateX(-195);
         infoDisplay.setTranslateY(-60);
@@ -68,6 +68,7 @@ public class UnitMenu extends Pane {
         statusText.setTranslateY(-25);
         statusText.setTranslateX(-180);
 
+        //initialize graphics context for drawing color/images
         gc = infoDisplay.getGraphicsContext2D();
         gc.setFill(unit.getPlayer().getColor());
         gc.fillPolygon(new double[]{0, 230, 230, 175, 175, 230, 230, 0}, new double[]{0, 0, 40, 75, 155, 180, 220, 220}, 8);
@@ -78,6 +79,7 @@ public class UnitMenu extends Pane {
             o.setFill(Color.DARKSLATEGREY);
         }
 
+        //Check if the option is available and if it is, make it white, otherwise grey it out
         for (UnitOption o : opts) {
             if (o.getOptionType().equals("Move")) {
                 if (unit.getMovement() > 0) {
@@ -127,6 +129,7 @@ public class UnitMenu extends Pane {
         this.getChildren().add(infoDisplay);
         this.getChildren().add(statusText);
 
+        //If the unit belongs to the current player, display the options, otherwise it will just show the info display
         if (unit.getPlayer().equals(zmapRef.getCurrentPlayer())) {
             for (UnitOption o : opts) {
                 getChildren().add(o);
@@ -141,6 +144,7 @@ public class UnitMenu extends Pane {
     }
 
     private void clickEventHandling(MouseEvent e) {
+        //Check where the click originated, and call the appropriate method in zoomMap
 
         if (e.getTarget() instanceof UnitOption) {
 
@@ -304,7 +308,6 @@ public class UnitMenu extends Pane {
                 e.consume();
             });
 
-            //to be changed later
             info = new Text();
             info.setFont(Font.font("Times New Roman", 18));
             info.setFill(Color.WHITESMOKE);

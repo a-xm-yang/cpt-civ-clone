@@ -52,6 +52,7 @@ public class SciencePane extends Group {
 
         setTranslateY(43);
 
+        //Initialize all the images and stuff that is in the menus
         progressBackground = new Circle();
         progressBackground.setRadius(70);
         progressBackground.setFill(Color.BLACK);
@@ -115,6 +116,8 @@ public class SciencePane extends Group {
     }
 
     public void updateInfo() {
+        
+        //Updates the info on the science pane 
         techImage.setFill(new ImagePattern(ImageBuffer.getImage(player.getResearch())));
         progress.setLength(-360 * ((player.getTechProgress() * 1.0) / player.getResearch().getTechCost()));
 
@@ -132,6 +135,8 @@ public class SciencePane extends Group {
     }
 
     public void removeMenu(ScienceMenu sm) {
+        
+        //Removes the menu when your done using it
         getChildren().remove(sm);
         hasMenuOpen = false;
         updateInfo();
@@ -151,6 +156,8 @@ public class SciencePane extends Group {
         private Player player;
 
         public ScienceMenu(Player player, int resX, int resY) {
+            
+            //The menu that is opened when the science pane is opened
 
             this.player = player;
 
@@ -214,7 +221,8 @@ public class SciencePane extends Group {
         }
 
         private void updateInfo() {
-
+            
+            //Refresh the info
             String selection = (String) comboBox.getValue();
 
             for (TechType t : player.getResearchableTech()) {
@@ -236,6 +244,7 @@ public class SciencePane extends Group {
 
         private String getInfo(Enum e) {
 
+            //Gets the info based on the type of enum that it is
             String s = "";
 
             if (e instanceof TechType) {
