@@ -92,18 +92,12 @@ public class DisplayTile extends Polygon {
                 gc.drawImage(resourceImage, getTranslateX() + 55, getTranslateY() + 35);
             }
 
-            if (displayOutput) {
-                dispayYields(gc);
-            }
-
             if (accessLevel == 1) {
                 setEffect(shade);
             } else {
                 if (tile.hasCity() && tile.getCity().getHealth() != tile.getCity().getMaxHealth()) {
                     gc.setFill(Color.BLACK);
 
-                    System.out.println("C " + tile.getCity().getHealth());
-                    System.out.println("M " + tile.getCity().getMaxHealth());
                     gc.fillRect(25 + getTranslateX(), 80 + getTranslateY(), 50, 5);
                     if ((double) (tile.getCity().getHealthPercentage()) >= .6) {
                         gc.setFill(Color.LAWNGREEN);
@@ -153,6 +147,10 @@ public class DisplayTile extends Polygon {
 
                 setEffect(null);
             }
+
+            if (displayOutput) {
+                dispayYields(gc);
+            }
         }
 
         //will be changed later
@@ -179,7 +177,7 @@ public class DisplayTile extends Polygon {
     public void setResourceImage(Image resourceImage) {
         this.resourceImage = resourceImage;
     }
-    
+
     public int getAccessLevel() {
         return accessLevel;
     }
