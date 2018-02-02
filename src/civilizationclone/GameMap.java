@@ -148,7 +148,7 @@ public class GameMap {
                         tile.setResource(Resource.SHEEP);
                     } else if (pseudoRandom < 3) {
                         tile.setResource(Resource.TRUFFLE);
-                    }else if (pseudoRandom < 4){
+                    } else if (pseudoRandom < 4) {
                         tile.setResource(Resource.OIL);
                     } else if (pseudoRandom < 7) {
                         tile.setResource(Resource.STONE);
@@ -265,6 +265,22 @@ public class GameMap {
         }
 
         return boundaries;
+    }
+
+    public boolean canSpawn(Point p) {
+        if (getTile(p) instanceof Ocean || getTile(p) instanceof Mountain || getTile(p.x, p.y + 1) instanceof Ocean || getTile(p.x, p.y + 1) instanceof Mountain 
+                && !getTile(p).hasUnit() && !getTile(p.x, p.y + 1).hasUnit()) {
+            return false;
+        }
+        
+        for (Tile t: getTiles(getRange(p, 3))){
+            if (t.hasUnit()){
+                return false;
+            }
+        }
+        
+
+        return true;
     }
 
     //</editor-fold>

@@ -182,7 +182,6 @@ public class ImageBuffer {
         quadrireme = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Units/Quadrireme.png"), 70, 70, false, false);
         caravel = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Units/Caravel.png"), 70, 70, false, false);
         ironclad = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Units/Ironclad.png"), 70, 70, false, false);
-        galley = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Units/Galley.png"), 70, 70, false, false);
         embark = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Units/embark.png"), 70, 70, false, false);
         //MISC
         closeIcon = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Misc/close_button.png"), 60, 60, false, false);
@@ -239,6 +238,7 @@ public class ImageBuffer {
         truffle = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Resource/truffle.png"), 45, 45, false, false);
         whale = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Resource/whale.png"), 45, 45, false, false);
         wine = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Resource/wine.png"), 45, 45, false, false);
+        cotton = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Resource/cotton.png"), 45, 45, false, false);
         oil = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Resource/oil.png"), 45, 45, false, false);
         //TECH
         defaultTech = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Tech/default.png"), 100, 100, false, false);
@@ -544,6 +544,7 @@ public class ImageBuffer {
                 return wine;
             case OIL:
                 return oil;
+                
         }
 
         return destroyer;

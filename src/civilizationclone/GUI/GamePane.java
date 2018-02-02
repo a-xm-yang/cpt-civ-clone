@@ -2,6 +2,7 @@ package civilizationclone.GUI;
 
 import civilizationclone.*;
 import civilizationclone.Tile.*;
+import civilizationclone.Unit.MilitaryUnit;
 import civilizationclone.Unit.SettlerUnit;
 import civilizationclone.Unit.Unit;
 import civilizationclone.Unit.WarriorUnit;
@@ -63,17 +64,15 @@ public class GamePane extends Pane {
         this.setPrefWidth(resX);
 
         currentPlayer = playerList.get(0);
-        
+
         //Grant each player initial units if it's a new game
         if (isNewGame) {
             for (Player player : playerList) {
                 do {
-                    Point p = new Point((int) (Math.random() * gameMap.getSize()), (int) (Math.random() * gameMap.getSize() - 1));
-                    if ((gameMap.getTile(p) instanceof Plains || gameMap.getTile(p) instanceof Hills || gameMap.getTile(p) instanceof Desert) && (gameMap.getTile(p.x, p.y + 1) instanceof Plains
-                            || gameMap.getTile(p.x, p.y + 1) instanceof Hills || gameMap.getTile(p.x, p.y + 1) instanceof Desert) && !gameMap.getTile(p).hasUnit() && !gameMap.getTile(p.x, p.y + 1).hasUnit()) {
+                    Point p = new Point((int) (Math.random() * gameMap.getSize()), (int) (Math.random() * (gameMap.getSize() - 4)) + 2);
+                    if (gameMap.canSpawn(p)) {
                         player.addUnit(new SettlerUnit(player, p));
                         player.addUnit(new WarriorUnit(player, new Point(p.x, p.y + 1)));
-                        //player.startTurn();
                         break;
                     }
                 } while (true);
@@ -113,23 +112,20 @@ public class GamePane extends Pane {
         statusBar.setCurrentPlayer(currentPlayer);
         sciencePane.setCurrentPlayer(currentPlayer);
         zoomMap.setCurrentPlayer(currentPlayer);
-        
-        
-        
-        if (playerList.size()==1){
+
+        if (playerList.size() == 1) {
             //Play victory audio and show victory screen
             mp.setVolume(0.5);
             wmp = new MediaPlayer(win);
             wmp.play();
-            
-            
+
             this.getChildren().add(new DefeatedPrompt(resX, resY, false));
-        }else if (currentPlayer.isDefeated()){     
+        } else if (currentPlayer.isDefeated()) {
             //Play defeat audio and show victory screens
             mp.setVolume(0.5);
             dmp = new MediaPlayer(loss);
             dmp.play();
-            
+
             this.getChildren().add(new DefeatedPrompt(resX, resY, true));
         }
     }
@@ -139,6 +135,13 @@ public class GamePane extends Pane {
         if (currentPlayer.canEndTurn() == 1) {
             for (Unit u : currentPlayer.getUnitList()) {
                 if (u.canMove()) {
+
+                    //skip to next if it is fortified, which means it doesn't move
+                    if (u instanceof MilitaryUnit) {
+                        if (((MilitaryUnit) u).isFortified()) {
+                            continue;
+                        }
+                    }
 
                     //Jump the player to the units that they haven't move yet and force them to make an action
                     zoomMap.jumpTo(u);
@@ -198,7 +201,7 @@ public class GamePane extends Pane {
     }
 
     public void updateMinimap() {
-        minimap.update(); 
+        minimap.update();
     }
 
     private ZoomMap createFalseZoomMap(Tile[][] original) {
@@ -242,12 +245,12 @@ public class GamePane extends Pane {
     public ArrayList<Player> getPlayerList() {
         return playerList;
     }
-    
+
     private void removeDefeatedPrompt(GamePane.DefeatedPrompt dp) {
         getChildren().remove(dp);
-        
+
     }
-    
+
     private class DefeatedPrompt extends Pane {
 
         private Rectangle border;
@@ -266,12 +269,12 @@ public class GamePane extends Pane {
             border.setStrokeWidth(5);
             border.setStroke(Color.BLACK);
 
-            setTranslateX(resX / 2 - border.getWidth()/2);
-            setTranslateY(resY / 2 - border.getHeight()/2);
-            
-            if(defeated){
+            setTranslateX(resX / 2 - border.getWidth() / 2);
+            setTranslateY(resY / 2 - border.getHeight() / 2);
+
+            if (defeated) {
                 title = new Text("YOU HAVE BEEN DEFEATED");
-            }else{
+            } else {
                 title = new Text("YOU ARE VICTORIOUS");
             }
 
@@ -280,7 +283,7 @@ public class GamePane extends Pane {
             title.setTranslateY(border.getWidth() / 2 - title.getLayoutBounds().getWidth() / 2);
             title.setTranslateX(15);
 
-            confirmButton = new Circle(border.getWidth() - 20, border.getHeight()-20, 14.5);
+            confirmButton = new Circle(border.getWidth() - 20, border.getHeight() - 20, 14.5);
             confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
             confirmButton.setOnMouseClicked((e) -> {
                 e.consume();
@@ -294,23 +297,20 @@ public class GamePane extends Pane {
         private void close() {
             removeDefeatedPrompt(this);
             mp.setVolume(1);
-            if(defeated){   
+            if (defeated) {
                 Player pP = currentPlayer;
-                
 
                 playerList.remove(pP);
                 statusBar.removeHead(pP);
                 nextTurn();
                 dmp.pause();
-            }else{
+            } else {
                 System.out.println("DEWIT");
                 wmp.pause();
             }
-            
-            
+
         }
 
     }
-    
 
 }
