@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javafx.beans.binding.Bindings;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
@@ -57,6 +56,8 @@ public class Minimap extends Pane {
         ArrayList<DisplayTile> temp = zoomMap.getTileList();
         tiles = new ArrayList<>();
 
+        
+        //Button toggles for the unit highlights, resources, and outputs
         colorButton = new ToggleButton(Type.COLOR);
         resourceButton = new ToggleButton(Type.RESOURCE);
         outputButton = new ToggleButton(Type.OUTPUT);
@@ -81,6 +82,7 @@ public class Minimap extends Pane {
 
     public void update() {
 
+        //Updated the minimap
         g.clearRect(0, 0, 300, 300);
 
         double height = (canvas.getHeight() / mapSize * 2.0) / 3.0 * 2;

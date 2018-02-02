@@ -79,6 +79,9 @@ public class NextTurnPane extends Group {
     }
 
     public void updateText() {
+        
+        //Checks to see if the player can go to the next turn
+        //If he can't it instucts him what he needs to do
         if (player.canEndTurn() == 2) {
             text.setText("MUST SELECT CITY PROJECT");
         } else if (player.canEndTurn() == 1) {
