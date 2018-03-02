@@ -99,20 +99,20 @@ public class SciencePane extends Group {
         infoText.setTranslateX(145);
 
         setOnMouseClicked(e -> {
-            clickEvent(e);
+            e.consume();
+            openScienceMenu();
         });
 
         updateInfo();
 
-        getChildren()
-                .addAll(textBackground, progressBackground, progress,techBackground, techImage, infoText);
+        getChildren().addAll(textBackground, progressBackground, progress, techBackground, techImage, infoText);
     }
 
-    public void clickEvent(MouseEvent e) {
+    public void openScienceMenu() {
         if (!hasMenuOpen) {
             getChildren().add(new ScienceMenu(player, resX, resY));
             hasMenuOpen = true;
-            e.consume();
+
         }
     }
 
@@ -140,6 +140,14 @@ public class SciencePane extends Group {
         }
     }
 
+    public void setHasMenuOpen(boolean hasMenuOpen) {
+        this.hasMenuOpen = hasMenuOpen;
+    }
+
+    public boolean isHasMenuOpen() {
+        return hasMenuOpen;
+    }
+
     public void removeMenu(ScienceMenu sm) {
 
         //Removes the menu when your done using it
@@ -150,7 +158,7 @@ public class SciencePane extends Group {
 
     }
 
-    private class ScienceMenu extends Pane {
+    class ScienceMenu extends Pane {
 
         private Rectangle border;
         private ComboBox comboBox;

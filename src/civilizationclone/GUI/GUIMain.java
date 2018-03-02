@@ -51,7 +51,7 @@ public class GUIMain extends Application {
         testingStats(p.get(0));
         //testingStats(p.get(1));
 
-        gamePane = new GamePane(gameMap, p, 1200, 1000, true, false);
+       // gamePane = new GamePane(gameMap, p, 1200, 1000, true, false);
         return gamePane;
     }
 

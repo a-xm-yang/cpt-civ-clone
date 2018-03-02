@@ -2,7 +2,9 @@ package civilizationclone.Unit;
 
 import civilizationclone.City;
 import civilizationclone.Player;
+import static civilizationclone.Unit.Unit.getMapRef;
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class WarriorUnit extends MeleeUnit {
 

@@ -456,7 +456,7 @@ public class TitleMenu extends Group {
         GameMap gameMap = new GameMap(ms, seed);
 
         //start the game by changing scenes
-        primaryStage.setScene(new Scene(new GamePane(gameMap, list, resX, resY, true, mp.isMute())));
+        primaryStage.setScene(new Scene(new GamePane(gameMap, list, resX, resY, true, mp.isMute(), primaryStage)));
         mp.pause();
     }
 

@@ -4,12 +4,14 @@ import civilizationclone.*;
 import civilizationclone.Tile.*;
 import civilizationclone.Unit.MilitaryUnit;
 import civilizationclone.Unit.SettlerUnit;
+import civilizationclone.Unit.SlingerUnit;
 import civilizationclone.Unit.Unit;
 import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
 import java.util.ArrayList;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.input.MouseEvent;
@@ -22,6 +24,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GamePane extends Pane {
@@ -36,6 +39,7 @@ public class GamePane extends Pane {
     private Minimap minimap;
     private MediaPlayer mp, dmp, wmp;
     private Media win, loss, background;
+    private Stage primaryStage;
     private boolean isMuted;
     private static Effect shadow = new DropShadow(30, Color.WHITE);
     private static Effect noneEffect = null;
@@ -45,8 +49,9 @@ public class GamePane extends Pane {
     private ArrayList<Player> playerList;
     private Player currentPlayer;
 
-    public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY, boolean isNewGame, boolean isMuted) {
+    public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY, boolean isNewGame, boolean isMuted, Stage primaryStage) {
 
+        this.primaryStage = primaryStage;
         this.gameMap = gameMap;
         this.playerList = playerList;
         this.resX = resX;
@@ -76,7 +81,7 @@ public class GamePane extends Pane {
         if (isNewGame) {
             for (Player player : playerList) {
                 do {
-                    Point p = new Point((int) (Math.random() * (gameMap.getSize() - 4)) + 2, (int) (Math.random() * (gameMap.getSize())));
+                    Point p = new Point((int) (Math.random() * (gameMap.getSize() - 4)) + 2, (int) (Math.random() * (gameMap.getSize() - 1)));
                     if (gameMap.canSpawn(p)) {
                         player.addUnit(new SettlerUnit(player, p));
                         player.addUnit(new WarriorUnit(player, new Point(p.x, p.y + 1)));
@@ -109,12 +114,20 @@ public class GamePane extends Pane {
 
     public void nextTurn() {
         //jump to the player next in line
+        updatePlayer();
+        updateImage();
+
+    }
+
+    private void updatePlayer() {
         if (playerList.indexOf(currentPlayer) == playerList.size() - 1) {
             currentPlayer = playerList.get(0);
         } else {
             currentPlayer = playerList.get(playerList.indexOf(currentPlayer) + 1);
         }
+    }
 
+    private void updateImage() {
         //start the player's turn and set all the element's current info display to this player
         currentPlayer.startTurn();
         nextButton.setCurrentPlayer(currentPlayer);
@@ -134,7 +147,7 @@ public class GamePane extends Pane {
             //Play defeat audio and show victory screens
             mp.setVolume(0.5);
             dmp = new MediaPlayer(loss);
-            dmp.play(); 
+            dmp.play();
             dmp.setMute(isMuted);
             this.getChildren().add(new DefeatedPrompt(resX, resY, true));
         }
@@ -188,6 +201,8 @@ public class GamePane extends Pane {
                     return;
                 }
             }
+        } else if (currentPlayer.canEndTurn() == 3) {
+            sciencePane.openScienceMenu();
         }
 
     }
@@ -309,25 +324,30 @@ public class GamePane extends Pane {
 
             getChildren().addAll(border, title, confirmButton);
 
+            Player tempPlayer = currentPlayer;
+
+            if (defeated) {
+                updatePlayer();
+                playerList.remove(tempPlayer);
+                statusBar.removeHead(tempPlayer);
+            }
         }
 
         private void close() {
             removeDefeatedPrompt(this);
             mp.setVolume(1);
-            if (defeated) {
-                Player pP = currentPlayer;
+            updateImage();
 
-                playerList.remove(pP);
-                statusBar.removeHead(pP);
-                nextTurn();
+            try {
                 dmp.pause();
-            } else {
-                System.out.println("DEWIT");
                 wmp.pause();
+            } catch (Exception e) {
+            }
+
+            if (!defeated) {
+                primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage, mp), resX, resY));
             }
 
         }
-
     }
-
 }
