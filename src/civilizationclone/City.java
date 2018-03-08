@@ -75,6 +75,8 @@ public class City {
 
     public void startTurn() {
 
+        autoSelectWork();
+        
         heal();
         calcIncome();
         inceaseRealPopulation();
@@ -122,6 +124,26 @@ public class City {
             }
         }
 
+    }
+
+    private void autoSelectWork() {
+        while (workedTiles.size() < this.population) {
+
+            Tile highest = null;
+            int highestValue = 0;
+
+            for (Tile t : ownedTiles) {
+                if (!workedTiles.contains(t)) {
+                    int temp = t.getFoodOutput() + t.getGoldOutput() + t.getProductionOutput() + t.getScienceOutput();
+                    if (temp > highestValue) {
+                        highest = t;
+                        highestValue = temp;
+                    }
+                }
+            }
+            
+           workedTiles.add(highest);
+        }
     }
 
     private void calcFakePopulation() {
