@@ -114,22 +114,23 @@ public class GamePane extends Pane {
 
     public void nextTurn() {
         //jump to the player next in line
-        updatePlayer();
-        updateImage();
+        updateCurrentPlayer();
+        updateControllingPlayer();
 
     }
 
-    private void updatePlayer() {
+    private void updateCurrentPlayer() {
         if (playerList.indexOf(currentPlayer) == playerList.size() - 1) {
             currentPlayer = playerList.get(0);
         } else {
             currentPlayer = playerList.get(playerList.indexOf(currentPlayer) + 1);
         }
+
+        currentPlayer.startTurn();
     }
 
-    private void updateImage() {
+    private void updateControllingPlayer() {
         //start the player's turn and set all the element's current info display to this player
-        currentPlayer.startTurn();
         nextButton.setCurrentPlayer(currentPlayer);
         statusBar.setCurrentPlayer(currentPlayer);
         sciencePane.setCurrentPlayer(currentPlayer);
@@ -281,7 +282,7 @@ public class GamePane extends Pane {
 
     }
 
-    private class DefeatedPrompt extends Pane {
+     class DefeatedPrompt extends Pane {
 
         //a prompt that shows up when the player has either won or lost the game
         private Rectangle border;
@@ -327,7 +328,7 @@ public class GamePane extends Pane {
             Player tempPlayer = currentPlayer;
 
             if (defeated) {
-                updatePlayer();
+                updateCurrentPlayer();
                 playerList.remove(tempPlayer);
                 statusBar.removeHead(tempPlayer);
             }
@@ -336,7 +337,8 @@ public class GamePane extends Pane {
         private void close() {
             removeDefeatedPrompt(this);
             mp.setVolume(1);
-            updateImage();
+            currentPlayer.startTurn();
+            updateControllingPlayer();
 
             try {
                 dmp.pause();
