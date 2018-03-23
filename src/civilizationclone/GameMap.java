@@ -36,9 +36,6 @@ public class GameMap {
         map = new Tile[size][size];
         initializeMap(MapGenerator.generateMap(size, size, seed));
         initializeResource(MapGenerator.generateResourceMap(size, size, seed + 500));
-
-        Unit.referenceMap(this);
-        City.referenceMap(this);
     }
 
     //MAP INITIALIZAGION

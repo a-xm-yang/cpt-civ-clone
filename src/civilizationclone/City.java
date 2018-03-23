@@ -12,6 +12,9 @@ public class City {
 
     //variables
     //<editor-fold>
+    private static int identifierCounter;
+    private final int IDENTIFIER;
+
     private String name;
     private final Point POSITION;
     private final Player originalOwner;
@@ -71,12 +74,15 @@ public class City {
 
         calcFakePopulation();
         calcIncome();
+
+        IDENTIFIER = identifierCounter;
+        identifierCounter++;
     }
 
     public void startTurn() {
 
         autoSelectWork();
-        
+
         heal();
         calcIncome();
         inceaseRealPopulation();
@@ -141,8 +147,8 @@ public class City {
                     }
                 }
             }
-            
-           workedTiles.add(highest);
+
+            workedTiles.add(highest);
         }
     }
 
@@ -342,6 +348,10 @@ public class City {
 
     //GETTER
     //<editor-fold>
+    public int getIdentifier() {
+        return IDENTIFIER;
+    }
+    
     public Tile getCityTile() {
         return mapRef.getTile(POSITION);
     }
@@ -584,5 +594,6 @@ public class City {
 
     public static void referenceMap(GameMap m) {
         City.mapRef = m;
+        identifierCounter = 1000;
     }
 }

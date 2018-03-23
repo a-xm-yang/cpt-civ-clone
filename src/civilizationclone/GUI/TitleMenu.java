@@ -2,6 +2,7 @@ package civilizationclone.GUI;
 
 import civilizationclone.GameMap;
 import civilizationclone.GameMap.MapSize;
+import civilizationclone.GameState;
 import civilizationclone.Player;
 import civilizationclone.Player.Leader;
 import java.util.ArrayList;
@@ -452,11 +453,9 @@ public class TitleMenu extends Group {
                 break;
             }
         }
-        int seed = (int) (Math.random() * 1000 + 1);
-        GameMap gameMap = new GameMap(ms, seed);
 
         //start the game by changing scenes
-        primaryStage.setScene(new Scene(new GamePane(gameMap, list, resX, resY, true, mp.isMute(), primaryStage)));
+        primaryStage.setScene(new Scene(new GamePane(new GameState(list, ms), resX, resY, true, mp.isMute(), primaryStage)));
         mp.pause();
     }
 

@@ -10,10 +10,13 @@ import java.util.ArrayList;
 
 public abstract class Unit implements IMovement {
 
+    private static int identifierCounter;
+
     private static GameMap mapRef;
     private final int MAX_MOVEMENT;
     private Player player;
     private int movement;
+    private final int IDENTIFIER;
     private Point position;
     private boolean embarked;
 
@@ -23,6 +26,9 @@ public abstract class Unit implements IMovement {
         this.player = c.getPlayer();
         mapRef.getTile(position.x, position.y).setUnit(this);
         this.embarked = false;
+
+        IDENTIFIER = identifierCounter;
+        identifierCounter++;
     }
 
     public Unit(int movement, Player player, Point p) {
@@ -30,11 +36,18 @@ public abstract class Unit implements IMovement {
         this.player = player;
         position = new Point(p.x, p.y);
         mapRef.getTile(position.x, position.y).setUnit(this);
+
+        IDENTIFIER = identifierCounter;
+        identifierCounter++;
     }
 
     @Override
     public int getMovement() {
         return movement;
+    }
+
+    public int getIdentifier() {
+        return IDENTIFIER;
     }
 
     public int getX() {
@@ -128,6 +141,7 @@ public abstract class Unit implements IMovement {
 
     public static void referenceMap(GameMap m) {
         mapRef = m;
+        
     }
 
     public int getMAX_MOVEMENT() {

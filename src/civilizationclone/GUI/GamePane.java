@@ -45,15 +45,13 @@ public class GamePane extends Pane {
     private static Effect noneEffect = null;
 
     //game data
-    private GameMap gameMap;
-    private ArrayList<Player> playerList;
-    private Player currentPlayer;
+    private GameState gameState;
 
-    public GamePane(GameMap gameMap, ArrayList<Player> playerList, int resX, int resY, boolean isNewGame, boolean isMuted, Stage primaryStage) {
+    public GamePane(GameState gameState, int resX, int resY, boolean isNewGame, boolean isMuted, Stage primaryStage) {
 
+        this.gameState = gameState;
         this.primaryStage = primaryStage;
-        this.gameMap = gameMap;
-        this.playerList = playerList;
+
         this.resX = resX;
         this.resY = resY;
         this.setPrefHeight(resY);
@@ -75,29 +73,12 @@ public class GamePane extends Pane {
             mp.setMute(true);
         }
 
-        currentPlayer = playerList.get(0);
-
-        //Grant each player initial units if it's a new game
-        if (isNewGame) {
-            for (Player player : playerList) {
-                do {
-                    Point p = new Point((int) (Math.random() * (gameMap.getSize() - 4)) + 2, (int) (Math.random() * (gameMap.getSize() - 1)));
-                    if (gameMap.canSpawn(p)) {
-                        player.addUnit(new SettlerUnit(player, p));
-                        player.addUnit(new WarriorUnit(player, new Point(p.x, p.y + 1)));
-                        break;
-                    }
-                } while (true);
-            }
-            currentPlayer.startTurn();
-        }
-
         //initialize all the elements of the game pane, and add them into the pane
-        zoomMap = createFalseZoomMap(gameMap.getMap());
+        zoomMap = createFalseZoomMap(gameState.getGameMap().getMap());
         minimap = new Minimap(zoomMap, resX, resY);
-        nextButton = new NextTurnPane(currentPlayer, resX, resY, this);
-        statusBar = new StatusBarPane(currentPlayer, resX, resY, this);
-        sciencePane = new SciencePane(currentPlayer, resX, resY, this);
+        nextButton = new NextTurnPane(gameState.getCurrentPlayer(), resX, resY, this);
+        statusBar = new StatusBarPane(gameState.getCurrentPlayer(), resX, resY, this);
+        sciencePane = new SciencePane(gameState.getCurrentPlayer(), resX, resY, this);
 
         getChildren().add(zoomMap);
         getChildren().add(nextButton);
@@ -105,7 +86,7 @@ public class GamePane extends Pane {
         getChildren().add(sciencePane);
         getChildren().add(minimap);
 
-        zoomMap.setCurrentPlayer(currentPlayer);
+        zoomMap.setCurrentPlayer(gameState.getCurrentPlayer());
 
         setOnMouseClicked((MouseEvent e) -> {
             updateInfo();
@@ -113,38 +94,30 @@ public class GamePane extends Pane {
     }
 
     public void nextTurn() {
-        //jump to the player next in line
         updateCurrentPlayer();
         updateControllingPlayer();
-
     }
 
     private void updateCurrentPlayer() {
-        if (playerList.indexOf(currentPlayer) == playerList.size() - 1) {
-            currentPlayer = playerList.get(0);
-        } else {
-            currentPlayer = playerList.get(playerList.indexOf(currentPlayer) + 1);
-        }
-
-        currentPlayer.startTurn();
+        gameState.updateCurrentPlayer();
     }
 
     private void updateControllingPlayer() {
         //start the player's turn and set all the element's current info display to this player
-        nextButton.setCurrentPlayer(currentPlayer);
-        statusBar.setCurrentPlayer(currentPlayer);
-        sciencePane.setCurrentPlayer(currentPlayer);
-        zoomMap.setCurrentPlayer(currentPlayer);
+        nextButton.setCurrentPlayer(gameState.getCurrentPlayer());
+        statusBar.setCurrentPlayer(gameState.getCurrentPlayer());
+        sciencePane.setCurrentPlayer(gameState.getCurrentPlayer());
+        zoomMap.setCurrentPlayer(gameState.getCurrentPlayer());
 
         //VICTORY & DEFEAT CHECK
-        if (playerList.size() == 1) {
+        if (gameState.getPlayerList().size() == 1) {
             //Play victory audio and show victory screen
             mp.setVolume(0.5);
             wmp = new MediaPlayer(win);
             wmp.play();
             wmp.setMute(isMuted);
             this.getChildren().add(new DefeatedPrompt(resX, resY, false));
-        } else if (currentPlayer.isDefeated()) {
+        } else if (gameState.getCurrentPlayer().isDefeated()) {
             //Play defeat audio and show victory screens
             mp.setVolume(0.5);
             dmp = new MediaPlayer(loss);
@@ -158,8 +131,8 @@ public class GamePane extends Pane {
 
         //this method is invoked when a player cannot finish turn, yet clicked next turn
         //this opens up the corresponding action that the player has to take in order to force him/her to take it
-        if (currentPlayer.canEndTurn() == 1) {
-            for (Unit u : currentPlayer.getUnitList()) {
+        if (gameState.getCurrentPlayer().canEndTurn() == 1) {
+            for (Unit u : gameState.getCurrentPlayer().getUnitList()) {
                 if (u.canMove()) {
 
                     //skip to next if it is fortified, which means it doesn't move
@@ -180,7 +153,7 @@ public class GamePane extends Pane {
                     }
                     //add the new map and have tiles ready to move
                     UnitMenu uM = new UnitMenu(u, zoomMap);
-                    zoomMap.setSelectedTile(gameMap.getTile(u.getX(), u.getY()));
+                    zoomMap.setSelectedTile(gameState.getGameMap().getTile(u.getX(), u.getY()));
                     uM.setTranslateX(((zoomMap.getLeftCap() - (u.getY() * DisplayTile.WIDTH * getScaleX())) * -1) + (u.getX() % 2 == 0 ? (DisplayTile.getWIDTH() / 2 * getScaleX()) * -1 : 0));
                     uM.setTranslateY(u.getX() * DisplayTile.HEIGHT * getScaleY());
                     zoomMap.setUnitMenu(uM);
@@ -188,21 +161,21 @@ public class GamePane extends Pane {
                     return;
                 }
             }
-        } else if (currentPlayer.canEndTurn() == 2) {
-            for (City c : currentPlayer.getCityList()) {
+        } else if (gameState.getCurrentPlayer().canEndTurn() == 2) {
+            for (City c : gameState.getCurrentPlayer().getCityList()) {
                 if (!c.canEndTurn()) {
                     //Jump to the city position, disable dragging
                     zoomMap.jumpTo(c);
                     zoomMap.enableDragging(false);
                     //set the selected tile for later usage
-                    zoomMap.setSelectedTile(gameMap.getTile(c.getPosition()));
+                    zoomMap.setSelectedTile(gameState.getGameMap().getTile(c.getPosition()));
                     //add a new city map
                     cityMenu = new CityMenu(c, resX, resY, zoomMap);
                     getChildren().add(cityMenu);
                     return;
                 }
             }
-        } else if (currentPlayer.canEndTurn() == 3) {
+        } else if (gameState.getCurrentPlayer().canEndTurn() == 3) {
             sciencePane.openScienceMenu();
         }
 
@@ -274,7 +247,7 @@ public class GamePane extends Pane {
     }
 
     public ArrayList<Player> getPlayerList() {
-        return playerList;
+        return gameState.getPlayerList();
     }
 
     private void removeDefeatedPrompt(GamePane.DefeatedPrompt dp) {
@@ -282,7 +255,7 @@ public class GamePane extends Pane {
 
     }
 
-     class DefeatedPrompt extends Pane {
+    class DefeatedPrompt extends Pane {
 
         //a prompt that shows up when the player has either won or lost the game
         private Rectangle border;
@@ -325,11 +298,11 @@ public class GamePane extends Pane {
 
             getChildren().addAll(border, title, confirmButton);
 
-            Player tempPlayer = currentPlayer;
+            Player tempPlayer = gameState.getCurrentPlayer();
 
             if (defeated) {
                 updateCurrentPlayer();
-                playerList.remove(tempPlayer);
+                gameState.getPlayerList().remove(tempPlayer);
                 statusBar.removeHead(tempPlayer);
             }
         }
@@ -337,7 +310,7 @@ public class GamePane extends Pane {
         private void close() {
             removeDefeatedPrompt(this);
             mp.setVolume(1);
-            currentPlayer.startTurn();
+            gameState.getCurrentPlayer().startTurn();
             updateControllingPlayer();
 
             try {
