@@ -88,7 +88,7 @@ public class Player {
         calculateHappiness();
 
         techProgress += techIncome;
-        
+
         //if technology progress has surpassed currente requirement
         if (techProgress >= research.getTechCost()) {
             addTech(research);
@@ -107,10 +107,6 @@ public class Player {
                     ((MilitaryUnit) unit).heal();
                 }
             }
-        }
-
-        if (cityList.size() == 0 && unitList.isEmpty()) {
-            defeated = true;
         }
 
     }
@@ -223,7 +219,7 @@ public class Player {
     }
 
     public boolean isDefeated() {
-        return defeated;
+        return (cityList.size() == 0 && unitList.isEmpty());
     }
 
     //ADDING FUNCTIONS FOR PLAYER

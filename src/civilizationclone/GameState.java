@@ -40,15 +40,31 @@ public class GameState {
         currentPlayer.startTurn();
     }
 
-    //TEMPORARY
     public void updateCurrentPlayer() {
         if (this.getPlayerList().indexOf(this.getCurrentPlayer()) == this.getPlayerList().size() - 1) {
             this.currentPlayer = this.getPlayerList().get(0);
         } else {
             this.currentPlayer = this.getPlayerList().get(this.getPlayerList().indexOf(this.getCurrentPlayer()) + 1);
         }
+    }
 
-        this.getCurrentPlayer().startTurn();
+    public void processCurrentPlayerTurn() {
+
+        if (currentPlayer.isDefeated()) {
+            Player temp = currentPlayer;
+            updateCurrentPlayer();
+            getPlayerList().remove(temp);
+        }
+
+        currentPlayer.startTurn();
+    }
+
+    public void updateAllPlayers() {
+
+    }
+    
+    public void processAllPlayersTurn(){
+        
     }
 
     public Player getCurrentPlayer() {

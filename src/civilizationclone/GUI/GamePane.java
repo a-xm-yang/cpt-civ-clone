@@ -94,12 +94,28 @@ public class GamePane extends Pane {
     }
 
     public void nextTurn() {
-        updateCurrentPlayer();
+        gameState.updateCurrentPlayer();
         updateControllingPlayer();
+        endGameCheck();
+        gameState.processCurrentPlayerTurn();
     }
 
-    private void updateCurrentPlayer() {
-        gameState.updateCurrentPlayer();
+    public void endGameCheck() {
+        if (gameState.getCurrentPlayer().isDefeated()) {
+            //Play defeat audio and show victory screens
+            mp.setVolume(0.5);
+            dmp = new MediaPlayer(loss);
+            dmp.play();
+            dmp.setMute(isMuted);
+            this.getChildren().add(new DefeatedPrompt(resX, resY, true));
+        } else if (gameState.getPlayerList().size() == 1) {
+            //Play victory audio and show victory screen
+            mp.setVolume(0.5);
+            wmp = new MediaPlayer(win);
+            wmp.play();
+            wmp.setMute(isMuted);
+            this.getChildren().add(new DefeatedPrompt(resX, resY, false));
+        }
     }
 
     private void updateControllingPlayer() {
@@ -108,23 +124,6 @@ public class GamePane extends Pane {
         statusBar.setCurrentPlayer(gameState.getCurrentPlayer());
         sciencePane.setCurrentPlayer(gameState.getCurrentPlayer());
         zoomMap.setCurrentPlayer(gameState.getCurrentPlayer());
-
-        //VICTORY & DEFEAT CHECK
-        if (gameState.getPlayerList().size() == 1) {
-            //Play victory audio and show victory screen
-            mp.setVolume(0.5);
-            wmp = new MediaPlayer(win);
-            wmp.play();
-            wmp.setMute(isMuted);
-            this.getChildren().add(new DefeatedPrompt(resX, resY, false));
-        } else if (gameState.getCurrentPlayer().isDefeated()) {
-            //Play defeat audio and show victory screens
-            mp.setVolume(0.5);
-            dmp = new MediaPlayer(loss);
-            dmp.play();
-            dmp.setMute(isMuted);
-            this.getChildren().add(new DefeatedPrompt(resX, resY, true));
-        }
     }
 
     public void jumpToNextAction() {
@@ -298,19 +297,14 @@ public class GamePane extends Pane {
 
             getChildren().addAll(border, title, confirmButton);
 
-            Player tempPlayer = gameState.getCurrentPlayer();
-
             if (defeated) {
-                updateCurrentPlayer();
-                gameState.getPlayerList().remove(tempPlayer);
-                statusBar.removeHead(tempPlayer);
+                statusBar.removeHead(gameState.getCurrentPlayer());
             }
         }
 
         private void close() {
             removeDefeatedPrompt(this);
             mp.setVolume(1);
-            gameState.getCurrentPlayer().startTurn();
             updateControllingPlayer();
 
             try {
@@ -319,7 +313,7 @@ public class GamePane extends Pane {
             } catch (Exception e) {
             }
 
-            if (!defeated) {
+            if (!defeated || (gameState.getPlayerList().size() == 0)) {
                 primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage, mp), resX, resY));
             }
 
