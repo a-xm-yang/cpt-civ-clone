@@ -39,6 +39,10 @@ public class GameState {
         currentPlayer = playerList.get(0);
         currentPlayer.startTurn();
     }
+    
+    public void decodeAction(String s){
+        //decode the message given
+    }
 
     public void updateCurrentPlayer() {
         if (this.getPlayerList().indexOf(this.getCurrentPlayer()) == this.getPlayerList().size() - 1) {
@@ -59,12 +63,21 @@ public class GameState {
         currentPlayer.startTurn();
     }
 
-    public void updateAllPlayers() {
-
-    }
-    
     public void processAllPlayersTurn(){
         
+        ArrayList<Player> tempDefeatedPlayer = new ArrayList<>();
+        
+        for (Player p: playerList){
+            if (p.isDefeated()){
+                tempDefeatedPlayer.add(p);
+            }else{
+                p.startTurn();
+            }
+        }
+        
+        for (Player p: tempDefeatedPlayer){
+            playerList.remove(p);
+        }
     }
 
     public Player getCurrentPlayer() {
