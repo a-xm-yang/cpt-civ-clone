@@ -582,6 +582,15 @@ public class City {
     }
     //</editor-fold>
 
+    @Override
+    public int hashCode() {
+        String s = "";
+        s += POSITION.x;
+        s += POSITION.y;
+        s += player;
+        return s.hashCode();
+    }
+    
     public static void referenceMap(GameMap m) {
         City.mapRef = m;
     }

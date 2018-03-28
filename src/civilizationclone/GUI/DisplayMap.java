@@ -25,7 +25,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class ZoomMap extends Group {
+public class DisplayMap extends Group {
 
     //Graphics Related Vars ----
     //<editor-fold>
@@ -54,7 +54,7 @@ public class ZoomMap extends Group {
     private Set<Tile> exploredTiles;
 
     //size refers to the number of tiles
-    public ZoomMap(int mapSize, int resX, int resY, int spareSize, Tile[][] tileMap) {
+    public DisplayMap(int mapSize, int resX, int resY, int spareSize, Tile[][] tileMap) {
 
         super();
 

@@ -26,7 +26,7 @@ public class UnitMenu extends Pane {
 
     private Unit unit;
     private ArrayList<UnitOption> opts;
-    private ZoomMap zmapRef;
+    private DisplayMap dmapRef;
     private Canvas infoDisplay;
     private GraphicsContext gc;
     private Text statusText;
@@ -35,7 +35,7 @@ public class UnitMenu extends Pane {
     private Effect noneEffect = null;
 
     
-    public UnitMenu(Unit unit, ZoomMap zmapRef) {
+    public UnitMenu(Unit unit, DisplayMap dmapRef) {
         this.unit = unit;
         opts = new ArrayList<>();
         //Adds the different options for each type of unit
@@ -125,13 +125,13 @@ public class UnitMenu extends Pane {
             }
         }
 
-        this.zmapRef = zmapRef;
+        this.dmapRef = dmapRef;
 
         this.getChildren().add(infoDisplay);
         this.getChildren().add(statusText);
 
         //If the unit belongs to the current player, display the options, otherwise it will just show the info display
-        if (unit.getPlayer().equals(zmapRef.getCurrentPlayer())) {
+        if (unit.getPlayer().equals(dmapRef.getCurrentPlayer())) {
             for (UnitOption o : opts) {
                 getChildren().add(o);
                 getChildren().add(o.getText());
@@ -151,22 +151,22 @@ public class UnitMenu extends Pane {
 
             if (((UnitOption) e.getTarget()).getOptionType().equals("Move") && ((UnitOption) e.getTarget()).getText().getFill() == Color.WHITE) {
                 if (unit.getMovement() > 0) {
-                    zmapRef.activateMove();
+                    dmapRef.activateMove();
                 }
             } else if (((UnitOption) e.getTarget()).getOptionType().equals("Attack") && ((UnitOption) e.getTarget()).getText().getFill() == Color.WHITE) {
                 if ((((MilitaryUnit) unit).getAttackable().length > 0 || ((MilitaryUnit) unit).getSiegable().length > 0) && unit.getMovement() > 0) {
-                    zmapRef.activateAttack();
+                    dmapRef.activateAttack();
                 }
             } else if (((UnitOption) e.getTarget()).getOptionType().equals("Settle") && ((UnitOption) e.getTarget()).getText().getFill() == Color.WHITE) {
                 if (unit.getMovement() > 0) {
-                    zmapRef.activateSettle();
+                    dmapRef.activateSettle();
                 }
             } else if (((UnitOption) e.getTarget()).getOptionType().equals("Fortify") && ((UnitOption) e.getTarget()).getText().getFill() == Color.WHITE) {
                 if (unit.getMovement() > 0) {
-                    zmapRef.activateFortify();
+                    dmapRef.activateFortify();
                 }
             } else if (((UnitOption) e.getTarget()).getOptionType().equals("Kill") && ((UnitOption) e.getTarget()).getText().getFill() == Color.WHITE) {
-                zmapRef.activateKill();
+                dmapRef.activateKill();
             } else if (((UnitOption) e.getTarget()).getOptionType().equals("Improve") && ((UnitOption) e.getTarget()).getText().getFill() == Color.WHITE) {
                 if (((BuilderUnit) unit).getPossibleImprovements().length >= 1 && ((BuilderUnit) unit).getMapRef().getTile(unit.getX(), unit.getY()).getImprovement() == NONE && unit.getMovement() > 0) {
                     getChildren().add(new BuildMenu(unit));
@@ -211,7 +211,7 @@ public class UnitMenu extends Pane {
     }
 
     void delete() {
-        zmapRef.getChildren().remove(this);
+        dmapRef.getChildren().remove(this);
     }
 
     private class UnitOption extends Rectangle {
@@ -347,7 +347,7 @@ public class UnitMenu extends Pane {
 
                     ((BuilderUnit) unit).improve(i);
 
-                    zmapRef.repaint();
+                    dmapRef.repaint();
 
                     close();
                 }
@@ -360,7 +360,7 @@ public class UnitMenu extends Pane {
             if (getParent() instanceof UnitMenu) {
                 ((UnitMenu) getParent()).delete();
             }
-            zmapRef.repaint();
+            dmapRef.repaint();
         }
 
         private void initializeComboBox() {

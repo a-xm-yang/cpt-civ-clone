@@ -31,7 +31,7 @@ public class GamePane extends Pane {
 
     //A pane class that handles everything that is game-related
     private int resX, resY;
-    private ZoomMap zoomMap;
+    private DisplayMap displayMap;
     private CityMenu cityMenu;
     private NextTurnPane nextButton;
     private StatusBarPane statusBar;
@@ -74,25 +74,33 @@ public class GamePane extends Pane {
         }
 
         //initialize all the elements of the game pane, and add them into the pane
-        zoomMap = createFalseZoomMap(gameState.getGameMap().getMap());
-        minimap = new Minimap(zoomMap, resX, resY);
+        displayMap = createFalseDisplayMap(gameState.getGameMap().getMap());
+        minimap = new Minimap(displayMap, resX, resY);
         nextButton = new NextTurnPane(gameState.getCurrentPlayer(), resX, resY, this);
         statusBar = new StatusBarPane(gameState.getCurrentPlayer(), resX, resY, this);
         sciencePane = new SciencePane(gameState.getCurrentPlayer(), resX, resY, this);
 
-        getChildren().add(zoomMap);
+        getChildren().add(displayMap);
         getChildren().add(nextButton);
         getChildren().add(statusBar);
         getChildren().add(sciencePane);
         getChildren().add(minimap);
 
-        zoomMap.setCurrentPlayer(gameState.getCurrentPlayer());
+        displayMap.setCurrentPlayer(gameState.getCurrentPlayer());
 
         setOnMouseClicked((MouseEvent e) -> {
             updateInfo();
         });
     }
 
+    public synchronized void requestAction(String s){
+        if (s.equals("Next")){
+            nextTurn();
+        } else{
+            gameState.decodeAction(s);
+        }
+    }
+    
     public void nextTurn() {
         gameState.updateCurrentPlayer();
         updateControllingPlayer();
@@ -123,7 +131,7 @@ public class GamePane extends Pane {
         nextButton.setCurrentPlayer(gameState.getCurrentPlayer());
         statusBar.setCurrentPlayer(gameState.getCurrentPlayer());
         sciencePane.setCurrentPlayer(gameState.getCurrentPlayer());
-        zoomMap.setCurrentPlayer(gameState.getCurrentPlayer());
+        displayMap.setCurrentPlayer(gameState.getCurrentPlayer());
     }
 
     public void jumpToNextAction() {
@@ -142,21 +150,21 @@ public class GamePane extends Pane {
                     }
 
                     //Jump the player to the units that they haven't move yet and force them to make an action
-                    zoomMap.jumpTo(u);
+                    displayMap.jumpTo(u);
                     //deletes all the prevoius menus open
-                    for (Node n : zoomMap.getChildren()) {
+                    for (Node n : displayMap.getChildren()) {
                         if (n instanceof UnitMenu) {
                             ((UnitMenu) n).delete();
                             break;
                         }
                     }
                     //add the new map and have tiles ready to move
-                    UnitMenu uM = new UnitMenu(u, zoomMap);
-                    zoomMap.setSelectedTile(gameState.getGameMap().getTile(u.getX(), u.getY()));
-                    uM.setTranslateX(((zoomMap.getLeftCap() - (u.getY() * DisplayTile.WIDTH * getScaleX())) * -1) + (u.getX() % 2 == 0 ? (DisplayTile.getWIDTH() / 2 * getScaleX()) * -1 : 0));
+                    UnitMenu uM = new UnitMenu(u, displayMap);
+                    displayMap.setSelectedTile(gameState.getGameMap().getTile(u.getX(), u.getY()));
+                    uM.setTranslateX(((displayMap.getLeftCap() - (u.getY() * DisplayTile.WIDTH * getScaleX())) * -1) + (u.getX() % 2 == 0 ? (DisplayTile.getWIDTH() / 2 * getScaleX()) * -1 : 0));
                     uM.setTranslateY(u.getX() * DisplayTile.HEIGHT * getScaleY());
-                    zoomMap.setUnitMenu(uM);
-                    zoomMap.getChildren().add(uM);
+                    displayMap.setUnitMenu(uM);
+                    displayMap.getChildren().add(uM);
                     return;
                 }
             }
@@ -164,12 +172,12 @@ public class GamePane extends Pane {
             for (City c : gameState.getCurrentPlayer().getCityList()) {
                 if (!c.canEndTurn()) {
                     //Jump to the city position, disable dragging
-                    zoomMap.jumpTo(c);
-                    zoomMap.enableDragging(false);
+                    displayMap.jumpTo(c);
+                    displayMap.enableDragging(false);
                     //set the selected tile for later usage
-                    zoomMap.setSelectedTile(gameState.getGameMap().getTile(c.getPosition()));
+                    displayMap.setSelectedTile(gameState.getGameMap().getTile(c.getPosition()));
                     //add a new city map
-                    cityMenu = new CityMenu(c, resX, resY, zoomMap);
+                    cityMenu = new CityMenu(c, resX, resY, displayMap);
                     getChildren().add(cityMenu);
                     return;
                 }
@@ -182,7 +190,7 @@ public class GamePane extends Pane {
 
     //two methods used to add/remove city menus from the game pane
     public void addCityMenu(City c) {
-        cityMenu = new CityMenu(c, resX, resY, zoomMap);
+        cityMenu = new CityMenu(c, resX, resY, displayMap);
         getChildren().add(cityMenu);
     }
 
@@ -192,7 +200,7 @@ public class GamePane extends Pane {
         }
 
         updateInfo();
-        zoomMap.enableDragging(true);
+        displayMap.enableDragging(true);
     }
 
     public void updateInfo() {
@@ -207,7 +215,7 @@ public class GamePane extends Pane {
         minimap.update();
     }
 
-    private ZoomMap createFalseZoomMap(Tile[][] original) {
+    private DisplayMap createFalseDisplayMap(Tile[][] original) {
 
         //creates a copy of the actual tile map, with the sides adjusted according to X-resolution to a copied version for scrolling effect
         //first calculate how much spare is needed on both sides, should be according to scene size
@@ -235,14 +243,14 @@ public class GamePane extends Pane {
             }
         }
 
-        ZoomMap pane = new ZoomMap(original.length, resX, resY, spareSize, copy);
+        DisplayMap pane = new DisplayMap(original.length, resX, resY, spareSize, copy);
 
         return pane;
 
     }
 
-    public ZoomMap getZoomMap() {
-        return zoomMap;
+    public DisplayMap getDisplayMap() {
+        return displayMap;
     }
 
     public ArrayList<Player> getPlayerList() {

@@ -26,17 +26,17 @@ public class Minimap extends Pane {
     private ToggleButton colorButton;
     private ToggleButton resourceButton;
     private ToggleButton outputButton;
-    private ZoomMap zoomMap;
+    private DisplayMap displayMap;
     private static Effect shadow;
     private static Effect noneEffect;
 
-    public Minimap(ZoomMap zoomMap, int resX, int resY) {
+    public Minimap(DisplayMap displayMap, int resX, int resY) {
 
         shadow = new DropShadow(5, Color.BLACK);
 
         //requires a reference to initialize tiles
-        mapSize = zoomMap.getMapSize();
-        this.zoomMap = zoomMap;
+        mapSize = displayMap.getMapSize();
+        this.displayMap = displayMap;
 
         border = new Rectangle(310, 310);
         border.setFill(Color.BEIGE);
@@ -53,7 +53,7 @@ public class Minimap extends Pane {
         setTranslateY(resY - border.getHeight());
 
         //initialize tiles list
-        ArrayList<DisplayTile> temp = zoomMap.getTileList();
+        ArrayList<DisplayTile> temp = displayMap.getTileList();
         tiles = new ArrayList<>();
 
         
@@ -187,7 +187,7 @@ public class Minimap extends Pane {
                 default:
                     break;
             }
-            zoomMap.repaint();
+            displayMap.repaint();
         }
 
         private void updateOpacity(boolean hasActivated) {

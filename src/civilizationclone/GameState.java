@@ -39,9 +39,19 @@ public class GameState {
         currentPlayer = playerList.get(0);
         currentPlayer.startTurn();
     }
-    
-    public void decodeAction(String s){
+
+    public void decodeAction(String s) {
         //decode the message given
+
+        String[] msg = s.split(" ");
+        if (msg[0].equals("Unit")) {
+            
+        } else if (msg[0].equals("City")) {
+
+        } else if (msg[0].equals("Science")) {
+            
+        } 
+
     }
 
     public void updateCurrentPlayer() {
@@ -63,19 +73,19 @@ public class GameState {
         currentPlayer.startTurn();
     }
 
-    public void processAllPlayersTurn(){
-        
+    public void processAllPlayersTurn() {
+
         ArrayList<Player> tempDefeatedPlayer = new ArrayList<>();
-        
-        for (Player p: playerList){
-            if (p.isDefeated()){
+
+        for (Player p : playerList) {
+            if (p.isDefeated()) {
                 tempDefeatedPlayer.add(p);
-            }else{
+            } else {
                 p.startTurn();
             }
         }
-        
-        for (Player p: tempDefeatedPlayer){
+
+        for (Player p : tempDefeatedPlayer) {
             playerList.remove(p);
         }
     }

@@ -8,7 +8,7 @@ import civilizationclone.Tile.Tile;
 import java.awt.Point;
 import java.util.ArrayList;
 
-public abstract class Unit{
+public abstract class Unit {
 
     private static GameMap mapRef;
     private final int MAX_MOVEMENT;
@@ -30,6 +30,7 @@ public abstract class Unit{
         this.player = player;
         position = new Point(p.x, p.y);
         mapRef.getTile(position.x, position.y).setUnit(this);
+        this.embarked = false;
     }
 
     public int getMovement() {
@@ -128,6 +129,19 @@ public abstract class Unit{
 
     public int getMAX_MOVEMENT() {
         return MAX_MOVEMENT;
+    }
+
+    @Override
+    public int hashCode() {
+
+        String s = "";
+        s += position.x;
+        s += position.y;
+        s += movement;
+        s += player.getName();
+        s += this.getClass().getSimpleName();
+
+        return s.hashCode();
     }
 
 }

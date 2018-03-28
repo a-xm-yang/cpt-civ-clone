@@ -21,7 +21,7 @@ public class NextTurnPane extends Group {
     private int resY;
     private Player player;
     private GamePane gamePaneRef;
-    private ZoomMap zMapRef;
+    private DisplayMap dMapRef;
     private static Effect shadow = new DropShadow(40, Color.WHITE);
     private static Effect noneEffect = null;
 
@@ -33,7 +33,7 @@ public class NextTurnPane extends Group {
         this.player = player;
         this.rect = new Rectangle(0, 0, 311, 40);
         this.gamePaneRef = gamePaneRef;
-        this.zMapRef = gamePaneRef.getZoomMap();
+        this.dMapRef = gamePaneRef.getDisplayMap();
         this.setTranslateX(resX - 311);
         this.setTranslateY(resY - 316.5 - rect.getHeight());
 
@@ -96,7 +96,7 @@ public class NextTurnPane extends Group {
         text.setFont(Font.font("Oswald", 20));
         text.setTranslateX((rect.getWidth() - text.getLayoutBounds().getWidth()) / 2);
         text.setTranslateY(text.getLayoutBounds().getHeight() + 2);
-        zMapRef.repaint();
+        dMapRef.repaint();
     }
 
     void delete() {

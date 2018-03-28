@@ -36,7 +36,7 @@ import javafx.scene.text.Text;
 public class CityMenu extends Pane {
 
     private City city;
-    private ZoomMap zoomMapRef;
+    private DisplayMap displayMapRef;
 
     //graphics related members
     private Rectangle border;
@@ -49,10 +49,10 @@ public class CityMenu extends Pane {
     private static Effect shadowBig = new DropShadow(45, Color.WHITE);
     private static Effect noneEffect = null;
 
-    public CityMenu(City city, int resX, int resY, ZoomMap zoomMapRef) {
+    public CityMenu(City city, int resX, int resY, DisplayMap displayMapRef) {
 
         this.city = city;
-        this.zoomMapRef = zoomMapRef;
+        this.displayMapRef = displayMapRef;
         this.resX = resX;
         this.resY = resY;
 
@@ -150,7 +150,7 @@ public class CityMenu extends Pane {
 
     private void activateExpansion() {
         //activate expansion option for the zoom map to expand city
-        zoomMapRef.activateExpansion();
+        displayMapRef.activateExpansion();
         close();
     }
 
@@ -670,7 +670,7 @@ public class CityMenu extends Pane {
 
         private void close() {
             if (getParent() instanceof CityMenu) {
-                ((CityMenu) getParent()).zoomMapRef.repaint();
+                ((CityMenu) getParent()).displayMapRef.repaint();
                 ((CityMenu) getParent()).removeOption(this);
             }
         }
