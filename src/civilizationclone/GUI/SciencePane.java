@@ -13,7 +13,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -305,16 +304,8 @@ public class SciencePane extends Group {
         }
 
         private void confirm() {
-
             String selection = (String) comboBox.getValue();
-
-            for (TechType t : player.getResearchableTech()) {
-                if (selection.equals(t.name())) {
-                    player.setResearch(t);
-                    break;
-                }
-            }
-
+            gamePaneRef.requestAction(player.getName() + "/" + "Science" + "/" + selection);
             close();
         }
 

@@ -292,7 +292,6 @@ public class Player {
         for (Leader l : Leader.values()) {
             if (this.getName().substring(this.getName().indexOf(" ") + 1, this.getName().length()).equalsIgnoreCase(l.name())) {
                 this.leader = l;
-                System.out.println(l);
 
                 switch (l) {
                     case CHURCHILL:

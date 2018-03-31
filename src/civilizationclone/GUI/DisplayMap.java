@@ -47,16 +47,15 @@ public class DisplayMap extends Group {
     private HighlightType highlightType;
     private UnitMenu unitMenu;
 
+    private GamePane gamePaneRef;
+
     private Player currentPlayer;
     private Tile selectedTile;
 
-    private Set<Tile> visibleTiles;
-    private Set<Tile> exploredTiles;
-
     //size refers to the number of tiles
-    public DisplayMap(int mapSize, int resX, int resY, int spareSize, Tile[][] tileMap) {
+    public DisplayMap(int mapSize, int resX, int resY, int spareSize, Tile[][] tileMap, GamePane gamePaneRef) {
 
-        super();
+        this.gamePaneRef = gamePaneRef;
 
         highlightType = HighlightType.NONE;
         this.mapSize = mapSize;
@@ -161,7 +160,7 @@ public class DisplayMap extends Group {
                 this.getChildren().add(unitMenu);
                 selectedTile = clickedTile;
             } else if (clickedTile.hasCity() && clickedTile.getCity().getPlayer() == currentPlayer && !clickedTile.hasUnit()) {
-                ((GamePane) getParent()).addCityMenu(clickedTile.getCity());
+                gamePaneRef.addCityMenu(clickedTile.getCity());
                 enableDragging(false);
                 selectedTile = clickedTile;
             }
@@ -173,8 +172,13 @@ public class DisplayMap extends Group {
             if (highlightType == highlightType.MOVEMENT) {
                 for (Point p : highlightedTiles) {
                     if (clickPoint.equals(p)) {
-                        selectedTile.getUnit().move(p);
-                        updateFogOfWar();
+                        Unit unit = selectedTile.getUnit();
+                        gamePaneRef.requestAction(unit.getPlayer().getName()
+                                + "/" + "Unit"
+                                + "/" + unit.hashCode()
+                                + "/" + "Move"
+                                + "/" + p.getX()
+                                + "/" + p.getY());
                     }
                 }
             }
@@ -185,12 +189,12 @@ public class DisplayMap extends Group {
 
                         MilitaryUnit m = (MilitaryUnit) selectedTile.getUnit();
 
-                        if (Unit.getMapRef().getTile(p).hasUnit()) {
-                            m.attack(Unit.getMapRef().getTile(p).getUnit());
-                        } else {
-                            m.siegeAttack(Unit.getMapRef().getTile(p).getCity());
-                        }
-                        updateFogOfWar();
+                        gamePaneRef.requestAction(m.getPlayer().getName()
+                                + "/" + "Unit"
+                                + "/" + m.hashCode()
+                                + "/" + "Attack"
+                                + "/" + p.getX()
+                                + "/" + p.getY());
                     }
                 }
             }
@@ -198,8 +202,13 @@ public class DisplayMap extends Group {
             if (highlightType == highlightType.EXPANSION) {
                 for (Point p : highlightedTiles) {
                     if (clickPoint.equals(p)) {
-                        selectedTile.getCity().addTile(clickedTile);
-                        updateFogOfWar();
+                        City c = selectedTile.getCity();
+                        gamePaneRef.requestAction(c.getPlayer().getName()
+                                + "/" + "City"
+                                + "/" + c.hashCode()
+                                + "/" + "Expand"
+                                + "/" + p.getX()
+                                + "/" + p.getY());
                     }
                 }
             }
@@ -233,7 +242,7 @@ public class DisplayMap extends Group {
     public void setCurrentPlayer(Player currentPlayer) {
         //update fog of war according to the player, and center the screen around that player
         this.currentPlayer = currentPlayer;
-        updateFogOfWar();
+//        updateFogOfWar();
 
         //Jump new player to their location on map
         if (currentPlayer.getCityList().size() > 0) {
@@ -247,28 +256,6 @@ public class DisplayMap extends Group {
         //clean unit menus opened by the last player
         getChildren().remove(unitMenu);
         unitMenu = null;
-    }
-
-    private void updateFogOfWar() {
-        //Refreshed the fog of war, to be called at end of turns
-        visibleTiles = Unit.getMapRef().getVisibleTiles(currentPlayer.getAllPositions());
-        currentPlayer.addExploredTiles(visibleTiles);
-        exploredTiles = currentPlayer.getExploredTiles();
-
-        for (DisplayTile dt : tileList) {
-            Tile t = dt.getTile();
-            if (visibleTiles.contains(t)) {
-                dt.setAccessLevel(2);
-            } else if (exploredTiles.contains(t)) {
-                dt.setAccessLevel(1);
-            } else {
-                dt.setAccessLevel(0);
-            }
-        }
-
-        ((GamePane) getParent()).updateMinimap();
-        repaint();
-
     }
 
     public void activateAttack() {
@@ -307,38 +294,27 @@ public class DisplayMap extends Group {
     private void removeSettlePrompt(SettlePrompt sp) {
         getChildren().remove(sp);
         enableDragging(true);
-        updateFogOfWar();
         repaint();
     }
 
     public void activateFortify() {
         //Removes all movement and fortifies unit
         if (selectedTile.getUnit() instanceof MilitaryUnit) {
-            ((MilitaryUnit) selectedTile.getUnit()).setFortified(true);
-            ((MilitaryUnit) selectedTile.getUnit()).setMovement(0);
-        }
-        repaint();
-
-        if (getParent() instanceof GamePane) {
-            ((GamePane) getParent()).updateInfo();
+            MilitaryUnit m = (MilitaryUnit) selectedTile.getUnit();
+            gamePaneRef.requestAction(m.getPlayer().getName()
+                    + "/" + "Unit"
+                    + "/" + m.hashCode()
+                    + "/" + "Fortify");
         }
     }
 
     public void activateKill() {
         //Kills the unit
         selectedTile.getUnit().delete();
-        updateFogOfWar();
+//        updateFogOfWar();
         repaint();
 
-        if (getParent() instanceof GamePane) {
-            ((GamePane) getParent()).updateInfo();
-        }
-    }
-
-    public void activateDestroy() {
-        //fucked up, fix later
-        //not necessary for the game mechanics
-        repaint();
+        gamePaneRef.updateInfo();
     }
 
     public void activateExpansion() {
@@ -352,9 +328,45 @@ public class DisplayMap extends Group {
         repaint();
     }
 
+    public void activateEndTurn() {
+        Unit u = selectedTile.getUnit();
+        gamePaneRef.requestAction(u.getPlayer().getName()
+                + "/" + "Unit"
+                + "/" + u.hashCode()
+                + "/" + "EndTurn");
+    }
+
+    public void activateBuild(String build) {
+        
+        Unit selectedUnit = selectedTile.getUnit();
+        
+        gamePaneRef.requestAction(selectedUnit.getPlayer().getName()
+                + "/" + "Unit"
+                + "/" + selectedUnit.hashCode()
+                + "/" + "Build"
+                + "/" + build);
+    }
+
+    public void updateInfo() {
+        Set<Tile> visibleTiles = Unit.getMapRef().getVisibleTiles(currentPlayer.getAllPositions());
+        Set<Tile> exploredTiles = currentPlayer.getExploredTiles();
+
+        for (DisplayTile dt : tileList) {
+            Tile t = dt.getTile();
+            if (visibleTiles.contains(t)) {
+                dt.setAccessLevel(2);
+            } else if (exploredTiles.contains(t)) {
+                dt.setAccessLevel(1);
+            } else {
+                dt.setAccessLevel(0);
+            }
+        }
+
+        repaint();
+    }
+
     public void repaint() {
         canvas.getGraphicsContext2D().clearRect(0, 0, totalSizeX, sizeY);
-
         //paint according to fog of war
         for (DisplayTile t : tileList) {
             t.update();
@@ -402,31 +414,6 @@ public class DisplayMap extends Group {
     //handlers for scrolling ---------------
     //Removed from final game, to be readded eventually
     //<editor-fold>
-    private void resize(ScrollEvent event) {
-
-        if (event.getDeltaY() == 0) {
-            return;
-        }
-
-        if (event.getDeltaY() > 0) {
-            if (scale < 5) {
-                scale++;
-            }
-        } else {
-            if (scale > 1) {
-                scale--;
-                setTranslateY(getTranslateY() + getSizeY() / 2);
-            }
-        }
-
-        this.setScaleX(scale);
-        this.setScaleY(scale);
-
-        calculateBounds();
-        adjustPosition();
-
-    }
-
     private void calculateBounds() {
 
         //the Y-traslation that would hit the top bottom border of the map
@@ -457,6 +444,10 @@ public class DisplayMap extends Group {
 
     //GETTERS AND SETTERS
     //<editor-fold>
+    public GamePane getGamePaneRef() {
+        return gamePaneRef;
+    }
+
     public void setUnitMenu(UnitMenu unitMenu) {
         this.unitMenu = unitMenu;
     }
@@ -654,10 +645,11 @@ public class DisplayMap extends Group {
         }
 
         private void confirm() {
-            selectedUnit.settle(textField.getCharacters().toString());
-            if (getParent().getParent() instanceof GamePane) {
-                ((GamePane) getParent().getParent()).updateInfo();
-            }
+            gamePaneRef.requestAction(selectedUnit.getPlayer().getName()
+                    + "/" + "Unit"
+                    + "/" + selectedUnit.hashCode()
+                    + "/" + "Settle"
+                    + "/" + textField.getCharacters().toString());
         }
 
         private void close() {

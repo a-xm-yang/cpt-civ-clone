@@ -503,6 +503,8 @@ public class TitleMenu extends Group {
             resY = height;
 
             primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage, mp), resX, resY));
+        } else{
+            openTitle();
         }
 
     }

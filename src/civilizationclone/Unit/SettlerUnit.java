@@ -3,7 +3,6 @@ package civilizationclone.Unit;
 
 import civilizationclone.City;
 import civilizationclone.Player;
-import civilizationclone.Tile.Resource;
 import civilizationclone.Tile.Tile;
 import java.awt.Point;
 
@@ -35,13 +34,13 @@ public class SettlerUnit extends Unit{
         
         //add a new city to player and to map, then delete the unit itself        
         City c = new City(name,this);
-        
-        getMapRef().getTile(getX(), getY()).setCity(c);
+    
         getPlayer().addCity(c);
         getPlayer().calcGoldIncome();
         getPlayer().calcTechIncome();
         getPlayer().calculateHappiness();
         delete();
+        
     }
     
 }

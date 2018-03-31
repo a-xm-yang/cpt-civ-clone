@@ -65,7 +65,7 @@ public class NextTurnPane extends Group {
     public void clickEvent(MouseEvent e) {
 
         if (this.player.canEndTurn() == 0) {
-            gamePaneRef.nextTurn();
+            gamePaneRef.requestAction("Next" + "/" + player.getName());
         } else {
             gamePaneRef.jumpToNextAction();
         }

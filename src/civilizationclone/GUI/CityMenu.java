@@ -37,6 +37,7 @@ public class CityMenu extends Pane {
 
     private City city;
     private DisplayMap displayMapRef;
+    private GamePane gamePaneRef;
 
     //graphics related members
     private Rectangle border;
@@ -53,6 +54,7 @@ public class CityMenu extends Pane {
 
         this.city = city;
         this.displayMapRef = displayMapRef;
+        this.gamePaneRef = displayMapRef.getGamePaneRef();
         this.resX = resX;
         this.resY = resY;
 
@@ -251,11 +253,16 @@ public class CityMenu extends Pane {
     }
 
     //convert enum production into string info to display
-    public String getInfo(Enum e) {
+    public String getInfo(Enum e, String type) {
         String s = "";
 
         if (e instanceof UnitType) {
-            s = s + "Produciton Cost: " + ((UnitType) e).getProductionCost() + "\n";
+
+            if (type.equals("production")) {
+                s = s + "Production Cost: " + ((UnitType) e).getProductionCost() + "\n";
+            } else {
+                s = s + "Purchase Cost: " + ((UnitType) e).getPurchaseCost() + "\n";
+            }
 
             if (BuilderUnit.class.isAssignableFrom(((UnitType) e).getCorrespondingClass())) {
                 s = s + "\nCivilian unit that can build improvements on tiles to increase resource outputs.";
@@ -275,9 +282,11 @@ public class CityMenu extends Pane {
 
         } else if (e instanceof CityProject) {
 
-            //add descriptions later
-            s = s + "Production Cost: " + ((CityProject) e).getProductionCost();
-            s = s + "\n";
+            if (type.equals("production")) {
+                s = s + "Production Cost: " + ((CityProject) e).getProductionCost() + "\n";
+            } else {
+                s = s + "Purchase Cost: " + ((CityProject) e).getPurchaseCost() + "\n";
+            }
 
             if (((CityProject) e).getFoodBonus() > 0) {
                 s = s + "\nFood Bonus: " + ((CityProject) e).getFoodBonus();
@@ -403,7 +412,7 @@ public class CityMenu extends Pane {
             //Determine what exactly did the person click
             for (UnitType t : city.getPlayer().getBuildableUnit()) {
                 if (t.name().equals(selection)) {
-                    info.setText(getInfo(t));
+                    info.setText(getInfo(t, "production"));
                     display.setImage(ImageBuffer.getImage(t));
 
                     canConfirm = true;
@@ -416,7 +425,7 @@ public class CityMenu extends Pane {
 
             for (CityProject c : city.getPlayer().getOwnedCityProject()) {
                 if (selection.startsWith(c.name())) {
-                    info.setText(getInfo(c));
+                    info.setText(getInfo(c, "cityproject"));
                     display.setImage(ImageBuffer.getImage(c));
                     info.setVisible(true);
                     display.setVisible(true);
@@ -435,6 +444,12 @@ public class CityMenu extends Pane {
         private void confirm() {
 
             String selection = (String) comboBox.getValue();
+
+            gamePaneRef.requestAction(city.getPlayer().getName()
+                    + "/" + "City"
+                    + "/" + city.hashCode()
+                    + "/" + "Produce"
+                    + "/" + selection);
 
             //Determine what exactly did the person click
             for (UnitType t : city.getPlayer().getBuildableUnit()) {
@@ -604,7 +619,7 @@ public class CityMenu extends Pane {
                         canConfirm = false;
                     }
 
-                    info.setText(getInfo(t));
+                    info.setText(getInfo(t, "cityproject"));
                     display.setImage(ImageBuffer.getImage(t));
                     info.setVisible(true);
                     display.setVisible(true);
@@ -623,7 +638,7 @@ public class CityMenu extends Pane {
                         canConfirm = false;
                     }
 
-                    info.setText(getInfo(c));
+                    info.setText(getInfo(c, "cityproject"));
                     display.setImage(ImageBuffer.getImage(c));
                     info.setVisible(true);
                     display.setVisible(true);
@@ -637,33 +652,11 @@ public class CityMenu extends Pane {
 
             String selection = (String) comboBox.getValue();
 
-            //Determine what exactly did the person click
-            for (UnitType t : city.getPlayer().getBuildableUnit()) {
-                if (t.name().equals(selection)) {
-
-                    if (!city.getCityTile().hasUnit()) {
-                        city.getPlayer().setCurrentGold(city.getPlayer().getCurrentGold() - t.getPurchaseCost());
-                        try {
-                            city.getPlayer().addUnit((Unit) t.getCorrespondingClass().getConstructor(City.class).newInstance(city));
-                        } catch (Exception e) {
-                            System.out.println("Construcing unit from purchase failed!");
-                        }
-
-                    } else {
-                        System.out.println("Cannot purchase! Tile occupied!");
-                    }
-
-                    close();
-                }
-            }
-
-            for (CityProject c : city.getPlayer().getOwnedCityProject()) {
-                if (c.name().equals(selection)) {
-                    city.getPlayer().setCurrentGold(city.getPlayer().getCurrentGold() - c.getPurchaseCost());
-                    city.addCityProject(c);
-                    close();
-                }
-            }
+            gamePaneRef.requestAction(city.getPlayer().getName()
+                    + "/" + "City"
+                    + "/" + city.hashCode()
+                    + "/" + "Purchase"
+                    + "/" + selection);
 
             close();
         }
@@ -778,19 +771,25 @@ public class CityMenu extends Pane {
 
         public void changeWorkedTile(Tile tile, boolean change) {
 
+            String message = city.getPlayer().getName()
+                    + "/" + "City"
+                    + "/" + city.hashCode()
+                    + "/" + "Citizen";
+
             //add or remove tiles to worked tiles according to the change
             if (change) {
-                city.getWorkedTiles().add(tile);
+                message += "/" + "Add" + "/" + city.getMapRef().getPoint(tile).x + "/" + city.getMapRef().getPoint(tile).y;
             } else {
-                city.getWorkedTiles().remove(tile);
+                message += "/" + "Remove" + "/" + city.getMapRef().getPoint(tile).x + "/" + city.getMapRef().getPoint(tile).y;
             }
+            
+            gamePaneRef.requestAction(message);
 
             //update things of this checkbox
             updateText();
             updateCheckBox();
 
             //reset city income
-            city.calcIncome();
             updateProductionDisplay();
             updateDisplayOrder();
         }

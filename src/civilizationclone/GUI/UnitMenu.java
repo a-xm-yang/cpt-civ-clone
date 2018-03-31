@@ -173,7 +173,7 @@ public class UnitMenu extends Pane {
                     return;
                 }
             } else if (((UnitOption) e.getTarget()).getOptionType().equals("End Turn") && ((UnitOption) e.getTarget()).getText().getFill() == Color.WHITE) {
-                unit.setMovement(0);
+               dmapRef.activateEndTurn();
             }
         }
         delete();
@@ -340,6 +340,8 @@ public class UnitMenu extends Pane {
         private void confirm() {
 
             String selection = (String) comboBox.getValue();
+            
+            dmapRef.activateBuild(selection);
 
             //Determine what exactly did the person click
             for (Improvement i : ((BuilderUnit) unit).getPossibleImprovements()) {
@@ -348,7 +350,6 @@ public class UnitMenu extends Pane {
                     ((BuilderUnit) unit).improve(i);
 
                     dmapRef.repaint();
-
                     close();
                 }
             }

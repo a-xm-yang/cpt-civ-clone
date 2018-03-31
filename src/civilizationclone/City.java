@@ -43,10 +43,11 @@ public class City {
 
     //constructors from a builder unit
     public City(String name, SettlerUnit u) {
-        this.name = name;
         this.POSITION = new Point(u.getX(), u.getY());
-        this.player = u.getPlayer();
         this.originalOwner = u.getPlayer();
+
+        this.name = name;
+        this.player = u.getPlayer();
 
         realPopulation = 1000;
         maxHealth = 55;
@@ -182,7 +183,6 @@ public class City {
     private void calcTechIncome() {
         //calculate tech income
         int tech = 1 + population;
-        System.out.println(tech);
 
         //add from buildings
         for (CityProject c : builtProjects) {
@@ -379,7 +379,7 @@ public class City {
         threeRangeList.remove(POSITION);
 
         for (Point p : threeRangeList) {
-            if (!ownedTiles.contains(mapRef.getTile(p))) {
+            if (!ownedTiles.contains(mapRef.getTile(p)) && !mapRef.getTile(p).isControlled()) {
                 filteredList.add(p);
             }
         }
@@ -497,6 +497,10 @@ public class City {
     public Set<Tile> getOwnedTiles() {
         return ownedTiles;
     }
+
+    public static GameMap getMapRef() {
+        return mapRef;
+    }
     //</editor-fold>
 
     //SETTER
@@ -590,7 +594,7 @@ public class City {
         s += player;
         return s.hashCode();
     }
-    
+
     public static void referenceMap(GameMap m) {
         City.mapRef = m;
     }

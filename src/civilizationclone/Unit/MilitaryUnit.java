@@ -40,11 +40,11 @@ public abstract class MilitaryUnit extends Unit {
     public abstract UnitType getUpgrade();
 
     public void heal() {
-        
+
         //heals more on friendly territory
         if (getMapRef().getTile(getX(), getY()).isControlled() && getMapRef().getTile(getX(), getY()).getControllingCity().getPlayer() == getPlayer()) {
             health += 15;
-        } else{
+        } else {
             health += 10;
         }
 
@@ -58,7 +58,6 @@ public abstract class MilitaryUnit extends Unit {
         super.move(p);
         fortified = false;
     }
-    
 
     //filters out a list of attackables
     public Point[] getAttackable() {
@@ -102,8 +101,8 @@ public abstract class MilitaryUnit extends Unit {
                 enemyCombat = ((RangeUnit) enemy).closeCombat;
             }
 
-            int thisDmg = (int) (30 * Math.pow(1.041, (combat - enemyCombat)));
-            int enemyDmg = (int) (30 * Math.pow(1.041, (enemyCombat - combat)));
+            int thisDmg = (int) ((30 * Math.pow(1.041, (combat - enemyCombat))) * getHealthPercentage());
+            int enemyDmg = (int) ((30 * Math.pow(1.041, (enemyCombat - combat))) * enemy.getHealthPercentage());
 
             if (enemy.hasEmbarked()) {
                 enemyDmg = 0;
@@ -157,7 +156,7 @@ public abstract class MilitaryUnit extends Unit {
     public void siegeAttack(City c) {
 
         fortified = false;
-        
+
         int siegeDmg = (int) (combat * 0.4);
         int cityDmg = (int) (c.getCombat() * 0.6);
 
@@ -191,11 +190,11 @@ public abstract class MilitaryUnit extends Unit {
     public void setFortified(boolean fortified) {
         this.fortified = fortified;
     }
-    
+
     public boolean isFortified() {
         return fortified;
     }
-    
+
     public int getHealth() {
         return health;
     }

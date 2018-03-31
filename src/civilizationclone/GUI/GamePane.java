@@ -3,11 +3,7 @@ package civilizationclone.GUI;
 import civilizationclone.*;
 import civilizationclone.Tile.*;
 import civilizationclone.Unit.MilitaryUnit;
-import civilizationclone.Unit.SettlerUnit;
-import civilizationclone.Unit.SlingerUnit;
 import civilizationclone.Unit.Unit;
-import civilizationclone.Unit.WarriorUnit;
-import java.awt.Point;
 import java.util.ArrayList;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
@@ -87,18 +83,17 @@ public class GamePane extends Pane {
         getChildren().add(minimap);
 
         displayMap.setCurrentPlayer(gameState.getCurrentPlayer());
+        updateInfo();
 
-        setOnMouseClicked((MouseEvent e) -> {
-            updateInfo();
-        });
     }
 
     public synchronized void requestAction(String s){
-        if (s.equals("Next")){
+        if (s.startsWith("Next")){
             nextTurn();
         } else{
             gameState.decodeAction(s);
         }
+        updateInfo();
     }
     
     public void nextTurn() {
@@ -204,14 +199,11 @@ public class GamePane extends Pane {
     }
 
     public void updateInfo() {
-
         //update all information in all displays
         nextButton.updateText();
         statusBar.updateTexts();
         sciencePane.updateInfo();
-    }
-
-    public void updateMinimap() {
+        displayMap.updateInfo();
         minimap.update();
     }
 
@@ -243,7 +235,7 @@ public class GamePane extends Pane {
             }
         }
 
-        DisplayMap pane = new DisplayMap(original.length, resX, resY, spareSize, copy);
+        DisplayMap pane = new DisplayMap(original.length, resX, resY, spareSize, copy, this);
 
         return pane;
 
