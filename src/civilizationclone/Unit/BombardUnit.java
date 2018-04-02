@@ -7,7 +7,7 @@ import civilizationclone.City;
 public class BombardUnit extends SiegeUnit{
 
     public BombardUnit(City c) {
-        super(2, c, 45, 55, 4);
+        super(2, c, 45, 65, 4);
     }
 
     @Override

@@ -216,10 +216,10 @@ public class CityMenu extends Pane {
         msg = msg + "\nProduction income: " + city.getProductionIncome();
 
         if (city.getCurrentProject() != null) {
-            msg = msg + "\n\nCurrent Project: " + city.getCurrentProject().name();
+            msg = msg + "\n\nCurrent Project: " + city.getCurrentProject().toString();
             msg = msg + "\nProgress: " + city.getCurrentProduction() + "/" + city.getCurrentProject().getProductionCost();
         } else if (city.getCurrentUnit() != null) {
-            msg = msg + "\n\nCurrent Project: " + city.getCurrentUnit().name();
+            msg = msg + "\n\nCurrent Project: " + city.getCurrentUnit().toString();
             msg = msg + "\nProgress: " + city.getCurrentProduction() + "/" + city.getCurrentUnit().getProductionCost();
         } else {
             msg = msg + "\n\nNothing is being produced!";
@@ -304,7 +304,7 @@ public class CityMenu extends Pane {
                 s = s + "\nGold Bonus: " + ((CityProject) e).getGoldBonus();
             }
 
-            if (e.name().endsWith("WALL")) {
+            if (e.toString().endsWith("WALL")) {
                 s = s + "\n\nIncreases city defense by 50";
             }
 
@@ -411,7 +411,7 @@ public class CityMenu extends Pane {
 
             //Determine what exactly did the person click
             for (UnitType t : city.getPlayer().getBuildableUnit()) {
-                if (t.name().equals(selection)) {
+                if (t.toString().equals(selection)) {
                     info.setText(getInfo(t, "production"));
                     display.setImage(ImageBuffer.getImage(t));
 
@@ -424,13 +424,13 @@ public class CityMenu extends Pane {
             }
 
             for (CityProject c : city.getPlayer().getOwnedCityProject()) {
-                if (selection.startsWith(c.name())) {
+                if (selection.startsWith(c.toString())) {
                     info.setText(getInfo(c, "cityproject"));
                     display.setImage(ImageBuffer.getImage(c));
                     info.setVisible(true);
                     display.setVisible(true);
 
-                    if (selection.equals(c.name())) {
+                    if (selection.equals(c.toString())) {
                         canConfirm = true;
                         confirmButton.setOpacity(1);
                     }
@@ -451,21 +451,6 @@ public class CityMenu extends Pane {
                     + "/" + "Produce"
                     + "/" + selection);
 
-            //Determine what exactly did the person click
-            for (UnitType t : city.getPlayer().getBuildableUnit()) {
-                if (t.name().equals(selection)) {
-                    city.setProduction(t);
-                    close();
-                }
-            }
-
-            for (CityProject c : city.getPlayer().getOwnedCityProject()) {
-                if (c.name().equals(selection)) {
-                    city.setProduction(c);
-                    close();
-                }
-            }
-
             close();
         }
 
@@ -483,10 +468,10 @@ public class CityMenu extends Pane {
             for (UnitType t : city.getPlayer().getBuildableUnit()) {
                 if (NavalUnit.class.isAssignableFrom(t.getCorrespondingClass())) {
                     if (city.isCostal()) {
-                        options.add(t.name());
+                        options.add(t.toString());
                     }
                 } else {
-                    options.add(t.name());
+                    options.add(t.toString());
                 }
             }
 
@@ -503,9 +488,9 @@ public class CityMenu extends Pane {
                             continue;
                         }
                     }
-                    options.add(c.name());
+                    options.add(c.toString());
                 } else {
-                    options.add(c.name() + " (Owned)");
+                    options.add(c.toString() + " (Owned)");
                 }
             }
 
@@ -609,7 +594,7 @@ public class CityMenu extends Pane {
 
             //Determine what exactly did the person click
             for (UnitType t : city.getPlayer().getBuildableUnit()) {
-                if (t.name().equals(selection)) {
+                if (t.toString().equals(selection)) {
 
                     if (city.getPlayer().getCurrentGold() >= t.getPurchaseCost()) {
                         canConfirm = true;
@@ -628,9 +613,9 @@ public class CityMenu extends Pane {
             }
 
             for (CityProject c : city.getPlayer().getOwnedCityProject()) {
-                if (selection.startsWith(c.name())) {
+                if (selection.startsWith(c.toString())) {
 
-                    if (city.getPlayer().getCurrentGold() >= c.getPurchaseCost() && selection.equals(c.name())) {
+                    if (city.getPlayer().getCurrentGold() >= c.getPurchaseCost() && selection.equals(c.toString())) {
                         canConfirm = true;
                         confirmButton.setOpacity(1);
                     } else {
@@ -676,10 +661,10 @@ public class CityMenu extends Pane {
             for (UnitType t : city.getPlayer().getBuildableUnit()) {
                 if (NavalUnit.class.isAssignableFrom(t.getCorrespondingClass())) {
                     if (city.isCostal()) {
-                        options.add(t.name());
+                        options.add(t.toString());
                     }
                 } else {
-                    options.add(t.name());
+                    options.add(t.toString());
                 }
             }
 
@@ -696,9 +681,9 @@ public class CityMenu extends Pane {
                             continue;
                         }
                     }
-                    options.add(c.name());
+                    options.add(c.toString());
                 } else {
-                    options.add(c.name() + " (Owned)");
+                    options.add(c.toString() + " (Owned)");
                 }
             }
 

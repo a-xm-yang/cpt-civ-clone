@@ -52,7 +52,7 @@ public abstract class RangeUnit extends MilitaryUnit {
 
             MilitaryUnit enemy = (MilitaryUnit) x;
 
-            int thisDmg = (int) ((30 * Math.pow(1.041, (this.getCombat() - enemy.getCombat()))) * (getHealthPercentage()));
+            int thisDmg = (int) ((30 * Math.pow(1.041, (this.getCombat() - enemy.getCombat()))) * getDamageReduction());
 
             enemy.setHealth(enemy.getHealth() - thisDmg);
             System.out.println("Unit dealt " + thisDmg);
@@ -87,7 +87,7 @@ public abstract class RangeUnit extends MilitaryUnit {
         setMovement(0);
         setFortified(false);
 
-        int siegeDmg = (int) (getCombat() * 0.3);
+        int siegeDmg = (int) ((30 * Math.pow(1.041, (this.getCombat() - c.getCombat()))) * getDamageReduction() * 0.8);
 
         c.setHealth(c.getHealth() - siegeDmg);
         System.out.println("Unit dealt " + siegeDmg);

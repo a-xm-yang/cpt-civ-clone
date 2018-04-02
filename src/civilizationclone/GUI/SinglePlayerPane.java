@@ -17,6 +17,7 @@ public class SinglePlayerPane extends GamePane {
         } else {
             getGameState().decodeAction(s);
         }
+        readNotificationFromGame();
         updateInfo();
     }
 

@@ -144,4 +144,12 @@ public abstract class Unit {
         return s.hashCode();
     }
 
+    @Override
+    public String toString() {
+        String s = this.getClass().getSimpleName();
+        return s.substring(0, s.indexOf("Unit"));
+    }
+    
+    
+
 }

@@ -50,8 +50,8 @@ public class City {
         this.player = u.getPlayer();
 
         realPopulation = 1000;
-        maxHealth = 55;
-        combat = 30;
+        maxHealth = 125;
+        combat = 35;
         health = maxHealth;
         currentProduction = 0;
 
@@ -254,7 +254,7 @@ public class City {
         currentProduction = 0;
         if (currentProject.name().endsWith("WALL")) {
             //If you get a wall, the city increase in defense and in strength
-            maxHealth += 55;
+            maxHealth += 50;
             health = maxHealth;
             combat += 10;
         }
@@ -288,6 +288,9 @@ public class City {
         this.player = p;
         this.player.getCityList().add(this);
         updateTiles();
+        calcIncome();
+
+        health = (int) (maxHealth * 0.25);
     }
 
     public void addTile(Tile t) {
@@ -342,6 +345,16 @@ public class City {
 
     //GETTER
     //<editor-fold>
+    public double getDamageReduction() {
+        Double d = getHealthPercentage();
+
+        if (d < 0.35) {
+            return 0.35;
+        } else {
+            return d;
+        }
+    }
+
     public Tile getCityTile() {
         return mapRef.getTile(POSITION);
     }

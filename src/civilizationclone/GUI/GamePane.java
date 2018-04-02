@@ -56,7 +56,7 @@ public abstract class GamePane extends Pane {
         this.setPrefWidth(resX);
         this.isMuted = isMuted;
 
-        messageSlot = new boolean[8];
+        messageSlot = new boolean[10];
 
         //Loading music 
         background = new Media(getClass().getClassLoader().getResource("Assets/Misc/babayetu.mp3").toExternalForm());
@@ -141,9 +141,9 @@ public abstract class GamePane extends Pane {
                     return;
                 }
             }
-        } else if (gameState.getCurrentPlayer().canEndTurn() == 2) {
+        } else if (gameState.getCurrentPlayer().canEndTurn() == 2 || gameState.getCurrentPlayer().canEndTurn() == 4) {
             for (City c : gameState.getCurrentPlayer().getCityList()) {
-                if (!c.canEndTurn()) {
+                if (!c.canEndTurn() || c.canExpand()) {
                     //Jump to the city position, disable dragging
                     displayMap.jumpTo(c);
                     displayMap.enableDragging(false);
@@ -160,8 +160,14 @@ public abstract class GamePane extends Pane {
         }
 
     }
+    
+    public void readNotificationFromGame(){
+        while (!gameState.isNotificationEmpty()){
+            displayNotification(gameState.readNotification());
+        }
+    }
 
-    public void displayMessage(String s) {
+    public void displayNotification(String s) {
 
         int p = 0;
         for (int i = 0; i < messageSlot.length; i++) {
@@ -173,16 +179,16 @@ public abstract class GamePane extends Pane {
         }
 
         Text text = new Text(s);
-        text.setFont(Font.font("Oswald", 30));
-        text.setFill(Color.BLACK);
+        text.setFont(Font.font("Oswald", 26));
+        text.setFill(Color.FIREBRICK);
         text.setTranslateX(resX * 0.5 - text.getBoundsInLocal().getWidth() * 0.5);
-        text.setTranslateY(150 - text.getBoundsInLocal().getHeight() * 0.5 + text.getBoundsInLocal().getHeight() * p);
+        text.setTranslateY(140 - text.getBoundsInLocal().getHeight() * 0.5 + text.getBoundsInLocal().getHeight() * p);
         text.setMouseTransparent(true);
         getChildren().add(text);
 
         final int messagePosition = p;
 
-        FadeTransition ft = new FadeTransition(Duration.seconds(6), text);
+        FadeTransition ft = new FadeTransition(Duration.seconds(7), text);
         ft.setDelay(Duration.seconds(2));
         ft.setFromValue(1.0);
         ft.setToValue(0);

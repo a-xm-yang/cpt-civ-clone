@@ -62,4 +62,20 @@ public enum CityProject {
         return foodBonus;
     }
 
+    @Override
+    public String toString() {
+        String s = name();
+
+        if (s.contains("_")) {
+            s = s.replaceAll("_", " ");
+            s = s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+            s = s.substring(0, s.indexOf(" ") + 1) + s.substring(s.indexOf(" ") + 1, s.indexOf(" ") + 2).toUpperCase() + s.substring(s.indexOf(" ") + 2);
+        } else {
+            s = s.toLowerCase();
+            s = s.substring(0, 1).toUpperCase() + s.substring(1);
+        }
+
+        return s;
+    }
+
 }

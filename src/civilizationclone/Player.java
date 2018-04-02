@@ -127,6 +127,8 @@ public class Player {
         for (City c : cityList) {
             if (!c.canEndTurn()) {
                 return 2;
+            } else if (c.canExpand()){
+                return 4;
             }
         }
 

@@ -12,15 +12,17 @@ public abstract class SiegeUnit extends MilitaryUnit {
     }
 
     public SiegeUnit(int MAX_MOVEMENT, MilitaryUnit u, int combat, int siegeCombat, int maintainence) {
-       super(u, MAX_MOVEMENT, combat, maintainence);
+        super(u, MAX_MOVEMENT, combat, maintainence);
         this.siegeCombat = siegeCombat;
     }
 
     @Override
     public void siegeAttack(City c) {
+
         setFortified(false);
         setMovement(0);
-        int siegeDmg = (int) (siegeCombat * 0.75);
+
+        int siegeDmg = (int) ((30 * Math.pow(1.041, (siegeCombat - c.getCombat()))) * getDamageReduction());
 
         c.setHealth(c.getHealth() - siegeDmg);
         System.out.println("Unit dealt " + siegeDmg);
@@ -33,7 +35,5 @@ public abstract class SiegeUnit extends MilitaryUnit {
     public int getSiegeCombat() {
         return siegeCombat;
     }
-    
-    
-    
+
 }

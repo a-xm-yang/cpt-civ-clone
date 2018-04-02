@@ -101,8 +101,8 @@ public abstract class MilitaryUnit extends Unit {
                 enemyCombat = ((RangeUnit) enemy).closeCombat;
             }
 
-            int thisDmg = (int) ((30 * Math.pow(1.041, (combat - enemyCombat))) * getHealthPercentage());
-            int enemyDmg = (int) ((30 * Math.pow(1.041, (enemyCombat - combat))) * enemy.getHealthPercentage());
+            int thisDmg = (int) ((30 * Math.pow(1.041, (combat - enemyCombat))) * getDamageReduction());
+            int enemyDmg = (int) ((30 * Math.pow(1.041, (enemyCombat - combat))) * enemy.getDamageReduction());
 
             if (enemy.hasEmbarked()) {
                 enemyDmg = 0;
@@ -157,8 +157,8 @@ public abstract class MilitaryUnit extends Unit {
 
         fortified = false;
 
-        int siegeDmg = (int) (combat * 0.4);
-        int cityDmg = (int) (c.getCombat() * 0.6);
+        int siegeDmg = (int) ((30 * Math.pow(1.041, (combat - c.getCombat()))) * getDamageReduction() * 0.70);
+        int cityDmg = (int) ((30 * Math.pow(1.041, (c.getCombat() - combat))) * getDamageReduction());
 
         if (this instanceof CalvaryUnit) {
             siegeDmg = (int) (siegeDmg * 0.6);
@@ -174,7 +174,7 @@ public abstract class MilitaryUnit extends Unit {
         System.out.println("Unit dealt " + siegeDmg);
 
         if (c.getHealth() <= 0) {
-            c.conquer(this.getPlayer());
+            c.conquer(getPlayer());
         }
 
         if (health <= 0) {
@@ -197,6 +197,16 @@ public abstract class MilitaryUnit extends Unit {
 
     public int getHealth() {
         return health;
+    }
+
+    public double getDamageReduction() {
+        Double d = getHealthPercentage();
+
+        if (d < 0.333) {
+            return 0.333;
+        } else {
+            return d;
+        }
     }
 
     public double getHealthPercentage() {

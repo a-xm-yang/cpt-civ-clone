@@ -133,7 +133,7 @@ public class SciencePane extends Group {
             } else {
                 turnInfo = "(settle a city to start research)";
             }
-            infoText.setText(player.getResearch().name() + " " + turnInfo);
+            infoText.setText(player.getResearch().toString() + " " + turnInfo);
         } else {
             infoText.setText("Select new research!");
         }
@@ -176,7 +176,7 @@ public class SciencePane extends Group {
             border = new Rectangle(600, 450);
             border.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CITY_OPTION_BACKGROUND), 0, 0, 1, 1, true));
 
-            setTranslateX(resX / 2 - border.getWidth() / 2);
+            setTranslateX(resX / 2 - border.getWidth() / 2 - 15);
             setTranslateY(resY / 2 - border.getHeight() / 2 - 43);
 
             border.setStrokeWidth(5);
@@ -238,7 +238,7 @@ public class SciencePane extends Group {
             String selection = (String) comboBox.getValue();
 
             for (TechType t : player.getResearchableTech()) {
-                if (selection.equals(t.name())) {
+                if (selection.equals(t.toString())) {
                     info.setText(getInfo(t));
                     display.setImage(ImageBuffer.getImage(t));
                     if (player.getResearch() != t) {
@@ -271,21 +271,21 @@ public class SciencePane extends Group {
                 if (t.getUnlockUnit() != null) {
                     s = s + "\n\nUnlock Unit: ";
                     for (UnitType u : t.getUnlockUnit()) {
-                        s = s + u.name() + "  ";
+                        s = s + u.toString() + "  ";
                     }
                 }
 
                 if (t.getUnlockProject() != null) {
                     s = s + "\n\nUnlock City Project: ";
                     for (CityProject c : t.getUnlockProject()) {
-                        s = s + c.name() + "  ";
+                        s = s + c.toString() + "  ";
                     }
                 }
 
                 if (t.getUnlockImprovement() != null) {
                     s = s + "\n\nUnlock Tile Improvement: ";
                     for (Improvement i : t.getUnlockImprovement()) {
-                        s = s + i.name() + "  ";
+                        s = s + i.toString() + "  ";
                     }
                 }
 
@@ -293,7 +293,7 @@ public class SciencePane extends Group {
 
                 for (TechType tech : TechType.values()) {
                     if (tech.getPrerequisites().contains(t)) {
-                        s = s + tech.name() + "  ";
+                        s = s + tech.toString() + "  ";
                     }
                 }
 
@@ -319,7 +319,7 @@ public class SciencePane extends Group {
             ObservableList<String> options = FXCollections.observableArrayList();
 
             for (TechType t : player.getResearchableTech()) {
-                options.add(t.name());
+                options.add(t.toString());
             }
 
             comboBox = new ComboBox(options);

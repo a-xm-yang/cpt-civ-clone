@@ -63,14 +63,13 @@ public class NextTurnPane extends Group {
     }
 
     public void clickEvent(MouseEvent e) {
-        
+
         if (this.player.canEndTurn() == 0) {
             gamePaneRef.requestAction("Next" + "/" + player.getName());
         } else {
             gamePaneRef.jumpToNextAction();
         }
-        
-     
+
         updateText();
         e.consume();
     }
@@ -80,13 +79,15 @@ public class NextTurnPane extends Group {
     }
 
     public void updateText() {
-        
+
         //Checks to see if the player can go to the next turn
         //If he can't it instucts him what he needs to do
         if (player.canEndTurn() == 2) {
             text.setText("MUST SELECT CITY PROJECT");
         } else if (player.canEndTurn() == 1) {
             text.setText("A UNIT NEEDS ORDERS");
+        } else if (player.canEndTurn() == 4) {
+            text.setText("A CITY CAN EXPAND");
         } else if (player.canEndTurn() == 3) {
             text.setText("MUST SELECT REASEARCH");
         } else {

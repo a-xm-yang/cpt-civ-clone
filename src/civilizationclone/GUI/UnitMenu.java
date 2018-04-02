@@ -34,7 +34,6 @@ public class UnitMenu extends Pane {
     private Effect shadow = new DropShadow(25, Color.BLACK);
     private Effect noneEffect = null;
 
-    
     public UnitMenu(Unit unit, DisplayMap dmapRef) {
         this.unit = unit;
         opts = new ArrayList<>();
@@ -55,7 +54,7 @@ public class UnitMenu extends Pane {
             opts.add(new UnitOption(120, 60, 250, 40, "Fortify"));
             opts.add(new UnitOption(65, 120, 250, 40, "Kill"));
         }
-        
+
         //Initilize the information display (left of unit)
         infoDisplay = new Canvas(230, 250);
         infoDisplay.setTranslateX(-195);
@@ -173,7 +172,7 @@ public class UnitMenu extends Pane {
                     return;
                 }
             } else if (((UnitOption) e.getTarget()).getOptionType().equals("End Turn") && ((UnitOption) e.getTarget()).getText().getFill() == Color.WHITE) {
-               dmapRef.activateEndTurn();
+                dmapRef.activateEndTurn();
             }
         }
         delete();
@@ -238,7 +237,7 @@ public class UnitMenu extends Pane {
             this.text.setMouseTransparent(true);
 
             this.setFill(Color.BLACK);
-            
+
             effectProperty().bind(
                     Bindings.when(hoverProperty()).then(shadow).otherwise(noneEffect)
             );
@@ -285,6 +284,9 @@ public class UnitMenu extends Pane {
                 e.consume();
                 close();
             });
+            closeButton.effectProperty().bind(
+                    Bindings.when(closeButton.hoverProperty()).then(shadow).otherwise(noneEffect)
+            );
 
             confirmButton = new Circle(80, 180, 22);
             confirmButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CONFIRM_ICON)));
@@ -296,6 +298,9 @@ public class UnitMenu extends Pane {
                 }
 
             });
+            confirmButton.effectProperty().bind(
+                    Bindings.when(confirmButton.hoverProperty()).then(shadow).otherwise(noneEffect)
+            );
 
             title = new Text("WHAT WOULD YOU \n LIKE TO BUILD");
             title.setFont(Font.font("Times New Roman", 22));
@@ -338,22 +343,8 @@ public class UnitMenu extends Pane {
         }
 
         private void confirm() {
-
             String selection = (String) comboBox.getValue();
-            
             dmapRef.activateBuild(selection);
-
-            //Determine what exactly did the person click
-            for (Improvement i : ((BuilderUnit) unit).getPossibleImprovements()) {
-                if (i.name().equals(selection)) {
-
-                    ((BuilderUnit) unit).improve(i);
-
-                    dmapRef.repaint();
-                    close();
-                }
-            }
-
             close();
         }
 
@@ -370,7 +361,7 @@ public class UnitMenu extends Pane {
             options.add("----- IMPROVEMENTS -----");
 
             for (Improvement i : ((BuilderUnit) unit).getPossibleImprovements()) {
-                options.add(i.name());
+                options.add(i.toString());
             }
 
             comboBox = new ComboBox(options);
