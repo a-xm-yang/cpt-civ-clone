@@ -72,7 +72,7 @@ public class TitleMenu extends Group {
         });
         mp.play();
         
-        mp.setMute(true);
+      //  mp.setMute(true);
 
         cheatOn = false;
         playerList = new ArrayList<>();

@@ -599,8 +599,8 @@ public class DisplayMap extends Group {
             border.setStrokeWidth(5);
             border.setStroke(Color.BLACK);
 
-            setTranslateX(zoomMapX * -1 + resX / 2 - border.getX() / 2 - border.getX() / 2);
-            setTranslateY(zoomMapY * -1 + resY / 2 - border.getY() / 2 - border.getY() / 2);
+            setTranslateX(zoomMapX * -1 + resX / 2 - border.getWidth() / 2);
+            setTranslateY(zoomMapY * -1 + resY / 2 - border.getHeight() / 2);
 
             title = new Text("INPUT CITY NAME");
             title.setFont(Font.font("Times New Roman", 20));

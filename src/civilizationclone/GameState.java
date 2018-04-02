@@ -303,7 +303,6 @@ public class GameState {
             Player temp = currentPlayer;
             updateCurrentPlayer();
             getPlayerList().remove(temp);
-            notificationLog.add(temp.getName() + " has been defeated!");
         }
 
         //Check for notification updates in tech and production

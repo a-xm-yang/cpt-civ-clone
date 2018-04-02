@@ -105,6 +105,8 @@ public abstract class GamePane extends Pane {
         statusBar.setCurrentPlayer(gameState.getCurrentPlayer());
         sciencePane.setCurrentPlayer(gameState.getCurrentPlayer());
         displayMap.setCurrentPlayer(gameState.getCurrentPlayer());
+        
+        updateInfo();
     }
 
     public void jumpToNextAction() {
@@ -179,10 +181,12 @@ public abstract class GamePane extends Pane {
         }
 
         Text text = new Text(s);
-        text.setFont(Font.font("Oswald", 26));
-        text.setFill(Color.FIREBRICK);
+        text.setFont(Font.font("Oswald", 28));
+        text.setStroke(Color.BLACK);
+        text.setStrokeWidth(2);
+        text.setFill(Color.BLACK);
         text.setTranslateX(resX * 0.5 - text.getBoundsInLocal().getWidth() * 0.5);
-        text.setTranslateY(140 - text.getBoundsInLocal().getHeight() * 0.5 + text.getBoundsInLocal().getHeight() * p);
+        text.setTranslateY(185 - text.getBoundsInLocal().getHeight() * 0.5 + text.getBoundsInLocal().getHeight() * p);
         text.setMouseTransparent(true);
         getChildren().add(text);
 
@@ -307,7 +311,6 @@ public abstract class GamePane extends Pane {
     //</editor-fold>
     private void removeDefeatedPrompt(GamePane.DefeatedPrompt dp) {
         getChildren().remove(dp);
-
     }
 
     class DefeatedPrompt extends Pane {
@@ -359,6 +362,7 @@ public abstract class GamePane extends Pane {
         }
 
         private void close() {
+            
             removeDefeatedPrompt(this);
             mp.setVolume(1);
             updateControllingPlayer();
@@ -370,7 +374,8 @@ public abstract class GamePane extends Pane {
             }
 
             if (!defeated || (gameState.getPlayerList().size() == 0)) {
-                primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage, mp), resX, resY));
+                mp.stop();
+                primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage), resX, resY));
             }
 
         }
