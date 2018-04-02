@@ -47,9 +47,7 @@ public class Player {
     Color color;
     //</editor-fold>
 
-    public enum Leader {
-        ZEDONG, HITLER, MUSSOLINI, STALIN, CHURCHILL, ROOSEVELT;
-    }
+
 
     //constructor
     public Player(String name) {

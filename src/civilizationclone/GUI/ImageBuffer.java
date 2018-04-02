@@ -1,7 +1,8 @@
 package civilizationclone.GUI;
 
 import civilizationclone.CityProject;
-import civilizationclone.Player.Leader;
+import civilizationclone.Leader;
+import static civilizationclone.Leader.ZEDONG;
 import civilizationclone.TechType;
 import civilizationclone.Tile.*;
 import civilizationclone.Unit.*;

@@ -63,13 +63,14 @@ public class NextTurnPane extends Group {
     }
 
     public void clickEvent(MouseEvent e) {
-
+        
         if (this.player.canEndTurn() == 0) {
             gamePaneRef.requestAction("Next" + "/" + player.getName());
         } else {
             gamePaneRef.jumpToNextAction();
         }
-
+        
+     
         updateText();
         e.consume();
     }

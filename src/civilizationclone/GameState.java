@@ -113,6 +113,9 @@ public class GameState {
                             break;
                         }
                     }
+                } else if (msg[3].equals("Kill")){
+                    unit.delete();
+                    updateFogOfWar(player);
                 }
 
                 //</editor-fold>

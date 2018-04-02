@@ -1,10 +1,9 @@
 package civilizationclone.GUI;
 
-import civilizationclone.GameMap;
 import civilizationclone.GameMap.MapSize;
 import civilizationclone.GameState;
+import civilizationclone.Leader;
 import civilizationclone.Player;
-import civilizationclone.Player.Leader;
 import java.util.ArrayList;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -72,6 +71,8 @@ public class TitleMenu extends Group {
             mp.seek(Duration.ZERO);
         });
         mp.play();
+        
+        mp.setMute(true);
 
         cheatOn = false;
         playerList = new ArrayList<>();
@@ -455,7 +456,7 @@ public class TitleMenu extends Group {
         }
 
         //start the game by changing scenes
-        primaryStage.setScene(new Scene(new GamePane(new GameState(list, ms), resX, resY, true, mp.isMute(), primaryStage)));
+        primaryStage.setScene(new Scene(new SinglePlayerPane(new GameState(list, ms), resX, resY, mp.isMute(), primaryStage)));
         mp.pause();
     }
 

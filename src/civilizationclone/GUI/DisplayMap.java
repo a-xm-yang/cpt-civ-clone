@@ -9,12 +9,15 @@ import civilizationclone.Unit.Unit;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Set;
+import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
@@ -51,6 +54,9 @@ public class DisplayMap extends Group {
 
     private Player currentPlayer;
     private Tile selectedTile;
+
+    private static Effect shadow = new DropShadow(30, Color.WHITE);
+    private static Effect noneEffect = null;
 
     //size refers to the number of tiles
     public DisplayMap(int mapSize, int resX, int resY, int spareSize, Tile[][] tileMap, GamePane gamePaneRef) {
@@ -310,11 +316,11 @@ public class DisplayMap extends Group {
 
     public void activateKill() {
         //Kills the unit
-        selectedTile.getUnit().delete();
-//        updateFogOfWar();
-        repaint();
-
-        gamePaneRef.updateInfo();
+        Unit unit = selectedTile.getUnit();
+        gamePaneRef.requestAction(unit.getPlayer().getName()
+                + "/" + "Unit"
+                + "/" + unit.hashCode()
+                + "/" + "Kill");
     }
 
     public void activateExpansion() {
@@ -337,9 +343,9 @@ public class DisplayMap extends Group {
     }
 
     public void activateBuild(String build) {
-        
+
         Unit selectedUnit = selectedTile.getUnit();
-        
+
         gamePaneRef.requestAction(selectedUnit.getPlayer().getName()
                 + "/" + "Unit"
                 + "/" + selectedUnit.hashCode()
@@ -602,7 +608,7 @@ public class DisplayMap extends Group {
             title.setTranslateY(25);
             title.setTranslateX(5);
 
-            textField = new TextField("City");
+            textField = new TextField(getDefaultText());
             textField.setAlignment(Pos.CENTER);
             textField.setFont(Font.font("Times New Roman", 18));
             textField.setPrefColumnCount(12);
@@ -622,6 +628,9 @@ public class DisplayMap extends Group {
                     close();
                 }
             });
+            confirmButton.effectProperty().bind(
+                    Bindings.when(confirmButton.hoverProperty()).then(shadow).otherwise(noneEffect)
+            );
 
             closeButton = new Circle(80, 120, 20);
             closeButton.setFill(new ImagePattern(ImageBuffer.getImage(MiscAsset.CLOSE_ICON)));
@@ -629,13 +638,36 @@ public class DisplayMap extends Group {
                 e.consume();
                 close();
             });
+            closeButton.effectProperty().bind(
+                    Bindings.when(closeButton.hoverProperty()).then(shadow).otherwise(noneEffect)
+            );
 
             getChildren().addAll(border, closeButton, title, confirmButton, textField);
 
         }
+        
+        private String getDefaultText(){
+            Player p = selectedUnit.getPlayer();
+            String[] defaultNames = p.getLeader().getCityNames();
+            
+            for (String s: defaultNames){
+                boolean chosen = false;
+                for (City c: p.getCityList()){
+                    if (s.equalsIgnoreCase(c.getName())){
+                        chosen = true;
+                        break;
+                    }
+                }
+                if (!chosen){
+                    return s;
+                }
+            }
+            
+            return "City";
+        }
 
         private void textCheck() {
-            if (textField.getCharacters().toString().length() > 0 && textField.getCharacters().toString().length() <= 12) {
+            if (textField.getCharacters().toString().length() > 0 && textField.getCharacters().toString().length() <= 15) {
                 canConfirm = true;
                 confirmButton.setOpacity(1);
             } else {

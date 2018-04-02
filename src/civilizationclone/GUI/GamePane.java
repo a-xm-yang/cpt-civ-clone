@@ -5,12 +5,12 @@ import civilizationclone.Tile.*;
 import civilizationclone.Unit.MilitaryUnit;
 import civilizationclone.Unit.Unit;
 import java.util.ArrayList;
+import javafx.animation.FadeTransition;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -23,7 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class GamePane extends Pane {
+public abstract class GamePane extends Pane {
 
     //A pane class that handles everything that is game-related
     private int resX, resY;
@@ -33,17 +33,19 @@ public class GamePane extends Pane {
     private StatusBarPane statusBar;
     private SciencePane sciencePane;
     private Minimap minimap;
-    private MediaPlayer mp, dmp, wmp;
-    private Media win, loss, background;
+    public MediaPlayer mp, dmp, wmp;
+    public Media win, loss, background;
     private Stage primaryStage;
     private boolean isMuted;
     private static Effect shadow = new DropShadow(30, Color.WHITE);
     private static Effect noneEffect = null;
 
+    private boolean[] messageSlot;
+
     //game data
     private GameState gameState;
 
-    public GamePane(GameState gameState, int resX, int resY, boolean isNewGame, boolean isMuted, Stage primaryStage) {
+    public GamePane(GameState gameState, int resX, int resY, boolean isMuted, Stage primaryStage) {
 
         this.gameState = gameState;
         this.primaryStage = primaryStage;
@@ -53,6 +55,8 @@ public class GamePane extends Pane {
         this.setPrefHeight(resY);
         this.setPrefWidth(resX);
         this.isMuted = isMuted;
+
+        messageSlot = new boolean[8];
 
         //Loading music 
         background = new Media(getClass().getClassLoader().getResource("Assets/Misc/babayetu.mp3").toExternalForm());
@@ -87,41 +91,15 @@ public class GamePane extends Pane {
 
     }
 
-    public synchronized void requestAction(String s){
-        if (s.startsWith("Next")){
-            nextTurn();
-        } else{
-            gameState.decodeAction(s);
-        }
-        updateInfo();
-    }
-    
-    public void nextTurn() {
-        gameState.updateCurrentPlayer();
-        updateControllingPlayer();
-        endGameCheck();
-        gameState.processCurrentPlayerTurn();
-    }
+    public abstract void requestAction(String s);
 
-    public void endGameCheck() {
-        if (gameState.getCurrentPlayer().isDefeated()) {
-            //Play defeat audio and show victory screens
-            mp.setVolume(0.5);
-            dmp = new MediaPlayer(loss);
-            dmp.play();
-            dmp.setMute(isMuted);
-            this.getChildren().add(new DefeatedPrompt(resX, resY, true));
-        } else if (gameState.getPlayerList().size() == 1) {
-            //Play victory audio and show victory screen
-            mp.setVolume(0.5);
-            wmp = new MediaPlayer(win);
-            wmp.play();
-            wmp.setMute(isMuted);
-            this.getChildren().add(new DefeatedPrompt(resX, resY, false));
-        }
-    }
+    public abstract void receiveAction(String s);
 
-    private void updateControllingPlayer() {
+    public abstract void nextTurn();
+
+    public abstract void endGameCheck();
+
+    public void updateControllingPlayer() {
         //start the player's turn and set all the element's current info display to this player
         nextButton.setCurrentPlayer(gameState.getCurrentPlayer());
         statusBar.setCurrentPlayer(gameState.getCurrentPlayer());
@@ -183,6 +161,39 @@ public class GamePane extends Pane {
 
     }
 
+    public void displayMessage(String s) {
+
+        int p = 0;
+        for (int i = 0; i < messageSlot.length; i++) {
+            if (!messageSlot[i]) {
+                p = i;
+                messageSlot[i] = true;
+                break;
+            }
+        }
+
+        Text text = new Text(s);
+        text.setFont(Font.font("Oswald", 30));
+        text.setFill(Color.BLACK);
+        text.setTranslateX(resX * 0.5 - text.getBoundsInLocal().getWidth() * 0.5);
+        text.setTranslateY(150 - text.getBoundsInLocal().getHeight() * 0.5 + text.getBoundsInLocal().getHeight() * p);
+        text.setMouseTransparent(true);
+        getChildren().add(text);
+
+        final int messagePosition = p;
+
+        FadeTransition ft = new FadeTransition(Duration.seconds(6), text);
+        ft.setDelay(Duration.seconds(2));
+        ft.setFromValue(1.0);
+        ft.setToValue(0);
+        ft.setOnFinished((e) -> {
+            getChildren().remove(text);
+            messageSlot[messagePosition] = false;
+        });
+
+        ft.play();
+    }
+
     //two methods used to add/remove city menus from the game pane
     public void addCityMenu(City c) {
         cityMenu = new CityMenu(c, resX, resY, displayMap);
@@ -241,6 +252,24 @@ public class GamePane extends Pane {
 
     }
 
+    //GETTER & SETTER
+    //<editor-fold>
+    public boolean isIsMuted() {
+        return isMuted;
+    }
+
+    public int getResY() {
+        return resY;
+    }
+
+    public int getResX() {
+        return resX;
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
     public DisplayMap getDisplayMap() {
         return displayMap;
     }
@@ -249,6 +278,27 @@ public class GamePane extends Pane {
         return gameState.getPlayerList();
     }
 
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public MediaPlayer getDmp() {
+        return dmp;
+    }
+
+    public Media getLoss() {
+        return loss;
+    }
+
+    public Media getWin() {
+        return win;
+    }
+
+    public MediaPlayer getWmp() {
+        return wmp;
+    }
+
+    //</editor-fold>
     private void removeDefeatedPrompt(GamePane.DefeatedPrompt dp) {
         getChildren().remove(dp);
 
