@@ -100,6 +100,10 @@ public abstract class MilitaryUnit extends Unit {
             if (enemy instanceof RangeUnit) {
                 enemyCombat = ((RangeUnit) enemy).closeCombat;
             }
+            
+            if (enemy.fortified){
+                enemyCombat += 3;
+            }
 
             int thisDmg = (int) ((30 * Math.pow(1.041, (combat - enemyCombat))) * getDamageReduction());
             int enemyDmg = (int) ((30 * Math.pow(1.041, (enemyCombat - combat))) * enemy.getDamageReduction());

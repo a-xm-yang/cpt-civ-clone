@@ -51,8 +51,17 @@ public abstract class RangeUnit extends MilitaryUnit {
         if (x instanceof MilitaryUnit) {
 
             MilitaryUnit enemy = (MilitaryUnit) x;
+            int enemyCombat = enemy.getCombat();
+            
+            if (enemy instanceof RangeUnit){
+                enemyCombat = ((RangeUnit) enemy).getCloseCombat();
+            }
+            
+            if (enemy.isFortified()){
+                enemyCombat += 3;
+            }
 
-            int thisDmg = (int) ((30 * Math.pow(1.041, (this.getCombat() - enemy.getCombat()))) * getDamageReduction());
+            int thisDmg = (int) ((30 * Math.pow(1.041, (this.getCombat() - enemyCombat))) * getDamageReduction());
 
             enemy.setHealth(enemy.getHealth() - thisDmg);
             System.out.println("Unit dealt " + thisDmg);
