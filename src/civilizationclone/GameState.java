@@ -10,6 +10,7 @@ import civilizationclone.Unit.UnitType;
 import civilizationclone.Unit.WarriorUnit;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GameState {
 
@@ -43,6 +44,33 @@ public class GameState {
         }
 
         currentPlayer = playerList.get(0);
+        currentPlayer.startTurn();
+    }
+
+    public GameState(ArrayList<Player> playerList, MapSize ms, int seed, Player currentPlayer) {
+        
+        this.playerList = playerList;
+        notificationLog = new ArrayList<String>();
+
+        //construct a random new map 
+        gameMap = new GameMap(ms, seed);
+
+        Unit.referenceMap(gameMap);
+        City.referenceMap(gameMap);
+
+        Random random = new Random(seed);
+        for (Player player : playerList) {
+            do {
+                Point p = new Point((int) (random.nextDouble() * (gameMap.getSize() - 4)) + 2, (int) (random.nextDouble() * (gameMap.getSize() - 1)));
+                if (gameMap.canSpawn(p)) {
+                    player.addUnit(new SettlerUnit(player, p));
+                    player.addUnit(new WarriorUnit(player, new Point(p.x, p.y + 1)));
+                    break;
+                }
+            } while (true);
+        }
+
+        this.currentPlayer = currentPlayer;
         currentPlayer.startTurn();
     }
 

@@ -6,7 +6,6 @@ import javafx.scene.Group;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineJoin;
@@ -24,6 +23,8 @@ public class NextTurnPane extends Group {
     private DisplayMap dMapRef;
     private static Effect shadow = new DropShadow(40, Color.WHITE);
     private static Effect noneEffect = null;
+
+    private boolean locked;
 
     public NextTurnPane(Player player, int resX, int resY, GamePane gamePaneRef) {
         this.text = new Text();
@@ -60,14 +61,27 @@ public class NextTurnPane extends Group {
             clickEvent(e);
         });
 
+        locked = false;
+
     }
 
     public void clickEvent(MouseEvent e) {
 
-        if (this.player.canEndTurn() == 0) {
-            gamePaneRef.requestAction("Next" + "/" + player.getName());
-        } else {
-            gamePaneRef.jumpToNextAction();
+        if (!locked) {
+            if (this.player.canEndTurn() == 0) {
+                gamePaneRef.requestAction("Next" + "/" + player.getName());
+
+                if (!(gamePaneRef instanceof SinglePlayerPane)) {
+                    text.setText("Waiting for others...");
+                    locked = true;
+                }
+
+            } else {
+                gamePaneRef.jumpToNextAction();
+            }
+        } else{
+            gamePaneRef.requestAction("Cancel/" + player.getName());
+            locked = false;
         }
 
         updateText();
@@ -82,27 +96,36 @@ public class NextTurnPane extends Group {
 
         //Checks to see if the player can go to the next turn
         //If he can't it instucts him what he needs to do
-        if (player.canEndTurn() == 2) {
-            text.setText("MUST SELECT CITY PROJECT");
-        } else if (player.canEndTurn() == 1) {
-            text.setText("A UNIT NEEDS ORDERS");
-        } else if (player.canEndTurn() == 4) {
-            text.setText("A CITY CAN EXPAND");
-        } else if (player.canEndTurn() == 3) {
-            text.setText("MUST SELECT REASEARCH");
-        } else {
-            text.setText("NEXT TURN");
-        }
+        if (!locked) {
+            if (player.canEndTurn() == 2) {
+                text.setText("MUST SELECT CITY PROJECT");
+            } else if (player.canEndTurn() == 1) {
+                text.setText("A UNIT NEEDS ORDERS");
+            } else if (player.canEndTurn() == 4) {
+                text.setText("A CITY CAN EXPAND");
+            } else if (player.canEndTurn() == 3) {
+                text.setText("MUST SELECT REASEARCH");
+            } else {
+                text.setText("NEXT TURN");
+            }
 
-        text.setFill(Color.WHITE);
-        text.setFont(Font.font("Oswald", 20));
-        text.setTranslateX((rect.getWidth() - text.getLayoutBounds().getWidth()) / 2);
-        text.setTranslateY(text.getLayoutBounds().getHeight() + 2);
-        dMapRef.repaint();
+            text.setFill(Color.WHITE);
+            text.setFont(Font.font("Oswald", 20));
+            text.setTranslateX((rect.getWidth() - text.getLayoutBounds().getWidth()) / 2);
+            text.setTranslateY(text.getLayoutBounds().getHeight() + 2);
+        }
     }
 
     void delete() {
         gamePaneRef.getChildren().remove(this);
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public boolean isLocked() {
+        return locked;
     }
 
 }

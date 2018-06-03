@@ -181,7 +181,7 @@ public abstract class GamePane extends Pane {
         }
 
         Text text = new Text(s);
-        text.setFont(Font.font("Oswald", 28));
+        text.setFont(Font.font("Oswald", 26));
         text.setStroke(Color.BLACK);
         text.setStrokeWidth(2);
         text.setFill(Color.BLACK);
@@ -298,7 +298,15 @@ public abstract class GamePane extends Pane {
 
     public Media getLoss() {
         return loss;
+        
+        
     }
+
+    public NextTurnPane getNextButton() {
+        return nextButton;
+    }
+    
+    
 
     public Media getWin() {
         return win;
@@ -306,6 +314,10 @@ public abstract class GamePane extends Pane {
 
     public MediaPlayer getWmp() {
         return wmp;
+    }
+
+    public StatusBarPane getStatusBar() {
+        return statusBar;
     }
 
     //</editor-fold>
@@ -357,7 +369,7 @@ public abstract class GamePane extends Pane {
             getChildren().addAll(border, title, confirmButton);
 
             if (defeated) {
-                statusBar.removeHead(gameState.getCurrentPlayer());
+                statusBar.removeHead(gameState.getCurrentPlayer().getName());
             }
         }
 
