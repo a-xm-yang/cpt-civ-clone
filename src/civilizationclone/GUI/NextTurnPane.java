@@ -24,7 +24,6 @@ public class NextTurnPane extends Group {
     private static Effect shadow = new DropShadow(40, Color.WHITE);
     private static Effect noneEffect = null;
 
-    private boolean locked;
 
     public NextTurnPane(Player player, int resX, int resY, GamePane gamePaneRef) {
         this.text = new Text();
@@ -61,19 +60,18 @@ public class NextTurnPane extends Group {
             clickEvent(e);
         });
 
-        locked = false;
 
     }
 
     public void clickEvent(MouseEvent e) {
 
-        if (!locked) {
+        if (!gamePaneRef.isActivityLocked()) {
             if (this.player.canEndTurn() == 0) {
                 gamePaneRef.requestAction("Next" + "/" + player.getName());
 
-                if (!(gamePaneRef instanceof SinglePlayerPane)) {
+                if (gamePaneRef instanceof MultiplayerPane) {
                     text.setText("Waiting for others...");
-                    locked = true;
+                    gamePaneRef.setActivityLocked(true);
                 }
 
             } else {
@@ -81,7 +79,7 @@ public class NextTurnPane extends Group {
             }
         } else{
             gamePaneRef.requestAction("Cancel/" + player.getName());
-            locked = false;
+            gamePaneRef.setActivityLocked(false);
         }
 
         updateText();
@@ -96,7 +94,7 @@ public class NextTurnPane extends Group {
 
         //Checks to see if the player can go to the next turn
         //If he can't it instucts him what he needs to do
-        if (!locked) {
+        if (!gamePaneRef.isActivityLocked()) {
             if (player.canEndTurn() == 2) {
                 text.setText("MUST SELECT CITY PROJECT");
             } else if (player.canEndTurn() == 1) {
@@ -119,13 +117,4 @@ public class NextTurnPane extends Group {
     void delete() {
         gamePaneRef.getChildren().remove(this);
     }
-
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
-
-    public boolean isLocked() {
-        return locked;
-    }
-
 }

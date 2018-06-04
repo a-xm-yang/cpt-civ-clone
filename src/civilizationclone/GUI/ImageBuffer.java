@@ -86,7 +86,7 @@ public class ImageBuffer {
     private static Image titleBackground;
 
     //IMPROVEMENT
-    private static Image farm;
+    public static Image farm;
     private static Image mine;
     private static Image fishing;
     private static Image ranch;
@@ -156,7 +156,7 @@ public class ImageBuffer {
     private static Image yieldsToggle;
 
     //</editor-fold>
-    
+
     //Image loading
     static {
         desert = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Tiles/Desert.png"), 100, 110, false, false);

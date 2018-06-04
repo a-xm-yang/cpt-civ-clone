@@ -25,13 +25,13 @@ public abstract class MultiplayerPane extends GamePane {
     public void nextTurn() {
         endGameCheck();
         getGameState().processAllPlayersTurn();
-        getNextButton().setLocked(false);
+        setActivityLocked(false);
         updateInfo();
         initActiveList();
     }
 
-    @Override
-    public void endGameCheck() {
+//  @Override
+//    public void endGameCheck() {
 //
 //        for (Player p : getGameState().getPlayerList()) {
 //
@@ -60,8 +60,7 @@ public abstract class MultiplayerPane extends GamePane {
 //                }
 //            }
 //        }
-    }
-
+//    }
     public HashMap<String, Boolean> getActiveMap() {
         return activeMap;
     }

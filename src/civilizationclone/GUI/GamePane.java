@@ -41,7 +41,8 @@ public abstract class GamePane extends Pane {
     private static Effect noneEffect = null;
 
     private boolean[] messageSlot;
-
+    private boolean activityLocked;
+    
     //game data
     private GameState gameState;
 
@@ -57,6 +58,7 @@ public abstract class GamePane extends Pane {
         this.isMuted = isMuted;
 
         messageSlot = new boolean[10];
+        activityLocked = false;
 
         //Loading music 
         background = new Media(getClass().getClassLoader().getResource("Assets/Misc/babayetu.mp3").toExternalForm());
@@ -305,8 +307,14 @@ public abstract class GamePane extends Pane {
     public NextTurnPane getNextButton() {
         return nextButton;
     }
-    
-    
+
+    public boolean isActivityLocked() {
+        return activityLocked;
+    }
+
+    public void setActivityLocked(boolean activityLocked) {
+        this.activityLocked = activityLocked;
+    }
 
     public Media getWin() {
         return win;
@@ -392,4 +400,6 @@ public abstract class GamePane extends Pane {
 
         }
     }
+    
+    
 }
