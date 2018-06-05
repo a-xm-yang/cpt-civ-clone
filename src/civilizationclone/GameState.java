@@ -38,6 +38,7 @@ public class GameState {
                 if (gameMap.canSpawn(p)) {
                     player.addUnit(new SettlerUnit(player, p));
                     player.addUnit(new WarriorUnit(player, new Point(p.x, p.y + 1)));
+                    updateFogOfWar(player);
                     break;
                 }
             } while (true);
@@ -65,6 +66,7 @@ public class GameState {
                 if (gameMap.canSpawn(p)) {
                     player.addUnit(new SettlerUnit(player, p));
                     player.addUnit(new WarriorUnit(player, new Point(p.x, p.y + 1)));
+                    updateFogOfWar(player);
                     break;
                 }
             } while (true);
