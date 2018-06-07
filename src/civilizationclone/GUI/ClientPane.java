@@ -19,7 +19,10 @@ public class ClientPane extends MultiplayerPane {
 
     @Override
     public void requestAction(String s) {
-        clientSocket.sendMessage(s);
+
+        if (!isActivityLocked() || s.startsWith("Cancel")) {
+            clientSocket.sendMessage(s);
+        } 
 
         readNotificationFromGame();
         updateInfo();
@@ -29,11 +32,11 @@ public class ClientPane extends MultiplayerPane {
     public void receiveAction(String s) {
         if (s.startsWith("Next")) {
             String[] msg = s.split("/");
-            setActivity(msg[1], true);
+            setActivity(msg[1], false);
             checkNextTurn();
         } else if (s.startsWith("Cancel")) {
             String[] msg = s.split("/");
-            setActivity(msg[1], false);
+            setActivity(msg[1], true);
         } else {
             getGameState().decodeAction(s);
         }

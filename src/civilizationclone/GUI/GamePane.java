@@ -5,6 +5,7 @@ import civilizationclone.Tile.*;
 import civilizationclone.Unit.MilitaryUnit;
 import civilizationclone.Unit.Unit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javafx.animation.FadeTransition;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Node;
@@ -42,7 +43,8 @@ public abstract class GamePane extends Pane {
 
     private boolean[] messageSlot;
     private boolean activityLocked;
-    
+    private HashMap<String, Boolean> activeMap;
+
     //game data
     private GameState gameState;
 
@@ -50,6 +52,7 @@ public abstract class GamePane extends Pane {
 
         this.gameState = gameState;
         this.primaryStage = primaryStage;
+        activeMap = new HashMap<String, Boolean>();
 
         this.resX = resX;
         this.resY = resY;
@@ -107,7 +110,7 @@ public abstract class GamePane extends Pane {
         statusBar.setCurrentPlayer(gameState.getCurrentPlayer());
         sciencePane.setCurrentPlayer(gameState.getCurrentPlayer());
         displayMap.setCurrentPlayer(gameState.getCurrentPlayer());
-        
+
         updateInfo();
     }
 
@@ -164,9 +167,9 @@ public abstract class GamePane extends Pane {
         }
 
     }
-    
-    public void readNotificationFromGame(){
-        while (!gameState.isNotificationEmpty()){
+
+    public void readNotificationFromGame() {
+        while (!gameState.isNotificationEmpty()) {
             displayNotification(gameState.readNotification());
         }
     }
@@ -282,6 +285,12 @@ public abstract class GamePane extends Pane {
         return primaryStage;
     }
 
+    public HashMap<String, Boolean> getActiveMap() {
+        return activeMap;
+    }
+    
+    
+
     public DisplayMap getDisplayMap() {
         return displayMap;
     }
@@ -300,8 +309,7 @@ public abstract class GamePane extends Pane {
 
     public Media getLoss() {
         return loss;
-        
-        
+
     }
 
     public NextTurnPane getNextButton() {
@@ -382,7 +390,7 @@ public abstract class GamePane extends Pane {
         }
 
         private void close() {
-            
+
             removeDefeatedPrompt(this);
             mp.setVolume(1);
             updateControllingPlayer();
@@ -400,6 +408,5 @@ public abstract class GamePane extends Pane {
 
         }
     }
-    
-    
+
 }

@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import javafx.application.Platform;
 
 public class ClientSocket implements Runnable {
 
@@ -40,7 +41,7 @@ public class ClientSocket implements Runnable {
             ps = new PrintStream(socket.getOutputStream());
             br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             new Thread(this).start();
-            
+
             return true;
         } catch (IOException ex) {
             System.out.println("Connection error!");
@@ -59,7 +60,12 @@ public class ClientSocket implements Runnable {
                 String s = br.readLine();
                 System.out.println("Client received: " + s);
                 if (s != null) {
-                    listener.handle(s);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.handle(s);
+                        }
+                    });
                 } else {
                     System.out.println("Disconnected!");
                     return;

@@ -171,9 +171,10 @@ public class StatusBarPane extends Group {
         } else if (gamePaneRef instanceof MultiplayerPane){
             HashMap activeMap = ((MultiplayerPane)gamePaneRef).getActiveMap();
 
-            
             for (LeaderHead l: playerIcon){
-              // l.setActive((Boolean) activeMap.get(l.name));
+              if (activeMap.containsKey(l.name)){
+                  l.setActive((boolean) activeMap.get(l.name));
+              }
             }
         }
 
@@ -214,13 +215,14 @@ public class StatusBarPane extends Group {
         public LeaderHead(Image image, String name) {
             super(image);
             this.name = name;
+            setTranslateY(90);
         }
 
         void setActive(boolean active) {
             if (active) {
-                setTranslateY(50);
-            } else {
                 setTranslateY(90);
+            } else {
+                setTranslateY(50);
             }
         }
 

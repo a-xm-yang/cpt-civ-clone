@@ -7,24 +7,22 @@ import javafx.stage.Stage;
 
 public abstract class MultiplayerPane extends GamePane {
 
-    private HashMap<String, Boolean> activeMap = new HashMap<String, Boolean>();
-
     public MultiplayerPane(GameState gameState, int resX, int resY, boolean isMuted, Stage primaryStage) {
         super(gameState, resX, resY, isMuted, primaryStage);
         initActiveList();
     }
 
     public void initActiveList() {
-        activeMap = new HashMap<>();
         for (Player p : getPlayerList()) {
-            activeMap.put(p.getName(), Boolean.FALSE);
+            getActiveMap().put(p.getName(), Boolean.TRUE);
         }
+        getStatusBar().updateCurrentHeads();
     }
 
     public void checkNextTurn() {
 
-        for (String s : activeMap.keySet()) {
-            if (!activeMap.get(s)) {
+        for (String s : getActiveMap().keySet()) {
+            if (getActiveMap().get(s)) {
                 return;
             }
         }
@@ -37,17 +35,13 @@ public abstract class MultiplayerPane extends GamePane {
         endGameCheck();
         getGameState().processAllPlayersTurn();
         setActivityLocked(false);
-        updateInfo();
         initActiveList();
+        updateInfo();
     }
 
     public void setActivity(String name, boolean active) {
-        activeMap.put(name, active);
+        getActiveMap().put(name, active);
         getStatusBar().updateCurrentHeads();
-    }
-
-    public HashMap<String, Boolean> getActiveMap() {
-        return activeMap;
     }
 
 }

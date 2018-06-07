@@ -22,10 +22,10 @@ public class HostPane extends MultiplayerPane {
         if (!isActivityLocked()) {
             
             if (s.startsWith("Next")) {
-                setActivity(getGameState().getCurrentPlayer().getName(), true);
+                setActivity(getGameState().getCurrentPlayer().getName(), false);
                 checkNextTurn();
             } else if (s.startsWith("Cancel")) {
-                setActivity(getGameState().getCurrentPlayer().getName(), false);
+                setActivity(getGameState().getCurrentPlayer().getName(), true);
             } else {
                 getGameState().decodeAction(s);
             }
@@ -42,12 +42,12 @@ public class HostPane extends MultiplayerPane {
 
         if (s.startsWith("Next")) {
             String[] msg = s.split("/");
-            setActivity(msg[1], true);
+            setActivity(msg[1], false);
             server.sendToAll(s);
             checkNextTurn();
         } else if (s.startsWith("Cancel")) {
             String[] msg = s.split("/");
-            setActivity(msg[1], false);
+            setActivity(msg[1], true);
             server.sendToAll(s);
         } else if (getGameState().decodeAction(s)) {
             server.sendToAll(s);

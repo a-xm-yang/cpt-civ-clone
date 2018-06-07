@@ -69,7 +69,7 @@ public class NextTurnPane extends Group {
 
                 if (gamePaneRef instanceof MultiplayerPane) {
                     gamePaneRef.setActivityLocked(true);
-                    text.setText("Waiting for others...");
+                    text.setText("Waiting...");
                 }
 
             } else {

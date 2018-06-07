@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import javafx.application.Platform;
 
 public class ClientHandler implements Runnable {
 
@@ -13,7 +14,7 @@ public class ClientHandler implements Runnable {
 
     private PrintStream ps;
     private BufferedReader br;
-    
+
     private String ip;
     private String localName;
 
@@ -26,16 +27,16 @@ public class ClientHandler implements Runnable {
             br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException ex) {
         }
-        
+
         ip = socket.getInetAddress().getHostAddress();
         localName = socket.getInetAddress().getHostName();
 
         new Thread(this).start();
-        
+
         System.out.println("A new client has connected! " + ip);
     }
-    
-    public void sendMessage(String s){
+
+    public void sendMessage(String s) {
         ps.println(s);
     }
 
@@ -44,10 +45,15 @@ public class ClientHandler implements Runnable {
         while (true) {
             try {
                 String msg = br.readLine();
-               
+
                 System.out.println("Host received: " + msg);
                 if (msg != null) {
-                    server.getListener().handle(msg);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            server.getListener().handle(msg);
+                        }
+                    });
                 } else {
                     socket.close();
                     server.getClientList().remove(this);
