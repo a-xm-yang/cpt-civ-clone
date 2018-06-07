@@ -604,7 +604,7 @@ public class City {
         String s = "";
         s += POSITION.x;
         s += POSITION.y;
-        s += player;
+        s += player.getName();
         return s.hashCode();
     }
 

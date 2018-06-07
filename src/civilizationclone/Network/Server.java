@@ -3,6 +3,7 @@ package civilizationclone.Network;
 import civilizationclone.GUI.HostPane;
 import civilizationclone.GUI.MultiplayerPane;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Server implements Runnable {
 
         try {
             serverSocket = new ServerSocket(50001);
-            System.out.println("Server constructed! IP: " + serverSocket.getInetAddress().getHostAddress() + " Port: " + serverSocket.getLocalPort());
+            System.out.println("Server constructed! " + InetAddress.getLocalHost());
         } catch (IOException ex) {
         }
 
@@ -33,6 +34,7 @@ public class Server implements Runnable {
 
         
         //for now replace later
+        
         listener = gameListener;
     }
 
@@ -47,6 +49,7 @@ public class Server implements Runnable {
         while (clientList.size() < 5) {
             try {
                 Socket s = serverSocket.accept();
+                System.out.println("New client connected!");
                 clientList.add(new ClientHandler(s, this));
             } catch (IOException ex) {
                 System.out.println("Accepting client error");
