@@ -75,6 +75,7 @@ public class DisplayTile extends Polygon {
         //Access level 0: Complete Coverage
         //Access level 1: Show terrain, city, and resource
         //Access level 2: Show everything
+
         if (accessLevel == 0) {
             setFill(cloudFill);
             setEffect(null);

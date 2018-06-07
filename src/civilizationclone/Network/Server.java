@@ -1,5 +1,7 @@
 package civilizationclone.Network;
 
+import civilizationclone.GUI.HostPane;
+import civilizationclone.GUI.MultiplayerPane;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,6 +15,8 @@ public class Server implements Runnable {
 
     private ArrayList<ClientHandler> clientList;
 
+    private HostPane pane;
+
     public Server() {
 
         clientList = new ArrayList<>();
@@ -21,15 +25,19 @@ public class Server implements Runnable {
             serverSocket = new ServerSocket(50001);
             System.out.println("Server constructed! IP: " + serverSocket.getInetAddress().getHostAddress() + " Port: " + serverSocket.getLocalPort());
         } catch (IOException ex) {
-            System.out.println("Server construction failed!");
         }
 
         joiningListener = new Thread(this);
-        joiningListener.run();
+        joiningListener.start();
+        
+
+        
+        //for now replace later
+        listener = gameListener;
     }
-    
-    public synchronized void sendToAll(String s){
-        for (ClientHandler c: clientList){
+
+    public synchronized void sendToAll(String s) {
+        for (ClientHandler c : clientList) {
             c.sendMessage(s);
         }
     }
@@ -47,8 +55,22 @@ public class Server implements Runnable {
         }
     }
 
+    private CommandListener gameListener = new CommandListener() {
+        @Override
+        public void handle(String message) {
+            pane.receiveAction(message);
+        }
+    };
+
+    private CommandListener menuLisetner;
+
     //GETTERS & SETTERS
     //<editor-fold>
+    public void setPane(HostPane pane) {
+        this.pane = pane;
+    }
+    
+    
     public CommandListener getListener() {
         return listener;
     }

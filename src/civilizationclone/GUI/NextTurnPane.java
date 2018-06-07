@@ -24,7 +24,6 @@ public class NextTurnPane extends Group {
     private static Effect shadow = new DropShadow(40, Color.WHITE);
     private static Effect noneEffect = null;
 
-
     public NextTurnPane(Player player, int resX, int resY, GamePane gamePaneRef) {
         this.text = new Text();
         text.setFont(Font.font("Oswald"));
@@ -60,7 +59,6 @@ public class NextTurnPane extends Group {
             clickEvent(e);
         });
 
-
     }
 
     public void clickEvent(MouseEvent e) {
@@ -70,16 +68,16 @@ public class NextTurnPane extends Group {
                 gamePaneRef.requestAction("Next" + "/" + player.getName());
 
                 if (gamePaneRef instanceof MultiplayerPane) {
-                    text.setText("Waiting for others...");
                     gamePaneRef.setActivityLocked(true);
+                    text.setText("Waiting for others...");
                 }
 
             } else {
                 gamePaneRef.jumpToNextAction();
             }
-        } else{
-            gamePaneRef.requestAction("Cancel/" + player.getName());
+        } else {
             gamePaneRef.setActivityLocked(false);
+            gamePaneRef.requestAction("Cancel/" + player.getName());
         }
 
         updateText();

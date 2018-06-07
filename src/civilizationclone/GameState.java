@@ -73,7 +73,8 @@ public class GameState {
         }
 
         this.currentPlayer = currentPlayer;
-        currentPlayer.startTurn();
+        
+        processAllPlayersTurn();
     }
 
     public boolean decodeAction(String s) {

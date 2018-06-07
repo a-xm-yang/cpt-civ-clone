@@ -1,5 +1,7 @@
 package civilizationclone.Network;
 
+import civilizationclone.GUI.ClientPane;
+import civilizationclone.GUI.MultiplayerPane;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,7 +20,14 @@ public class ClientSocket implements Runnable {
     private String localName;
     private String hostIp;
 
+    private ClientPane pane;
     private CommandListener listener;
+
+    public ClientSocket() {
+        //for now
+        listener = gameListener;
+
+    }
 
     public boolean connect(String hostInfo, int port) {
         try {
@@ -30,6 +39,7 @@ public class ClientSocket implements Runnable {
 
             ps = new PrintStream(socket.getOutputStream());
             br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            new Thread(this).start();
             
             return true;
         } catch (IOException ex) {
@@ -38,11 +48,16 @@ public class ClientSocket implements Runnable {
         }
     }
 
+    public void sendMessage(String s) {
+        ps.println(s);
+    }
+
     @Override
     public void run() {
         while (true) {
             try {
                 String s = br.readLine();
+                System.out.println("Client received: " + s);
                 if (s != null) {
                     listener.handle(s);
                 } else {
@@ -54,6 +69,17 @@ public class ClientSocket implements Runnable {
                 return;
             }
         }
+    }
+
+    private CommandListener gameListener = new CommandListener() {
+        @Override
+        public void handle(String message) {
+            pane.receiveAction(message);
+        }
+    };
+
+    public void setPane(ClientPane pane) {
+        this.pane = pane;
     }
 
 }

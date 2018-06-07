@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 public abstract class MultiplayerPane extends GamePane {
 
-    private HashMap<String, Boolean> activeMap;
+    private HashMap<String, Boolean> activeMap = new HashMap<String, Boolean>();
 
     public MultiplayerPane(GameState gameState, int resX, int resY, boolean isMuted, Stage primaryStage) {
         super(gameState, resX, resY, isMuted, primaryStage);
@@ -21,6 +21,17 @@ public abstract class MultiplayerPane extends GamePane {
         }
     }
 
+    public void checkNextTurn() {
+
+        for (String s : activeMap.keySet()) {
+            if (!activeMap.get(s)) {
+                return;
+            }
+        }
+
+        nextTurn();
+    }
+
     @Override
     public void nextTurn() {
         endGameCheck();
@@ -30,37 +41,11 @@ public abstract class MultiplayerPane extends GamePane {
         initActiveList();
     }
 
-//  @Override
-//    public void endGameCheck() {
-//
-//        for (Player p : getGameState().getPlayerList()) {
-//
-//            if (p == getGameState().getCurrentPlayer()) {
-//                if (getGameState().getCurrentPlayer().isDefeated()) {
-//                    //Play defeat audio and show victory screens
-//                    mp.setVolume(0.5);
-//                    dmp = new MediaPlayer(loss);
-//                    dmp.play();
-//                    dmp.setMute(isIsMuted());
-//                    this.getChildren().add(new DefeatedPrompt(getResX(), getResY(), true));
-//                } else if (getGameState().getPlayerList().size() == 1) {
-//                    //Play victory audio and show victory screen
-//                    mp.setVolume(0.5);
-//                    wmp = new MediaPlayer(win);
-//                    wmp.play();
-//                    wmp.setMute(isIsMuted());
-//                    this.getChildren().add(new DefeatedPrompt(getResX(), getResY(), false));
-//                }
-//
-//                mp.setVolume(1.0);
-//
-//            } else {
-//                if (p.isDefeated()) {
-//                    getStatusBar().removeHead(p.getLeader().name());
-//                }
-//            }
-//        }
-//    }
+    public void setActivity(String name, boolean active) {
+        activeMap.put(name, active);
+        getStatusBar().updateCurrentHeads();
+    }
+
     public HashMap<String, Boolean> getActiveMap() {
         return activeMap;
     }

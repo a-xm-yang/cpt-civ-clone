@@ -44,6 +44,8 @@ public class ClientHandler implements Runnable {
         while (true) {
             try {
                 String msg = br.readLine();
+               
+                System.out.println("Host received: " + msg);
                 if (msg != null) {
                     server.getListener().handle(msg);
                 } else {

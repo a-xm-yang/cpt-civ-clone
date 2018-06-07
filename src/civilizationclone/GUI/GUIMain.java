@@ -7,15 +7,18 @@ package civilizationclone.GUI;
 
 import civilizationclone.GameMap;
 import civilizationclone.GameMap.MapSize;
+import civilizationclone.GameState;
 import civilizationclone.Network.*;
 import civilizationclone.Player;
 import civilizationclone.TechType;
+import civilizationclone.Unit.Unit;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -28,7 +31,7 @@ public class GUIMain extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        
+
         stage = primaryStage;
 
         int resX = 1200;
@@ -47,6 +50,11 @@ public class GUIMain extends Application {
 
     public void initializeTextLink() {
 
+        GameState gameState;
+        ArrayList<Player> playerList = new ArrayList<Player>();
+        playerList.add(new Player("Joseph Stalin"));
+        playerList.add(new Player("Mao Zedong"));
+
         Scanner scan = new Scanner(System.in);
         int choice = 0;
 
@@ -56,8 +64,12 @@ public class GUIMain extends Application {
 
         if (choice == 1) {
             server = new Server();
-            System.out.println("Do you wish to start the game?");
+            System.out.println("Enter space to start the game: ");
+            scan.nextLine();
             
+            gameState = new GameState(playerList, MapSize.MEDIUM, 1555, playerList.get(0));
+
+            stage.setScene(new Scene(new HostPane(gameState,1200,800, false, stage, server)));
         } else {
             System.out.println("Please enter server information.");
             System.out.print("IP: ");
@@ -68,11 +80,16 @@ public class GUIMain extends Application {
 
             clientSocket = new ClientSocket();
             clientSocket.connect(ip, choice);
+
+            System.out.println("Enter space to start the game: ");
+            scan.nextLine();
+            
+            gameState = new GameState(playerList, MapSize.MEDIUM, 1555, playerList.get(1));
+            
+            stage.setScene(new Scene(new ClientPane(gameState,1200,800, false, stage, clientSocket)));
+            
         }
-    }
     
-    public void startMultiplayerGame(){
-        
     }
 
     public Pane startWithoutMenu() {
