@@ -64,10 +64,10 @@ public class NextTurnPane extends Group {
 
         if (!gamePaneRef.isActivityLocked()) {
             if (this.player.canEndTurn() == 0) {
-                gamePaneRef.requestAction("Next" + "/" + player.getName());
                 if (gamePaneRef instanceof MultiplayerPane) {
                     gamePaneRef.setActivityLocked(true);
                 }
+                gamePaneRef.requestAction("Next" + "/" + player.getName());
             } else {
                 gamePaneRef.jumpToNextAction();
             }
@@ -102,7 +102,7 @@ public class NextTurnPane extends Group {
             }
 
         } else {
-            text.setText("Waiting...");
+            text.setText("WAITING FOR OTHERS...");
         }
 
         text.setFill(Color.WHITE);

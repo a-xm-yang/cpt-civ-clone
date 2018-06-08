@@ -19,20 +19,22 @@ public class HostPane extends MultiplayerPane {
     @Override
     public synchronized void requestAction(String s) {
 
-        if (!isActivityLocked()) {
+        if (isActivityLocked()) {
             if (s.startsWith("Next")) {
                 setActivity(getGameState().getCurrentPlayer().getName(), false);
                 checkNextTurn();
-            } else if (s.startsWith("Cancel")) {
+                server.sendToAll(s);
+            }
+        } else {
+            if (s.startsWith("Cancel")) {
                 setActivity(getGameState().getCurrentPlayer().getName(), true);
             } else {
                 getGameState().decodeAction(s);
             }
-
             server.sendToAll(s);
-            updateInfo();
         }
 
+        updateInfo();
         readNotificationFromGame();
     }
 

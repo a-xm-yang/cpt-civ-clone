@@ -13,13 +13,12 @@ import java.util.ArrayList;
 import javafx.scene.image.Image;
 
 enum MiscAsset {
-    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, GOLD, SCIENCE, HAPPY, EXPANSION_ICON, GOLD_ICON, CITY, TITLE_BACKGROUND, HIGHLIGHT_TOGGLE, RESOURCE_TOGGLE, YIELDS_TOGGLE;
+    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, GOLD, SCIENCE, HAPPY, EXPANSION_ICON, GOLD_ICON, CITY, TITLE_BACKGROUND, HIGHLIGHT_TOGGLE, RESOURCE_TOGGLE, YIELDS_TOGGLE, READY_ICON, WAITING_ICON;
 }
 
 public class ImageBuffer {
-    
-    //A class the loads all the resources that the game needs so that it can be saved in memory and called efficiently
 
+    //A class the loads all the resources that the game needs so that it can be saved in memory and called efficiently
     //IMAGE VARS ----------------------------
     //<editor-fold>
     //TILES
@@ -84,6 +83,8 @@ public class ImageBuffer {
     private static Image expansionIcon;
     private static Image cloud;
     private static Image titleBackground;
+    private static Image readyIcon;
+    private static Image waitingIcon;
 
     //IMPROVEMENT
     public static Image farm;
@@ -156,7 +157,6 @@ public class ImageBuffer {
     private static Image yieldsToggle;
 
     //</editor-fold>
-
     //Image loading
     static {
         desert = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Tiles/Desert.png"), 100, 110, false, false);
@@ -202,6 +202,8 @@ public class ImageBuffer {
         gold = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Misc/gold.png"), 25, 25, false, false);
         science = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Misc/science.png"), 25, 25, false, false);
         happy = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Misc/happy.png"), 25, 25, false, false);
+        readyIcon = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Misc/ready.png"), 50, 50, false, false);
+        waitingIcon = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Misc/loading.png"), 50, 50, false, false);
         //IMPROVEMENT
         farm = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Improvement/farm.png"), 70, 70, false, false);
         mine = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Improvement/mine.png"), 70, 70, false, false);
@@ -491,6 +493,10 @@ public class ImageBuffer {
                 return yieldsToggle;
             case EXPANSION_ICON:
                 return expansionIcon;
+            case WAITING_ICON:
+                return waitingIcon;
+            case READY_ICON:
+                return readyIcon;
         }
 
         return destroyer;
@@ -548,7 +554,7 @@ public class ImageBuffer {
                 return wine;
             case OIL:
                 return oil;
-                
+
         }
 
         return destroyer;

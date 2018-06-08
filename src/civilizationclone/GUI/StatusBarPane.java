@@ -9,7 +9,10 @@ import java.util.HashMap;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -32,7 +35,14 @@ public class StatusBarPane extends Group {
     private Player player;
     private static GamePane gamePaneRef;
 
+    static ImagePattern readyPattern;
+    static ImagePattern waitingPattern;
+
     public StatusBarPane(Player player, int resX, int resY, GamePane gamePaneRef) {
+
+        readyPattern = new ImagePattern(ImageBuffer.getImage(MiscAsset.READY_ICON));
+        waitingPattern = new ImagePattern(ImageBuffer.getImage(MiscAsset.WAITING_ICON));
+
         goldT = new Text();
         sciT = new Text();
         happyT = new Text();
@@ -84,7 +94,7 @@ public class StatusBarPane extends Group {
         turnT.setTranslateY(turnT.getLayoutBounds().getHeight());
 
         //Set the y's to 60
-        for (ImageView i : playerIcon) {
+        for (Pane i : playerIcon) {
             i.setTranslateY(60);
         }
 
@@ -106,7 +116,7 @@ public class StatusBarPane extends Group {
         arrangeHeads();
 
         //Add them to the display
-        for (ImageView i : playerIcon) {
+        for (Pane i : playerIcon) {
             getChildren().add(i);
         }
     }
@@ -153,28 +163,28 @@ public class StatusBarPane extends Group {
         } else {
             happyT.setFill(Color.RED);
         }
-        
+
         updateCurrentHeads();
     }
 
     public void updateCurrentHeads() {
 
-        if (gamePaneRef instanceof SinglePlayerPane){
+        if (gamePaneRef instanceof SinglePlayerPane) {
             //Updates the heads in single player fashion
             for (int i = 0; i < playerIcon.size(); i++) {
                 if (player.equals(gamePaneRef.getPlayerList().get(i))) {
-                    playerIcon.get(i).setActive(true);
+                    playerIcon.get(i).setTranslateY(90);
                 } else {
-                    playerIcon.get(i).setActive(false);
+                    playerIcon.get(i).setTranslateX(50);
                 }
             }
-        } else if (gamePaneRef instanceof MultiplayerPane){
-            HashMap activeMap = ((MultiplayerPane)gamePaneRef).getActiveMap();
+        } else if (gamePaneRef instanceof MultiplayerPane) {
+            HashMap activeMap = ((MultiplayerPane) gamePaneRef).getActiveMap();
 
-            for (LeaderHead l: playerIcon){
-              if (activeMap.containsKey(l.name)){
-                  l.setActive((boolean) activeMap.get(l.name));
-              }
+            for (LeaderHead l : playerIcon) {
+                if (activeMap.containsKey(l.name)) {
+                    l.setActive((boolean) activeMap.get(l.name));
+                }
             }
         }
 
@@ -208,21 +218,31 @@ public class StatusBarPane extends Group {
 
     }
 
-    private class LeaderHead extends ImageView {
+    private class LeaderHead extends Pane {
 
         String name;
+        ImageView image;
+        Circle circle;
 
         public LeaderHead(Image image, String name) {
-            super(image);
+            this.image = new ImageView(image);
             this.name = name;
             setTranslateY(90);
+
+            circle = new Circle(48, 48, 12);
+            circle.setFill(Color.TRANSPARENT);
+            
+            getChildren().add(this.image);
+            getChildren().add(circle);
         }
 
         void setActive(boolean active) {
             if (active) {
                 setTranslateY(90);
+                circle.setFill(waitingPattern);
             } else {
                 setTranslateY(50);
+                circle.setFill(readyPattern);
             }
         }
 
