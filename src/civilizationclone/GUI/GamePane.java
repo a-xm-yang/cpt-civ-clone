@@ -226,11 +226,11 @@ public abstract class GamePane extends Pane {
 
     public void updateInfo() {
         //update all information in all displays
-        nextButton.updateText();
         statusBar.updateTexts();
         sciencePane.updateInfo();
         displayMap.updateInfo();
         minimap.update();
+        nextButton.updateText();
     }
 
     private DisplayMap createFalseDisplayMap(Tile[][] original) {
@@ -288,8 +288,6 @@ public abstract class GamePane extends Pane {
     public HashMap<String, Boolean> getActiveMap() {
         return activeMap;
     }
-    
-    
 
     public DisplayMap getDisplayMap() {
         return displayMap;

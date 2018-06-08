@@ -10,23 +10,21 @@ public abstract class MultiplayerPane extends GamePane {
     public MultiplayerPane(GameState gameState, int resX, int resY, boolean isMuted, Stage primaryStage) {
         super(gameState, resX, resY, isMuted, primaryStage);
         initActiveList();
+        getStatusBar().updateCurrentHeads();
     }
 
     public void initActiveList() {
         for (Player p : getPlayerList()) {
             getActiveMap().put(p.getName(), Boolean.TRUE);
         }
-        getStatusBar().updateCurrentHeads();
     }
 
     public void checkNextTurn() {
-
         for (String s : getActiveMap().keySet()) {
             if (getActiveMap().get(s)) {
                 return;
             }
         }
-
         nextTurn();
     }
 

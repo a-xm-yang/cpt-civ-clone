@@ -55,7 +55,6 @@ public class NextTurnPane extends Group {
         );
 
         setOnMouseClicked((MouseEvent e) -> {
-
             clickEvent(e);
         });
 
@@ -66,12 +65,9 @@ public class NextTurnPane extends Group {
         if (!gamePaneRef.isActivityLocked()) {
             if (this.player.canEndTurn() == 0) {
                 gamePaneRef.requestAction("Next" + "/" + player.getName());
-
                 if (gamePaneRef instanceof MultiplayerPane) {
                     gamePaneRef.setActivityLocked(true);
-                    text.setText("Waiting...");
                 }
-
             } else {
                 gamePaneRef.jumpToNextAction();
             }
@@ -105,11 +101,14 @@ public class NextTurnPane extends Group {
                 text.setText("NEXT TURN");
             }
 
-            text.setFill(Color.WHITE);
-            text.setFont(Font.font("Oswald", 20));
-            text.setTranslateX((rect.getWidth() - text.getLayoutBounds().getWidth()) / 2);
-            text.setTranslateY(text.getLayoutBounds().getHeight() + 2);
+        } else {
+            text.setText("Waiting...");
         }
+
+        text.setFill(Color.WHITE);
+        text.setFont(Font.font("Oswald", 20));
+        text.setTranslateX((rect.getWidth() - text.getLayoutBounds().getWidth()) / 2);
+        text.setTranslateY(text.getLayoutBounds().getHeight() + 2);
     }
 
     void delete() {

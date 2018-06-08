@@ -20,7 +20,6 @@ public class HostPane extends MultiplayerPane {
     public synchronized void requestAction(String s) {
 
         if (!isActivityLocked()) {
-            
             if (s.startsWith("Next")) {
                 setActivity(getGameState().getCurrentPlayer().getName(), false);
                 checkNextTurn();
@@ -31,10 +30,10 @@ public class HostPane extends MultiplayerPane {
             }
 
             server.sendToAll(s);
+            updateInfo();
         }
 
         readNotificationFromGame();
-        updateInfo();
     }
 
     @Override

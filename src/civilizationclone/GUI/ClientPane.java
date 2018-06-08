@@ -22,7 +22,8 @@ public class ClientPane extends MultiplayerPane {
 
         if (!isActivityLocked() || s.startsWith("Cancel")) {
             clientSocket.sendMessage(s);
-        } 
+        } else if (s.startsWith("Next")){
+        }
 
         readNotificationFromGame();
         updateInfo();

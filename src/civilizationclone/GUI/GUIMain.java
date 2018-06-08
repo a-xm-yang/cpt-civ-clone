@@ -18,6 +18,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -45,6 +46,11 @@ public class GUIMain extends Application {
 
         primaryStage.setTitle("Alex Yang's Colonization II");
         primaryStage.show();
+        
+        primaryStage.setOnCloseRequest(e ->{
+            Platform.exit();
+            System.exit(0);
+        });
 
     }
 
