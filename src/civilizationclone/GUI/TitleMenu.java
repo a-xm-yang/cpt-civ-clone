@@ -7,6 +7,7 @@ import civilizationclone.Player;
 import java.util.ArrayList;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
+import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -71,9 +72,8 @@ public class TitleMenu extends Group {
             mp.seek(Duration.ZERO);
         });
         mp.play();
-        
-      //  mp.setMute(true);
 
+        //  mp.setMute(true);
         cheatOn = false;
         playerList = new ArrayList<>();
 
@@ -457,6 +457,7 @@ public class TitleMenu extends Group {
 
         //start the game by changing scenes
         primaryStage.setScene(new Scene(new SinglePlayerPane(new GameState(list, ms), resX, resY, mp.isMute(), primaryStage)));
+        primaryStage.getScene().getStylesheets().add(getClass().getResource("/civilizationclone/GUI/Setting.css").toExternalForm());
         mp.pause();
     }
 
@@ -504,7 +505,8 @@ public class TitleMenu extends Group {
             resY = height;
 
             primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage, mp), resX, resY));
-        } else{
+            primaryStage.getScene().getStylesheets().add(getClass().getResource("/civilizationclone/GUI/Setting.css").toExternalForm());
+        } else {
             openTitle();
         }
 

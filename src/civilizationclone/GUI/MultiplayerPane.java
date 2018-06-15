@@ -7,10 +7,19 @@ import javafx.stage.Stage;
 
 public abstract class MultiplayerPane extends GamePane {
 
+    private Chatroom chatroom;
+
     public MultiplayerPane(GameState gameState, int resX, int resY, boolean isMuted, Stage primaryStage) {
-        super(gameState, resX, resY, isMuted, primaryStage);
+
+        //CANCEL MUTE BY REMOVING !
+        super(gameState, resX, resY, !isMuted, primaryStage);
         initActiveList();
         getStatusBar().updateCurrentHeads();
+
+        chatroom = new Chatroom(getResX(), getResY(), this);
+        getChildren().add(getChildren().size() - 2, chatroom);
+       
+      
     }
 
     public void initActiveList() {
@@ -40,6 +49,10 @@ public abstract class MultiplayerPane extends GamePane {
     public void setActivity(String name, boolean active) {
         getActiveMap().put(name, active);
         getStatusBar().updateCurrentHeads();
+    }
+
+    public Chatroom getChatroom() {
+        return chatroom;
     }
 
 }

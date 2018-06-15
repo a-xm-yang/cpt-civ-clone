@@ -46,8 +46,8 @@ public class GUIMain extends Application {
 
         primaryStage.setTitle("Alex Yang's Colonization II");
         primaryStage.show();
-        
-        primaryStage.setOnCloseRequest(e ->{
+
+        primaryStage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
         });
@@ -72,10 +72,11 @@ public class GUIMain extends Application {
             server = new Server();
             System.out.println("Enter space to start the game: ");
             scan.nextLine();
-            
+
             gameState = new GameState(playerList, MapSize.MEDIUM, 1555, playerList.get(0));
 
-            stage.setScene(new Scene(new HostPane(gameState,1200,800, false, stage, server)));
+            stage.setScene(new Scene(new HostPane(gameState, 1200, 800, false, stage, server)));
+            stage.getScene().getStylesheets().add(getClass().getResource("/civilizationclone/GUI/Setting.css").toExternalForm());
         } else {
             System.out.println("Please enter server information.");
             System.out.print("IP: ");
@@ -89,13 +90,13 @@ public class GUIMain extends Application {
 
             System.out.println("Enter space to start the game: ");
             scan.nextLine();
-            
+
             gameState = new GameState(playerList, MapSize.MEDIUM, 1555, playerList.get(1));
-            
-            stage.setScene(new Scene(new ClientPane(gameState,1200,800, false, stage, clientSocket)));
-            
+
+            stage.setScene(new Scene(new ClientPane(gameState, 1200, 800, false, stage, clientSocket)));
+
         }
-    
+
     }
 
     public Pane startWithoutMenu() {

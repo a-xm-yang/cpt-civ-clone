@@ -86,10 +86,10 @@ public abstract class GamePane extends Pane {
         sciencePane = new SciencePane(gameState.getCurrentPlayer(), resX, resY, this);
 
         getChildren().add(displayMap);
+        getChildren().add(minimap);
         getChildren().add(nextButton);
         getChildren().add(statusBar);
         getChildren().add(sciencePane);
-        getChildren().add(minimap);
 
         displayMap.setCurrentPlayer(gameState.getCurrentPlayer());
         updateInfo();

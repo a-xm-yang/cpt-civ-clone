@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import javafx.scene.image.Image;
 
 enum MiscAsset {
-    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, GOLD, SCIENCE, HAPPY, EXPANSION_ICON, GOLD_ICON, CITY, TITLE_BACKGROUND, HIGHLIGHT_TOGGLE, RESOURCE_TOGGLE, YIELDS_TOGGLE, READY_ICON, WAITING_ICON;
+    CLOSE_ICON, CONFIRM_ICON, CITY_BACKGROUND, CITY_OPTION_BACKGROUND, WARNING, CITIZEN_ICON, MONEY_ICON, PRODUCTION_ICON, CLOUD, GOLD, SCIENCE, HAPPY, EXPANSION_ICON, GOLD_ICON, CITY, TITLE_BACKGROUND, HIGHLIGHT_TOGGLE, RESOURCE_TOGGLE, YIELDS_TOGGLE, READY_ICON, WAITING_ICON, CHAT_ICON, SEND_ICON;
 }
 
 public class ImageBuffer {
@@ -85,7 +85,8 @@ public class ImageBuffer {
     private static Image titleBackground;
     private static Image readyIcon;
     private static Image waitingIcon;
-
+    private static Image chatIcon;
+    private static Image sendIcon;
     //IMPROVEMENT
     public static Image farm;
     private static Image mine;
@@ -204,6 +205,8 @@ public class ImageBuffer {
         happy = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Misc/happy.png"), 25, 25, false, false);
         readyIcon = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Misc/ready.png"), 50, 50, false, false);
         waitingIcon = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Misc/loading.png"), 50, 50, false, false);
+        chatIcon = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Misc/chat_icon.png"), 50, 50, false, false);
+        sendIcon = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Misc/send_icon.png"), 50, 50, false, false);
         //IMPROVEMENT
         farm = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Improvement/farm.png"), 70, 70, false, false);
         mine = new Image(ImageBuffer.class.getClassLoader().getResourceAsStream("Assets/Improvement/mine.png"), 70, 70, false, false);
@@ -497,6 +500,10 @@ public class ImageBuffer {
                 return waitingIcon;
             case READY_ICON:
                 return readyIcon;
+            case CHAT_ICON:
+                return chatIcon;
+            case SEND_ICON:
+                return sendIcon;
         }
 
         return destroyer;
