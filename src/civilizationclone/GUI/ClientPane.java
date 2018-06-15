@@ -20,9 +20,14 @@ public class ClientPane extends MultiplayerPane {
     @Override
     public void requestAction(String s) {
 
+        if (s.startsWith("Chat")) {
+            clientSocket.sendMessage(s);
+            return;
+        }
+
         if (!isActivityLocked() || s.startsWith("Next")) {
             clientSocket.sendMessage(s);
-        } 
+        }
 
         readNotificationFromGame();
         updateInfo();
@@ -30,7 +35,12 @@ public class ClientPane extends MultiplayerPane {
 
     @Override
     public void receiveAction(String s) {
-        
+
+        if (s.startsWith("Chat")) {
+            getChatroom().receiveMessage(s.substring(4));
+            return;
+        }
+
         if (s.startsWith("Next")) {
             String[] msg = s.split("/");
             setActivity(msg[1], false);

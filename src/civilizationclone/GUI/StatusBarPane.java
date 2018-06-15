@@ -151,7 +151,7 @@ public class StatusBarPane extends Group {
         goldT.setText(Integer.toString(player.getCurrentGold()) + "(" + Integer.toString(player.getGoldIncome()) + ")");
         sciT.setText(Integer.toString(player.getTechIncome()));
         happyT.setText(Integer.toString(player.getHappiness()));
-        turnT.setText("Turn: " + player.getTurnNumber() + " | " + Integer.toString(Math.abs(getYear())));
+        turnT.setText(player.getName() + " | Turn: " + player.getTurnNumber() + " | " + Integer.toString(Math.abs(getYear())));
         if (getYear() < 0) {
             turnT.setText(turnT.getText() + "BC");
         } else {
@@ -164,6 +164,7 @@ public class StatusBarPane extends Group {
             happyT.setFill(Color.RED);
         }
 
+        turnT.setTranslateX(resX - turnT.getLayoutBounds().getWidth());
         updateCurrentHeads();
     }
 
@@ -175,7 +176,7 @@ public class StatusBarPane extends Group {
                 if (player.equals(gamePaneRef.getPlayerList().get(i))) {
                     playerIcon.get(i).setTranslateY(90);
                 } else {
-                    playerIcon.get(i).setTranslateX(50);
+                    playerIcon.get(i).setTranslateY(50);
                 }
             }
         } else if (gamePaneRef instanceof MultiplayerPane) {
@@ -231,7 +232,7 @@ public class StatusBarPane extends Group {
 
             circle = new Circle(48, 48, 12);
             circle.setFill(Color.TRANSPARENT);
-            
+
             getChildren().add(this.image);
             getChildren().add(circle);
         }

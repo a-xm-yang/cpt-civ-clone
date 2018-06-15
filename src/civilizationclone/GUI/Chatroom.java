@@ -103,11 +103,9 @@ public class Chatroom extends Pane {
         sendIcon.effectProperty().bind(
                 Bindings.when(sendIcon.pressedProperty()).then(lightBig).otherwise(noneEffect)
         );
-        sendIcon.setOnMouseClicked(e ->{
+        sendIcon.setOnMouseClicked(e -> {
             sendMessage();
         });
-        
-
 
         getChildren().add(toggleIcon);
 
@@ -117,14 +115,15 @@ public class Chatroom extends Pane {
 
     private void sendMessage() {
         if (isOpen && !textField.getCharacters().toString().equals("")) {
-            String s = "\n" + playerName + ": " + textField.getCharacters().toString();
-            ta.appendText(s);
+            String s = playerName + ": " + textField.getCharacters().toString();
             textField.clear();
+            receiveMessage(s);
+            mPane.requestAction("Chat" + s);
         }
     }
 
     public void receiveMessage(String s) {
-        ta.appendText(s);
+        ta.appendText("\n" + s);
         if (!isOpen) {
             notifyEffect();
         }

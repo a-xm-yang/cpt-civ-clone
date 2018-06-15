@@ -19,6 +19,11 @@ public class HostPane extends MultiplayerPane {
     @Override
     public synchronized void requestAction(String s) {
 
+        if (s.startsWith("Chat")) {
+            server.sendToAll(s);
+            return;
+        }
+
         if (isActivityLocked()) {
             if (s.startsWith("Next")) {
                 setActivity(getGameState().getCurrentPlayer().getName(), false);
@@ -40,6 +45,11 @@ public class HostPane extends MultiplayerPane {
 
     @Override
     public synchronized void receiveAction(String s) {
+
+        if (s.startsWith("Chat")) {
+            getChatroom().receiveMessage(s.substring(4));
+            return;
+        }
 
         if (s.startsWith("Next")) {
             String[] msg = s.split("/");
