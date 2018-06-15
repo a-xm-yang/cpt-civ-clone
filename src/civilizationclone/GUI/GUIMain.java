@@ -40,9 +40,9 @@ public class GUIMain extends Application {
 
         primaryStage.setResizable(false);
 
-        primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage), resX, resY));
+        //primaryStage.setScene(new Scene(new TitleMenu(resX, resY, primaryStage), resX, resY));
         //primaryStage.setScene(new Scene(startWithoutMenu(), 1200, 1000));
-        //initializeTextLink();
+        initializeTextLink();
 
         primaryStage.setTitle("Alex Yang's Colonization II");
         primaryStage.show();

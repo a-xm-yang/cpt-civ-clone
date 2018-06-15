@@ -11,8 +11,7 @@ public abstract class MultiplayerPane extends GamePane {
 
     public MultiplayerPane(GameState gameState, int resX, int resY, boolean isMuted, Stage primaryStage) {
 
-        //CANCEL MUTE BY REMOVING !
-        super(gameState, resX, resY, !isMuted, primaryStage);
+        super(gameState, resX, resY, isMuted, primaryStage);
         initActiveList();
         getStatusBar().updateCurrentHeads();
 
